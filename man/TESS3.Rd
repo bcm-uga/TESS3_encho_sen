@@ -10,20 +10,20 @@
 \alias{remove.snmfProject}
 \title{Estimates individual ancestry coefficients, ancestral allele frequencies and an ancestral allele frequency differentiation statistic.}
 \usage{
-TESS3(input.file, input.coord, K, project = "continue", repetitions = 1,
-  alpha = 0.001, tolerance = 1e-05, entropy = FALSE, percentage = 0.05,
-  I = 0, iterations = 200, ploidy = 1, seed = -1, CPU = 1,
-  Q.input.file = "")
+TESS3(genotype, coordinate, K, ploidy, lambda, method = "MCPA",
+  max.iteration = 20)
 }
 \arguments{
+\item{K}{An integer vector corresponding to the number of ancestral populations for
+which the TESS3 algorithm estimates have to be calculated.}
+
+\item{ploidy}{1 if haploid, 2 if diploid, n if n-ploid.}
+
 \item{input.file}{A character string containing a the path to the input genotype file,
 a genotypic matrix in the \code{\link[LEA]{geno}} format.}
 
 \item{input.coord}{A character string containing a the path to the input coordinate file,
 a coordinate matrix in the \code{\link{coord}} format.}
-
-\item{K}{An integer vector corresponding to the number of ancestral populations for
-which the TESS3 algorithm estimates have to be calculated.}
 
 \item{project}{A character string among "continue", "new", and "force". If "continue",
 the results are stored in the current project. If "new", the current
@@ -51,8 +51,6 @@ between 10000 and 10 \% of all SNPs. This option can considerably speeds
 up snmf estimation for very large data sets.}
 
 \item{iterations}{An integer for the maximum number of iterations in algorithm.}
-
-\item{ploidy}{1 if haploid, 2 if diploid, n if n-ploid.}
 
 \item{seed}{A seed to initialize the random number generator. By default, the seed is randomly chosen.}
 

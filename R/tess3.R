@@ -103,23 +103,49 @@
 #'
 #' @aliases Q G FST cross.entropy load.snmfProject remove.snmfProject
 #'
-TESS3 <- function(input.file,
-                  input.coord,
+#' @export
+TESS3 <- function(genotype,
+                  coordinate,
                   K,
-                  project = "continue",
-                  repetitions = 1,
-                  alpha = 0.001,
-                  tolerance = 0.00001,
-                  entropy = FALSE,
-                  percentage = 0.05,
-                  I = 0,
-                  iterations = 200,
-                  ploidy = 1,
-                  seed = -1,
-                  CPU = 1,
-                  Q.input.file = "")
+                  ploidy,
+                  lambda,
+                  method = "MCPA",
+                  max.iteration = 20)
 {
-  t = 1
-  return()
+  # TODO : check args
+
+  # compute laplacian
+  W <- ComputeHeatKernelWeight(coordinate, NULL)
+  Lapl <- ComputeGraphLaplacian(W)
+
+  # compute Q and G matrix
+  if (method == "MCPA") {
+    res <- SolveTess3Projected(genotype,
+                               K,
+                               ploidy,
+                               Lapl,
+                               lambda,
+                               max.iteration = max.iteration)
+  } else if (method == "OQA") {
+    res <- SolveTess3QP(genotype,
+                        K,
+                        ploidy,
+                        Lapl,
+                        lambda,
+                        max.iteration = max.iteration)
+  }
+  return(res)
+
 }
 
+#' tess3r : TESS3 R Package
+#'
+#' This R package implements the TESS3 method and tools useful to plot program outputs.
+#'
+#' @docType package
+#'
+#' @name tess3r
+#' @importFrom Rcpp evalCpp
+#' @import RcppEigen
+#' @useDynLib TESS3enchoSen
+NULL

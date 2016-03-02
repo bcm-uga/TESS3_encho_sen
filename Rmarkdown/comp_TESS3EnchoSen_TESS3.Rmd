@@ -1,0 +1,77 @@
+---
+title: "Comparison TESS3EnchoSen TESS3"
+author: "kevin caye"
+date: "2 mars 2016"
+output: html_document
+---
+
+
+# On simulated data
+
+### We simulate data
+```{r}
+
+data = TESS3enchoSen::sampleTESS2.3(100,
+                     20000,
+                     1,
+                     3 ,
+                     TESS3enchoSen::SampleDistDFromCenterQ(0.1))
+
+tmpFile = tempfile()
+tmpFile.geno = paste0(tmpFile,".geno")
+tmpFile.coord = paste0(tmpFile,".coord")
+LEA::write.geno(data$X,tmpFile.geno)
+write.table(data$coord,tmpFile.coord,row.names = FALSE, col.names = FALSE)
+```
+
+### Comparison TESS3 and TESS3EnchoSen
+
+```{r}
+
+# With the good K
+tess3r.obj = tess3r::TESS3(tmpFile.geno, tmpFile.coord, K = 3, ploidy = 1)
+tess3enchosen.obj = TESS3enchoSen::TESS3(data$X,data$coord, K=3, ploidy = 1, lambda = 1.0) 
+BioCompToolsR::rmse_withBestPermutation(tess3r::Q(tess3r.obj,K = 3, run = 1), tess3enchosen.obj$Q)
+BioCompToolsR::rmse_withBestPermutation(tess3r::G(tess3r.obj,K = 3, run = 1), tess3enchosen.obj$G)
+
+# With an other K
+K = 5
+tess3r.obj = tess3r::TESS3(tmpFile.geno, tmpFile.coord, K = K, ploidy = 1)
+tess3enchosen.obj = TESS3enchoSen::TESS3(data$X,data$coord, K=K, ploidy = 1, lambda = 1.0, max.iteration = 35) 
+BioCompToolsR::rmse_withBestPermutation(tess3r::Q(tess3r.obj,K = K, run = 1), tess3enchosen.obj$Q)
+BioCompToolsR::rmse_withBestPermutation(tess3r::G(tess3r.obj,K = K, run = 1), tess3enchosen.obj$G)
+
+
+```
+
+
+# On a true dataset
+
+### Read data
+
+```{r}
+at.geno = "~/PatatorHomeDir/Data/At/At.geno"
+at.coord = "~/PatatorHomeDir/Data/At/coord_european.txt"
+
+data.at = list()
+data.at$X = LEA::read.geno(at.geno)
+data.at$coord = read.table(at.coord)
+```
+
+
+
+### Comparison TESS3 and TESS3EnchoSen
+
+```{r}
+K = 3
+tess3r.obj = tess3r::TESS3(tmpFile.geno, tmpFile.coord, K = K,ploidy = 1)
+tess3enchosen.obj = TESS3enchoSen::TESS3(matrix(as.double(data.at$X),nrow(data.at$X),ncol(data.at$X)),
+                                                data.at$coord, K = K, ploidy = 1, lambda = 1.0) 
+BioCompToolsR::rmse_withBestPermutation(tess3r::Q(tess3r.obj,K = K, run = 1), tess3enchosen.obj$Q)
+BioCompToolsR::rmse_withBestPermutation(tess3r::G(tess3r.obj,K = K, run = 1), tess3enchosen.obj$G)
+
+
+
+```
+
+
