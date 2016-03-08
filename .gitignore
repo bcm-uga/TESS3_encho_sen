@@ -21,3 +21,7 @@ vignettes/*.pdf
 
 # Comparison with old tess3
 compareWithTess3/
+
+# cpp file
+*.o
+*.so

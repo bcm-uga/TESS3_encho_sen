@@ -8,7 +8,10 @@ Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
 LazyData: TRUE
-Suggests: testthat
+Suggests: testthat,
+    sp,
+    raster,
+    gstat
 Imports: Rcpp (>= 0.12.3),
     RcppEigen (>= 0.3.2.8.1)
 LinkingTo: Rcpp, RcppEigen

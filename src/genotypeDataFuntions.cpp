@@ -9,7 +9,6 @@ using Eigen::Map;                 // 'maps' rather than copies
 using Eigen::MatrixXd;                  // variable size matrix, double precision
 
 //' TODO
-//' @export
 // [[Rcpp::export]]
 Eigen::MatrixXi ComputeXBin(const Eigen::Map<Eigen::MatrixXi> M, int d) {
         MatrixXi MBin = MatrixXi::Zero(M.rows(), M.cols() * (d+1));
@@ -23,10 +22,7 @@ Eigen::MatrixXi ComputeXBin(const Eigen::Map<Eigen::MatrixXi> M, int d) {
         return MBin;
 }
 
-
-
 //' TODO
-//' @export
 // [[Rcpp::export]]
 Eigen::MatrixXi ComputeXFromXBin(const Eigen::Map<Eigen::MatrixXi> MBin, int d) {
         MatrixXi M = MatrixXi::Zero(MBin.rows(), MBin.cols() / (d+1));

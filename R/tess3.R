@@ -114,25 +114,28 @@ TESS3 <- function(genotype,
 {
   # TODO : check args
 
+  genotype = matrix(as.integer(genotype), nrow(genotype), ncol(genotype))
+
   # compute laplacian
   W <- ComputeHeatKernelWeight(coordinate, NULL)
   Lapl <- ComputeGraphLaplacian(W)
 
   # compute Q and G matrix
-  if (method == "MCPA") {
-    res <- SolveTess3Projected(genotype,
-                               K,
-                               ploidy,
-                               Lapl,
-                               lambda,
-                               max.iteration = max.iteration)
-  } else if (method == "OQA") {
+  if (method == "OQA") {
     res <- SolveTess3QP(genotype,
                         K,
                         ploidy,
                         Lapl,
                         lambda,
                         max.iteration = max.iteration)
+  } else if (method == "MCPA") {
+    genotype <- ComputeXBin(genotype, ploidy)
+    res <- ComputeMCPASolution(X = genotype,
+                               K = K,
+                               Lapl = Lapl,
+                               lambdaPrim = lambda,
+                               D = ploidy + 1,
+                               maxIteration = max.iteration)
   }
   return(res)
 

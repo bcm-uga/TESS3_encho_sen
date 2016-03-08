@@ -64,13 +64,11 @@ data.at$coord = read.table(at.coord)
 
 ```{r}
 K = 3
-tess3r.obj = tess3r::TESS3(tmpFile.geno, tmpFile.coord, K = K,ploidy = 1)
-tess3enchosen.obj = TESS3enchoSen::TESS3(matrix(as.double(data.at$X),nrow(data.at$X),ncol(data.at$X)),
-                                                data.at$coord, K = K, ploidy = 1, lambda = 1.0) 
+tess3r.obj <- tess3r::TESS3(at.geno, at.coord, K = K,ploidy = 2, entropy = FALSE)
+tess3enchosen.obj = TESS3enchoSen::TESS3(data.at$X,
+                                         data.at$coord, K = K, ploidy = 2, lambda = 1.0)
 BioCompToolsR::rmse_withBestPermutation(tess3r::Q(tess3r.obj,K = K, run = 1), tess3enchosen.obj$Q)
 BioCompToolsR::rmse_withBestPermutation(tess3r::G(tess3r.obj,K = K, run = 1), tess3enchosen.obj$G)
-
-
 
 ```
 
