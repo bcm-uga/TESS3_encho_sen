@@ -1,0 +1,183 @@
+---
+title: "Rasterfile and spatial interpolation in R"
+author: "kevin caye"
+date: "7 mars 2016"
+output: html_document
+---
+
+
+
+
+# Handler raster with R
+
+
+```{r}
+library(raster)
+
+file.name <- "~/Téléchargements/etopo1.tif"
+
+imported.raster <- raster(file.name)
+
+plot(imported.raster)
+
+# remove value < 0.0
+improted.raster.positive <- calc(imported.raster, function(x){ifelse(x<0.0,0.0,x)})
+improted.raster.positive <- calc(improted.raster.positive, function(x){ifelse(x>1000.0,1000,x)})
+plot(improted.raster.positive)
+
+```
+
+
+# spatial interpolation
+
+with AT
+```{r}
+K = 3
+at.geno = "~/PatatorHomeDir/Data/At/At.geno"
+at.coord = "~/PatatorHomeDir/Data/At/coord_european.txt"
+data.at = list()
+data.at$X = LEA::read.geno(at.geno)
+data.at$coord = read.table(at.coord)
+
+tess3enchosen.obj = TESS3enchoSen::TESS3(data.at$X,
+                                         data.at$coord, K = K, ploidy = 2, lambda = 1.0)
+
+
+```
+
+
+data to plot
+
+```{r}
+library(sp)
+dat <- data.frame(X = data.at$coord[,1], Y = data.at$coord[,2], Z = tess3enchosen.obj$Q[,1])
+# Force data frame object into a SpatialPointsDataFrame object
+coordinates(dat) <- c("X","Y")
+```
+
+
+## Proximity Polygons
+
+```{r}
+library(spatstat)  # Needed for the dirichlet tesselation function
+library(maptools)  # Needed for conversion from SPDF to ppp
+
+# Create a tessilated surface
+dat.pp <-   as(dirichlet(as.ppp(dat)), "SpatialPolygons")
+dat.pp <-   as(dat.pp,"SpatialPolygons")
+
+# Assign to each polygon the Z value 
+int.Z     <- over(dat.pp, dat, fn=mean) 
+
+# Create a SpatialPolygonsDataFrame
+dat.spdf  <-  SpatialPolygonsDataFrame(dat.pp, int.Z)
+
+# Plot the proximity polygons
+spplot(dat.spdf, "Z", col.regions =terrain.colors(20))
+```
+
+## Inverse Distance Weighted (IDW)
+
+```{r}
+library(gstat)
+
+# Create an empty grid where n is the total number of cells
+grd              <- as.data.frame(spsample(dat, "regular", n=10000))
+names(grd)       <- c("X", "Y")
+coordinates(grd) <- c("X", "Y")
+gridded(grd)     <- TRUE  # Create SpatialPixel object
+fullgrid(grd)    <- TRUE  # Create SpatialGrid object
+
+# Interpolate the surface using a power value of 2 (idp=2.0)
+dat.idw <- idw(Z~1,dat,newdata=grd,idp=2.0)
+
+# Plot the raster and the sampled points
+OP      <- par( mar=c(0,0,0,0))
+image(dat.idw,"var1.pred",col=terrain.colors(20))
+contour(dat.idw,"var1.pred", add=TRUE, nlevels=10, col="#656565")
+plot(dat, add=TRUE, pch=16, cex=0.5)
+text(coordinates(dat), as.character(round(dat$Z,1)), pos=4, cex=0.8, col="blue")
+par(OP)
+
+```
+
+## kriging 
+
+```{r}
+
+```
+
+
+
+## Overlap with map
+
+```{r}
+# creat grid
+grd              <- as.data.frame(rasterToPoints(imported.raster)[,1:2])
+names(grd)       <- c("X", "Y")
+coordinates(grd) <- c("X", "Y")
+gridded(grd)     <- TRUE  # Create SpatialPixel object
+fullgrid(grd)    <- TRUE  # Create SpatialGrid object
+
+# Interpolate the surface using a power value of 2 (idp=2.0)
+dat.idw <- idw(Z~1,dat,newdata=grd,idp=2.0)
+
+# Plot
+# Creat a raster data
+ancestry.raster <- calc(imported.raster, function(x){ifelse(x<0.0,0.0,1)}) * raster(dat.idw)
+plot(ancestry.raster)
+plot(dat, add=TRUE, pch=16, cex=0.5)
+```
+
+
+
+# A raster file to add to the package ?
+
+```{r}
+library(rasterVis)
+library(ggplot2)
+
+file.name <- "~/Téléchargements/GRAY_50M_SR_OB/GRAY_50M_SR_OB.tif"
+
+imported.raster <- raster(file.name)
+gplot(imported.raster) + 
+  geom_raster(aes(fill = value)) + 
+  scale_fill_gradient(low = 'white', high = 'blue') +
+  coord_equal()
+
+f <- freq(imported.raster)
+
+imported.raster.bin <- calc(imported.raster, function(x) {ifelse(x>105,1,NA)})
+plot(imported.raster.bin)
+gplot(imported.raster.bin) + 
+  geom_raster(aes(fill = value)) + 
+  scale_fill_gradient(low = 'white', high = 'blue', na.value = "white") +
+  coord_equal()
+# writeRaster(imported.raster.bin,"~/PatatorHomeDir/Projects/TESS3_encho_sen/inst/extdata/raster/earth.tif",format = "GTiff", overwrite = TRUE)
+
+
+# crop image 
+imported.raster.bin.crop <- crop(imported.raster.bin,dat)
+plot(imported.raster.bin.crop)
+```
+
+## Overlap with map
+
+
+```{r}
+# creat grid
+grd              <- as.data.frame(rasterToPoints(imported.raster.bin.crop)[,1:2])
+names(grd)       <- c("X", "Y")
+coordinates(grd) <- c("X", "Y")
+gridded(grd)     <- TRUE  # Create SpatialPixel object
+fullgrid(grd)    <- TRUE  # Create SpatialGrid object
+
+# Interpolate the surface using a power value of 2 (idp=2.0)
+dat.idw <- idw(Z~1,dat,newdata=grd,idp=2.0)
+
+# Plot
+# Creat a raster data
+ancestry.raster <- imported.raster.bin.crop * raster(dat.idw)
+plot(ancestry.raster)
+plot(dat, add=TRUE, pch=16, cex=0.5)
+```
