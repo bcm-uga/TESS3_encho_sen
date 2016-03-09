@@ -2,7 +2,7 @@ context("Plot")
 
 
 
-test_that("test of PlotAncestryCoefWithIdw", {
+test_that("test of plot with raster pkg", {
 
   skip_on_cran()
   # retrieve package file
@@ -46,5 +46,29 @@ test_that("test of PlotAncestryCoefWithIdw", {
   ancestry.raster.rgb.quant <- raster::calc( raster::cut(ancestry.raster.rgb,breaks = breaks), function(x) breaks[x])
   raster::plotRGB(ancestry.raster.rgb)
 
+
+})
+
+
+test_that("test of plot with flora fct", {
+  skip_on_cran()
+
+  # data
+  K = 3
+  at.geno = "~/PatatorHomeDir/Data/At/little_sample/Athaliana.geno"
+  at.coord = "~/PatatorHomeDir/Data/At/little_sample/Athaliana.coord"
+  data.at = list()
+  data.at$X = LEA::read.geno(at.geno)
+  data.at$coord = read.table(at.coord)
+
+  # run tess3
+  tess3enchosen.obj = TESS3enchoSen::TESS3(data.at$X,
+                                           data.at$coord, K = K, ploidy = 1, lambda = 1.0)
+
+  # plot
+  PlotAncestryCoef(tess3enchosen.obj$Q, data.at$coord, resolution = c(100,100))
+
+  # plot with a window
+  PlotAncestryCoef(tess3enchosen.obj$Q, data.at$coord, resolution = c(200,200), window = c(-10,40,30,70))
 
 })

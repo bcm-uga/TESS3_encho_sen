@@ -41,7 +41,7 @@ ComputeBackgroundandGrid <- function(dat, raster.filename, resolution) {
 
   # crop to dat
   imported.raster <- raster::resample(imported.raster,raster::raster(raster::extent(dat), ncol = resolution$ncol, nrow = resolution$nrow))
-  imported.raster <- raster::calc(imported.raster, function(x) {ifelse(x>0,1,0)})
+  # imported.raster <- raster::calc(imported.raster, function(x) {ifelse(x>0,1,0)})
   # plot(imported.raster)
 
   # interpolate
@@ -150,3 +150,157 @@ RasterAncestryCoefRGB <- function(Q, coord, raster.filename = system.file("extda
 }
 
 
+###################################################
+##################flora's functions################
+###################################################
+
+lColorGradients = list(
+  c("gray95",RColorBrewer::brewer.pal(9,"Reds")),
+  c("gray95",RColorBrewer::brewer.pal(9,"Greens")),
+  c("gray95",RColorBrewer::brewer.pal(9,"Blues")),
+  c("gray95",RColorBrewer::brewer.pal(9,"YlOrBr")),
+  c("gray95",RColorBrewer::brewer.pal(9,"RdPu")),
+  c("gray95",RColorBrewer::brewer.pal(9,"Greys"))
+)
+
+#' TODO
+#'
+PlotAncestryCoef <- function(Q,
+                             coord,
+                             resolution = c(300,300),
+                             window = NULL) {
+  # read raster file
+  raster.filename <- system.file("extdata/raster","earth.tif",package = "TESS3enchoSen")
+  grid <- CreateGridAndBackgroundFromRasterFile(raster.filename, coord, resolution, window)
+
+  K = ncol(Q)
+
+  maps(matrix = Q,
+       coord = coord,
+       grid=grid$fields.grid,
+       constraints=grid$background,
+       method="max",
+       main=paste("ancestry coefficient with K =",K))
+
+
+}
+
+
+#' TODO
+#'
+CreateGridAndBackgroundFromRasterFile <- function(file, coord, resolution, window)
+{
+
+  raster.filename <- system.file("extdata/raster","earth.tif",package = "TESS3enchoSen")
+  imported.raster <- raster::raster(raster.filename)
+
+  # resize raster
+  if (is.null(window)) {
+    # window from coord
+    names(coord) <- c("x","y")
+    window.extent <- raster::extent(coord)
+  } else {
+    window.extent <- raster::extent(window)
+  }
+  imported.raster <- raster::resample(imported.raster,raster::raster(window.extent,
+                                                                     ncol = resolution[1],
+                                                                     nrow = resolution[2]))
+  # plot(imported.raster)
+
+  # background matrix
+  background <- raster::as.matrix(imported.raster)
+  background[is.na(background)] <- 0
+  background <- t(apply(t(background), 1, rev)) # transpose and rev col
+  # image(background)
+
+
+  fields.grid <- fields::make.surface.grid(list( raster::xFromCol(imported.raster),rev(raster::yFromRow(imported.raster))))
+
+  return(list(background = background, fields.grid = fields.grid))
+}
+
+#' TODO
+#'
+maps <- function(matrix,coord,grid,constraints=NULL,method="treshold",colorGradientsList=lColorGradients,onemap=T,onepage=T,...)
+{
+
+  if ( (method != "treshold") & (method != "max")) {stop(paste("Unknown method",method))}
+  if (class(constraints)!= "NULL") {
+    if ( nrow(grid) != nrow(constraints)*ncol(constraints) ) {
+      stop(paste("Argument grid assumes", nrow(grid), "pixels, but argument constaints assumes", nrow(constraints)*ncol(constraints),"pixels"))
+    }
+  }
+
+  if (onemap & method=="max") {
+    mapsMethodMax(matrix=matrix,coord=coord,grid=grid,constraints=constraints,colorGradientsList=colorGradientsList,...)
+
+  } else {
+    K=ncol(matrix)
+    if (length(colorGradientsList)<K)
+    {
+      stop(paste(K,"clusters detected but only",length(colorGradientsList),"color gradient(s) defined.",
+                 "You should complete colorGradientsList to have as many gradients as clusters."))
+    }
+
+    if (!onemap & onepage) {KK = as.integer(K/2); par(mfrow = c(2,KK+1)) }
+
+    for (k in 1:K)
+    {
+      clust=NULL
+      clust= fields::Krig(coord, matrix[,k], theta = 10)
+      look<- predict(clust,grid) # evaluate on a grid of points
+      out<- fields::as.surface( grid, look)
+
+      if (class(constraints)!= "NULL") { out[[8]][ !constraints ] = NA }
+
+      ncolors=length(colorGradientsList[[k]])
+      if (onemap)
+      {
+        out[[8]][ out[[8]] < .5 ] = NA
+        graphics::image(out,add=(k>1),col=colorGradientsList[[k]][(ncolors-4):ncolors],breaks=c(seq(.5,.9,.1),+200),...)
+      } else {
+        graphics::image(out,col=colorGradientsList[[k]][(ncolors-9):ncolors],breaks=c(-200,.1,seq(.2,.9,.1),+200),...)
+        graphics::points(coord,pch=19)
+      }
+    }
+
+    if (onemap) { graphics::points(coord,pch=19) }
+  }
+
+}
+
+mapsMethodMax <- function(matrix,coord,grid,constraints,colorGradientsList,...)
+
+{
+  K=ncol(matrix)
+  if (length(colorGradientsList)<K)
+  {
+    stop(paste(K,"clusters detected but only",length(colorGradientsList),"color gradient(s) defined.",
+               "You should complete colorGradientsList to have as many gradients as clusters."))
+  }
+
+  listOutClusters=NULL
+  matrixOfVectors =NULL
+  for (k in 1:K)
+  {
+    clust=NULL
+    clust= fields::Krig(coord, matrix[,k], theta = 10)
+    look<- predict(clust,grid) # evaluate on a grid of points
+    out<- fields::as.surface( grid, look)
+    listOutClusters[[k]] = out[[8]]
+    matrixOfVectors = cbind(matrixOfVectors,c(out[[8]]))
+  }
+  long = out[[1]]
+  lat = out[[2]]
+
+  whichmax = matrix(apply(matrixOfVectors ,MARGIN=1,FUN=which.max),nrow=length(long))
+
+  for (k in 1:K)
+  {
+    ncolors=length(colorGradientsList[[k]])
+    if (class(constraints)!= "NULL") { listOutClusters[[k]][ !constraints ] = NA }
+    listOutClusters[[k]][ whichmax != k ] = NA
+    image(long,lat,listOutClusters[[k]],add=(k>1),col=colorGradientsList[[k]][(ncolors-9):ncolors],breaks=c(-200,.1,seq(.2,.9,.1),+200),...)
+  }
+  points(coord,pch=19)
+}
