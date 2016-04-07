@@ -25,3 +25,6 @@ compareWithTess3/
 # cpp file
 *.o
 *.so
+
+# css
+.sass-cache/
