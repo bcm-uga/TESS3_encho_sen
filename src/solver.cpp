@@ -1,18 +1,16 @@
 // we only include RcppEigen.h which pulls Rcpp.h in for us
-#include <RcppEigen.h>
+#include <RcppArmadillo.h>
 
-using namespace Eigen;
-using namespace Rcpp;
 
 //******************************************************************************
 //****************************** Helper functions ******************************
 
 // project Q into the constraint space
-void ProjectQ(Eigen::MatrixXd & Q) {
+void ProjectQ(arma::mat & Q) {
         double rowSum = 0.0;
-        for (int i = 0; i < Q.rows(); i++) {
+        for (int i = 0; i < Q.n_rows; i++) {
                 rowSum = 0.0;
-                for (int j = 0; j < Q.cols(); j++) {
+                for (int j = 0; j < Q.n_cols; j++) {
                         Q(i,j) = std::max(0.0, Q(i,j));
                         rowSum += Q(i,j);
                 }
@@ -22,10 +20,10 @@ void ProjectQ(Eigen::MatrixXd & Q) {
         }
 }
 // project G into the constraint space
-void ProjectG(Eigen::MatrixXd & G, int D) {
-        int L = G.rows() / D;
+void ProjectG(arma::mat & G, int D) {
+        int L = G.n_rows / D;
         double sum = 0.0;
-        for (int k = 0; k < G.cols(); k++) {
+        for (int k = 0; k < G.n_cols; k++) {
                 for (int l = 0; l < L; l++) {
                         sum = 0.0;
                         for (int j = 0; j < D; j++) {
@@ -33,7 +31,7 @@ void ProjectG(Eigen::MatrixXd & G, int D) {
                                 sum += G(D * l + j, k);
                         }
                         if (sum != 0.0) {
-                                G.block(D * l,k,D,1) /= sum;
+                                G.submat(D * l, k, D * (l + 1) - 1, k) /= sum;
                         }
                 }
         }
@@ -43,44 +41,41 @@ void ProjectG(Eigen::MatrixXd & G, int D) {
 
 
 
-// [[Rcpp::depends(RcppEigen)]]
-
-using Eigen::Map;                 // 'maps' rather than copies
-using Eigen::MatrixXd;                  // variable size matrix, double precision
+// [[Rcpp::depends(RcppArmadillo)]]
 
 //' solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
 // [[Rcpp::export]]
-List ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance) {
+List ComputeMCPASolution(const arma::mat & X, int K, const arma::mat & Lapl, double lambdaPrim, int D, int maxIteration, double tolerance) {
         // Some const
-        const int L = X.cols() / D;
-        const int n = X.rows();
+        const int L = X.n_cols / D;
+        const int n = X.n_rows;
 
         // Init Q and G
-        Eigen::MatrixXd G = MatrixXd::Zero(X.cols(), K);
-        Eigen::MatrixXd Q = MatrixXd::Random(X.rows(), K);
-        Q = Q.cwiseAbs();
+        arma::mat G = arma::zeros<mat>(X.n_cols, K);
+        arma::mat Q = arma::randu<mat>(X.n_rows, K);
         ProjectQ(Q);
 
         // Compute Lapl diagonalization
         Rcpp::Rcout << "Computing spectral decomposition of graph laplacian matrix";
-        SelfAdjointEigenSolver<MatrixXd> es(Lapl);
-        VectorXd vps = es.eigenvalues();
-        MatrixXd R = es.eigenvectors().transpose();
-        MatrixXd RX = R * X;
+        arma::vec vps(n);
+        arma::mat R(n, n);
+        arma::eig_sym(vps, R, Lapl)
+        R = T.t();
+        arma::mat RX = R * X;
         Rcpp::Rcout << ": done" << std::endl;
 
         // Compute lambda
-        double vpMax = vps.maxCoeff();
+        double vpMax = vps.max();
         double lambda = 0.0;
         if (vpMax != 0.0) {
           lambda = lambdaPrim * (D * L * n) / (K * n * vpMax);
         }
 
         // constant
-        MatrixXd Ik = MatrixXd::Identity(K,K);
+        arma::mat Ik = arma::eye<mat>(K,K);
 
         // auxiliary variables
-        MatrixXd RQ = Q;
+        arma::mat RQ = Q;
         double err = -10.0;
         double errAux = 0.0;
 
@@ -90,7 +85,7 @@ List ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen
         Rcpp::Rcout << "Main loop: " << std::endl;
         while (!converg && it < maxIteration) {
                 // update G
-                G = ((Q.transpose() * Q).ldlt().solve(Q.transpose() * X)).transpose();
+                G = arma::solve((Q.t() * Q),Q.t() * X).t();
                 ProjectG(G, D);
 
                 // update Q
@@ -98,7 +93,7 @@ List ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen
                 for (int i = 0; i < n; i++) {
                         RQ.row(i) = ((G.transpose() * G + lambda * vps(i) * Ik).ldlt().solve(G.transpose() * RX.row(i).transpose())).transpose();
                 }
-                Q = R.transpose() * RQ;
+                Q = R.t() * RQ;
                 ProjectQ(Q);
 
                 // compute normalized residual error
