@@ -6,6 +6,17 @@ output: html_document
 ---
 
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=TRUE)
+knitr::opts_chunk$set(autodep=FALSE)
+knitr::opts_chunk$set(echo=TRUE)
+knitr::opts_chunk$set(error=FALSE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+
+```
+
+
 # On simulated data
 
 ### We simulate data
@@ -62,9 +73,10 @@ data.at$coord = read.table(at.coord)
 
 ### Comparison TESS3 and TESS3EnchoSen
 
+
 ```{r}
 K = 3
-tess3r.obj <- tess3r::TESS3(at.geno, at.coord, K = K,ploidy = 2, entropy = FALSE)
+tess3r.obj <- tess3r::TESS3(at.geno, at.coord, K = K,ploidy = 2, entropy = FALSE, project = "new")
 tess3enchosen.obj = TESS3enchoSen::TESS3(data.at$X,
                                          data.at$coord, K = K, ploidy = 2, lambda = 1.0)
 BioCompToolsR::rmse_withBestPermutation(tess3r::Q(tess3r.obj,K = K, run = 1), tess3enchosen.obj$Q)
@@ -72,4 +84,45 @@ BioCompToolsR::rmse_withBestPermutation(tess3r::G(tess3r.obj,K = K, run = 1), te
 
 ```
 
+TESS3enchosen use more memory (because we store data un a double matrix).
 
+Plot results : 
+
+```{r}
+
+TESS3enchoSen::PlotAncestryCoef(tess3r::Q(tess3r.obj,K = K, run = 1),data.at$coord)
+TESS3enchoSen::PlotAncestryCoef(tess3enchosen.obj$Q,data.at$coord)
+
+```
+
+
+### Comparison with sNMF
+
+
+```{r}
+K = 3
+snmf.obj <- LEA::snmf(at.geno, K = K,ploidy = 2, entropy = FALSE, project = "new")
+
+```
+
+Plot results : 
+
+```{r}
+TESS3enchoSen::PlotAncestryCoef(LEA::Q(snmf.obj,K = K, run = 1),data.at$coord)
+```
+
+### Comparison with TESS3EnchoSen OQA
+
+
+```{r}
+# K = 3
+# tess3enchosen.oqa.obj = TESS3enchoSen::TESS3(data.at$X,
+#                                          data.at$coord, K = K, ploidy = 2, lambda = 1.0, method = "OQA")
+
+
+```
+
+
+```{r}
+# TESS3enchoSen::PlotAncestryCoef(tess3enchosen.oqa.obj$Q,data.at$coord)
+```

@@ -1,3 +1,20 @@
+#' sample locus position such lp ~ unif(0,1)
+#'
+#'
+#' TODO
+#'
+#' @return TODO
+#'
+#' @examples
+#' TODO
+#
+#' @export
+SampleUnifLocusPosition <- function() {
+  function(n, n.by.pop, L, d, K) {
+    lp = runif(L)
+    return(sort(lp))
+  }
+}
 #' sample Q such as alpha ~ unif
 #'
 #'
@@ -9,10 +26,65 @@
 #' TODO
 #
 #' @export
-sampleUnifQ <- function(n, K) {
-  alpha = matrix(runif(n*K,min = 0, max = 1),n,K)
-  Q = t(apply(alpha, 1, function(r){gtools::rdirichlet(1,r)}))
-  return(Q)
+SampleUnifQ <- function() {
+  function(coord, n, n.by.pop, L, d, K) {
+    alpha = matrix(runif(n*K,min = 0, max = 1),n,K)
+    Q = t(apply(alpha, 1, function(r){gtools::rdirichlet(1,r)}))
+    return(Q)
+  }
+}
+
+#' sample coord such as a mixture of K cluster distributed with gaussian law
+#'
+#'
+#' TODO
+#'
+#' @return TODO
+#'
+#' @examples
+#' TODO
+#
+#' @export
+SampleNormalClusterCoord <- function() {
+  function(n, n.by.pop, L, d, K) {
+    # sample pop center
+    mu = MASS::mvrnorm(K, c(0,0), diag(c(1,1)))
+
+    # sample coord
+    if(length(n.by.pop) == 1) {
+      n.by.pop = rep(n.by.pop,K)
+    }
+    assertthat::assert_that(length(n.by.pop) == K)
+    coord=c()
+    for(k in 1:K) {
+      coord = rbind(coord, MASS::mvrnorm(n.by.pop[k], mu[k,], diag(c(0.2,0.2)) ))
+    }
+    # debug
+    # plot(coord, col = rep(2:(K+1),times = n.by.pop))
+    return(coord)
+  }
+}
+
+#' sample G such as uniform diriclet
+#'
+#'
+#' TODO
+#'
+#' @return TODO
+#'
+#' @examples
+#' TODO
+#
+#' @export
+SampleDirichletG <- function() {
+  function(n, n.by.pop, L, d, K) {
+    # sample G
+    G = c()
+    for( l in 1:L) {
+      G = rbind(G,t(gtools::rdirichlet(K,rep(1.0/(d+1),(d+1)))))
+    }
+    return(G)
+  }
 }
 
 
@@ -46,7 +118,7 @@ CovFunctionSquaredExp <- function(sigma) {
 #
 #' @export
 SampleGaussianProcessQ <- function(cov.function) {
-  function(coord, n, K,...) {
+  function(coord, n, n.by.pop, L, d, K) {
     # compute cov
     W = matrix(0,nrow(coord),nrow(coord))
     for(i in 1:nrow(coord)) {
@@ -74,7 +146,11 @@ SampleGaussianProcessQ <- function(cov.function) {
 #
 #' @export
 SampleDistDFromCenterQ <- function(sigma) {
-  function(coord, n, K,mu,...) {
+  function(coord, n, n.by.pop, L, d, K) {
+
+    # compute center of each cluster
+    mu <- t(sapply(split(1:n, ceiling(seq_along(1:n)/n.by.pop)), function(l) {apply(coord[l,],2,mean)}))
+
     # sample Q
     dist.from.center.aux <- function(c) {
       apply(mu, 1, function(r){return(sqrt(sum((r-c)^2)))})
@@ -104,7 +180,10 @@ SampleDistDFromCenterQ <- function(sigma) {
 #
 #' @export
 SampleDistFromCenterDirichletQ <- function() {
-  function(coord, n, K,mu,...) {
+  function(coord, n, n.by.pop, L, d, K) {
+
+    # compute center of each cluster
+    mu <- t(sapply(split(1:n, ceiling(seq_along(1:n)/n.by.pop)), function(l) {apply(coord[l,],2,mean)}))
 
     # sample Q
     dist.from.center.aux <- function(c) {
@@ -140,6 +219,8 @@ SampleDistFromCenterDirichletQ <- function() {
   }
 }
 
+
+
 #' Sample X such that P(X_i_dl + j) = Sum(Q_ik G_kj).
 #' Coord ...
 #'
@@ -152,31 +233,24 @@ SampleDistFromCenterDirichletQ <- function() {
 #' TODO
 #
 #' @export
-sampleTESS2.3 <- function(n.by.pop, L, d, K, Q.sampler = SampleDistFromCenterDirichletQ()) {
+SampleGenoFromGenerativeModel <- function(n.by.pop, L, d, K,
+                                          G.sampler = SampleDirichletG(),
+                                          Q.sampler = SampleUnifQ(),
+                                          coord.sampler = SampleNormalClusterCoord(),
+                                          locus.position.sampler = SampleUnifLocusPosition()) {
+  n = K * n.by.pop
 
-  # sample pop center
-  mu = MASS::mvrnorm(K, c(0,0), diag(c(1,1)))
-
+  # sample locus position
+  locus.position = locus.position.sampler(n, n.by.pop, L, d, K)
 
   # sample coord
-  if(length(n.by.pop) == 1) {
-    n.by.pop = rep(n.by.pop,K)
-  }
-  assertthat::assert_that(length(n.by.pop) == K)
-  coord=c()
-  for(k in 1:K) {
-    coord = rbind(coord, MASS::mvrnorm(n.by.pop[k], mu[k,], diag(c(0.2,0.2)) ))
-  }
-  # debug
-  plot(coord, col = rep(2:(K+1),times = n.by.pop))
+  coord = coord.sampler(n, n.by.pop, L, d, K)
 
-  Q = Q.sampler(coord,nrow(coord),K, mu)
+  # sample Q
+  Q = Q.sampler(coord, n, n.by.pop, L, d, K)
 
   # sample G
-  G = c()
-  for( l in 1:L) {
-    G = rbind(G,t(gtools::rdirichlet(K,rep(1.0/(d+1),(d+1)))))
-  }
+  G = G.sampler(n, n.by.pop, L, d, K)
 
   # P
   P = tcrossprod(Q,G)
@@ -190,5 +264,5 @@ sampleTESS2.3 <- function(n.by.pop, L, d, K, Q.sampler = SampleDistFromCenterDir
     }
   }
 
-  return( list(X = X,G = G,Q = Q, coord = coord,n = nrow(X),L = L,n.by.pop = n.by.pop,K = K, d = d))
+  return( list(X = X,G = G,Q = Q, coord = coord,n = nrow(X),L = L,n.by.pop = n.by.pop,K = K, d = d, locus.position = locus.position))
 }

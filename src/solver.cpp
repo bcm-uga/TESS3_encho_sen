@@ -48,15 +48,12 @@ void ProjectG(Eigen::MatrixXd & G, int D) {
 using Eigen::Map;                 // 'maps' rather than copies
 using Eigen::MatrixXd;                  // variable size matrix, double precision
 
-//' || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
+//' solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
 // [[Rcpp::export]]
-List ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXi> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration) {
+List ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance) {
         // Some const
         const int L = X.cols() / D;
         const int n = X.rows();
-
-        // for speed Computation
-        Eigen::MatrixXd Xd = X.cast<double>();
 
         // Init Q and G
         Eigen::MatrixXd G = MatrixXd::Zero(X.cols(), K);
@@ -65,25 +62,35 @@ List ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXi> X, int K, const Eigen
         ProjectQ(Q);
 
         // Compute Lapl diagonalization
+        Rcpp::Rcout << "Computing spectral decomposition of graph laplacian matrix";
         SelfAdjointEigenSolver<MatrixXd> es(Lapl);
         VectorXd vps = es.eigenvalues();
         MatrixXd R = es.eigenvectors().transpose();
-        MatrixXd RX = R * Xd;
+        MatrixXd RX = R * X;
+        Rcpp::Rcout << ": done" << std::endl;
 
         // Compute lambda
-        double lambda = lambdaPrim * (D * L * n) / (K * n * vps.maxCoeff());
+        double vpMax = vps.maxCoeff();
+        double lambda = 0.0;
+        if (vpMax != 0.0) {
+          lambda = lambdaPrim * (D * L * n) / (K * n * vpMax);
+        }
 
         // constant
         MatrixXd Ik = MatrixXd::Identity(K,K);
 
         // auxiliary variables
         MatrixXd RQ = Q;
-        double err = 0.0;
+        double err = -10.0;
+        double errAux = 0.0;
 
         // algo
-        for (int it = 0; it < maxIteration; it++) {
+        int it = 0;
+        bool converg = FALSE;
+        Rcpp::Rcout << "Main loop: " << std::endl;
+        while (!converg && it < maxIteration) {
                 // update G
-                G = ((Q.transpose() * Q).ldlt().solve(Q.transpose() * Xd)).transpose();
+                G = ((Q.transpose() * Q).ldlt().solve(Q.transpose() * X)).transpose();
                 ProjectG(G, D);
 
                 // update Q
@@ -94,9 +101,14 @@ List ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXi> X, int K, const Eigen
                 Q = R.transpose() * RQ;
                 ProjectQ(Q);
 
-                // compute residual error
-                err = (Xd - Q * G.transpose()).norm() / X.norm();
-                Rcpp::Rcout << "iteration" << it << "& error : " << err << std::endl;
+                // compute normalized residual error
+                errAux = (X - Q * G.transpose()).norm() / X.norm();
+                // Rcpp::Rcout << "iteration" << it << "& error : " << err << std::endl; // debug
+                Rcpp::Rcout << "---iteration: " << it <<"/" << maxIteration << std::endl;
+                // Test the convergence
+                converg = (std::abs(errAux - err) < tolerance);
+                err = errAux;
+                it++;
         }
 
 

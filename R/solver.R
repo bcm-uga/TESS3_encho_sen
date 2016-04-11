@@ -40,7 +40,8 @@ SolveTess3Projected <- function(X, K, d, Lapl, lambda, max.iteration) {
   X <- ComputeXBin(X,d)
   D <- d+1
   G <- matrix(0, nrow = D * L, ncol = K)
-  Q <- sampleUnifQ(n, K)
+  Q <- matrix(runif(n*K),n,K)
+  Q <- ProjectQ(Q)
   normilized.residual.error <- rep(0.0,max.iteration)
   proj.time <- rep(0.0,max.iteration)
   X.norm <- norm(X,"F")
@@ -92,7 +93,7 @@ SolveTess3Projected <- function(X, K, d, Lapl, lambda, max.iteration) {
 
 
 
-SolveTess3QP <- function(X, K, d, Lapl, lambda, max.iteration) {
+SolveTess3QP <- function(X, K, d, Lapl, lambda, max.iteration, tolerance) {
 
   if(is.null(lambda)) {
     Lapl <- diag(1,nrow(X),nrow(X))
@@ -101,11 +102,12 @@ SolveTess3QP <- function(X, K, d, Lapl, lambda, max.iteration) {
 
   # init
   n <- nrow(X)
-  L <- ncol(X)
-  X <- ComputeXBin(X,d)
+  # X <- ComputeXBin(X,d) # done before this function
   D <- d+1
+  L <- ncol(X) / D
   G <- matrix(0, nrow = D * L, ncol = K)
-  Q <- sampleUnifQ(n, K)
+  Q <- matrix(runif(n*K),n,K)
+  Q <- ProjectQ(Q)
   normilized.residual.error <- rep(0.0,max.iteration)
   QP.time <- rep(0.0,max.iteration)
   X.norm <- norm(X,"F")
@@ -115,7 +117,7 @@ SolveTess3QP <- function(X, K, d, Lapl, lambda, max.iteration) {
   #lambda = lambda * (D * L * n) / (K * sum(diag(Lapl)))
   # lambda = lambda * (D * L * n) / (K * n)
   lambda <- lambda * (D * L * n) / (K * n* max(ei$values))
-  cat("lambda = ", lambda,"\n")
+  # cat("lambda = ", lambda,"\n") # for debug
 
   # constant
   Ik <- diag(1,K,K)
@@ -140,7 +142,10 @@ SolveTess3QP <- function(X, K, d, Lapl, lambda, max.iteration) {
 
   # algo
   it <- 1
-  while (it <= max.iteration) {
+  converg = FALSE
+  err = -10
+  errAux = 0.0
+  while (!converg && it <= max.iteration) {
     ptm <- proc.time()
     # update G with QP
     for(l in 1:L) {
@@ -172,13 +177,18 @@ SolveTess3QP <- function(X, K, d, Lapl, lambda, max.iteration) {
 
       # compute residual error
       normilized.residual.error[it] <- norm(X - tcrossprod(Q,G),type = "F") / X.norm
+      errAux <- normilized.residual.error[it]
 
-      cat("iteration : ",it,"& error : ",normilized.residual.error[it],"in time = ",QP.time[it], "\n")
+      # cat("iteration : ",it,"& error : ",normilized.residual.error[it],"in time = ",QP.time[it], "\n") # For debug
+      cat("---iteration: ",it,"\n")
+      # Test the convergence
+      converg = (abs(errAux - err) < tolerance)
+      err = errAux
       it <- it + 1
     }
   }
 
-  cat("mean time", mean(QP.time),"\n")
+  # cat("mean time", mean(QP.time),"\n") # for debug
 
   return(list(Q = Q, G = G, normilized.residual.error = normilized.residual.error, err = FALSE, time = mean(QP.time)))
 

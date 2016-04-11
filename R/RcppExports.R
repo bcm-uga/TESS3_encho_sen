@@ -11,8 +11,18 @@ ComputeXFromXBin <- function(MBin, d) {
     .Call('TESS3enchoSen_ComputeXFromXBin', PACKAGE = 'TESS3enchoSen', MBin, d)
 }
 
-#' || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
-ComputeMCPASolution <- function(X, K, Lapl, lambdaPrim, D, maxIteration) {
-    .Call('TESS3enchoSen_ComputeMCPASolution', PACKAGE = 'TESS3enchoSen', X, K, Lapl, lambdaPrim, D, maxIteration)
+#' TODO
+ComputeHeatKernelWeight <- function(coord, sigma) {
+    .Call('TESS3enchoSen_ComputeHeatKernelWeight', PACKAGE = 'TESS3enchoSen', coord, sigma)
+}
+
+#' TODO
+ComputeFst <- function(Q, G, D) {
+    .Call('TESS3enchoSen_ComputeFst', PACKAGE = 'TESS3enchoSen', Q, G, D)
+}
+
+#' solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
+ComputeMCPASolution <- function(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance) {
+    .Call('TESS3enchoSen_ComputeMCPASolution', PACKAGE = 'TESS3enchoSen', X, K, Lapl, lambdaPrim, D, maxIteration, tolerance)
 }
 

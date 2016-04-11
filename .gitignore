@@ -28,3 +28,17 @@ compareWithTess3/
 
 # css
 .sass-cache/
+
+# pdf
+Rplots.pdf
+
+# pcadapt
+*.pcadapt
+
+# Rmarkdown
+Rmarkdown/*_cache
+Rmarkdown/*_files
+Rmarkdown/*.html
+
+# lfmm
+*.lfmm

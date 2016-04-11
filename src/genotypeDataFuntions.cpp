@@ -14,8 +14,13 @@ Eigen::MatrixXi ComputeXBin(const Eigen::Map<Eigen::MatrixXi> M, int d) {
         MatrixXi MBin = MatrixXi::Zero(M.rows(), M.cols() * (d+1));
         for (int i = 0; i < M.rows(); i++) {
                 for (int l = 0; l < M.cols(); l++) {
-                        for (int j = 0; j <= d; j++) {
-                                MBin(i, (d+1) * l + j) = (M(i,l) == j);
+                        if (M(i,l) < 0) {
+                                // missing value
+                                MBin.block(i, (d+1) * l, 1, d + 1) = MatrixXi::Constant(1, d + 1, -1);
+                        } else {
+                                for (int j = 0; j <= d; j++) {
+                                        MBin(i, (d+1) * l + j) = (M(i,l) == j);
+                                }
                         }
                 }
         }

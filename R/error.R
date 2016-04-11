@@ -1,6 +1,9 @@
 #' compute the root mean square error
 #'
 #'
+#' @param Q1
+#' @param Q2
+#'
 #' @export
 ComputeRmse <- function(Q1, Q2) {
   return(sqrt(mean((Q1 - Q2)^2)))
@@ -11,6 +14,9 @@ ComputeRmse <- function(Q1, Q2) {
 #'
 #'
 #'
+#' @param Q1
+#' @param Q2
+#'
 #' @export
 ComputeRmseWithBestPermutation <- function(Q1, Q2) {
 
@@ -20,7 +26,7 @@ ComputeRmseWithBestPermutation <- function(Q1, Q2) {
 
   K = dim(Q1)[2]
   #Because of R !!!!
-  if( K == 2 ) {
+  if ( K == 2 ) {
     perms = matrix(c(2,1),nrow = 1,ncol=2)
   } else {
     perms = allPerms(K)
@@ -67,4 +73,16 @@ ComputeRmseWithBestPermutationGreedy <- function(Q1, Q2) {
     stop("this is not a permutation")
   }
   return(ComputeRmse(Q1,Q2[,perm]))
+}
+
+
+#' Compute the averaged cross entropy mean(-P * log(Q))
+#'
+#'
+#'
+#' @export
+ComputeAveragedCrossEntropy <- function(P, Q) {
+  aux <- - P * log(Q)
+  aux[is.nan(aux)] <- 0.0 # because NaN are 0 * log(0)
+  return(mean(aux))
 }
