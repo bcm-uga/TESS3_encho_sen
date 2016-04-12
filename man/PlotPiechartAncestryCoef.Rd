@@ -4,7 +4,7 @@
 \alias{PlotPiechartAncestryCoef}
 \title{Title}
 \usage{
-PlotPiechartAncestryCoef(Q, coord, window)
+PlotPiechartAncestryCoef(Q, coord, window, ...)
 }
 \arguments{
 \item{window}{}

@@ -6,7 +6,7 @@
 \usage{
 \method{plot}{tess3Q}(Q, coord, plot.type = "florastyle",
   resolution = c(300, 300), window = NULL, background = TRUE,
-  raster.filename = NULL, interpolation.function = idw())
+  raster.filename = NULL, interpolation.function = idw(), ...)
 }
 \arguments{
 \item{plot.type}{}

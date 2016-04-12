@@ -15,90 +15,72 @@ test_that("test of pvalue plot", {
 
 })
 
-test_that("test of Q plots ", {
+test_that("test of Q plots", {
   skip_if_not_installed("mapplots")
   skip_if_not_installed("maps")
-  skip_if_not_installed("raster")
-  skip_if_not_installed("gstat")
+  skip_if_not_installed("fields")
   skip_if_not_installed("automap")
   skip_if_not_installed("sp")
-  skip_if_not_installed("grid")
-  skip_if_not_installed("ggplot2")
+  skip_if_not_installed("RColorBrewer")
 
   data("data.at", package = "TESS3enchoSen")
   set.seed(0)
 
   # run tess3
   tess3.res = TESS3enchoSen::tess3(data.at$X,
-                                           data.at$coord, K = 4, ploidy = 1, lambda = 1.0)
+                                   data.at$coord, K = 3, ploidy = 1, lambda = 1.0)
 
   # piechart
-  plot(tess3.res$Q, data.at$coord, plot.type = "piechart")
-  plot(tess3.res$Q, data.at$coord, plot.type = "piechart", window = c(0,20,40,50))
+  plot(tess3.res$Q, data.at$coord, plot.type = "piechart", main = "piechart", xlab = "x", ylab = "y", background = FALSE)
+  plot(tess3.res$Q, data.at$coord, plot.type = "piechart", window = c(0,20,40,50), main = "piechart", xlab = "x", ylab = "y", col = rainbow(4))
 
-  # florastyle
-  plot(tess3.res$Q, data.at$coord, plot.type = "florastyle", resolution = c(300,300), window = NULL, background = TRUE, raster.filename = NULL, interpolation.function = NULL)
-  plot(tess3.res$Q, data.at$coord, plot.type = "florastyle", resolution = c(100,100), window = c(0,30,40,60), background = FALSE, raster.filename = NULL, interpolation.function = NULL)
-
-  # ggplot
-  plot(tess3.res$Q, data.at$coord, plot.type = "ggplot", resolution = c(100,100), window = NULL, background = TRUE, raster.filename = NULL, interpolation.function = kriging())
-  plot(tess3.res$Q, data.at$coord, plot.type = "ggplot", resolution = c(200,200), window = c(-15,50,30,70), background = TRUE, raster.filename = NULL, interpolation.function = idw(3))
-  plot(Q = tess3.res$Q, coord = data.at$coord, plot.type = "ggplot", resolution = c(200,200), window = c(-15,50,30,70), background = FALSE, raster.filename = NULL, interpolation.function = idw(3))
-
-})
-
-test_that("test of plot with raster pkg", {
-
-  skip("debug test")
-
-  # retrieve package file
+  # interpolation maps
+  coord <- data.at$coord
+  resolution <- c(300, 300)
+  background <- TRUE
   raster.filename <- system.file("extdata/raster","earth.tif",package = "TESS3enchoSen")
+  Q <- tess3.res$Q
+  ## window
+  window <- ComputeWindow(coord)
+  expect_equal(window, c(-8.848306, 38.693732, 37.017768, 63.595338))
+  ## grid
+  grid <- ComputeGridAndBackground(window, resolution, background, raster.filename)
+  image(grid$grid.x, grid$grid.y, grid$background) # must be europe
+  ## interpolation.function
+  interpolation.function <- idw(1.0)
+  list.grid.z <- interpolation.function(Q, coord, grid$grid.x, grid$grid.y)
+  image(grid$grid.x, grid$grid.y,list.grid.z[[2]] * grid$background)
+  interpolation.function <- kriging()
+  list.grid.z <- interpolation.function(Q, coord, grid$grid.x, grid$grid.y)
+  image(grid$grid.x, grid$grid.y, list.grid.z[[2]] * grid$background)
 
-  # data
-  K = 4
-  at.geno = "~/PatatorHomeDir/Data/At/little_sample/Athaliana.geno"
-  at.coord = "~/PatatorHomeDir/Data/At/little_sample/Athaliana.coord"
-  data.at = list()
-  data.at$X = LEA::read.geno(at.geno)
-  data.at$coord = as.matrix(read.table(at.coord))
+  plot(tess3.res$Q, data.at$coord, plot.type = "max", main = "max", xlab = "x", ylab = "y",
+       resolution = c(300,300),
+       window = NULL,
+       background = FALSE,
+       raster.filename = NULL,
+       interpolation.function = idw(2.0), map = FALSE)
 
-  # run tess3
-  tess3enchosen.obj = TESS3enchoSen::tess3(data.at$X,
-                                           data.at$coord, K = K, ploidy = 1, lambda = 1.0)
+  plot(tess3.res$Q, data.at$coord, plot.type = "all", main = "max", xlab = "x", ylab = "y",
+       resolution = c(300,300),
+       window = NULL,
+       background = FALSE,
+       raster.filename = NULL,
+       interpolation.function = idw(2.0), map = TRUE)
 
-  # interpolate with idw
-  ancestry.raster <- RasterAncestryCoef(ancestry.coef = tess3enchosen.obj$Q[,2],
-                                        coord = data.at$coord,
-                                        interpolation.function = idw(),
-                                        resolution = list(ncol = 400,nrow = 400))
+  plot(tess3.res$Q, data.at$coord, plot.type = "max", main = "max", xlab = "x", ylab = "y",
+       resolution = c(300,300),
+       window = NULL,
+       background = TRUE,
+       raster.filename = NULL,
+       interpolation.function = kriging(), map = TRUE)
 
-  # plot with ggplot and rasterVis
-  rasterVis::gplot(ancestry.raster) +
-    ggplot2::geom_raster(ggplot2::aes(fill = value)) +
-    ggplot2::scale_fill_gradient(low = 'grey', high = 'red', na.value = "white") +
-    ggplot2::coord_equal() +
-    ggplot2::geom_point(data = as.data.frame(data.at$coord),ggplot2::aes(x = V1, y = V2))
-
-  # interpolate with kriging
-  ancestry.raster <- RasterAncestryCoef(tess3enchosen.obj$Q[, 1], data.at$coord, interpolation.function = kriging(),
-                                        resolution = list(ncol = 100, nrow = 100))
-
-  # plot with raster pkg
-  plot(ancestry.raster)
-
-  # plot all ancestral pop rgb
-  ancestry.raster.rgb <- RasterAncestryCoefRgb(Q = tess3enchosen.obj$Q,
-                                               coord = data.at$coord,
-                                               interpolation.function = idw(3),
-                                              resolution = list(ncol = 100, nrow = 100))
-
-  raster::plotRGB(ancestry.raster.rgb)
-
-  # plot with ggplot
-  ancestry.raster.stack <- RasterAncestryCoefStack(Q = tess3enchosen.obj$Q,
-                                               coord = data.at$coord,
-                                               interpolation.function = idw(3),
-                                               resolution = list(ncol = 100, nrow = 100))
+  plot(tess3.res$Q, data.at$coord, plot.type = "all", main = "max", xlab = "x", ylab = "y",
+       resolution = c(300,300),
+       window = NULL,
+       background = TRUE,
+       raster.filename = NULL,
+       interpolation.function = kriging(), map = TRUE)
 
 })
 
