@@ -4,9 +4,10 @@
 \alias{plot.tess3Q}
 \title{Plot ancestry coeficient on a map.}
 \usage{
-\method{plot}{tess3Q}(Q, coord, plot.type = "florastyle",
-  resolution = c(300, 300), window = NULL, background = TRUE,
-  raster.filename = NULL, interpolation.function = idw(), ...)
+\method{plot}{tess3Q}(Q, coord, plot.type = "piechart", resolution = c(300,
+  300), window = NULL, background = TRUE, raster.filename = NULL,
+  interpolation.function = idw(), col = NULL, col.palette = NULL,
+  map = TRUE, ...)
 }
 \arguments{
 \item{plot.type}{}

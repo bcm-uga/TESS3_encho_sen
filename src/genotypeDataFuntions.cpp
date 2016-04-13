@@ -1,5 +1,8 @@
 // we only include RcppEigen.h which pulls Rcpp.h in for us
 #include <RcppEigen.h>
+#ifdef _OPENMP
+  #include <omp.h>
+#endif
 
 using namespace Eigen;
 
@@ -12,6 +15,9 @@ using Eigen::MatrixXd;                  // variable size matrix, double precisio
 // [[Rcpp::export]]
 Eigen::MatrixXi ComputeXBin(const Eigen::Map<Eigen::MatrixXi> M, int d) {
         MatrixXi MBin = MatrixXi::Zero(M.rows(), M.cols() * (d+1));
+#ifdef _OPENMP
+          #pragma omp parallel for
+#endif
         for (int i = 0; i < M.rows(); i++) {
                 for (int l = 0; l < M.cols(); l++) {
                         if (M(i,l) < 0) {

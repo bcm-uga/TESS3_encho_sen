@@ -1,5 +1,10 @@
 // we only include RcppEigen.h which pulls Rcpp.h in for us
 #include <RcppEigen.h>
+// [[Rcpp::plugins(openmp)]]
+#ifdef _OPENMP
+  #include <omp.h>
+#endif
+
 
 using namespace Eigen;
 using namespace Rcpp;
@@ -45,9 +50,6 @@ void ProjectG(Eigen::MatrixXd & G, int D) {
 
 // [[Rcpp::depends(RcppEigen)]]
 
-using Eigen::Map;                 // 'maps' rather than copies
-using Eigen::MatrixXd;                  // variable size matrix, double precision
-
 //' solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
 // [[Rcpp::export]]
 List ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance) {
@@ -85,19 +87,44 @@ List ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen
         double errAux = 0.0;
 
         // algo
+#ifdef _OPENMP
+        // multithreaded OpenMP version of code
+        Rcpp::Rcout << "Main loop with " << omp_get_max_threads() << " threads: " << std::endl;
+#else
+        Rcpp::Rcout << "Main loop :" << std::endl;
+#endif
+        // variables
         int it = 0;
         bool converg = FALSE;
-        Rcpp::Rcout << "Main loop: " << std::endl;
-        while (!converg && it < maxIteration) {
+        LDLT<MatrixXd> lltG;
+        while (!converg && it < maxIteration)
+        #pragma omp parallel
+        {
                 // update G
-                G = ((Q.transpose() * Q).ldlt().solve(Q.transpose() * X)).transpose();
-                ProjectG(G, D);
+                #pragma omp master
+                {
+                  lltG = (Q.transpose() * Q).ldlt();
+                }
+
+                #pragma omp barrier
+                #pragma omp for
+                for (int j = 0; j < G.rows(); j++) {
+                  G.row(j) = (lltG.solve(Q.transpose() * X.col(j))).transpose();
+                }
+                #pragma omp master
+                {
+                  ProjectG(G, D);
 
                 // update Q
-                RQ = R * Q;
+                  RQ = R * Q;
+                }
+                #pragma omp barrier
+                #pragma omp for
                 for (int i = 0; i < n; i++) {
                         RQ.row(i) = ((G.transpose() * G + lambda * vps(i) * Ik).ldlt().solve(G.transpose() * RX.row(i).transpose())).transpose();
                 }
+                #pragma omp master
+                {
                 Q = R.transpose() * RQ;
                 ProjectQ(Q);
 
@@ -109,6 +136,7 @@ List ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen
                 converg = (std::abs(errAux - err) < tolerance);
                 err = errAux;
                 it++;
+              }
         }
 
 

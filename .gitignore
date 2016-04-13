@@ -42,3 +42,6 @@ Rmarkdown/*.html
 
 # lfmm
 *.lfmm
+
+# emacs
+*~
