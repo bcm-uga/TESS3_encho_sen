@@ -1,3 +1,7 @@
+
+
+
+
 #' TODO
 #'
 #'
@@ -158,15 +162,22 @@ tess3 <- function(genotype,
   ################################################
   # Selection scan
   # Compute stat for test
-  res$Fst <- ComputeFst(res$Q, res$G, ploidy + 1)
+  if (K > 1) {
+    res$Fst <- ComputeFst(res$Q, res$G, ploidy + 1)
 
-  # To avoid numerical issues
-  res$Fst[res$Fst < 0.0] = 0.0
+    # To avoid numerical issues
+    res$Fst[res$Fst < 0.0] = 0.0
 
-  # Convert Fst into t score
-  res <- c(res, ComputeTscoreAndPvalue(res$Fst, K, res$n))
-  class(res$pvalue) <- "tess3pvalue"
+    # Convert Fst into t score
+    res <- c(res, ComputeTscoreAndPvalue(res$Fst, K, res$n))
+    class(res$pvalue) <- "tess3pvalue"
+  }
 
+  ################################################
+
+  ################################################
+  # Compute rmse
+  res$rmse <- ComputeRmse(genotype, res$Q %*% t(res$G))
   ################################################
   class(res) <- "tess3"
   return(res)
@@ -183,10 +194,12 @@ tess3 <- function(genotype,
 #'
 #' @examples
 summary.tess3 <- function(object, ...) {
+  cat(paste("=== Object of class tess3 ===\n"))
   cat(paste("Number of individuals n:", object$n,"\n"))
   cat(paste("Number of loci L:", object$L,"\n"))
   cat(paste("Ploidy:", object$ploidy,"\n"))
   cat(paste("Number of ancestral populations K:", object$K,"\n"))
+  cat(paste("RMSE(genotype, Q * G^T):", object$rmse,"\n"))
 }
 
 #' TESS3enchoSen : TESS3 R Package

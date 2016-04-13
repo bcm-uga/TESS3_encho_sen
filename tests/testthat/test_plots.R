@@ -10,9 +10,7 @@ test_that("test of pvalue plot", {
                      lambda = 1.0,
                      method = "MCPA")
 
-  p <- plot(tess3.res$pvalue)
-
-
+  plot(tess3.res$pvalue)
 })
 
 test_that("test of Q plots", {
