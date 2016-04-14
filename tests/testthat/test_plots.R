@@ -1,7 +1,7 @@
 context("Plot")
 
 test_that("test of pvalue plot", {
-  data("data.for.test", package = "TESS3enchoSen")
+  data("data.for.test", package = "tess3r")
   set.seed(0)
   tess3.res <- tess3(genotype = data.for.test$X,
                      geographic.coordinate = data.for.test$coord,
@@ -21,11 +21,11 @@ test_that("test of Q plots", {
   skip_if_not_installed("sp")
   skip_if_not_installed("RColorBrewer")
 
-  data("data.at", package = "TESS3enchoSen")
+  data("data.at", package = "tess3r")
   set.seed(0)
 
   # run tess3
-  tess3.res = TESS3enchoSen::tess3(data.at$X,
+  tess3.res = tess3r::tess3(data.at$X,
                                    data.at$coord, K = 3, ploidy = 1, lambda = 1.0)
 
   # piechart
@@ -36,7 +36,7 @@ test_that("test of Q plots", {
   coord <- data.at$coord
   resolution <- c(300, 300)
   background <- TRUE
-  raster.filename <- system.file("extdata/raster","earth.tif",package = "TESS3enchoSen")
+  raster.filename <- system.file("extdata/raster","earth.tif",package = "tess3r")
   Q <- tess3.res$Q
   ## window
   window <- ComputeWindow(coord)

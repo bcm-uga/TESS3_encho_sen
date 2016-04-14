@@ -2,16 +2,16 @@
 % Please edit documentation in R/tess3project.R
 \name{tess3project}
 \alias{tess3project}
-\title{Title}
+\title{Run tess3 for multiple value of K and with repetition.}
 \usage{
 tess3project(genotype, geographic.coordinate, K, ploidy, lambda, rep = 1,
   W = NULL, method = "MCPA", max.iteration = 50, tolerance = 1e-05,
-  keep = "all")
+  openMP.core.num = 4, keep = "all")
 }
 \arguments{
 \item{keep}{}
 }
 \description{
-Title
+Run tess3 for multiple value of K and with repetition.
 }
 

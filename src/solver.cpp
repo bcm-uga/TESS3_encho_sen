@@ -1,6 +1,5 @@
 // we only include RcppEigen.h which pulls Rcpp.h in for us
 #include <RcppEigen.h>
-// [[Rcpp::plugins(openmp)]]
 #ifdef _OPENMP
   #include <omp.h>
 #endif
@@ -46,9 +45,18 @@ void ProjectG(Eigen::MatrixXd & G, int D) {
 //******************************************************************************
 //******************************************************************************
 
-
-
-// [[Rcpp::depends(RcppEigen)]]
+// [[Rcpp::export]]
+void InitOpenMP(int n) {
+#ifdef _OPENMP
+        if (omp_get_num_procs() < n) {
+          Rcpp::Rcout << "openMP.core.num is greater than number of cores available. openMP.core.num is set to " << omp_get_num_procs() << std::endl ;
+          n = omp_get_num_procs();
+        }
+        omp_set_num_threads(n);
+        Eigen::initParallel();
+#endif
+        return;
+}
 
 //' solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
 // [[Rcpp::export]]
@@ -138,7 +146,6 @@ List ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen
                 it++;
               }
         }
-
 
         return List::create(Named("Q") = Q,
                             Named("G") = G);

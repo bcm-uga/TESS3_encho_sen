@@ -1,4 +1,4 @@
-#' Title
+#' Run tess3 for multiple value of K and with repetition.
 #'
 #' @param genotype
 #' @param geographic.coordinate
@@ -26,6 +26,7 @@ tess3project <- function(genotype,
                          method = "MCPA",
                          max.iteration = 50,
                          tolerance = 1e-5,
+                         openMP.core.num = 4,
                          keep = "all")
 {
   # test param :
@@ -47,7 +48,8 @@ tess3project <- function(genotype,
                          W = W,
                          method = method,
                          max.iteration = max.iteration,
-                         tolerance = tolerance)
+                         tolerance = tolerance,
+                         openMP.core.num = openMP.core.num)
       rmse[r] <- tess3.aux$rmse
       if (keep == "best") {
         if (rmse[r] < rmse.max) {
@@ -89,7 +91,7 @@ summary.tess3project <- function(object, ...) {
   }
 }
 
-#' Title
+#' Plot RMSE(X, Q * t(G)) for all K number of ancestral population with error bars.
 #'
 #' @param object
 #' @param ...
@@ -118,5 +120,39 @@ plot.tess3project <- function(object, ...) {
     segments(K - epsilon, rmse.max , K + epsilon, rmse.max)
   }
 
+}
+
+#' Test if x is a tess3project object
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
+is.tess3project <- function(x) {
+  inherits(x, "tess3project")
+}
+
+#' Get tess3 run result
+#'
+#' @param x
+#' @param K
+#' @param rep
+#'
+#' @return
+#' @export
+#'
+#' @examples
+Gettess3res <- function(tess3project, K, rep = "best") {
+  if (!is.tess3project(tess3project)) {
+    stop("tess3project must of class tess3project")
+  }
+  if (rep == "best") {
+    best.rep <- min(which.min(tess3project[[K]]$rmse)[1],length(tess3project[[K]]$tess3.run))
+  } else {
+    best.rep <- min(as.numeric(rep),length(tess3project[[K]]$tess3.run))
+  }
+  return(tess3project[[K]]$tess3.run[[best.rep]])
 }
 

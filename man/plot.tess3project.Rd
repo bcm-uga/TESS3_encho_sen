@@ -2,7 +2,7 @@
 % Please edit documentation in R/tess3project.R
 \name{plot.tess3project}
 \alias{plot.tess3project}
-\title{Title}
+\title{Plot RMSE(X, Q * t(G)) for all K number of ancestral population with error bars.}
 \usage{
 \method{plot}{tess3project}(object, ...)
 }
@@ -10,6 +10,6 @@
 \item{...}{}
 }
 \description{
-Title
+Plot RMSE(X, Q * t(G)) for all K number of ancestral population with error bars.
 }
 

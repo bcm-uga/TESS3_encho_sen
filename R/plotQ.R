@@ -51,7 +51,7 @@ plot.tess3Q <- function(Q, coord, plot.type = "piechart", resolution = c(300,300
 
   ##  raster filename
   if (is.null(raster.filename)) {
-    raster.filename <- system.file("extdata/raster","earth.tif",package = "TESS3enchoSen")
+    raster.filename <- system.file("extdata/raster","earth.tif",package = "tess3r")
   }
 
   if (plot.type == "piechart") {

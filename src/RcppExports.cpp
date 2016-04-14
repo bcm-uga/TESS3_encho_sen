@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // ComputeXBin
 Eigen::MatrixXi ComputeXBin(const Eigen::Map<Eigen::MatrixXi> M, int d);
-RcppExport SEXP TESS3enchoSen_ComputeXBin(SEXP MSEXP, SEXP dSEXP) {
+RcppExport SEXP tess3r_ComputeXBin(SEXP MSEXP, SEXP dSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -20,7 +20,7 @@ END_RCPP
 }
 // ComputeXFromXBin
 Eigen::MatrixXi ComputeXFromXBin(const Eigen::Map<Eigen::MatrixXi> MBin, int d);
-RcppExport SEXP TESS3enchoSen_ComputeXFromXBin(SEXP MBinSEXP, SEXP dSEXP) {
+RcppExport SEXP tess3r_ComputeXFromXBin(SEXP MBinSEXP, SEXP dSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -32,7 +32,7 @@ END_RCPP
 }
 // ComputeHeatKernelWeight
 Eigen::SparseMatrix<double> ComputeHeatKernelWeight(const Eigen::Map<Eigen::MatrixXd> coord, double sigma);
-RcppExport SEXP TESS3enchoSen_ComputeHeatKernelWeight(SEXP coordSEXP, SEXP sigmaSEXP) {
+RcppExport SEXP tess3r_ComputeHeatKernelWeight(SEXP coordSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -44,7 +44,7 @@ END_RCPP
 }
 // ComputeFst
 Eigen::MatrixXd ComputeFst(const Eigen::Map<Eigen::MatrixXd> Q, const Eigen::Map<Eigen::MatrixXd> G, int D);
-RcppExport SEXP TESS3enchoSen_ComputeFst(SEXP QSEXP, SEXP GSEXP, SEXP DSEXP) {
+RcppExport SEXP tess3r_ComputeFst(SEXP QSEXP, SEXP GSEXP, SEXP DSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -55,9 +55,19 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// InitOpenMP
+void InitOpenMP(int n);
+RcppExport SEXP tess3r_InitOpenMP(SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    InitOpenMP(n);
+    return R_NilValue;
+END_RCPP
+}
 // ComputeMCPASolution
 List ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance);
-RcppExport SEXP TESS3enchoSen_ComputeMCPASolution(SEXP XSEXP, SEXP KSEXP, SEXP LaplSEXP, SEXP lambdaPrimSEXP, SEXP DSEXP, SEXP maxIterationSEXP, SEXP toleranceSEXP) {
+RcppExport SEXP tess3r_ComputeMCPASolution(SEXP XSEXP, SEXP KSEXP, SEXP LaplSEXP, SEXP lambdaPrimSEXP, SEXP DSEXP, SEXP maxIterationSEXP, SEXP toleranceSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;

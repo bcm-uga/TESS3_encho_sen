@@ -4,7 +4,7 @@ context("Solver")
 
 test_that("test cpp implementation of MCPA, comparison with R code", {
 
-  data("data.for.test", package = "TESS3enchoSen")
+  data("data.for.test", package = "tess3r")
 
   # compute laplacian
   W <- ComputeHeatKernelWeight(data.for.test$coord, 2.0)

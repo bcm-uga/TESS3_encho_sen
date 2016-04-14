@@ -3,26 +3,30 @@
 
 #' TODO
 ComputeXBin <- function(M, d) {
-    .Call('TESS3enchoSen_ComputeXBin', PACKAGE = 'TESS3enchoSen', M, d)
+    .Call('tess3r_ComputeXBin', PACKAGE = 'tess3r', M, d)
 }
 
 #' TODO
 ComputeXFromXBin <- function(MBin, d) {
-    .Call('TESS3enchoSen_ComputeXFromXBin', PACKAGE = 'TESS3enchoSen', MBin, d)
+    .Call('tess3r_ComputeXFromXBin', PACKAGE = 'tess3r', MBin, d)
 }
 
 #' TODO
 ComputeHeatKernelWeight <- function(coord, sigma) {
-    .Call('TESS3enchoSen_ComputeHeatKernelWeight', PACKAGE = 'TESS3enchoSen', coord, sigma)
+    .Call('tess3r_ComputeHeatKernelWeight', PACKAGE = 'tess3r', coord, sigma)
 }
 
 #' TODO
 ComputeFst <- function(Q, G, D) {
-    .Call('TESS3enchoSen_ComputeFst', PACKAGE = 'TESS3enchoSen', Q, G, D)
+    .Call('tess3r_ComputeFst', PACKAGE = 'tess3r', Q, G, D)
+}
+
+InitOpenMP <- function(n) {
+    invisible(.Call('tess3r_InitOpenMP', PACKAGE = 'tess3r', n))
 }
 
 #' solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
 ComputeMCPASolution <- function(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance) {
-    .Call('TESS3enchoSen_ComputeMCPASolution', PACKAGE = 'TESS3enchoSen', X, K, Lapl, lambdaPrim, D, maxIteration, tolerance)
+    .Call('tess3r_ComputeMCPASolution', PACKAGE = 'tess3r', X, K, Lapl, lambdaPrim, D, maxIteration, tolerance)
 }
 

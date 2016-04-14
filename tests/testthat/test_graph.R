@@ -4,7 +4,7 @@ context("Graph")
 
 test_that("test of graph matrix computation", {
 
-  data("data.for.test", package = "TESS3enchoSen")
+  data("data.for.test", package = "tess3r")
   W <- ComputeHeatKernelWeight(coord = data.for.test$coord,
                                sigma = 2.0)
 
@@ -17,7 +17,7 @@ test_that("test of graph matrix computation", {
 test_that("test of spectral decompostion of Lapl", {
   skip("debug test")
 
-  data("data.for.test", package = "TESS3enchoSen")
+  data("data.for.test", package = "tess3r")
   W <- ComputeHeatKernelWeight(coord = data.for.test$coord,
                                sigma = 2.0)
   Lapl <- ComputeGraphLaplacian(W)

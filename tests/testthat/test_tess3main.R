@@ -4,7 +4,7 @@ context("TESS3 main")
 
 test_that("TESS3 main with method MCPA", {
 
-  data("data.for.test", package = "TESS3enchoSen")
+  data("data.for.test", package = "tess3r")
   set.seed(0)
   tess3.res <- tess3(genotype = data.for.test$X,
                      geographic.coordinate = data.for.test$coord,
@@ -25,7 +25,7 @@ test_that("TESS3 main with method MCPA", {
 
 test_that("TESS3 main with method OQA", {
 
-  data("data.for.test", package = "TESS3enchoSen")
+  data("data.for.test", package = "tess3r")
   set.seed(0)
   tess3.res <- tess3(genotype = data.for.test$X,
                      geographic.coordinate = data.for.test$coord,
@@ -47,7 +47,7 @@ test_that("TESS3 main with method OQA", {
 
 
 test_that("TESS3 main check arg", {
-  data("data.for.test", package = "TESS3enchoSen")
+  data("data.for.test", package = "tess3r")
 
   expect_error(tess3.res <- tess3(genotype = data.for.test$X,
                                   geographic.coordinate = data.for.test$coord,
@@ -105,7 +105,7 @@ test_that("TESS3 main check arg", {
 })
 
 test_that("TESS3 main with missing value", {
-  data("data.for.test", package = "TESS3enchoSen")
+  data("data.for.test", package = "tess3r")
 
   # mask data
   masked.prop <- 0.1
@@ -149,7 +149,7 @@ test_that("TESS3 main with missing value", {
 
 
 test_that("TESS3 main Fst", {
-  data("data.for.test", package = "TESS3enchoSen")
+  data("data.for.test", package = "tess3r")
 
   set.seed(0)
   tess3.res <- tess3(genotype = data.for.test$X,

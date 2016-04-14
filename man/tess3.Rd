@@ -2,12 +2,16 @@
 % Please edit documentation in R/tess3.R
 \name{tess3}
 \alias{tess3}
-\title{TODO}
+\title{Main function.}
 \usage{
 tess3(genotype, geographic.coordinate, K, ploidy, lambda, W = NULL,
-  method = "MCPA", max.iteration = 50, tolerance = 1e-05)
+  method = "MCPA", max.iteration = 50, tolerance = 1e-05,
+  openMP.core.num = 4)
+}
+\arguments{
+\item{tolerance}{}
 }
 \description{
-TODO
+Main function.
 }
 

@@ -1,11 +1,19 @@
-
-
-
-
-#' TODO
+#' Main function.
 #'
+#' @param genotype
+#' @param geographic.coordinate
+#' @param K
+#' @param ploidy
+#' @param lambda
+#' @param W
+#' @param method
+#' @param max.iteration
+#' @param tolerance
 #'
+#' @return
 #' @export
+#'
+#' @examples
 tess3 <- function(genotype,
                   geographic.coordinate,
                   K,
@@ -14,9 +22,16 @@ tess3 <- function(genotype,
                   W = NULL,
                   method = "MCPA",
                   max.iteration = 50,
-                  tolerance = 1e-5)
+                  tolerance = 1e-5,
+                  openMP.core.num = 4)
 {
   res = list()
+
+  ################################################
+  # Init openMP
+  InitOpenMP(openMP.core.num)
+
+  ################################################
 
   ################################################
   # check type of the input
@@ -202,14 +217,27 @@ summary.tess3 <- function(object, ...) {
   cat(paste("RMSE(genotype, Q * G^T):", object$rmse,"\n"))
 }
 
-#' TESS3enchoSen : TESS3 R Package
+
+#' Title
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
+is.tess3 <- function(x) {
+  inherits(x, "tess3")
+}
+
+#' tess3r : estimation of spatial population structure
 #'
 #' This R package implements the TESS3 method and tools useful to plot program outputs.
 #'
 #' @docType package
 #'
-#' @name TESS3enchoSen
+#' @name tess3r
 #' @importFrom Rcpp evalCpp
 #' @import RcppEigen
-#' @useDynLib TESS3enchoSen
+#' @useDynLib tess3r
 NULL
