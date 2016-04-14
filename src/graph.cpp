@@ -4,7 +4,11 @@
 using namespace Eigen;
 using namespace Rcpp;
 
+
+
 //' TODO
+//'
+//' @export
 // [[Rcpp::export]]
 Eigen::SparseMatrix<double> ComputeHeatKernelWeight(const Eigen::Map<Eigen::MatrixXd> coord, double sigma) {
         SparseMatrix<double> W(coord.rows(), coord.rows());

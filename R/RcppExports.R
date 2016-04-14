@@ -12,6 +12,8 @@ ComputeXFromXBin <- function(MBin, d) {
 }
 
 #' TODO
+#'
+#' @export
 ComputeHeatKernelWeight <- function(coord, sigma) {
     .Call('tess3r_ComputeHeatKernelWeight', PACKAGE = 'tess3r', coord, sigma)
 }
