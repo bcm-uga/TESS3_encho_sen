@@ -1,4 +1,4 @@
 library(testthat)
-library(TESS3enchoSen)
+library(tess3r)
 
-test_check("TESS3enchoSen")
+test_check("tess3r")
