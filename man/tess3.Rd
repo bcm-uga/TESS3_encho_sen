@@ -6,7 +6,7 @@
 \usage{
 tess3(genotype, geographic.coordinate, K, ploidy, lambda, W = NULL,
   method = "MCPA", max.iteration = 50, tolerance = 1e-05,
-  openMP.core.num = 4)
+  openMP.core.num = 1, Q.init = NULL)
 }
 \arguments{
 \item{tolerance}{}

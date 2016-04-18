@@ -23,7 +23,8 @@ tess3 <- function(genotype,
                   method = "MCPA",
                   max.iteration = 50,
                   tolerance = 1e-5,
-                  openMP.core.num = 4)
+                  openMP.core.num = 1,
+                  Q.init = NULL)
 {
   res = list()
 
@@ -59,6 +60,12 @@ tess3 <- function(genotype,
   if (!is.null(W)) {
     if (!is.matrix(W) && !(attr(class(W),"pacakge") == "Matrix")) {
       stop("W must be a matrix. Use R base matrix type or package Matrix")
+    }
+  }
+  ## Q.init
+  if (!is.null(Q.init)) {
+    if (!is.matrix(Q.init) ) {
+      stop("Q.init must be a matrix")
     }
   }
   ## method
@@ -114,6 +121,14 @@ tess3 <- function(genotype,
   if (nrow(W) != ncol(W) || nrow(W) != nrow(genotype) || !Matrix::isSymmetric(W)) {
     stop("W must be squared symetric of size nrow(genotype) x nrow(genotype) ")
   }
+
+  # Q.init
+  if (!is.null(Q.init)) {
+    if (nrow(Q.init) != nrow(genotype) | ncol(Q.init) != K) {
+      stop("Q.init must be of size nbIndiv * K")
+    }
+  }
+
   ################################################
 
   ################################################
@@ -159,13 +174,24 @@ tess3 <- function(genotype,
                         tolerance = tolerance))
   } else if (method == "MCPA") {
     Lapl <- as.matrix(Lapl)
-    res <- c(res, ComputeMCPASolution(X = genotype,
-                               K = K,
-                               Lapl = Lapl,
-                               lambdaPrim = lambda,
-                               D = ploidy + 1,
-                               maxIteration = max.iteration,
-                               tolerance = tolerance))
+    # Q and G
+    res$G <- matrix(0.0, nrow = (res$ploidy + 1) * res$L, ncol = res$K)
+    if (!is.null(Q.init)) {
+      res$Q <- Q.init
+    } else {
+      res$Q <- matrix(runif(res$n * K), res$n, res$K)
+      res$Q <- ProjectQ(res$Q)
+    }
+
+    ComputeMCPASolution(X = genotype,
+                        K = K,
+                        Lapl = Lapl,
+                        lambdaPrim = lambda,
+                        D = ploidy + 1,
+                        maxIteration = max.iteration,
+                        tolerance = tolerance,
+                        Q = res$Q,
+                        G = res$G )
   } else {
     stop("Unknow method name")
   }

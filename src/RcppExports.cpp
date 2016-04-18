@@ -66,10 +66,9 @@ BEGIN_RCPP
 END_RCPP
 }
 // ComputeMCPASolution
-List ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance);
-RcppExport SEXP tess3r_ComputeMCPASolution(SEXP XSEXP, SEXP KSEXP, SEXP LaplSEXP, SEXP lambdaPrimSEXP, SEXP DSEXP, SEXP maxIterationSEXP, SEXP toleranceSEXP) {
+void ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance, Eigen::Map<Eigen::MatrixXd> Q, Eigen::Map<Eigen::MatrixXd> G);
+RcppExport SEXP tess3r_ComputeMCPASolution(SEXP XSEXP, SEXP KSEXP, SEXP LaplSEXP, SEXP lambdaPrimSEXP, SEXP DSEXP, SEXP maxIterationSEXP, SEXP toleranceSEXP, SEXP QSEXP, SEXP GSEXP) {
 BEGIN_RCPP
-    Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
     Rcpp::traits::input_parameter< int >::type K(KSEXP);
@@ -78,7 +77,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type D(DSEXP);
     Rcpp::traits::input_parameter< int >::type maxIteration(maxIterationSEXP);
     Rcpp::traits::input_parameter< double >::type tolerance(toleranceSEXP);
-    __result = Rcpp::wrap(ComputeMCPASolution(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance));
-    return __result;
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type Q(QSEXP);
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type G(GSEXP);
+    ComputeMCPASolution(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G);
+    return R_NilValue;
 END_RCPP
 }

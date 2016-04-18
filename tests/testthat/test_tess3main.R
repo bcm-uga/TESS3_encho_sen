@@ -21,6 +21,21 @@ test_that("TESS3 main with method MCPA", {
   Fst <- ComputeFst(data.for.test$Q, data.for.test$G, data.for.test$d + 1)
   expect_less_than(sqrt(mean((Fst - tess3.res$Fst) ^ 2)), 0.08)
 
+  # with a Q.init
+  set.seed(0)
+  K = 3
+  Q.init <- matrix(runif(nrow(data.for.test$X) * K), nrow(data.for.test$X), K)
+  Q.init <- ProjectQ(Q.init)
+  tess3.res <- tess3(genotype = data.for.test$X,
+                     geographic.coordinate = data.for.test$coord,
+                     K = K,
+                     ploidy = 1,
+                     lambda = 1.0,
+                     method = "MCPA",
+                     Q.init = Q.init)
+  # consistent error ?
+  expect_less_than(ComputeRmseWithBestPermutation(data.for.test$Q, tess3.res$Q), 0.03)
+  expect_less_than(ComputeRmseWithBestPermutation(data.for.test$G, tess3.res$G), 0.06)
 })
 
 test_that("TESS3 main with method OQA", {

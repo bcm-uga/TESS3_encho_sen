@@ -4,7 +4,7 @@
 \alias{ComputeMCPASolution}
 \title{solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)}
 \usage{
-ComputeMCPASolution(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance)
+ComputeMCPASolution(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G)
 }
 \description{
 solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)

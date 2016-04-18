@@ -28,7 +28,7 @@ InitOpenMP <- function(n) {
 }
 
 #' solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
-ComputeMCPASolution <- function(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance) {
-    .Call('tess3r_ComputeMCPASolution', PACKAGE = 'tess3r', X, K, Lapl, lambdaPrim, D, maxIteration, tolerance)
+ComputeMCPASolution <- function(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G) {
+    invisible(.Call('tess3r_ComputeMCPASolution', PACKAGE = 'tess3r', X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G))
 }
 

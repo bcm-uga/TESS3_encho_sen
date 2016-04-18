@@ -12,7 +12,7 @@ using namespace Rcpp;
 //****************************** Helper functions ******************************
 
 // project Q into the constraint space
-void ProjectQ(Eigen::MatrixXd & Q) {
+void ProjectQ(Eigen::Map<Eigen::MatrixXd> Q) {
         double rowSum = 0.0;
         for (int i = 0; i < Q.rows(); i++) {
                 rowSum = 0.0;
@@ -26,7 +26,7 @@ void ProjectQ(Eigen::MatrixXd & Q) {
         }
 }
 // project G into the constraint space
-void ProjectG(Eigen::MatrixXd & G, int D) {
+void ProjectG(Eigen::Map<Eigen::MatrixXd> G, int D) {
         int L = G.rows() / D;
         double sum = 0.0;
         for (int k = 0; k < G.cols(); k++) {
@@ -60,16 +60,10 @@ void InitOpenMP(int n) {
 
 //' solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
 // [[Rcpp::export]]
-List ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance) {
+void ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance, Eigen::Map<Eigen::MatrixXd> Q, Eigen::Map<Eigen::MatrixXd> G) {
         // Some const
         const int L = X.cols() / D;
         const int n = X.rows();
-
-        // Init Q and G
-        Eigen::MatrixXd G = MatrixXd::Zero(X.cols(), K);
-        Eigen::MatrixXd Q = MatrixXd::Random(X.rows(), K);
-        Q = Q.cwiseAbs();
-        ProjectQ(Q);
 
         // Compute Lapl diagonalization
         Rcpp::Rcout << "Computing spectral decomposition of graph laplacian matrix";
@@ -146,8 +140,4 @@ List ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen
                 it++;
               }
         }
-
-        return List::create(Named("Q") = Q,
-                            Named("G") = G);
-
 }
