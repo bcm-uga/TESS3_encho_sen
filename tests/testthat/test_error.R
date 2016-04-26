@@ -24,7 +24,7 @@ test_that("Compute spatial reg", {
   cppres$G <- matrix(0.0, nrow = (data.for.test$d + 1) * data.for.test$L, ncol = K)
   cppres$Q <- matrix(runif(data.for.test$n * K), data.for.test$n, K)
   cppres$Q <- ProjectQ(cppres$Q)
-  ComputeSpatialPenalty(cppres$Q,Lapl)
+  ComputeSpatialPenalty(cppres$Q, W)
 
   aux <- capture.output(ComputeMCPASolution(XBin,
                       K,
@@ -32,7 +32,7 @@ test_that("Compute spatial reg", {
                       lambdaPrim = lambdaPrim,
                       data.for.test$d + 1,
                       maxIteration = 200, tolerance = 1e-10, Q = cppres$Q, G = cppres$G))
-  spatial.penalty.k3 <- ComputeSpatialPenalty(cppres$Q,Lapl) / (K * data.for.test$n )
+  spatial.penalty.k3 <- ComputeSpatialPenalty(cppres$Q, W) / (K * data.for.test$n )
 
   # with K = 5
   K = 5
@@ -40,7 +40,7 @@ test_that("Compute spatial reg", {
   cppres$G <- matrix(0.0, nrow = (data.for.test$d + 1) * data.for.test$L, ncol = K)
   cppres$Q <- matrix(runif(data.for.test$n * K), data.for.test$n, K)
   cppres$Q <- ProjectQ(cppres$Q)
-  ComputeSpatialPenalty(cppres$Q,Lapl)
+  ComputeSpatialPenalty(cppres$Q, W)
 
   aux <- capture.output(ComputeMCPASolution(XBin,
                       K,
@@ -48,7 +48,7 @@ test_that("Compute spatial reg", {
                       lambdaPrim = lambdaPrim,
                       data.for.test$d + 1,
                       maxIteration = 200, tolerance = 1e-10, Q = cppres$Q, G = cppres$G))
-  spatial.penalty.k5 <- ComputeSpatialPenalty(cppres$Q,Lapl) / (K * data.for.test$n )
+  spatial.penalty.k5 <- ComputeSpatialPenalty(cppres$Q, W) / (K * data.for.test$n )
 
   # must be equal 0.1340827
   expect_less_than(abs(spatial.penalty.k5 - spatial.penalty.k3),0.14)

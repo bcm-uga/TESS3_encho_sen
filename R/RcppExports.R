@@ -2,18 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' TODO
-#'
-ComputeZHelper <- function(Q, n, L) {
-    .Call('tess3r_ComputeZHelper', PACKAGE = 'tess3r', Q, n, L)
-}
-
-#' TODO
-#'
-ComputeAdmixtedGeno <- function(geno, Z, n, L) {
-    .Call('tess3r_ComputeAdmixtedGeno', PACKAGE = 'tess3r', geno, Z, n, L)
-}
-
-#' TODO
 ComputeXBin <- function(M, d) {
     .Call('tess3r_ComputeXBin', PACKAGE = 'tess3r', M, d)
 }
@@ -28,6 +16,18 @@ ComputeXFromXBin <- function(MBin, d) {
 #' @export
 ComputeHeatKernelWeight <- function(coord, sigma) {
     .Call('tess3r_ComputeHeatKernelWeight', PACKAGE = 'tess3r', coord, sigma)
+}
+
+#' TODO
+#'
+ComputeZHelper <- function(Q, n, L) {
+    .Call('tess3r_ComputeZHelper', PACKAGE = 'tess3r', Q, n, L)
+}
+
+#' TODO
+#'
+ComputeAdmixtedGeno <- function(geno, Z, n, L) {
+    .Call('tess3r_ComputeAdmixtedGeno', PACKAGE = 'tess3r', geno, Z, n, L)
 }
 
 #' TODO

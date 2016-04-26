@@ -1,13 +1,14 @@
 #' Compute the value spatial penalty used in TESS3 objectif function.
 #'
 #' @param Q
-#' @param Lapl
+#' @param W
 #'
 #' @return
 #' @export
 #'
 #' @examples
-ComputeSpatialPenalty <- function(Q, Lapl) {
+ComputeSpatialPenalty <- function(Q, W) {
+  Lapl <- as.matrix(ComputeGraphLaplacian(W))
   aux <- crossprod(Lapl, Q)
   aux <- crossprod(aux, Q)
   return(sum(diag(aux)))
@@ -22,7 +23,7 @@ ComputeSpatialPenalty <- function(Q, Lapl) {
 #'
 #' @export
 ComputeRmse <- function(Q1, Q2) {
-  return(sqrt(mean((Q1 - Q2)^2)))
+  return(sqrt(mean((Q1 - Q2) ^ 2)))
 }
 
 #' Compute the root mean square error between matrix by permuting
@@ -43,14 +44,14 @@ ComputeRmseWithBestPermutation <- function(Q1, Q2) {
   K = dim(Q1)[2]
   #Because of R !!!!
   if ( K == 2 ) {
-    perms = matrix(c(2,1),nrow = 1,ncol=2)
+    perms = matrix(c(2,1),nrow = 1,ncol = 2)
   } else {
     perms = allPerms(K)
   }
-  for(i in 1:(dim(perms)[1])) {
+  for (i in 1:(dim(perms)[1])) {
 
     aux1 = ComputeRmse(Q1,Q2[,perms[i,]])
-    if(aux1 < aux) {
+    if (aux1 < aux) {
       aux = aux1
     }
 
@@ -71,21 +72,21 @@ ComputeRmseWithBestPermutationGreedy <- function(Q1, Q2) {
 
   taken = c()
 
-  for(i in 1:ncol(Q1)) {
+  for (i in 1:ncol(Q1)) {
     min = .Machine$double.xmax
-    if(i>1) {
-      taken=c(taken,perm[i-1])
+    if (i > 1) {
+      taken = c(taken,perm[i - 1])
     }
-    for(j in 1:ncol(Q1)) {
+    for (j in 1:ncol(Q1)) {
       aux = ComputeRmse(Q1[,i],Q2[,j])
-      if(aux < min && !(j %in% taken)) {
+      if (aux < min && !(j %in% taken)) {
         perm[i] = j
         min = aux
       }
     }
   }
 
-  if(sum(duplicated(perm)) != 0){
+  if (sum(duplicated(perm)) != 0) {
     stop("this is not a permutation")
   }
   return(ComputeRmse(Q1,Q2[,perm]))

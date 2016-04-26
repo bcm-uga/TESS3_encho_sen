@@ -4,10 +4,10 @@
 \alias{ComputeSpatialPenalty}
 \title{Compute the value spatial penalty used in TESS3 objectif function.}
 \usage{
-ComputeSpatialPenalty(Q, Lapl)
+ComputeSpatialPenalty(Q, W)
 }
 \arguments{
-\item{Lapl}{}
+\item{W}{}
 }
 \description{
 Compute the value spatial penalty used in TESS3 objectif function.
