@@ -2,17 +2,14 @@
 % Please edit documentation in R/sampler.R
 \name{SampleUnifQ}
 \alias{SampleUnifQ}
-\title{sample Q such as alpha ~ unif}
+\title{sample Q such as alpha ~ unif(0,1) and Q ~ Dirichlet(alpha)}
 \usage{
-SampleUnifQ()
+SampleUnifQ(n, K)
 }
-\value{
-TODO
+\arguments{
+\item{K}{}
 }
 \description{
-TODO
-}
-\examples{
-TODO
+sample Q such as alpha ~ unif(0,1) and Q ~ Dirichlet(alpha)
 }
 

@@ -2,9 +2,10 @@
 % Please edit documentation in R/sampler.R
 \name{SampleDistFromCenterDirichletQ}
 \alias{SampleDistFromCenterDirichletQ}
-\title{sample pop center and compute dist.from.center as dirichlet parameter}
+\title{For population the center mu_k is computed. Then D_i_k = ||coord_i - mu_k|| is computed. finally alpha = f(D) and Q ~ Dirichlet(alpha).}
 \usage{
-SampleDistFromCenterDirichletQ()
+SampleDistFromCenterDirichletQ(coord, n.by.pop, K, f = function(D)
+  exp(-D/0.2))
 }
 \value{
 TODO

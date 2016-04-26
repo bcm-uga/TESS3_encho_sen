@@ -4,7 +4,7 @@
 \alias{SampleNormalClusterCoord}
 \title{sample coord such as a mixture of K cluster distributed with gaussian law}
 \usage{
-SampleNormalClusterCoord()
+SampleNormalClusterCoord(n.by.pop, K, sigma1 = 1, sigma2 = 0.2)
 }
 \value{
 TODO

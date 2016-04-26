@@ -5,7 +5,7 @@
 \title{Main function.}
 \usage{
 tess3(genotype, geographic.coordinate, K, ploidy, lambda, W = NULL,
-  method = "MCPA", max.iteration = 50, tolerance = 1e-05,
+  method = "MCPA", max.iteration = 200, tolerance = 1e-05,
   openMP.core.num = 1, Q.init = NULL)
 }
 \arguments{
