@@ -266,15 +266,21 @@ is.tess3 <- function(x) {
 #' @export
 #'
 #' @examples
-rmse.tess3 <- function(tess3.obj, genotype, ploidy) {
+rmse.tess3 <- function(tess3.obj, genotype, ploidy, mask = NULL) {
   if (!is.tess3(tess3.obj)) {
     stop("tess3.obj must of class tess3")
   }
   if (typeof(genotype) != "integer") {
     genotype <- matrix(as.integer(genotype), nrow(genotype), ncol(genotype))
   }
+  if (!is.null(mask)) {
+    genotype[-mask] <- as.integer(-1)
+  }
   genotype <- ComputeXBin(genotype, ploidy)
-  return(ComputeRmse(genotype, tcrossprod(tess3.obj$Q, tess3.obj$G)))
+  if (!is.null(mask)) {
+    genotype[genotype < 0] <- NA
+  }
+  return(ComputeRmse(genotype, tcrossprod(tess3.obj$Q, tess3.obj$G), na.rm = TRUE))
 }
 
 #' tess3r : estimation of spatial population structure

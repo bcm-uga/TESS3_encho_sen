@@ -10,6 +10,9 @@ test_that("rmse.tess3", {
                      lambda = 1.0,
                      method = "MCPA")
   expect_lte(rmse.tess3(tess3.res, data.for.test$X, 1), 0.37)
+
+  mask <- sample(1:(data.for.test$n * data.for.test$L), data.for.test$n * data.for.test$L * 0.25)
+  expect_lte(rmse.tess3(tess3.res, data.for.test$X, 1, mask),0.368)
 })
 
 test_that("Compute spatial reg", {

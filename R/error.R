@@ -20,10 +20,11 @@ ComputeSpatialPenalty <- function(Q, W) {
 #'
 #' @param Q1
 #' @param Q2
+#' @param na.rm
 #'
 #' @export
-ComputeRmse <- function(Q1, Q2) {
-  return(sqrt(mean((Q1 - Q2) ^ 2)))
+ComputeRmse <- function(Q1, Q2, na.rm = FALSE) {
+  return(sqrt(mean((Q1 - Q2) ^ 2, na.rm = na.rm)))
 }
 
 #' Compute the root mean square error between matrix by permuting

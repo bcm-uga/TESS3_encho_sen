@@ -4,10 +4,10 @@
 \alias{ComputeRmse}
 \title{compute the root mean square error}
 \usage{
-ComputeRmse(Q1, Q2)
+ComputeRmse(Q1, Q2, na.rm = FALSE)
 }
 \arguments{
-\item{Q2}{}
+\item{na.rm}{}
 }
 \description{
 compute the root mean square error
