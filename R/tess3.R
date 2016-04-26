@@ -21,7 +21,7 @@ tess3 <- function(genotype,
                   lambda,
                   W = NULL,
                   method = "MCPA",
-                  max.iteration = 50,
+                  max.iteration = 200,
                   tolerance = 1e-5,
                   openMP.core.num = 1,
                   Q.init = NULL)

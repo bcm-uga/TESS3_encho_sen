@@ -1,3 +1,19 @@
+#' Compute the value spatial penalty used in TESS3 objectif function.
+#'
+#' @param Q
+#' @param Lapl
+#'
+#' @return
+#' @export
+#'
+#' @examples
+ComputeSpatialPenalty <- function(Q, Lapl) {
+  aux <- crossprod(Lapl, Q)
+  aux <- crossprod(aux, Q)
+  return(sum(diag(aux)))
+}
+
+
 #' compute the root mean square error
 #'
 #'

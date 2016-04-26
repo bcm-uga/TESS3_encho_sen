@@ -6,6 +6,33 @@
 
 using namespace Rcpp;
 
+// ComputeZHelper
+Eigen::MatrixXi ComputeZHelper(const Eigen::Map<Eigen::MatrixXd> Q, int n, int L);
+RcppExport SEXP tess3r_ComputeZHelper(SEXP QSEXP, SEXP nSEXP, SEXP LSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type Q(QSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type L(LSEXP);
+    __result = Rcpp::wrap(ComputeZHelper(Q, n, L));
+    return __result;
+END_RCPP
+}
+// ComputeAdmixtedGeno
+Eigen::MatrixXi ComputeAdmixtedGeno(const Rcpp::NumericVector& geno, const Eigen::Map<Eigen::MatrixXi> Z, int n, int L);
+RcppExport SEXP tess3r_ComputeAdmixtedGeno(SEXP genoSEXP, SEXP ZSEXP, SEXP nSEXP, SEXP LSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type geno(genoSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXi> >::type Z(ZSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type L(LSEXP);
+    __result = Rcpp::wrap(ComputeAdmixtedGeno(geno, Z, n, L));
+    return __result;
+END_RCPP
+}
 // ComputeXBin
 Eigen::MatrixXi ComputeXBin(const Eigen::Map<Eigen::MatrixXi> M, int d);
 RcppExport SEXP tess3r_ComputeXBin(SEXP MSEXP, SEXP dSEXP) {

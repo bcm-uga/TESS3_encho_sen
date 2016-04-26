@@ -45,3 +45,7 @@ Rmarkdown/*.html
 
 # emacs
 *~
+
+# clang
+*.pch
+.clang_complete
