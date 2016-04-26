@@ -1,6 +1,16 @@
 context("Error")
 
-
+test_that("rmse.tess3", {
+  data("data.for.test", package = "tess3r")
+  set.seed(878)
+  tess3.res <- tess3(genotype = data.for.test$X,
+                     geographic.coordinate = data.for.test$coord,
+                     K = 6,
+                     ploidy = 1,
+                     lambda = 1.0,
+                     method = "MCPA")
+  expect_lte(rmse.tess3(tess3.res, data.for.test$X, 1), 0.37)
+})
 
 test_that("Compute spatial reg", {
 

@@ -256,6 +256,27 @@ is.tess3 <- function(x) {
   inherits(x, "tess3")
 }
 
+#' Title
+#'
+#' @param tess3.obj
+#' @param genotype
+#' @param ploidy
+#'
+#' @return
+#' @export
+#'
+#' @examples
+rmse.tess3 <- function(tess3.obj, genotype, ploidy) {
+  if (!is.tess3(tess3.obj)) {
+    stop("tess3.obj must of class tess3")
+  }
+  if (typeof(genotype) != "integer") {
+    genotype <- matrix(as.integer(genotype), nrow(genotype), ncol(genotype))
+  }
+  genotype <- ComputeXBin(genotype, ploidy)
+  return(ComputeRmse(genotype, tcrossprod(tess3.obj$Q, tess3.obj$G)))
+}
+
 #' tess3r : estimation of spatial population structure
 #'
 #' This R package implements the TESS3 method and tools useful to plot program outputs.
