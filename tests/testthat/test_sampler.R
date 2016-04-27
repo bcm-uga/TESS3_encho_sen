@@ -3,7 +3,7 @@ context("Sampler")
 test_that("Sample with ms", {
   skip("Can not find tess3.ms when running by testthat ... see why")
   set.seed(757575)
-  tess3.ms <- "~/Projects/UpdateTess/tools/msdir/ms"
+  tess3.ms <- "~/BiocompSoftware/msdir/ms"
   n <- 200
   K <- 2
   ploidy <- 1
@@ -31,6 +31,36 @@ test_that("Sample with ms", {
   # test Z
   Q <- outer(1:n, 1:K, Vectorize(function(x,y) mean(data.list$Z[x,] == y)))
   expect_lt(ComputeRmseWithBestPermutation(Q, data.list$Q),0.006)
+
+  # with only neutral
+  n <- 200
+  K <- 2
+  ploidy <- 1
+  data.list <- SampleGenoOFWithMs(n = n,
+                                  nsites.neutral = 100000,
+                                  nsites.selected = 0,
+                                  crossover.proba = 0.25 * 10 ^ -8,
+                                  m.neutral = 0.25 * 10 ^ -6,
+                                  m.selected = 0.25 * 10 ^ -7,
+                                  mutation.rate.per.site = 0.25 * 10 ^ -8,
+                                  N0 = 10 ^ 6,
+                                  k = 0.5,
+                                  min.maf = 0.05,
+                                  plot.debug = TRUE)
+
+  expect_equal(data.list$n,n)
+  expect_equal(data.list$K,K)
+  expect_equal(data.list$ploidy,ploidy)
+  expect_equal(dim(data.list$admixed.genotype),c(n, data.list$L))
+  expect_equal(dim(data.list$Q),c(n,K))
+  expect_equal(max(data.list$admixed.genotype),ploidy)
+  expect_equal(min(data.list$admixed.genotype),0)
+  expect_equal(dim(data.list$coord),c(n,2))
+
+  # test Z
+  Q <- outer(1:n, 1:K, Vectorize(function(x,y) mean(data.list$Z[x,] == y)))
+  expect_lt(ComputeRmseWithBestPermutation(Q, data.list$Q),0.006)
+
 })
 
 test_that("Sample from TESS2.3 generative model", {

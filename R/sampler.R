@@ -298,6 +298,24 @@ run.ms <- function(ms.file, nsam, nreps, theta, rho, nsites, M) {
 #' @export
 #'
 #' @examples
+#'
+#' tess3.ms <- "~/BiocompSoftware/msdir/ms"
+#' n <- 200
+#' K <- 2
+#' ploidy <- 1
+#' data.list <- SampleGenoOFWithMs(n = n,
+#'                                nsites.neutral = 100000,
+#'                                nsites.selected = 1000,
+#'                                crossover.proba = 0.25 * 10 ^ -8,
+#'                                m.neutral = 0.25 * 10 ^ -6,
+#'                                m.selected = 0.25 * 10 ^ -7,
+#'                                mutation.rate.per.site = 0.25 * 10 ^ -8,
+#'                                N0 = 10 ^ 6,
+#'                                k = 0.5,
+#'                                min.maf = 0.05,
+#'                                plot.debug = TRUE)
+#'
+#'
 SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.proba, m.neutral, m.selected, mutation.rate.per.site, N0 = 10 ^ 6, k = 0.5, min.maf = 0.05, plot.debug = FALSE) {
 
   #######################
@@ -323,9 +341,6 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
 
 
   TestRequiredPkg("LEA")
-  TestRequiredPkg("foreach")
-  require("foreach")
-  message("This function required to attach maps namespace.")
 
   if (plot.debug) {
 
@@ -422,74 +437,77 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
   #######################
   ###simulate selected###
   #######################
-  message("# Simulate selected locus")
-  ## ms parameter rho = 4 * N0 * r
-  r <- res$crossover.proba * (res$nsites.selected - 1)
-  rho <- 4 * N0 * r
-  # ms parameter theta = 4 * N0 * mu
-  mu <- res$mutation.rate.per.site * res$nsites.selected
-  theta <- 4 * N0 * mu
-  # ms parameter nsites
-  nsites <- res$nsites.selected
-  # ms parameter nsam = 2 * n
-  nsam <- 2 * res$n
-  # ms parameter nreps = 1
-  nreps <- 1
-  # ms parameter M = 4 * N0 * m
-  M <- 4 * N0 * res$m.selected
-  ms.res <- run.ms(ms.file = .GlobalEnv$tess3.ms,
-                   nsam = nsam,
-                   nreps = nreps,
-                   theta = theta,
-                   rho = rho,
-                   M = M,
-                   nsites = nsites)
-  res$selected.locus.pos <- ms.res$locus.pos
-  selected.X <- ms.res$X
-  rm(ms.res)
+  if (nsites.selected != 0) {
+    message("# Simulate selected locus")
+    ## ms parameter rho = 4 * N0 * r
+    r <- res$crossover.proba * (res$nsites.selected - 1)
+    rho <- 4 * N0 * r
+    # ms parameter theta = 4 * N0 * mu
+    mu <- res$mutation.rate.per.site * res$nsites.selected
+    theta <- 4 * N0 * mu
+    # ms parameter nsites
+    nsites <- res$nsites.selected
+    # ms parameter nsam = 2 * n
+    nsam <- 2 * res$n
+    # ms parameter nreps = 1
+    nreps <- 1
+    # ms parameter M = 4 * N0 * m
+    M <- 4 * N0 * res$m.selected
+    ms.res <- run.ms(ms.file = .GlobalEnv$tess3.ms,
+                     nsam = nsam,
+                     nreps = nreps,
+                     theta = theta,
+                     rho = rho,
+                     M = M,
+                     nsites = nsites)
+    res$selected.locus.pos <- ms.res$locus.pos
+    selected.X <- ms.res$X
+    rm(ms.res)
 
-  # filter minor allele frequencies
-  spectrum = apply(selected.X, MARGIN = 2, FUN = maf)
-  if (plot.debug) {
-    par(mfrow = c(2, 1))
-    plot(table(spectrum), main = paste("Folded spectrum of selected genotype before cutting maf less than",min.maf))
-  }
-  selected.X <- selected.X[, spectrum > min.maf]
-  selected.L <- ncol(selected.X)
-  if (plot.debug) {
+    # filter minor allele frequencies
     spectrum = apply(selected.X, MARGIN = 2, FUN = maf)
-    plot(table(spectrum), main = paste("Folded spectrum of selected genotype after cutting maf less than",min.maf))
-    par(mfrow = c(1, 1))
+    if (plot.debug) {
+      par(mfrow = c(2, 1))
+      plot(table(spectrum), main = paste("Folded spectrum of selected genotype before cutting maf less than",min.maf))
+    }
+    selected.X <- selected.X[, spectrum > min.maf]
+    selected.L <- ncol(selected.X)
+    if (plot.debug) {
+      spectrum = apply(selected.X, MARGIN = 2, FUN = maf)
+      plot(table(spectrum), main = paste("Folded spectrum of selected genotype after cutting maf less than",min.maf))
+      par(mfrow = c(1, 1))
+    }
+
+    if (plot.debug) {
+      message("## debug plots on selected data")
+      K = 2
+      tmp.file <- paste0(tempfile(),".geno")
+      LEA::write.geno(selected.X, tmp.file)
+      capture.output(obj <- LEA::snmf(tmp.file, K = K, entropy = T, ploidy = 1, project = "new", alpha = 100), file = "/dev/null")
+      q.K = LEA::Q(obj, K = K, run = 1)
+      barplot(t(q.K), col = rainbow(2), main = "snmf Q computed from selected dataset")
+
+      fst.values = fst(obj, K = K, ploidy = 1)
+
+
+      n = dim(q.K)[1]
+      fst.values[fst.values < 0] = 0.000001
+      z.scores = sqrt(fst.values * (n - K) / (1 - fst.values))
+
+      lambda = median(z.scores ^ 2)/qchisq(1 / 2, df = K - 1)
+      message("lambda = ",lambda)
+
+      adj.p.values = pchisq(z.scores ^ 2 / lambda, df = K - 1, lower.tail = FALSE)
+
+      hist(adj.p.values, col = "green", main = "Fst computed from selected dataset")
+      par(mfrow = c(2, 1))
+      plot(-log10(adj.p.values), main = "Manhattan plot of p.value computed from selected dataset", xlab = "Locus", cex = .5, pch = 19, col = "green4")
+      plot(-log10(1 - fst.values), main = "Manhattan plot of 1-fst computed from selected dataset", xlab = "Locus", cex = .5, pch = 19, col = "orange")
+      par(mfrow = c(1, 1))
+    }
+  } else {
+    selected.X <- NULL
   }
-
-  if (plot.debug) {
-    message("## debug plots on selected data")
-    K = 2
-    tmp.file <- paste0(tempfile(),".geno")
-    LEA::write.geno(selected.X, tmp.file)
-    capture.output(obj <- LEA::snmf(tmp.file, K = K, entropy = T, ploidy = 1, project = "new", alpha = 100), file = "/dev/null")
-    q.K = LEA::Q(obj, K = K, run = 1)
-    barplot(t(q.K), col = rainbow(2), main = "snmf Q computed from selected dataset")
-
-    fst.values = fst(obj, K = K, ploidy = 1)
-
-
-    n = dim(q.K)[1]
-    fst.values[fst.values < 0] = 0.000001
-    z.scores = sqrt(fst.values * (n - K) / (1 - fst.values))
-
-    lambda = median(z.scores ^ 2)/qchisq(1 / 2, df = K - 1)
-    message("lambda = ",lambda)
-
-    adj.p.values = pchisq(z.scores ^ 2 / lambda, df = K - 1, lower.tail = FALSE)
-
-    hist(adj.p.values, col = "green", main = "Fst computed from selected dataset")
-    par(mfrow = c(2, 1))
-    plot(-log10(adj.p.values), main = "Manhattan plot of p.value computed from selected dataset", xlab = "Locus", cex = .5, pch = 19, col = "green4")
-    plot(-log10(1 - fst.values), main = "Manhattan plot of 1-fst computed from selected dataset", xlab = "Locus", cex = .5, pch = 19, col = "orange")
-    par(mfrow = c(1, 1))
-  }
-
   #######################
   ###selected + neutral##
   #######################

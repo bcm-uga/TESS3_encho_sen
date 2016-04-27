@@ -32,4 +32,24 @@ SampleGenoOFWithMs(n, nsites.neutral, nsites.selected, crossover.proba,
 \description{
 Title
 }
+\examples{
+
+tess3.ms <- "~/BiocompSoftware/msdir/ms"
+n <- 200
+K <- 2
+ploidy <- 1
+data.list <- SampleGenoOFWithMs(n = n,
+                               nsites.neutral = 100000,
+                               nsites.selected = 1000,
+                               crossover.proba = 0.25 * 10 ^ -8,
+                               m.neutral = 0.25 * 10 ^ -6,
+                               m.selected = 0.25 * 10 ^ -7,
+                               mutation.rate.per.site = 0.25 * 10 ^ -8,
+                               N0 = 10 ^ 6,
+                               k = 0.5,
+                               min.maf = 0.05,
+                               plot.debug = TRUE)
+
+
+}
 
