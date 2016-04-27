@@ -507,6 +507,7 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
     }
   } else {
     selected.X <- NULL
+    selected.L <- 0
   }
   #######################
   ###selected + neutral##
