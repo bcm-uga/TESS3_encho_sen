@@ -316,7 +316,7 @@ run.ms <- function(ms.file, nsam, nreps, theta, rho, nsites, M) {
 #'                                plot.debug = TRUE)
 #'
 #'
-SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.proba, m.neutral, m.selected, mutation.rate.per.site, N0 = 10 ^ 6, k = 0.5, min.maf = 0.05, plot.debug = FALSE) {
+SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.proba, m.neutral, m.selected, mutation.rate.per.site, N0 = 10 ^ 6, k = 0.5, min.maf = 0.05, plot.debug = FALSE, tess3.ms = .GlobalEnv$tess3.ms) {
 
   #######################
   #########Init##########
@@ -359,8 +359,8 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
   }
 
   # find ms
-  if (is.null(.GlobalEnv$tess3.ms) || file.access(.GlobalEnv$tess3.ms, mode = 1)) {
-    stop("You need to define the variable tess3.ms as the path to ms executable")
+  if (is.null(tess3.ms)) {
+    stop("tess3.ms must be the path to ms executable")
   }
 
   #######################
@@ -381,7 +381,7 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
   nreps <- 1
   # ms parameter M = 4 * N0 * m
   M <- 4 * N0 * res$m.neutral
-  ms.res <- run.ms(ms.file = .GlobalEnv$tess3.ms,
+  ms.res <- run.ms(ms.file = tess3.ms,
                    nsam = nsam,
                    nreps = nreps,
                    theta = theta,
@@ -453,7 +453,7 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
     nreps <- 1
     # ms parameter M = 4 * N0 * m
     M <- 4 * N0 * res$m.selected
-    ms.res <- run.ms(ms.file = .GlobalEnv$tess3.ms,
+    ms.res <- run.ms(ms.file = tess3.ms,
                      nsam = nsam,
                      nreps = nreps,
                      theta = theta,

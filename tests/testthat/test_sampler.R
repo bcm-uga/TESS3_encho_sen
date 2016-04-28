@@ -1,7 +1,6 @@
 context("Sampler")
 
 test_that("Sample with ms", {
-  skip("Can not find tess3.ms when running by testthat ... see why")
   set.seed(757575)
   tess3.ms <- "~/BiocompSoftware/msdir/ms"
   n <- 200
@@ -17,7 +16,8 @@ test_that("Sample with ms", {
                                   N0 = 10 ^ 6,
                                   k = 0.5,
                                   min.maf = 0.05,
-                                  plot.debug = TRUE)
+                                  plot.debug = FALSE,
+                                  tess3.ms = tess3.ms)
 
   expect_equal(data.list$n,n)
   expect_equal(data.list$K,K)
@@ -46,7 +46,8 @@ test_that("Sample with ms", {
                                   N0 = 10 ^ 6,
                                   k = 0.5,
                                   min.maf = 0.05,
-                                  plot.debug = TRUE)
+                                  plot.debug = TRUE,
+                                  tess3.ms = tess3.ms)
 
   expect_equal(data.list$n,n)
   expect_equal(data.list$K,K)
