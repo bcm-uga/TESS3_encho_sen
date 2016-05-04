@@ -6,7 +6,7 @@
 \usage{
 SampleGenoOFWithMs(n, nsites.neutral, nsites.selected, crossover.proba,
   m.neutral, m.selected, mutation.rate.per.site, N0 = 10^6, k = 0.5,
-  min.maf = 0.05, plot.debug = FALSE, tess3.ms = .GlobalEnv$tess3.ms)
+  min.maf = 0.05, plot.debug = FALSE, tess3.ms = getOption("tess3.ms"))
 }
 \arguments{
 \item{n}{number of indivudual to sample}

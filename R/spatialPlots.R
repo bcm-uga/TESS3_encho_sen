@@ -31,7 +31,7 @@ ComputeWindow <- function(coord) {
 #' @export
 #'
 #' @examples
-PlotPiechartAncestryCoef <- function(Q, coord, window, background, col, ...) {
+PlotPiechartAncestryCoef <- function(Q, coord, window, background, col, radius = sqrt((window[2] - window[1]) ^ 2 + (window[4] - window[3]) ^ 2) * 0.01, ...) {
   TestRequiredPkg("mapplots")
 
   plot(coord[(coord[,1] >= window[1]) & (coord[,1] <= window[2]) & (coord[,2] >= window[3]) & (coord[,2] <= window[4]),],
@@ -48,7 +48,7 @@ PlotPiechartAncestryCoef <- function(Q, coord, window, background, col, ...) {
    mapplots::add.pie(z = Q[i,],
                      x = coord[i,1],
                      y = coord[i,2],
-                     radius = sqrt((window[2] - window[1]) ^ 2 + (window[4] - window[3]) ^ 2) * 0.01,
+                     radius = radius,
                      col = col,
                      labels = "")
   }
@@ -200,4 +200,3 @@ kriging <- function(theta = 10){
     return(res)
   })
 }
-

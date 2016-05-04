@@ -10,12 +10,9 @@ test_that("test cpp implementation of MCPA, comparison with R code", {
   W <- ComputeHeatKernelWeight(data.for.test$coord, 2.0)
   Lapl <- ComputeGraphLaplacian(W)
 
-  # change type of matrix
-  X = matrix(as.integer(data.for.test$X),nrow(data.for.test$X),ncol(data.for.test$X))
-
   # With R code
   set.seed(0)
-  Rres <- SolveTess3Projected(X,
+  Rres <- SolveTess3Projected(data.for.test$X,
                               data.for.test$K,
                               data.for.test$d,
                               Lapl,
@@ -25,9 +22,7 @@ test_that("test cpp implementation of MCPA, comparison with R code", {
   # cpp code
   set.seed(0)
   # With cpp code
-  XBin <- ComputeXBin(X,data.for.test$d)
-  # cast as double
-  XBin <- matrix(as.double(XBin), nrow(XBin), ncol(XBin))
+  XBin <- X2XBin(X,data.for.test$d)
   Lapl <- as.matrix(Lapl)
   cppres <- list()
   cppres$G <- matrix(0.0, nrow = (data.for.test$d + 1) * data.for.test$L, ncol = data.for.test$K)

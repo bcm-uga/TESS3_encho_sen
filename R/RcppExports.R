@@ -2,13 +2,21 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' TODO
-ComputeXBin <- function(M, d) {
-    .Call('tess3r_ComputeXBin', PACKAGE = 'tess3r', M, d)
+#' @export
+X2XBin <- function(X, ploidy) {
+    .Call('tess3r_X2XBin', PACKAGE = 'tess3r', X, ploidy)
 }
 
 #' TODO
-ComputeXFromXBin <- function(MBin, d) {
-    .Call('tess3r_ComputeXFromXBin', PACKAGE = 'tess3r', MBin, d)
+#' @export
+XBin2X <- function(XBin, ploidy) {
+    .Call('tess3r_XBin2X', PACKAGE = 'tess3r', XBin, ploidy)
+}
+
+#' TODO
+#'
+ComputeHeatKernelWeightSparse <- function(coord, sigma) {
+    .Call('tess3r_ComputeHeatKernelWeightSparse', PACKAGE = 'tess3r', coord, sigma)
 }
 
 #' TODO

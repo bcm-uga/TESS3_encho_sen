@@ -4,12 +4,12 @@
 \alias{tess3project}
 \title{Run tess3 for multiple value of K and with repetition.}
 \usage{
-tess3project(genotype, geographic.coordinate, K, ploidy, lambda, rep = 1,
-  W = NULL, method = "MCPA", max.iteration = 50, tolerance = 1e-05,
-  openMP.core.num = 4, keep = "all")
+tess3project(X, coord, K, ploidy, lambda, rep = 1, W = NULL,
+  method = "MCPA", max.iteration = 200, tolerance = 1e-05,
+  openMP.core.num = 1, Q.init = NULL, mask = 0, keep = "all")
 }
 \arguments{
-\item{keep}{}
+\item{mask}{}
 }
 \description{
 Run tess3 for multiple value of K and with repetition.

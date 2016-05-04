@@ -8,9 +8,8 @@ using namespace Rcpp;
 
 //' TODO
 //'
-//' @export
 // [[Rcpp::export]]
-Eigen::SparseMatrix<double> ComputeHeatKernelWeight(const Eigen::Map<Eigen::MatrixXd> coord, double sigma) {
+Eigen::SparseMatrix<double> ComputeHeatKernelWeightSparse(const Eigen::Map<Eigen::MatrixXd> coord, double sigma) {
         SparseMatrix<double> W(coord.rows(), coord.rows());
 
         W.reserve(VectorXi::Constant(coord.rows(),0.1 * coord.rows())); // we reserve room for 0.1 % of  non-zeros values per column
@@ -27,5 +26,24 @@ Eigen::SparseMatrix<double> ComputeHeatKernelWeight(const Eigen::Map<Eigen::Matr
         }
         W = SparseMatrix<double>(W.selfadjointView<Lower>());
         W.makeCompressed();
+        return W;
+}
+
+
+//' TODO
+//'
+//' @export
+// [[Rcpp::export]]
+Eigen::MatrixXd ComputeHeatKernelWeight(const Eigen::Map<Eigen::MatrixXd> coord, double sigma) {
+        Eigen::MatrixXd W(coord.rows(), coord.rows());
+
+        for(int i = 0; i < coord.rows(); i++) {
+                for(int j = 0; j <=i; j++) { // because W is symetric
+                        //exp(- d^2 / sigma^2)
+                        W(i,j) = std::exp(-(coord.row(i) - coord.row(j)).squaredNorm() / sigma / sigma);
+
+                }
+        }
+        W = Eigen::MatrixXd(W.selfadjointView<Lower>());
         return W;
 }

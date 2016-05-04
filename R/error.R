@@ -37,8 +37,7 @@ ComputeRmse <- function(Q1, Q2, na.rm = FALSE) {
 #'
 #' @export
 ComputeRmseWithBestPermutation <- function(Q1, Q2) {
-
-  library("permute")
+  TestRequiredPkg("permute")
 
   aux = ComputeRmse(Q1,Q2)
 
@@ -47,7 +46,7 @@ ComputeRmseWithBestPermutation <- function(Q1, Q2) {
   if ( K == 2 ) {
     perms = matrix(c(2,1),nrow = 1,ncol = 2)
   } else {
-    perms = allPerms(K)
+    perms = permute::allPerms(K)
   }
   for (i in 1:(dim(perms)[1])) {
 

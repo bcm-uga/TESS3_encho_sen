@@ -1,6 +1,7 @@
 // we only include RcppEigen.h which pulls Rcpp.h in for us
 #include <RcppEigen.h>
 
+// [[Rcpp::depends(RcppEigen)]]
 using namespace Eigen;
 
 //' TODO

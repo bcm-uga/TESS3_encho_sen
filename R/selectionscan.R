@@ -1,13 +1,14 @@
-#' Compute the probability matrix
+#' Title
 #'
+#' @param G
+#' @param ploidy
 #'
-#'
+#' @return
 #' @export
-ComputeProba <- function(genotype, ploidy) {
-  genotype[is.na(genotype)] <- as.integer(-1)
-  # To be sure we have an integer genotype matrix
-  genotype <- matrix(as.integer(genotype), nrow(genotype), ncol(genotype))
-  proba <- ComputeXBin(genotype, ploidy)
-  proba[proba < 0] <- NA
-  return(proba)
+#'
+#' @examples
+GtoFreq <- function(G, ploidy) {
+  G.array <- array(G, c(ploidy + 1, nrow(G) / (ploidy + 1), ncol(G)))
+  Freq <- apply(G.array, c(2,3), function(g) sum(0:ploidy * g / ploidy))
+  return(Freq)
 }

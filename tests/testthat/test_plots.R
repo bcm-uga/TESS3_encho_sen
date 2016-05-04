@@ -3,8 +3,8 @@ context("Plot")
 test_that("test of pvalue plot", {
   data("data.for.test", package = "tess3r")
   set.seed(0)
-  tess3.res <- tess3(genotype = data.for.test$X,
-                     geographic.coordinate = data.for.test$coord,
+  tess3.res <- tess3(X = data.for.test$X,
+                     coord = data.for.test$coord,
                      K = 3,
                      ploidy = 1,
                      lambda = 1.0,
@@ -31,6 +31,7 @@ test_that("test of Q plots", {
   # piechart
   plot(tess3.res$Q, data.at$coord, plot.type = "piechart", main = "piechart", xlab = "x", ylab = "y", background = FALSE)
   plot(tess3.res$Q, data.at$coord, plot.type = "piechart", window = c(0,20,40,50), main = "piechart", xlab = "x", ylab = "y", col = rainbow(4))
+  plot(tess3.res$Q, data.at$coord, plot.type = "piechart", window = c(0,20,40,50), main = "piechart", xlab = "x", ylab = "y", col = rainbow(4), radius = 0.25)
 
   # interpolation maps
   coord <- data.at$coord

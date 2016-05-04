@@ -3,8 +3,8 @@ context("Error")
 test_that("rmse.tess3", {
   data("data.for.test", package = "tess3r")
   set.seed(878)
-  tess3.res <- tess3(genotype = data.for.test$X,
-                     geographic.coordinate = data.for.test$coord,
+  tess3.res <- tess3(X = data.for.test$X,
+                     coord = data.for.test$coord,
                      K = 6,
                      ploidy = 1,
                      lambda = 1.0,
@@ -12,7 +12,7 @@ test_that("rmse.tess3", {
   expect_lte(rmse.tess3(tess3.res, data.for.test$X, 1), 0.37)
 
   mask <- sample(1:(data.for.test$n * data.for.test$L), data.for.test$n * data.for.test$L * 0.25)
-  expect_lte(rmse.tess3(tess3.res, data.for.test$X, 1, mask),0.368)
+  expect_lte(rmse.tess3(tess3.obj = tess3.res, X = data.for.test$X, ploidy = 1, mask = mask),0.368)
 })
 
 test_that("Compute spatial reg", {
@@ -25,9 +25,8 @@ test_that("Compute spatial reg", {
   Lapl <- as.matrix(ComputeGraphLaplacian(W))
   vpmax <- max(eigen(Lapl)$values)
   lambdaPrim <- 1.0
-  # change type of matrix
-  X = matrix(as.integer(data.for.test$X),nrow(data.for.test$X),ncol(data.for.test$X))
-  XBin <- ComputeXBin(X,data.for.test$d)
+  X = data.for.test$X
+  XBin <- X2XBin(X,data.for.test$d)
   # cast as double
   XBin <- matrix(as.double(XBin), nrow(XBin), ncol(XBin))
 

@@ -5,8 +5,8 @@ context("TESS3 project")
 test_that("tess3project constructor", {
 
   data("data.for.test", package = "tess3r")
-  tess3project.res <- tess3project(genotype = data.for.test$X,
-                     geographic.coordinate = data.for.test$coord,
+  tess3project.res <- tess3project(X = data.for.test$X,
+                     coord = data.for.test$coord,
                      K = 2:3,
                      ploidy = 1,
                      lambda = 1.0,
@@ -20,8 +20,8 @@ test_that("tess3project constructor", {
 
   summary(tess3project.res)
 
-  tess3project.res <- tess3project(genotype = data.for.test$X,
-                                   geographic.coordinate = data.for.test$coord,
+  tess3project.res <- tess3project(X = data.for.test$X,
+                                   coord = data.for.test$coord,
                                    K = 2,
                                    ploidy = 1,
                                    lambda = 1.0,
@@ -34,8 +34,8 @@ test_that("tess3project constructor", {
   summary(tess3project.res)
 
   # singulare cases
-  tess3project.res <- tess3project(genotype = data.for.test$X,
-                                   geographic.coordinate = data.for.test$coord,
+  tess3project.res <- tess3project(X = data.for.test$X,
+                                   coord = data.for.test$coord,
                                    K = NULL,
                                    ploidy = 1,
                                    lambda = 1.0,
@@ -43,8 +43,8 @@ test_that("tess3project constructor", {
                                    rep = 2,
                                    keep = "best")
   summary(tess3project.res)
-  expect_error(tess3project.res <- tess3project(genotype = data.for.test$X,
-                                   geographic.coordinate = data.for.test$coord,
+  expect_error(tess3project.res <- tess3project(X = data.for.test$X,
+                                   coord = data.for.test$coord,
                                    K = NULL,
                                    ploidy = 1,
                                    lambda = 1.0,
@@ -56,26 +56,42 @@ test_that("tess3project constructor", {
 })
 
 
-test_that("tess3project plot", {
+test_that("tess3project plot rmse", {
 
   data("data.for.test", package = "tess3r")
-  tess3project.res <- tess3project(genotype = data.for.test$X,
-                                   geographic.coordinate = data.for.test$coord,
+  tess3project.res <- tess3project(X = data.for.test$X,
+                                   coord = data.for.test$coord,
                                    K = 1:2,
                                    ploidy = 1,
                                    lambda = 1.0,
                                    method = "MCPA",
                                    rep = 3,
                                    keep = "all")
+  expect_error(plot(tess3project.res, crossvalid.rmse = TRUE),"tess3project was run with mask = 0. Run it with mask > 0.0 to have the cross validation rmse computed")
   plot(tess3project.res)
-
 })
 
+test_that("tess3project plot crossvalid.rmse", {
+
+  data("data.for.test", package = "tess3r")
+  tess3project.res <- tess3project(X = data.for.test$X,
+                                   coord = data.for.test$coord,
+                                   K = 1:2,
+                                   ploidy = 1,
+                                   lambda = 1.0,
+                                   method = "MCPA",
+                                   rep = 3,
+                                   keep = "all",
+                                   mask = 0.2)
+
+  plot(tess3project.res, main = "blabla", type = "l")
+  plot(tess3project.res, crossvalid.rmse = TRUE, main = "blabla", type = "l")
+})
 
 test_that("tess3project plot", {
   data("data.for.test", package = "tess3r")
-  tess3project.res <- tess3project(genotype = data.for.test$X,
-                                   geographic.coordinate = data.for.test$coord,
+  tess3project.res <- tess3project(X = data.for.test$X,
+                                   coord = data.for.test$coord,
                                    K = 1:2,
                                    ploidy = 1,
                                    lambda = 1.0,
@@ -86,8 +102,8 @@ test_that("tess3project plot", {
   expect_false(!is.tess3(Gettess3res(tess3project.res, K = 2, rep = 1)))
   expect_false(!is.tess3(Gettess3res(tess3project.res, K = 2, rep = "best")))
 
-  tess3project.res <- tess3project(genotype = data.for.test$X,
-                                   geographic.coordinate = data.for.test$coord,
+  tess3project.res <- tess3project(X = data.for.test$X,
+                                   coord = data.for.test$coord,
                                    K = 1:2,
                                    ploidy = 1,
                                    lambda = 1.0,

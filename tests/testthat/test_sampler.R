@@ -2,66 +2,65 @@ context("Sampler")
 
 test_that("Sample with ms", {
   set.seed(757575)
-  tess3.ms <- "~/BiocompSoftware/msdir/ms"
-  n <- 200
-  K <- 2
-  ploidy <- 1
-  data.list <- SampleGenoOFWithMs(n = n,
-                                  nsites.neutral = 100000,
-                                  nsites.selected = 1000,
-                                  crossover.proba = 0.25 * 10 ^ -8,
-                                  m.neutral = 0.25 * 10 ^ -6,
-                                  m.selected = 0.25 * 10 ^ -7,
-                                  mutation.rate.per.site = 0.25 * 10 ^ -8,
-                                  N0 = 10 ^ 6,
-                                  k = 0.5,
-                                  min.maf = 0.05,
-                                  plot.debug = FALSE,
-                                  tess3.ms = tess3.ms)
+  if (Sys.info()["nodename"] == "timc-bcm-15.imag.fr") {
+    options(tess3.ms = "~/BiocompSoftware/msdir/ms")
+    n <- 200
+    K <- 2
+    ploidy <- 1
+    data.list <- SampleGenoOFWithMs(n = n,
+                                    nsites.neutral = 100000,
+                                    nsites.selected = 1000,
+                                    crossover.proba = 0.25 * 10 ^ -8,
+                                    m.neutral = 0.25 * 10 ^ -6,
+                                    m.selected = 0.25 * 10 ^ -7,
+                                    mutation.rate.per.site = 0.25 * 10 ^ -8,
+                                    N0 = 10 ^ 6,
+                                    k = 0.5,
+                                    min.maf = 0.05,
+                                    plot.debug = FALSE)
 
-  expect_equal(data.list$n,n)
-  expect_equal(data.list$K,K)
-  expect_equal(data.list$ploidy,ploidy)
-  expect_equal(dim(data.list$admixed.genotype),c(n, data.list$L))
-  expect_equal(dim(data.list$Q),c(n,K))
-  expect_equal(max(data.list$admixed.genotype),ploidy)
-  expect_equal(min(data.list$admixed.genotype),0)
-  expect_equal(dim(data.list$coord),c(n,2))
+    expect_equal(data.list$n,n)
+    expect_equal(data.list$K,K)
+    expect_equal(data.list$ploidy,ploidy)
+    expect_equal(dim(data.list$admixed.genotype),c(n, data.list$L))
+    expect_equal(dim(data.list$Q),c(n,K))
+    expect_equal(max(data.list$admixed.genotype),ploidy)
+    expect_equal(min(data.list$admixed.genotype),0)
+    expect_equal(dim(data.list$coord),c(n,2))
 
-  # test Z
-  Q <- outer(1:n, 1:K, Vectorize(function(x,y) mean(data.list$Z[x,] == y)))
-  expect_lt(ComputeRmseWithBestPermutation(Q, data.list$Q),0.006)
+    # test Z
+    Q <- outer(1:n, 1:K, Vectorize(function(x,y) mean(data.list$Z[x,] == y)))
+    expect_lt(ComputeRmseWithBestPermutation(Q, data.list$Q),0.006)
 
-  # with only neutral
-  n <- 200
-  K <- 2
-  ploidy <- 1
-  data.list <- SampleGenoOFWithMs(n = n,
-                                  nsites.neutral = 100000,
-                                  nsites.selected = 0,
-                                  crossover.proba = 0.25 * 10 ^ -8,
-                                  m.neutral = 0.25 * 10 ^ -6,
-                                  m.selected = 0.25 * 10 ^ -7,
-                                  mutation.rate.per.site = 0.25 * 10 ^ -8,
-                                  N0 = 10 ^ 6,
-                                  k = 0.5,
-                                  min.maf = 0.05,
-                                  plot.debug = TRUE,
-                                  tess3.ms = tess3.ms)
+    # with only neutral
+    n <- 200
+    K <- 2
+    ploidy <- 1
+    data.list <- SampleGenoOFWithMs(n = n,
+                                    nsites.neutral = 100000,
+                                    nsites.selected = 0,
+                                    crossover.proba = 0.25 * 10 ^ -8,
+                                    m.neutral = 0.25 * 10 ^ -6,
+                                    m.selected = 0.25 * 10 ^ -7,
+                                    mutation.rate.per.site = 0.25 * 10 ^ -8,
+                                    N0 = 10 ^ 6,
+                                    k = 0.5,
+                                    min.maf = 0.05,
+                                    plot.debug = TRUE)
 
-  expect_equal(data.list$n,n)
-  expect_equal(data.list$K,K)
-  expect_equal(data.list$ploidy,ploidy)
-  expect_equal(dim(data.list$admixed.genotype),c(n, data.list$L))
-  expect_equal(dim(data.list$Q),c(n,K))
-  expect_equal(max(data.list$admixed.genotype),ploidy)
-  expect_equal(min(data.list$admixed.genotype),0)
-  expect_equal(dim(data.list$coord),c(n,2))
+    expect_equal(data.list$n,n)
+    expect_equal(data.list$K,K)
+    expect_equal(data.list$ploidy,ploidy)
+    expect_equal(dim(data.list$admixed.genotype),c(n, data.list$L))
+    expect_equal(dim(data.list$Q),c(n,K))
+    expect_equal(max(data.list$admixed.genotype),ploidy)
+    expect_equal(min(data.list$admixed.genotype),0)
+    expect_equal(dim(data.list$coord),c(n,2))
 
-  # test Z
-  Q <- outer(1:n, 1:K, Vectorize(function(x,y) mean(data.list$Z[x,] == y)))
-  expect_lt(ComputeRmseWithBestPermutation(Q, data.list$Q),0.006)
-
+    # test Z
+    Q <- outer(1:n, 1:K, Vectorize(function(x,y) mean(data.list$Z[x,] == y)))
+    expect_lt(ComputeRmseWithBestPermutation(Q, data.list$Q),0.006)
+  }
 })
 
 test_that("Sample from TESS2.3 generative model", {
@@ -140,8 +139,8 @@ test_that("Sample from TESS3 generative model", {
   expect_equal(dim(data.list$coord),c(n,2))
 
 
-  tess3.res <- tess3(genotype = data.list$X,
-                     geographic.coordinate = data.list$coord,
+  tess3.res <- tess3(X = data.list$X,
+                     coord = data.list$coord,
                      K = data.list$K,
                      ploidy = data.list$ploidy,
                      lambda = 1.0,

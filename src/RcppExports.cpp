@@ -6,32 +6,44 @@
 
 using namespace Rcpp;
 
-// ComputeXBin
-Eigen::MatrixXi ComputeXBin(const Eigen::Map<Eigen::MatrixXi> M, int d);
-RcppExport SEXP tess3r_ComputeXBin(SEXP MSEXP, SEXP dSEXP) {
+// X2XBin
+Eigen::MatrixXd X2XBin(const Rcpp::NumericMatrix& X, int ploidy);
+RcppExport SEXP tess3r_X2XBin(SEXP XSEXP, SEXP ploidySEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXi> >::type M(MSEXP);
-    Rcpp::traits::input_parameter< int >::type d(dSEXP);
-    __result = Rcpp::wrap(ComputeXBin(M, d));
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< int >::type ploidy(ploidySEXP);
+    __result = Rcpp::wrap(X2XBin(X, ploidy));
     return __result;
 END_RCPP
 }
-// ComputeXFromXBin
-Eigen::MatrixXi ComputeXFromXBin(const Eigen::Map<Eigen::MatrixXi> MBin, int d);
-RcppExport SEXP tess3r_ComputeXFromXBin(SEXP MBinSEXP, SEXP dSEXP) {
+// XBin2X
+Eigen::MatrixXd XBin2X(const Eigen::Map<Eigen::MatrixXd> XBin, int ploidy);
+RcppExport SEXP tess3r_XBin2X(SEXP XBinSEXP, SEXP ploidySEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXi> >::type MBin(MBinSEXP);
-    Rcpp::traits::input_parameter< int >::type d(dSEXP);
-    __result = Rcpp::wrap(ComputeXFromXBin(MBin, d));
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type XBin(XBinSEXP);
+    Rcpp::traits::input_parameter< int >::type ploidy(ploidySEXP);
+    __result = Rcpp::wrap(XBin2X(XBin, ploidy));
+    return __result;
+END_RCPP
+}
+// ComputeHeatKernelWeightSparse
+Eigen::SparseMatrix<double> ComputeHeatKernelWeightSparse(const Eigen::Map<Eigen::MatrixXd> coord, double sigma);
+RcppExport SEXP tess3r_ComputeHeatKernelWeightSparse(SEXP coordSEXP, SEXP sigmaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type coord(coordSEXP);
+    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
+    __result = Rcpp::wrap(ComputeHeatKernelWeightSparse(coord, sigma));
     return __result;
 END_RCPP
 }
 // ComputeHeatKernelWeight
-Eigen::SparseMatrix<double> ComputeHeatKernelWeight(const Eigen::Map<Eigen::MatrixXd> coord, double sigma);
+Eigen::MatrixXd ComputeHeatKernelWeight(const Eigen::Map<Eigen::MatrixXd> coord, double sigma);
 RcppExport SEXP tess3r_ComputeHeatKernelWeight(SEXP coordSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;

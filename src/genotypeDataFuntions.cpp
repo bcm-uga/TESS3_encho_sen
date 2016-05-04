@@ -4,50 +4,49 @@
   #include <omp.h>
 #endif
 
-using namespace Eigen;
-
 // [[Rcpp::depends(RcppEigen)]]
-
-using Eigen::Map;                 // 'maps' rather than copies
-using Eigen::MatrixXd;                  // variable size matrix, double precision
+using namespace Eigen;
+using namespace Rcpp;
 
 //' TODO
+//' @export
 // [[Rcpp::export]]
-Eigen::MatrixXi ComputeXBin(const Eigen::Map<Eigen::MatrixXi> M, int d) {
-        MatrixXi MBin = MatrixXi::Zero(M.rows(), M.cols() * (d+1));
+Eigen::MatrixXd X2XBin(const Rcpp::NumericMatrix & X, int ploidy) {
+        MatrixXd XBin = MatrixXd::Zero(X.rows(), X.cols() * (ploidy + 1));
 #ifdef _OPENMP
           #pragma omp parallel for
 #endif
-        for (int i = 0; i < M.rows(); i++) {
-                for (int l = 0; l < M.cols(); l++) {
-                        if (M(i,l) < 0) {
+        for (int i = 0; i < X.rows(); i++) {
+                for (int l = 0; l < X.cols(); l++) {
+                        if (NumericMatrix::is_na(X(i,l))) {
                                 // missing value
-                                MBin.block(i, (d+1) * l, 1, d + 1) = MatrixXi::Constant(1, d + 1, -1);
+                                XBin.block(i, (ploidy + 1) * l, 1, ploidy + 1) = MatrixXd::Constant(1, ploidy + 1, NA_REAL);
                         } else {
-                                for (int j = 0; j <= d; j++) {
-                                        MBin(i, (d+1) * l + j) = (M(i,l) == j);
+                                for (int j = 0; j <= ploidy; j++) {
+                                        XBin(i, (ploidy + 1) * l + j) = (X(i, l) == j);
                                 }
                         }
                 }
         }
-        return MBin;
+        return XBin;
 }
 
 //' TODO
+//' @export
 // [[Rcpp::export]]
-Eigen::MatrixXi ComputeXFromXBin(const Eigen::Map<Eigen::MatrixXi> MBin, int d) {
-        MatrixXi M = MatrixXi::Zero(MBin.rows(), MBin.cols() / (d+1));
+Eigen::MatrixXd XBin2X(const Eigen::Map<Eigen::MatrixXd> XBin, int ploidy) {
+        MatrixXd X = MatrixXd::Zero(XBin.rows(), XBin.cols() / (ploidy + 1));
 
         // aux matrix
-        MatrixXi aux(d+1,1);
-        for (int i = 0; i < d+1; i++) {
+        MatrixXd aux(ploidy + 1,1);
+        for (int i = 0; i < ploidy + 1; i++) {
                 aux(i,0) = i;
         }
 
-        for (int i = 0; i < M.rows(); i++) {
-                for (int l = 0; l < M.cols(); l++) {
-                        M(i, l) = (MBin.block(i,(d+1) * l,1,d+1) * aux)(0,0);
+        for (int i = 0; i < X.rows(); i++) {
+                for (int l = 0; l < X.cols(); l++) {
+                        X(i, l) = (XBin.block(i, (ploidy + 1) * l, 1, ploidy + 1) * aux)(0,0);
                 }
         }
-        return M;
+        return X;
 }

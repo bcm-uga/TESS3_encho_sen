@@ -15,11 +15,11 @@ ProjectQ <- function(Q) {
 
 ProjectG <- function(G,L,D) {
   G <- apply(G, 1:2, function(e){max(e,0)})
-  for(k in 1:ncol(G)) {
-    for(l in 1:L) {
-      s <- sum(G[(1+D*(l-1)):(D*l) ,k])
-      if(s != 0.0) {
-        G[(1+D*(l-1)):(D*l) ,k] <- G[(1+D*(l-1)):(D*l) ,k] / s
+  for (k in 1:ncol(G)) {
+    for (l in 1:L) {
+      s <- sum(G[(1 + D * (l - 1)):(D * l) ,k])
+      if (s != 0.0) {
+        G[(1 + D * (l - 1)):(D * l) ,k] <- G[(1 + D * (l - 1)):(D * l) ,k] / s
       }
     }
   }
@@ -29,7 +29,7 @@ ProjectG <- function(G,L,D) {
 
 SolveTess3Projected <- function(X, K, d, Lapl, lambda, max.iteration) {
 
-  if(is.null(lambda)) {
+  if (is.null(lambda)) {
     Lapl <- diag(1,nrow(X),nrow(X))
     lambda <- 0.0
   }
@@ -37,8 +37,8 @@ SolveTess3Projected <- function(X, K, d, Lapl, lambda, max.iteration) {
   # init
   n <- nrow(X)
   L <- ncol(X)
-  X <- ComputeXBin(X,d)
-  D <- d+1
+  X <- X2XBin(X,d)
+  D <- d + 1
   G <- matrix(0, nrow = D * L, ncol = K)
   Q <- matrix(runif(n*K),n,K)
   Q <- ProjectQ(Q)
@@ -62,7 +62,7 @@ SolveTess3Projected <- function(X, K, d, Lapl, lambda, max.iteration) {
   Ik <- diag(1,K,K)
 
   # algo
-  for(it in 1:max.iteration) {
+  for (it in 1:max.iteration) {
     ptm <- proc.time()
     # update G
     G <- t(SolveLeastSquare(Q,X))

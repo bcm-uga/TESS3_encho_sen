@@ -1,7 +1,5 @@
 #' Main function.
 #'
-#' @param genotype
-#' @param geographic.coordinate
 #' @param K
 #' @param ploidy
 #' @param lambda
@@ -9,13 +7,18 @@
 #' @param method
 #' @param max.iteration
 #' @param tolerance
+#' @param X
+#' @param openMP.core.num
+#' @param Q.init
+#' @param coord
+#' @param mask
 #'
 #' @return
 #' @export
 #'
 #' @examples
-tess3 <- function(genotype,
-                  geographic.coordinate,
+tess3 <- function(X,
+                  coord,
                   K,
                   ploidy,
                   lambda,
@@ -24,7 +27,8 @@ tess3 <- function(genotype,
                   max.iteration = 200,
                   tolerance = 1e-5,
                   openMP.core.num = 1,
-                  Q.init = NULL)
+                  Q.init = NULL,
+                  mask = 0.0)
 {
   res = list()
 
@@ -35,17 +39,17 @@ tess3 <- function(genotype,
   ################################################
 
   ################################################
+  # ensure type of X
+  X <- matrix(as.double(X), nrow(X), ncol(X))
+
+  ################################################
+
+  ################################################
   # check type of the input
-  ## genotype
-  if (!is.matrix(genotype)) {
-    stop("genotype must be a matrix")
-  }
+
   ## geographic.coordinate
-  if (is.null(geographic.coordinate) && is.null(W)) {
+  if (is.null(coord) && is.null(W)) {
     stop("If no W graph weight matrix is specified, geographic.coordinate is mandatory")
-  }
-  if (!is.matrix(geographic.coordinate)) {
-    stop("geographic.coordinate must be a matrix")
   }
 
    ## K
@@ -55,12 +59,6 @@ tess3 <- function(genotype,
   ## ploidy
   if (!is.numeric(ploidy)) {
     stop("ploidy must be numeric")
-  }
-  ## W
-  if (!is.null(W)) {
-    if (!is.matrix(W) && !(attr(class(W),"pacakge") == "Matrix")) {
-      stop("W must be a matrix. Use R base matrix type or package Matrix")
-    }
   }
   ## Q.init
   if (!is.null(Q.init)) {
@@ -81,51 +79,27 @@ tess3 <- function(genotype,
     stop("tolerance must be numeric")
   }
 
+  if (mask > 1.0 | mask < 0.0) {
+    stop("mask is the proportion of the genotype masked for cross validation and must between 0 and 1")
+  }
+
   ################################################
 
 
   ################################################
   # Check consistence of input
 
-  # To be sure we have an double coordinate matrix
-  geographic.coordinate <- matrix(as.double(geographic.coordinate),
-                                  nrow(geographic.coordinate),
-                                  ncol(geographic.coordinate))
-
-  genotype <- matrix(as.integer(genotype),
-                     nrow(genotype),
-                     ncol(genotype))
-
-  ## check dim of geno, coord,  are consistent
-  if (nrow(genotype) != nrow(geographic.coordinate)) {
-    stop("Number of row in the coordinate matrix and the genotype matrix must be the same")
-  }
-  ## check if rang of genotype matrix
-  if (max(genotype, na.rm = TRUE) > ploidy) {
-    stop("The maximum value of the genotype matrix can not be superior than ploidy + 1")
-  }
-  if (min(genotype, na.rm = TRUE) < 0) {
-    stop("Negative values in the genotype matrix are not allowed")
-  }
-
   # Compute W
   if (is.null(W)) {
-    W <- ComputeHeatKernelWeight(geographic.coordinate, ComputeMeanDist(geographic.coordinate) * 0.05)
-  }
-  if (is.matrix(W)) {
-    # convert into sparse matrix
-    W <- Matrix::Matrix(W, sparse = TRUE)
+    W <- ComputeHeatKernelWeight(coord, ComputeMeanDist(coord) * 0.05)
   }
 
-  # check W
-  if (nrow(W) != ncol(W) || nrow(W) != nrow(genotype) || !Matrix::isSymmetric(W)) {
-    stop("W must be squared symetric of size nrow(genotype) x nrow(genotype) ")
-  }
+  CheckXWCoord(X, ploidy, W, coord)
 
   # Q.init
   if (!is.null(Q.init)) {
-    if (nrow(Q.init) != nrow(genotype) | ncol(Q.init) != K) {
-      stop("Q.init must be of size nbIndiv * K")
+    if (nrow(Q.init) != nrow(X) | ncol(Q.init) != K) {
+      stop("Q.init must be of size n * K")
     }
   }
 
@@ -137,41 +111,47 @@ tess3 <- function(genotype,
   Lapl <- ComputeGraphLaplacian(W)
 
   ## Compute number of loci and indiv
-  res$L <- ncol(genotype)
-  res$n <- nrow(genotype)
+  res$L <- ncol(X)
+  res$n <- nrow(X)
   res$ploidy <- ploidy
   res$K <- K
 
+  X <- X2XBin(X, ploidy)# put Xbin in X to avoid several copy in memory
+
+  ################################################
+  # mask if asked
+  if (mask != 0.0) {
+    message("Mask ", mask, "% of X for cross validation")
+    missing.index.X <- sample(1:(length(X)), length(X) * mask)
+    masked.X.value <- X[missing.index.X]
+    X[missing.index.X] <- NA
+  }
+  ################################################
+
+
   ################################################
   # check if there is missing data and compute the binary representation
-  missing <- FALSE
-  if (any(is.na(genotype))) {
+  if (any(is.na(X))) {
     message("Missing value detected in genotype")
-    missing <- TRUE
-    genotype[is.na(genotype)] <- as.integer(-1)
-  }
-  genotype <- ComputeXBin(genotype, ploidy)
-  # To be sure we have an double genotype matrix
-  genotype <- matrix(as.double(genotype), nrow(genotype), ncol(genotype))
-  if (missing) {
     # Naive imputation by mean
-    genotype[genotype < 0] <- NA
-    geno.freq <- apply(genotype, 2, function(x) mean(x,na.rm = TRUE))
+    geno.freq <- apply(X, 2, function(x) mean(x,na.rm = TRUE))
     geno.freq <- matrix(geno.freq,1)[rep(1, res$n),]
-    genotype[is.na(genotype)] <- geno.freq[is.na(genotype)]
+    X[is.na(X)] <- geno.freq[is.na(X)]
+    rm(geno.freq)
   }
   ################################################
+
 
   ################################################
   # compute Q and G matrix
   if (method == "OQA") {
-    res <- c(res, SolveTess3QP(genotype,
-                        K,
-                        ploidy,
-                        Lapl,
-                        lambda,
-                        max.iteration = max.iteration,
-                        tolerance = tolerance))
+    res <- c(res, SolveTess3QP(X,
+                               K,
+                               ploidy,
+                               Lapl,
+                               lambda,
+                               max.iteration = max.iteration,
+                               tolerance = tolerance))
   } else if (method == "MCPA") {
     Lapl <- as.matrix(Lapl)
     # Q and G
@@ -183,7 +163,7 @@ tess3 <- function(genotype,
       res$Q <- ProjectQ(res$Q)
     }
 
-    ComputeMCPASolution(X = genotype,
+    ComputeMCPASolution(X = X,
                         K = K,
                         Lapl = Lapl,
                         lambdaPrim = lambda,
@@ -218,7 +198,11 @@ tess3 <- function(genotype,
 
   ################################################
   # Compute rmse
-  res$rmse <- ComputeRmse(genotype, res$Q %*% t(res$G))
+  QtG <- tcrossprod(res$Q, res$G)
+  res$rmse <- ComputeRmse(X, QtG)
+  if (mask > 0.0) {
+    res$crossvalid.rmse <- ComputeRmse(masked.X.value, QtG[missing.index.X], na.rm = TRUE)
+  }
   ################################################
   class(res) <- "tess3"
   return(res)
@@ -266,21 +250,16 @@ is.tess3 <- function(x) {
 #' @export
 #'
 #' @examples
-rmse.tess3 <- function(tess3.obj, genotype, ploidy, mask = NULL) {
+rmse.tess3 <- function(tess3.obj, X, ploidy, mask = NULL) {
   if (!is.tess3(tess3.obj)) {
     stop("tess3.obj must of class tess3")
   }
-  if (typeof(genotype) != "integer") {
-    genotype <- matrix(as.integer(genotype), nrow(genotype), ncol(genotype))
-  }
+  CheckX(X, ploidy)
   if (!is.null(mask)) {
-    genotype[-mask] <- as.integer(-1)
+    X[-mask] <- NA
   }
-  genotype <- ComputeXBin(genotype, ploidy)
-  if (!is.null(mask)) {
-    genotype[genotype < 0] <- NA
-  }
-  return(ComputeRmse(genotype, tcrossprod(tess3.obj$Q, tess3.obj$G), na.rm = TRUE))
+  X <- X2XBin(X, ploidy)
+  return(ComputeRmse(X, tcrossprod(tess3.obj$Q, tess3.obj$G), na.rm = TRUE))
 }
 
 #' tess3r : estimation of spatial population structure

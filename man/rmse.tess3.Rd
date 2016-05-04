@@ -4,7 +4,7 @@
 \alias{rmse.tess3}
 \title{Title}
 \usage{
-rmse.tess3(tess3.obj, genotype, ploidy, mask = NULL)
+rmse.tess3(tess3.obj, X, ploidy, mask = NULL)
 }
 \arguments{
 \item{ploidy}{}

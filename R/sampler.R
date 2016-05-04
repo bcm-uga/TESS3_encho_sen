@@ -215,17 +215,26 @@ SampleNormalClusterCoord <- function(n.by.pop, K, sigma1 = 1.0, sigma2 = 0.2 ) {
 ###################################################
 
 
+
 #' Sample X such that P(X_i_dl + j) = Sum(Q_i_k G_k_dl + j).
 #'
+#' @param Q
+#' @param G
+#' @param coord
+#' @param ploidy
 #'
-#' TODO
-#'
-#' @return TODO
+#' @return
+#' @export
 #'
 #' @examples
-#' TODO
-#
-#' @export
+#' n <- 100
+#' K <- 3
+#' ploidy <- 2
+#' L <- 1000
+#' data.list <- SampleGenoFromGenerativeModelTESS3(G = SampleUnifDirichletG(L, ploidy, K),
+#'                                                 Q = SampleUnifQ(n, K),
+#'                                                 coord = SampleNormalClusterCoord(n.by.pop = n, K = 1),
+#'                                                 ploidy = ploidy)
 SampleGenoFromGenerativeModelTESS3 <- function(Q, G, coord, ploidy) {
   res <- list()
 
@@ -316,7 +325,7 @@ run.ms <- function(ms.file, nsam, nreps, theta, rho, nsites, M) {
 #'                                plot.debug = TRUE)
 #'
 #'
-SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.proba, m.neutral, m.selected, mutation.rate.per.site, N0 = 10 ^ 6, k = 0.5, min.maf = 0.05, plot.debug = FALSE, tess3.ms = .GlobalEnv$tess3.ms) {
+SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.proba, m.neutral, m.selected, mutation.rate.per.site, N0 = 10 ^ 6, k = 0.5, min.maf = 0.05, plot.debug = FALSE, tess3.ms = getOption("tess3.ms")) {
 
   #######################
   #########Init##########
