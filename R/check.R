@@ -10,7 +10,7 @@ CheckX <- function(X, ploidy) {
   if (!is.matrix(X)) {
     stop("X must be a matrix")
   }
-  if (!is.double(X) & !is.integer(X)) {
+  if (!is.double(X)) {
     stop("Element of X must of type double or integer")
   }
   ## check if rang of genotype matrix

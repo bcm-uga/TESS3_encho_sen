@@ -22,7 +22,7 @@ test_that("test cpp implementation of MCPA, comparison with R code", {
   # cpp code
   set.seed(0)
   # With cpp code
-  XBin <- X2XBin(X,data.for.test$d)
+  XBin <- X2XBin(data.for.test$X,data.for.test$d)
   Lapl <- as.matrix(Lapl)
   cppres <- list()
   cppres$G <- matrix(0.0, nrow = (data.for.test$d + 1) * data.for.test$L, ncol = data.for.test$K)

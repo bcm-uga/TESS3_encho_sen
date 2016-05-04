@@ -2,10 +2,10 @@ context("Variogram")
 
 test_that("test variogram", {
   data("data.for.test", package = "tess3r")
-  em.vario <- CalculateEmpiricalSemivariogram(X = data.for.test$X, ploidy = 1, coord = data.for.test$coord, breaks = "FD", na.rm = TRUE)
+  em.vario <- CalculateEmpiricalGenSemivariogram(X = data.for.test$X, ploidy = 1, coord = data.for.test$coord, breaks = "FD", na.rm = TRUE)
   # ggplot2::ggplot(em.vario, ggplot2::aes(x = h, y = semi.variance, size = size)) + ggplot2::geom_point()
 
-  em.vario <- CalculateEmpiricalSemivariogram(X = data.for.test$X * 2, ploidy = 2, coord = data.for.test$coord, breaks = "FD", na.rm = TRUE)
+  em.vario <- CalculateEmpiricalGenSemivariogram(X = data.for.test$X * 2, ploidy = 2, coord = data.for.test$coord, breaks = "FD", na.rm = TRUE)
   # ggplot2::ggplot(em.vario, ggplot2::aes(x = h, y = log(semi.variance), size = size)) + ggplot2::geom_point()
 
   # calculate range nugget and still
@@ -24,7 +24,7 @@ test_that("test variogram", {
                                                   coord = SampleNormalClusterCoord(n.by.pop = n, K = 1),
                                                   ploidy = ploidy)
 
-  em.vario <- CalculateEmpiricalSemivariogram(X = data.list$X, ploidy = ploidy, coord = data.list$coord, breaks = "FD", na.rm = TRUE)
+  em.vario <- CalculateEmpiricalGenSemivariogram(X = data.list$X, ploidy = ploidy, coord = data.list$coord, breaks = "FD", na.rm = TRUE)
   # ggplot2::ggplot(em.vario, ggplot2::aes(x = h, y = semi.variance, size = size)) + ggplot2::geom_point()
   # em.vario.fit <- FitGeneralSemivariogram(semi.variogram = em.vario, epsilon = 1e-6)
 
@@ -40,7 +40,7 @@ test_that("test variogram", {
                                                   Q = Q,
                                                   coord = coord,
                                                   ploidy = ploidy)
-  em.vario <- CalculateEmpiricalSemivariogram(X = data.list$X, ploidy = ploidy, coord = data.list$coord, breaks = "FD", na.rm = TRUE)
+  em.vario <- CalculateEmpiricalGenSemivariogram(X = data.list$X, ploidy = ploidy, coord = data.list$coord, breaks = "FD", na.rm = TRUE)
   # ggplot2::ggplot(em.vario, ggplot2::aes(x = h, y = semi.variance, size = size)) + ggplot2::geom_point()
   # em.vario.fit <- FitGeneralSemivariogram(semi.variogram = em.vario, epsilon = 1e-6)
 

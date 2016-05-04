@@ -4,25 +4,12 @@
 \alias{CalculateEmpiricalSemivariogram}
 \title{Title}
 \usage{
-CalculateEmpiricalSemivariogram(X, ploidy, coord, breaks = "FD",
-  na.rm = TRUE)
+CalculateEmpiricalSemivariogram(Dz, Dx, breaks = "FD", na.rm = TRUE)
 }
 \arguments{
 \item{na.rm}{}
 }
 \description{
 Title
-}
-\examples{
-library(tess3r)
-
-data("data.for.test", package = "tess3r")
-em.vario <- empirical.variogram(X = data.for.test$X,
-                                ploidy = 1,
-                                coord = data.for.test$coord,
-                                breaks = "FD",
-                                na.rm = TRUE)
-ggplot2::ggplot(em.vario, ggplot2::aes(x = h, y = semi.variance, size = size)) +
-               ggplot2::geom_point()
 }
 
