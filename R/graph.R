@@ -44,10 +44,10 @@ ComputeMeanDist <- function(coord) {
 #' @param plot
 #'
 #' @return
-#' @export
 #'
 #' @examples
 ComputeGraphBasedOnVariogram <- function(X, coord, plot = TRUE, nugget = NULL, ...) {
+  message("DO not work !! ")
   TestRequiredPkg("phylin")
   TestRequiredPkg("raster")
 

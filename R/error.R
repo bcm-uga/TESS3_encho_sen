@@ -93,13 +93,15 @@ ComputeRmseWithBestPermutationGreedy <- function(Q1, Q2) {
 }
 
 
+
 #' Compute the averaged cross entropy mean(-P * log(Q))
 #'
 #'
 #'
-#' @export
-ComputeAveragedCrossEntropy <- function(P, Q) {
-  aux <- - P * log(Q)
-  aux[is.nan(aux)] <- 0.0 # because NaN are 0 * log(0)
-  return(mean(aux))
+ComputeAveragedCrossEntropy <- function(P, Q, na.rm = FALSE, rm.logInfandNan = FALSE) {
+  if (rm.logInfandNan) {
+    Q[Q <= 0] <- 0.000001
+  }
+  aux <- -P * log(Q)
+  return(mean(aux, na.rm = na.rm))
 }

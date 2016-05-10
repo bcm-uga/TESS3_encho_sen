@@ -4,7 +4,7 @@
 \alias{tess3project}
 \title{Run tess3 for multiple value of K and with repetition.}
 \usage{
-tess3project(X, coord, K, ploidy, lambda, rep = 1, W = NULL,
+tess3project(X, coord, K, ploidy, lambda = 1, rep = 1, W = NULL,
   method = "MCPA", max.iteration = 200, tolerance = 1e-05,
   openMP.core.num = 1, Q.init = NULL, mask = 0, keep = "all")
 }

@@ -36,6 +36,11 @@ test_that("TESS3 main with method MCPA", {
   # consistent error ?
   expect_less_than(ComputeRmseWithBestPermutation(data.for.test$Q, tess3.res$Q), 0.03)
   expect_less_than(ComputeRmseWithBestPermutation(data.for.test$G, tess3.res$G), 0.06)
+
+
+  # rmse and cross entropy
+  expect_lte(tess3.res$rmse, 0.3712458)
+  expect_lte(tess3.res$crossentropy, 0.2111163)
 })
 
 test_that("TESS3 main with method OQA", {
@@ -57,6 +62,11 @@ test_that("TESS3 main with method OQA", {
   # Consistent Fst ?
   Fst <- ComputeFst(data.for.test$Q, data.for.test$G, data.for.test$d + 1)
   expect_less_than(sqrt(mean((Fst - tess3.res$Fst) ^ 2)), 0.08)
+
+  # rmse and cross entropy
+  expect_lte(tess3.res$rmse, 0.3712458)
+  expect_lte(tess3.res$crossentropy, 0.2111269)
+
 })
 
 
@@ -121,13 +131,13 @@ test_that("TESS3 main with missing value", {
   data("data.for.test", package = "tess3r")
 
   # mask data
+  set.seed(0)
   masked.prop <- 0.1
   masked.X <- data.for.test$X
   masked.X[sample(1:(ncol(masked.X)*nrow(masked.X)), (ncol(masked.X)*nrow(masked.X)) * masked.prop)] <- NA
 
 
   # run tess3 with MCPA
-  set.seed(0)
   tess3.res <- tess3(X = masked.X,
                      coord = data.for.test$coord,
                      K = 3,
@@ -142,6 +152,10 @@ test_that("TESS3 main with missing value", {
   # Consistent Fst ?
   Fst <- ComputeFst(data.for.test$Q, data.for.test$G, data.for.test$d + 1)
   expect_less_than(sqrt(mean((Fst - tess3.res$Fst) ^ 2)), 0.09)
+
+  # rmse and cross entropy
+  expect_lte(tess3.res$rmse, 0.3608639)
+  expect_lte(tess3.res$crossentropy, 0.2309402)
 
   # run tess3 with OQA
   set.seed(0)
@@ -158,6 +172,11 @@ test_that("TESS3 main with missing value", {
 
   # Consistent Fst ?
   expect_less_than(sqrt(mean((Fst - tess3.res$Fst) ^ 2)), 0.09)
+
+  # rmse and cross entropy
+  expect_lte(tess3.res$rmse, 0.3608441)
+  expect_lte(tess3.res$crossentropy, 0.2308974)
+
 })
 
 
@@ -210,6 +229,10 @@ test_that("TESS3 cross validation", {
   expect_lte(tess3.res$crossvalid.rmse, 0.3947185)
   expect_lte(tess3.res$rmse, 0.3784213)
 
+  expect_lte(tess3.res$crossentropy, 0.5104649)
+  expect_lte(tess3.res$crossvalid.crossentropy, 0.5292129)
+
+
   # With already missing values
   set.seed(54354)
   n <- 120
@@ -235,4 +258,11 @@ test_that("TESS3 cross validation", {
   expect_lte(tess3.res$crossvalid.rmse, 0.3940670)
   expect_lte(tess3.res$rmse, 0.2698213) # because rmse is computed on naive impuation of X
 
+  expect_lte(tess3.res$crossentropy, 0.8473532)
+  expect_lte(tess3.res$crossvalid.crossentropy, 0.9144449)
+
 })
+
+
+
+

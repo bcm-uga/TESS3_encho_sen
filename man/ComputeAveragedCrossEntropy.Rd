@@ -4,7 +4,7 @@
 \alias{ComputeAveragedCrossEntropy}
 \title{Compute the averaged cross entropy mean(-P * log(Q))}
 \usage{
-ComputeAveragedCrossEntropy(P, Q)
+ComputeAveragedCrossEntropy(P, Q, na.rm = FALSE, rm.logInfandNan = FALSE)
 }
 \description{
 Compute the averaged cross entropy mean(-P * log(Q))

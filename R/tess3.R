@@ -21,7 +21,7 @@ tess3 <- function(X,
                   coord,
                   K,
                   ploidy,
-                  lambda,
+                  lambda = 1.0,
                   W = NULL,
                   method = "MCPA",
                   max.iteration = 200,
@@ -200,8 +200,10 @@ tess3 <- function(X,
   # Compute rmse
   QtG <- tcrossprod(res$Q, res$G)
   res$rmse <- ComputeRmse(X, QtG)
+  res$crossentropy <- ploidy * ComputeAveragedCrossEntropy(X, QtG, rm.logInfandNan = TRUE) #because this function compute mean also by allele
   if (mask > 0.0) {
     res$crossvalid.rmse <- ComputeRmse(masked.X.value, QtG[missing.index.X], na.rm = TRUE)
+    res$crossvalid.crossentropy <- ploidy * ComputeAveragedCrossEntropy(masked.X.value, QtG[missing.index.X], na.rm = TRUE, rm.logInfandNan = TRUE)
   }
   ################################################
   class(res) <- "tess3"

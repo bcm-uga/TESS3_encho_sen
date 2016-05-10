@@ -1,5 +1,7 @@
 context("Error")
 
+
+
 test_that("rmse.tess3", {
   data("data.for.test", package = "tess3r")
   set.seed(878)

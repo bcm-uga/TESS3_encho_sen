@@ -4,7 +4,8 @@
 \alias{plot.tess3project}
 \title{Plot RMSE(X, Q * t(G)) for all K number of ancestral population with error bars.}
 \usage{
-\method{plot}{tess3project}(object, crossvalid.rmse = FALSE, ...)
+\method{plot}{tess3project}(object, crossvalid = FALSE,
+  crossentropy = FALSE, ...)
 }
 \arguments{
 \item{...}{}

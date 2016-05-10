@@ -9,6 +9,9 @@ ComputeGraphBasedOnVariogram(X, coord, plot = TRUE, nugget = NULL, ...)
 \arguments{
 \item{plot}{}
 }
+\value{
+
+}
 \description{
 Title
 }

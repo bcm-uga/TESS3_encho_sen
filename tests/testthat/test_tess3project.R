@@ -67,8 +67,9 @@ test_that("tess3project plot rmse", {
                                    method = "MCPA",
                                    rep = 3,
                                    keep = "all")
-  expect_error(plot(tess3project.res, crossvalid.rmse = TRUE),"tess3project was run with mask = 0. Run it with mask > 0.0 to have the cross validation rmse computed")
+  expect_error(plot(tess3project.res, crossvalid = TRUE),"tess3project was run with mask = 0. Run it with mask > 0.0 to have the cross validation rmse computed")
   plot(tess3project.res)
+  plot(tess3project.res, crossentropy = TRUE)
 })
 
 test_that("tess3project plot crossvalid.rmse", {
@@ -85,10 +86,12 @@ test_that("tess3project plot crossvalid.rmse", {
                                    mask = 0.2)
 
   plot(tess3project.res, main = "blabla", type = "l")
-  plot(tess3project.res, crossvalid.rmse = TRUE, main = "blabla", type = "l")
+  plot(tess3project.res, crossvalid = FALSE, crossentropy = TRUE, main = "blabla", type = "l")
+  plot(tess3project.res, crossvalid = TRUE, main = "blabla", type = "l")
+  plot(tess3project.res, crossvalid = TRUE, crossentropy = TRUE, main = "blabla", type = "l")
 })
 
-test_that("tess3project plot", {
+test_that("tess3project is", {
   data("data.for.test", package = "tess3r")
   tess3project.res <- tess3project(X = data.for.test$X,
                                    coord = data.for.test$coord,

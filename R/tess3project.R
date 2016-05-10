@@ -21,7 +21,7 @@ tess3project <- function(X,
                          coord,
                          K,
                          ploidy,
-                         lambda,
+                         lambda = 1.0,
                          rep = 1,
                          W = NULL,
                          method = "MCPA",
@@ -41,7 +41,9 @@ tess3project <- function(X,
   for (i in seq_along(K)) {
     rmse.max = Inf
     rmse = 1:rep
+    crossentropy = 1:rep
     crossvalid.rmse = 1:rep
+    crossvalid.crossentropy = 1:rep
     tess3.run <- list()
     for (r in 1:rep) {
       tess3.aux <- tess3(X = X,
@@ -57,7 +59,9 @@ tess3project <- function(X,
                          Q.init = Q.init,
                          mask = mask)
       rmse[r] <- tess3.aux$rmse
+      crossentropy[r] <- tess3.aux$crossentropy
       crossvalid.rmse[r] <- ifelse(!is.null(tess3.aux$crossvalid.rmse),tess3.aux$crossvalid.rmse, -1)
+      crossvalid.crossentropy[r] <- ifelse(!is.null(tess3.aux$crossvalid.crossentropy),tess3.aux$crossvalid.crossentropy, -1)
       if (keep == "best") {
         if (rmse[r] < rmse.max) {
           tess3.run[[1]] <- tess3.aux
@@ -67,7 +71,7 @@ tess3project <- function(X,
         tess3.run[[r]] <- tess3.aux
       }
     }
-    res[[i]] <- list(K = K[i], tess3.run = tess3.run, rmse = rmse, crossvalid.rmse = crossvalid.rmse)
+    res[[i]] <- list(K = K[i], tess3.run = tess3.run, rmse = rmse, crossentropy = crossentropy, crossvalid.rmse = crossvalid.rmse, crossvalid.crossentropy = crossvalid.crossentropy)
   }
   class(res) <- "tess3project"
   return(res)
@@ -106,35 +110,47 @@ summary.tess3project <- function(object, ...) {
 #' @export
 #'
 #' @examples
-plot.tess3project <- function(object, crossvalid.rmse = FALSE, ...) {
+plot.tess3project <- function(object, crossvalid = FALSE, crossentropy = FALSE, ...) {
   if (length(object) > 0) {
-    if (crossvalid.rmse) {
+    if (crossvalid) {
       # test if cross valid rmse is not null
       if (object[[1]]$crossvalid.rmse[1] == -1)
         stop("tess3project was run with mask = 0. Run it with mask > 0.0 to have the cross validation rmse computed")
     }
-    rmse.med <- seq_along(object)
-    rmse.min <- seq_along(object)
-    rmse.max <- seq_along(object)
+    med <- seq_along(object)
+    min <- seq_along(object)
+    max <- seq_along(object)
     K <- seq_along(object)
     for (i in seq_along(object)) {
       K[i] <- object[[i]]$K
-      if (!crossvalid.rmse) {
-        rmse.med[i] <- median(object[[i]]$rmse)
-        rmse.min[i] <- min(object[[i]]$rmse)
-        rmse.max[i] <- max(object[[i]]$rmse)
+      if (!crossentropy) {
+        if (!crossvalid) {
+          med[i] <- median(object[[i]]$rmse)
+          min[i] <- min(object[[i]]$rmse)
+          max[i] <- max(object[[i]]$rmse)
+        } else {
+          med[i] <- median(object[[i]]$crossvalid.rmse)
+          min[i] <- min(object[[i]]$crossvalid.rmse)
+          max[i] <- max(object[[i]]$crossvalid.rmse)
+        }
       } else {
-        rmse.med[i] <- median(object[[i]]$crossvalid.rmse)
-        rmse.min[i] <- min(object[[i]]$crossvalid.rmse)
-        rmse.max[i] <- max(object[[i]]$crossvalid.rmse)
+        if (!crossvalid) {
+          med[i] <- median(object[[i]]$crossentropy)
+          min[i] <- min(object[[i]]$crossentropy)
+          max[i] <- max(object[[i]]$crossentropy)
+        } else {
+          med[i] <- median(object[[i]]$crossvalid.crossentropy)
+          min[i] <- min(object[[i]]$crossvalid.crossentropy)
+          max[i] <- max(object[[i]]$crossvalid.crossentropy)
+        }
       }
     }
 
-    plot(K, rmse.med, ...)
+    plot(K, med, ...)
     epsilon = 0.02
-    segments(K, rmse.min , K, rmse.max)
-    segments(K - epsilon, rmse.min , K + epsilon, rmse.min)
-    segments(K - epsilon, rmse.max , K + epsilon, rmse.max)
+    segments(K, min , K, max)
+    segments(K - epsilon, min , K + epsilon, min)
+    segments(K - epsilon, max , K + epsilon, max)
   }
 }
 

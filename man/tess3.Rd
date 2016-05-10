@@ -4,7 +4,7 @@
 \alias{tess3}
 \title{Main function.}
 \usage{
-tess3(X, coord, K, ploidy, lambda, W = NULL, method = "MCPA",
+tess3(X, coord, K, ploidy, lambda = 1, W = NULL, method = "MCPA",
   max.iteration = 200, tolerance = 1e-05, openMP.core.num = 1,
   Q.init = NULL, mask = 0)
 }
