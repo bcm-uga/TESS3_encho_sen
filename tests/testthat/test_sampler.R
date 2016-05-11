@@ -60,6 +60,45 @@ test_that("Sample with ms", {
     # test Z
     Q <- outer(1:n, 1:K, Vectorize(function(x,y) mean(data.list$Z[x,] == y)))
     expect_lt(ComputeRmseWithBestPermutation(Q, data.list$Q),0.006)
+
+    # test to set seed
+    set.seed(0)
+    data.list1 <- SampleGenoOFWithMs(n = 100,
+                                    nsites.neutral = 10000,
+                                    nsites.selected = 0,
+                                    crossover.proba = 0.25 * 10 ^ -8,
+                                    m.neutral = 0.25 * 10 ^ -6,
+                                    m.selected = 0.25 * 10 ^ -7,
+                                    mutation.rate.per.site = 0.25 * 10 ^ -8,
+                                    N0 = 10 ^ 6,
+                                    k = 0.5,
+                                    min.maf = 0.05,
+                                    plot.debug = FALSE)
+    set.seed(0)
+    data.list2 <- SampleGenoOFWithMs(n = 100,
+                                     nsites.neutral = 10000,
+                                     nsites.selected = 0,
+                                     crossover.proba = 0.25 * 10 ^ -8,
+                                     m.neutral = 0.25 * 10 ^ -6,
+                                     m.selected = 0.25 * 10 ^ -7,
+                                     mutation.rate.per.site = 0.25 * 10 ^ -8,
+                                     N0 = 10 ^ 6,
+                                     k = 0.5,
+                                     min.maf = 0.05,
+                                     plot.debug = FALSE)
+    data.list3 <- SampleGenoOFWithMs(n = 100,
+                                     nsites.neutral = 10000,
+                                     nsites.selected = 0,
+                                     crossover.proba = 0.25 * 10 ^ -8,
+                                     m.neutral = 0.25 * 10 ^ -6,
+                                     m.selected = 0.25 * 10 ^ -7,
+                                     mutation.rate.per.site = 0.25 * 10 ^ -8,
+                                     N0 = 10 ^ 6,
+                                     k = 0.5,
+                                     min.maf = 0.05,
+                                     plot.debug = FALSE)
+    expect_equal(data.list2$admixed.genotype, data.list1$admixed.genotype)
+    expect_error(data.list3$admixed.genotype == data.list1$admixed.genotype)
   }
 })
 

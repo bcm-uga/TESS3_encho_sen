@@ -270,7 +270,9 @@ run.ms <- function(ms.file, nsam, nreps, theta, rho, nsites, M) {
   ms.command <- paste(ms.file, nsam, nreps,
                       "-t", format(theta, scientific = FALSE),
                       "-r", format(rho, scientific = FALSE), format(nsites, scientific = FALSE),
-                      "-I 2", nsam / 2 , nsam / 2, M, " >",tmp.file, sep = " ")
+                      "-I 2", nsam / 2 , nsam / 2, M,
+                      "-seeds", sample.int(.Machine$integer.max, 1), sample.int(.Machine$integer.max, 1), sample.int(.Machine$integer.max, 1),
+                      " >",tmp.file, sep = " ")
   message(paste0("ms command : ", ms.command))
   system(ms.command)
 
