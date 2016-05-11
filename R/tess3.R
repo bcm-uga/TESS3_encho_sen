@@ -30,6 +30,8 @@ tess3 <- function(X,
                   Q.init = NULL,
                   mask = 0.0)
 {
+  # mem <- c()
+  # mem <- c(mem, pryr::mem_used())
   res = list()
 
   ################################################
@@ -38,11 +40,15 @@ tess3 <- function(X,
 
   ################################################
 
+  # mem <- c(mem, pryr::mem_used())
+
   ################################################
   # ensure type of X
   X <- matrix(as.double(X), nrow(X), ncol(X))
 
   ################################################
+
+  # mem <- c(mem,pryr::mem_used())
 
   ################################################
   # check type of the input
@@ -85,6 +91,7 @@ tess3 <- function(X,
 
   ################################################
 
+  # mem <- c(mem,pryr::mem_used())
 
   ################################################
   # Check consistence of input
@@ -105,6 +112,8 @@ tess3 <- function(X,
 
   ################################################
 
+  # mem <- c(mem,pryr::mem_used())
+
   ################################################
   # Compute parameters
   ## Laplacian
@@ -117,6 +126,9 @@ tess3 <- function(X,
   res$K <- K
 
   X <- X2XBin(X, ploidy)# put Xbin in X to avoid several copy in memory
+  ################################################
+
+  # mem <- c(mem,pryr::mem_used())
 
   ################################################
   # mask if asked
@@ -128,6 +140,7 @@ tess3 <- function(X,
   }
   ################################################
 
+  # mem <- c(mem,pryr::mem_used())
 
   ################################################
   # check if there is missing data and compute the binary representation
@@ -141,6 +154,7 @@ tess3 <- function(X,
   }
   ################################################
 
+  # mem <- c(mem,pryr::mem_used())
 
   ################################################
   # compute Q and G matrix
@@ -163,6 +177,8 @@ tess3 <- function(X,
       res$Q <- ProjectQ(res$Q)
     }
 
+    # mem <- c(mem,pryr::mem_used())
+
     ComputeMCPASolution(X = X,
                         K = K,
                         Lapl = Lapl,
@@ -180,6 +196,8 @@ tess3 <- function(X,
 
   ################################################
 
+  # mem <- c(mem,pryr::mem_used())
+
   ################################################
   # Selection scan
   # Compute stat for test
@@ -196,6 +214,8 @@ tess3 <- function(X,
 
   ################################################
 
+  # mem <- c(mem,pryr::mem_used())
+
   ################################################
   # Compute rmse
   QtG <- tcrossprod(res$Q, res$G)
@@ -207,6 +227,9 @@ tess3 <- function(X,
   }
   ################################################
   class(res) <- "tess3"
+
+  # mem <- c(mem,pryr::mem_used())
+
   return(res)
 }
 
