@@ -351,9 +351,8 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
   }
 
 
-  TestRequiredPkg("LEA")
-
   if (plot.debug) {
+    TestRequiredPkg("LEA")
 
     # define function used for plot debug
     fst <- function(project,run = 1, K, ploidy = 2){
@@ -561,14 +560,14 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
   res$not.admixed.genotype[,,1] <- X[1:res$n,]
   res$not.admixed.genotype[,,2] <- X[(res$n + 1):(2 * res$n),]
   res$K <- 2
-  res$G <- apply(res$not.admixed.genotype, c(2,3), mean)
+  res$Freq <- apply(res$not.admixed.genotype, c(2,3), mean)
   # compute fst before convolution
   auxFst <- function(f) {
     sigma2s <- sum(0.5 * f * (1 - f))
     sigma2T <- sum(0.5 * f) * (1 - sum(0.5 * f) )
     return( 1 - sigma2s / sigma2T)
   }
-  res$Fst <- apply(res$G, 1, auxFst)
+  res$Fst <- apply(res$Freq, 1, auxFst)
 
   #######################
   #######admixture#######
@@ -638,14 +637,3 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
 
 }
 
-q <- function() {
-  res <- list()
-  res$C <- matrix(0,8,2)
-  x <- foreach(i = 1:8, .combine='rbind') %:%
-    foreach(j = 1:2, .combine='c') %dopar% {
-      l <- runif(1, i, 100)
-      print(res$C[i,j])
-      i + j + l
-
-    }
-}
