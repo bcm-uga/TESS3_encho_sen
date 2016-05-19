@@ -1,4 +1,4 @@
-Package: tess3r
+Package: tess3rExperiment
 Type: Package
 Title: Fast Estimation of Spatial Population Structure
 Version: 0.1

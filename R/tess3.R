@@ -179,7 +179,7 @@ tess3 <- function(X,
 
     # mem <- c(mem,pryr::mem_used())
 
-    ComputeMCPASolution(X = X,
+    res <- c(res,ComputeMCPASolution(X = X,
                         K = K,
                         Lapl = Lapl,
                         lambdaPrim = lambda,
@@ -187,7 +187,7 @@ tess3 <- function(X,
                         maxIteration = max.iteration,
                         tolerance = tolerance,
                         Q = res$Q,
-                        G = res$G )
+                        G = res$G ))
   } else {
     stop("Unknow method name")
   }
@@ -293,8 +293,8 @@ rmse.tess3 <- function(tess3.obj, X, ploidy, mask = NULL) {
 #'
 #' @docType package
 #'
-#' @name tess3r
+#' @name tess3rExperiment
 #' @importFrom Rcpp evalCpp
 #' @import RcppEigen
-#' @useDynLib tess3r
+#' @useDynLib tess3rExperiment
 NULL

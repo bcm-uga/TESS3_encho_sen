@@ -3,7 +3,7 @@
 #ifdef _OPENMP
   #include <omp.h>
 #endif
-
+#include <time.h>
 
 using namespace Eigen;
 using namespace Rcpp;
@@ -60,7 +60,12 @@ void InitOpenMP(int n) {
 
 //' solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
 // [[Rcpp::export]]
-void ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance, Eigen::Map<Eigen::MatrixXd> Q, Eigen::Map<Eigen::MatrixXd> G) {
+Rcpp::List ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance, Eigen::Map<Eigen::MatrixXd> Q, Eigen::Map<Eigen::MatrixXd> G) {
+      // time
+      clock_t start, end;
+      NumericVector times(maxIteration, NA_REAL);
+
+
         // Some const
         const int L = X.cols() / D;
         const int n = X.rows();
@@ -102,6 +107,7 @@ void ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen
         while (!converg && it < maxIteration)
         #pragma omp parallel
         {
+          start = clock();
                 // update G
                 #pragma omp master
                 {
@@ -137,7 +143,12 @@ void ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen
                 // Test the convergence
                 converg = (std::abs(errAux - err) < tolerance);
                 err = errAux;
+                end = clock();
+                times[it] = ((double) (end - start)) / CLOCKS_PER_SEC;
                 it++;
               }
+
         }
+        return Rcpp::List::create(Rcpp::Named("it") = it,
+                          Rcpp::Named("times") = times);
 }

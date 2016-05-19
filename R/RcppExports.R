@@ -4,51 +4,51 @@
 #' TODO
 #' @export
 X2XBin <- function(X, ploidy) {
-    .Call('tess3r_X2XBin', PACKAGE = 'tess3r', X, ploidy)
+    .Call('tess3rExperiment_X2XBin', PACKAGE = 'tess3rExperiment', X, ploidy)
 }
 
 #' TODO
 #' @export
 XBin2X <- function(XBin, ploidy) {
-    .Call('tess3r_XBin2X', PACKAGE = 'tess3r', XBin, ploidy)
+    .Call('tess3rExperiment_XBin2X', PACKAGE = 'tess3rExperiment', XBin, ploidy)
 }
 
 #' TODO
 #'
 ComputeHeatKernelWeightSparse <- function(coord, sigma) {
-    .Call('tess3r_ComputeHeatKernelWeightSparse', PACKAGE = 'tess3r', coord, sigma)
+    .Call('tess3rExperiment_ComputeHeatKernelWeightSparse', PACKAGE = 'tess3rExperiment', coord, sigma)
 }
 
 #' TODO
 #'
 #' @export
 ComputeHeatKernelWeight <- function(coord, sigma) {
-    .Call('tess3r_ComputeHeatKernelWeight', PACKAGE = 'tess3r', coord, sigma)
+    .Call('tess3rExperiment_ComputeHeatKernelWeight', PACKAGE = 'tess3rExperiment', coord, sigma)
 }
 
 #' TODO
 #'
 ComputeZHelper <- function(Q, n, L) {
-    .Call('tess3r_ComputeZHelper', PACKAGE = 'tess3r', Q, n, L)
+    .Call('tess3rExperiment_ComputeZHelper', PACKAGE = 'tess3rExperiment', Q, n, L)
 }
 
 #' TODO
 #'
 ComputeAdmixtedGeno <- function(geno, Z, n, L) {
-    .Call('tess3r_ComputeAdmixtedGeno', PACKAGE = 'tess3r', geno, Z, n, L)
+    .Call('tess3rExperiment_ComputeAdmixtedGeno', PACKAGE = 'tess3rExperiment', geno, Z, n, L)
 }
 
 #' TODO
 ComputeFst <- function(Q, G, D) {
-    .Call('tess3r_ComputeFst', PACKAGE = 'tess3r', Q, G, D)
+    .Call('tess3rExperiment_ComputeFst', PACKAGE = 'tess3rExperiment', Q, G, D)
 }
 
 InitOpenMP <- function(n) {
-    invisible(.Call('tess3r_InitOpenMP', PACKAGE = 'tess3r', n))
+    invisible(.Call('tess3rExperiment_InitOpenMP', PACKAGE = 'tess3rExperiment', n))
 }
 
 #' solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
 ComputeMCPASolution <- function(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G) {
-    invisible(.Call('tess3r_ComputeMCPASolution', PACKAGE = 'tess3r', X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G))
+    .Call('tess3rExperiment_ComputeMCPASolution', PACKAGE = 'tess3rExperiment', X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G)
 }
 

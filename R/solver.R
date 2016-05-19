@@ -95,7 +95,7 @@ SolveTess3Projected <- function(X, K, d, Lapl, lambda, max.iteration) {
 
 SolveTess3QP <- function(X, K, d, Lapl, lambda, max.iteration, tolerance) {
 
-  if(is.null(lambda)) {
+  if (is.null(lambda)) {
     Lapl <- diag(1,nrow(X),nrow(X))
     lambda <- 0.0
   }
@@ -103,13 +103,13 @@ SolveTess3QP <- function(X, K, d, Lapl, lambda, max.iteration, tolerance) {
   # init
   n <- nrow(X)
   # X <- ComputeXBin(X,d) # done before this function
-  D <- d+1
+  D <- d + 1
   L <- ncol(X) / D
   G <- matrix(0, nrow = D * L, ncol = K)
   Q <- matrix(runif(n*K),n,K)
   Q <- ProjectQ(Q)
   normilized.residual.error <- rep(0.0,max.iteration)
-  QP.time <- rep(0.0,max.iteration)
+  QP.time <- rep(NA,max.iteration)
   X.norm <- norm(X,"F")
 
   ei <- eigen(Lapl,symmetric = TRUE)
@@ -167,7 +167,7 @@ SolveTess3QP <- function(X, K, d, Lapl, lambda, max.iteration, tolerance) {
     Q <- t(matrix(aux$solution,K,n))
 
     t <- proc.time() - ptm
-    QP.time[it] <- t[1] + t[2] + t[4] + t[5]
+    QP.time[it] <- t[3]
 
     # filter NaN (0/0)
     if (length(which(is.na(Q))) > 0) {
@@ -190,7 +190,7 @@ SolveTess3QP <- function(X, K, d, Lapl, lambda, max.iteration, tolerance) {
 
   # cat("mean time", mean(QP.time),"\n") # for debug
 
-  return(list(Q = Q, G = G, normilized.residual.error = normilized.residual.error, err = FALSE, time = mean(QP.time)))
+  return(list(Q = Q, G = G, normilized.residual.error = normilized.residual.error, err = FALSE, times = QP.time, it = it - 1))
 
 }
 
