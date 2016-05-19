@@ -166,6 +166,10 @@ tess3 <- function(X,
                                lambda,
                                max.iteration = max.iteration,
                                tolerance = tolerance))
+    if (res$err) {
+      return(res)
+    }
+
   } else if (method == "MCPA") {
     Lapl <- as.matrix(Lapl)
     # Q and G

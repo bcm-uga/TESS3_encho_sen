@@ -25,3 +25,23 @@ test_that("tess3 time and it", {
   expect_lte(sum(tess3.res$times, na.rm = TRUE), tim[3])
 
 })
+
+test_that("tess3 OQA NaN", {
+  set.seed(777)
+  n <- 150
+  K <- 2
+  ploidy <- 1
+  L <- 3000
+  data.list <- SampleGenoFromGenerativeModelTESS3(G = SampleUnifDirichletG(L, ploidy, K),
+                                                  Q = SampleUnifQ(n, K),
+                                                  coord = SampleNormalClusterCoord(n.by.pop = n, K = 1),
+                                                  ploidy = ploidy)
+  tess3.res <- tess3(X = data.list$X,
+                     coord = data.list$coord,
+                     K = 2,
+                     ploidy = 1,
+                     lambda = 1.0,
+                     method = "OQA")
+
+
+})

@@ -93,7 +93,7 @@ SolveTess3Projected <- function(X, K, d, Lapl, lambda, max.iteration) {
 
 
 
-SolveTess3QP <- function(X, K, d, Lapl, lambda, max.iteration, tolerance) {
+SolveTess3QP <- function(X, K, d, Lapl, lambda, max.iteration, tolerance, Q.init = NULL) {
 
   if (is.null(lambda)) {
     Lapl <- diag(1,nrow(X),nrow(X))
@@ -106,8 +106,12 @@ SolveTess3QP <- function(X, K, d, Lapl, lambda, max.iteration, tolerance) {
   D <- d + 1
   L <- ncol(X) / D
   G <- matrix(0, nrow = D * L, ncol = K)
-  Q <- matrix(runif(n*K),n,K)
-  Q <- ProjectQ(Q)
+  if (is.null(Q.init)) {
+    Q <- matrix(runif(n*K),n,K)
+    Q <- ProjectQ(Q)
+  } else {
+    Q <- Q.init
+  }
   normilized.residual.error <- rep(0.0,max.iteration)
   QP.time <- rep(NA,max.iteration)
   X.norm <- norm(X,"F")
