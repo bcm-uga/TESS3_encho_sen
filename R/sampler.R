@@ -235,30 +235,30 @@ SampleNormalClusterCoord <- function(n.by.pop, K, sigma1 = 1.0, sigma2 = 0.2 ) {
 #'                                                 Q = SampleUnifQ(n, K),
 #'                                                 coord = SampleNormalClusterCoord(n.by.pop = n, K = 1),
 #'                                                 ploidy = ploidy)
-SampleGenoFromGenerativeModelTESS3 <- function(Q, G, coord, ploidy) {
-  res <- list()
-
-  res$n <- nrow(Q)
-  res$K <- ncol(Q)
-  res$ploidy <- ploidy
-  res$L <- nrow(G) / (ploidy + 1)
-  res$Q <- Q
-  res$G <- G
-  res$coord <- coord
-  res$X <- matrix(0, res$n ,res$L)
-
-  P = tcrossprod(res$Q, res$G)
-
-  allele = 0:(res$ploidy)
-  for (i in 1:res$n) {
-    for (j in 1:res$L) {
-      res$X[i,j] = allele %*% rmultinom(1, 1, P[i,1 + ((j - 1)*(ploidy + 1)):((j)*(ploidy + 1) - 1)])
-    }
-  }
-
-  return(res)
-}
-
+# SampleGenoFromGenerativeModelTESS3 <- function(Q, G, coord, ploidy) {
+#   res <- list()
+#
+#   res$n <- nrow(Q)
+#   res$K <- ncol(Q)
+#   res$ploidy <- ploidy
+#   res$L <- nrow(G) / (ploidy + 1)
+#   res$Q <- Q
+#   res$G <- G
+#   res$coord <- coord
+#   res$X <- matrix(0, res$n ,res$L)
+#
+#   P = tcrossprod(res$Q, res$G)
+#
+#   allele = 0:(res$ploidy)
+#   for (i in 1:res$n) {
+#     for (j in 1:res$L) {
+#       res$X[i,j] = allele %*% rmultinom(1, 1, P[i,1 + ((j - 1)*(ploidy + 1)):((j)*(ploidy + 1) - 1)])
+#     }
+#   }
+#
+#   return(res)
+# }
+#
 
 ###################################################
 #####################ms sampler####################

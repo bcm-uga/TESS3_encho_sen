@@ -3,8 +3,20 @@
 
 #' TODO
 #' @export
-X2XBin <- function(X, ploidy) {
-    .Call('tess3r_X2XBin', PACKAGE = 'tess3r', X, ploidy)
+ComputeRmse <- function(Q1, Q2) {
+    .Call('tess3r_ComputeRmse', PACKAGE = 'tess3r', Q1, Q2)
+}
+
+#' TODO
+#' @export
+ComputeAveragedCrossEntropy <- function(P, Q) {
+    .Call('tess3r_ComputeAveragedCrossEntropy', PACKAGE = 'tess3r', P, Q)
+}
+
+#' TODO
+#' @export
+X2XBin <- function(X, ploidy, XBin) {
+    invisible(.Call('tess3r_X2XBin', PACKAGE = 'tess3r', X, ploidy, XBin))
 }
 
 #' TODO
@@ -24,6 +36,12 @@ ComputeHeatKernelWeightSparse <- function(coord, sigma) {
 #' @export
 ComputeHeatKernelWeight <- function(coord, sigma) {
     .Call('tess3r_ComputeHeatKernelWeight', PACKAGE = 'tess3r', coord, sigma)
+}
+
+#' TODO
+#' @export
+SampleGenoFromGenerativeModelTESS3 <- function(Q, G, coord, ploidy, openMP_core_num = 1L) {
+    .Call('tess3r_SampleGenoFromGenerativeModelTESS3', PACKAGE = 'tess3r', Q, G, coord, ploidy, openMP_core_num)
 }
 
 #' TODO
@@ -50,5 +68,10 @@ InitOpenMP <- function(n) {
 #' solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
 ComputeMCPASolution <- function(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G) {
     invisible(.Call('tess3r_ComputeMCPASolution', PACKAGE = 'tess3r', X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G))
+}
+
+#' solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
+ComputeMCPASolutionNoCopyX <- function(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G) {
+    invisible(.Call('tess3r_ComputeMCPASolutionNoCopyX', PACKAGE = 'tess3r', X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G))
 }
 

@@ -24,6 +24,34 @@ CheckX <- function(X, ploidy) {
 
 #' Title
 #'
+#' @param XBin
+#' @param ploidy
+#'
+#' @return
+#'
+#' @examples
+CheckXBin <- function(XBin, ploidy) {
+  if (!is.matrix(XBin)) {
+    stop("XBin must be a matrix")
+  }
+  if (!is.double(XBin)) {
+    stop("Element of XBin must of type double")
+  }
+  if (ncol(XBin) %% (ploidy + 1) != 0) {
+    stop("The number of column must be a multiple of (ploidy + 1)")
+  }
+  ## check if rang of genotype matrix
+  if (max(XBin, na.rm = TRUE) != 1) {
+    stop("The maximum value of the XBin matrix must be 1")
+  }
+  if (min(XBin, na.rm = TRUE) < 0) {
+    stop("Negative values in the XBin matrix are not allowed")
+  }
+}
+
+
+#' Title
+#'
 #' @param W
 #'
 #' @return
@@ -78,6 +106,23 @@ CheckXW <- function(X, ploidy, W) {
 #' Title
 #'
 #' @param X
+#' @param W
+#' @param ploidy
+#'
+#' @return
+#'
+#' @examples
+CheckXBinW <- function(XBin, ploidy, W) {
+  CheckW(W)
+  CheckXBin(XBin, ploidy)
+  if (nrow(W) != nrow(XBin)) {
+    stop("W must be of size nrow(X) x nrow(X)")
+  }
+}
+
+#' Title
+#'
+#' @param X
 #' @param coord
 #' @param ploidy
 #'
@@ -108,6 +153,26 @@ CheckXWCoord <- function(X, ploidy, W, coord) {
 
   ## check dim of geno, coord,  are consistent
   if (nrow(X) != nrow(coord)) {
+    stop("Number of row of coord and X must be the same")
+  }
+}
+
+
+#' Title
+#'
+#' @param X
+#' @param W
+#' @param ploidy
+#'
+#' @return
+#'
+#' @examples
+CheckXBinWCoord <- function(XBin, ploidy, W, coord) {
+  CheckXBinW(XBin, ploidy, W)
+  CheckCoord(coord)
+
+  ## check dim of geno, coord,  are consistent
+  if (nrow(XBin) != nrow(coord)) {
     stop("Number of row of coord and X must be the same")
   }
 }

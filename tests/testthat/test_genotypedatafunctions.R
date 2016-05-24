@@ -7,14 +7,16 @@ test_that("test ComputeXBin", {
   L <- 2000
   ploidy <- 2
   X <- matrix(as.double(rbinom(n * L, ploidy, 0.5)), n, L)
-  XBin <- X2XBin(X, ploidy)
+  XBin <- matrix(0.0, n, L * (ploidy + 1))
+  X2XBin(X, ploidy, XBin)
   expect_equal( mean( XBin2X(XBin,ploidy) - X), 0)
 
   n <- 100
   L <- 2000
   ploidy <- 6
   X <- matrix(as.double(rbinom(n * L, ploidy, 0.5)), n, L)
-  XBin <- X2XBin(X, ploidy)
+  XBin <- matrix(0.0, n, L * (ploidy + 1))
+  X2XBin(X, ploidy, XBin)
   expect_equal( mean( XBin2X(XBin,ploidy) - X), 0)
 
   # with missing value
@@ -24,7 +26,8 @@ test_that("test ComputeXBin", {
   X <- matrix(as.double(rbinom(n * L, ploidy, 0.5)), n, L)
   mask <- sample(1:length(X), 0.5 * length(X))
   X[mask] <- NA
-  XBin <- X2XBin(X, ploidy)
+  XBin <- matrix(0.0, n, L * (ploidy + 1))
+  X2XBin(X, ploidy, XBin)
   expect_equal(mean(is.na(XBin)), mean(is.na(X)))
 })
 

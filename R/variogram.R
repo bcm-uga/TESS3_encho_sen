@@ -57,12 +57,12 @@ CalculateEmpiricalSemivariogram <- function(Dz, Dx, breaks = "FD", na.rm = TRUE)
 CalculateEmpiricalGenSemivariogram <- function(X, ploidy, coord, breaks = "FD", na.rm = TRUE) {
   # ensure type of X
   X <- matrix(as.double(X), nrow(X), ncol(X))
-
+  XBin <- matrix(as.double(X), nrow(X), ncol(X) * (ploidy + 1))
   CheckXCoord(X, ploidy, coord)
-  X <- X2XBin(X, ploidy)
-
+  X2XBin(X, ploidy, XBin)
+  rm(X)
   message("Computing distance matrices")
-  dx <- dist(X, method = "manhattan") / ncol(X)
+  dx <- dist(XBin, method = "manhattan") / ncol(XBin)
   dgeo <- dist(coord)
 
   return(CalculateEmpiricalSemivariogram(dx, dgeo, breaks = breaks, na.rm = na.rm))

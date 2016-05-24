@@ -1,6 +1,93 @@
 context("TESS3 main")
 
 
+test_that("TESS3 main, no.copy and XBin", {
+  set.seed(698)
+  n <- 100
+  K <- 3
+  ploidy <- 2
+  L <- 3000
+  data.list <- SampleGenoFromGenerativeModelTESS3(G = SampleUnifDirichletG(L, ploidy, K),
+                                                  Q = SampleUnifQ(n, K),
+                                                  coord = SampleNormalClusterCoord(n.by.pop = n, K = 1),
+                                                  ploidy = ploidy)
+  data.list$XBin <- matrix(0.0, n, L * (ploidy + 1))
+  X2XBin(data.list$X, data.list$ploidy, data.list$XBin )
+  set.seed(687)
+  tess3.res.nocopy <- tess3(X = NULL,
+                     XBin = data.list$XBin,
+                     coord = data.list$coord,
+                     K,
+                     ploidy,
+                     lambda = 1.0,
+                     W = NULL,
+                     method = "MCPA",
+                     max.iteration = 200,
+                     tolerance = 1e-5,
+                     openMP.core.num = 4,
+                     Q.init = NULL,
+                     mask = 0.0,
+                     no.copy = TRUE)
+
+  set.seed(687)
+  tess3.res.copy <- tess3(X = NULL,
+                            XBin = data.list$XBin,
+                            coord = data.list$coord,
+                            K,
+                            ploidy,
+                            lambda = 1.0,
+                            W = NULL,
+                            method = "MCPA",
+                            max.iteration = 200,
+                            tolerance = 1e-5,
+                            openMP.core.num = 4,
+                            Q.init = NULL,
+                            mask = 0.0,
+                            no.copy = FALSE)
+
+  set.seed(687)
+  tess3.res.copy.X <- tess3(X = data.list$X,
+                          XBin = NULL,
+                          coord = data.list$coord,
+                          K,
+                          ploidy,
+                          lambda = 1.0,
+                          W = NULL,
+                          method = "MCPA",
+                          max.iteration = 200,
+                          tolerance = 1e-5,
+                          openMP.core.num = 4,
+                          Q.init = NULL,
+                          mask = 0.0,
+                          no.copy = FALSE)
+
+
+  set.seed(687)
+  tess3.res.nocopy.X <- tess3(X = data.list$X,
+                            XBin = NULL,
+                            coord = data.list$coord,
+                            K,
+                            ploidy,
+                            lambda = 1.0,
+                            W = NULL,
+                            method = "MCPA",
+                            max.iteration = 200,
+                            tolerance = 1e-5,
+                            openMP.core.num = 4,
+                            Q.init = NULL,
+                            mask = 0.0,
+                            no.copy = TRUE)
+
+  expect_less_than(ComputeRmseWithBestPermutation(tess3.res.copy$Q, tess3.res.nocopy$Q), 1e-15)
+  expect_less_than(ComputeRmseWithBestPermutation(tess3.res.copy$G, tess3.res.nocopy$G), 1e-15)
+
+  expect_less_than(ComputeRmseWithBestPermutation(tess3.res.copy.X$G, tess3.res.nocopy$G), 1e-15)
+  expect_less_than(ComputeRmseWithBestPermutation(tess3.res.copy.X$Q, tess3.res.nocopy$Q), 1e-15)
+
+  expect_less_than(ComputeRmseWithBestPermutation(tess3.res.nocopy.X$G, tess3.res.nocopy$G), 1e-200)
+  expect_less_than(ComputeRmseWithBestPermutation(tess3.res.nocopy.X$Q, tess3.res.nocopy$Q), 1e-200)
+
+})
 
 test_that("TESS3 main with method MCPA", {
 
@@ -123,7 +210,7 @@ test_that("TESS3 main check arg", {
                      ploidy = 1,
                      lambda = 1.0,
                      method = "MCPA",
-                     tolerance = 0.00001),"W must be of size nrow\\(X\\) x nrow\\(X\\)")
+                     tolerance = 0.00001),"XBin must be of size nrow\\(X\\) \\* \\(ncol\\(X\\) \\* \\(ploidy \\+ 1\\)\\)")
 
 })
 

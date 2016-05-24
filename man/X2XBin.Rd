@@ -4,7 +4,7 @@
 \alias{X2XBin}
 \title{TODO}
 \usage{
-X2XBin(X, ploidy)
+X2XBin(X, ploidy, XBin)
 }
 \description{
 TODO

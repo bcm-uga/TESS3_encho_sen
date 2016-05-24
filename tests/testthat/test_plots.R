@@ -25,8 +25,8 @@ test_that("test of Q plots", {
   set.seed(0)
 
   # run tess3
-  tess3.res = tess3r::tess3(data.at$X,
-                                   data.at$coord, K = 3, ploidy = 1, lambda = 1.0)
+  tess3.res = tess3r::tess3(X = data.at$X,
+                            coord = data.at$coord, K = 3, ploidy = 1, lambda = 1.0)
 
   # piechart
   plot(tess3.res$Q, data.at$coord, plot.type = "piechart", main = "piechart", xlab = "x", ylab = "y", background = FALSE)

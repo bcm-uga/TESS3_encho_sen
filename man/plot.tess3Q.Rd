@@ -7,7 +7,7 @@
 \method{plot}{tess3Q}(Q, coord, plot.type = "piechart", resolution = c(300,
   300), window = NULL, background = TRUE, raster.filename = NULL,
   interpolation.function = idw(), col = NULL, col.palette = NULL,
-  map = TRUE, ...)
+  map = TRUE, palette.step = 9, ...)
 }
 \arguments{
 \item{plot.type}{}

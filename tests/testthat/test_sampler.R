@@ -164,9 +164,9 @@ test_that("Sample from TESS3 generative model", {
   ploidy <- 2
   L <- 1000
   data.list <- SampleGenoFromGenerativeModelTESS3(G = SampleUnifDirichletG(L, ploidy, K),
-                                             Q = SampleUnifQ(n, K),
-                                             coord = SampleNormalClusterCoord(n.by.pop = n, K = 1),
-                                             ploidy = ploidy)
+                                                  Q = SampleUnifQ(n, K),
+                                                  coord = SampleNormalClusterCoord(n.by.pop = n, K = 1),
+                                                  ploidy = ploidy)
   expect_equal(data.list$n,n)
   expect_equal(data.list$K,K)
   expect_equal(data.list$ploidy,ploidy)

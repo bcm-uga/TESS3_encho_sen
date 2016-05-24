@@ -18,6 +18,7 @@
 #'
 #' @examples
 tess3project <- function(X,
+                         XBin = NULL,
                          coord,
                          K,
                          ploidy,
@@ -30,11 +31,19 @@ tess3project <- function(X,
                          openMP.core.num = 1,
                          Q.init = NULL,
                          mask = 0.0,
+                         no.copy = FALSE,
                          keep = "all")
 {
   # test param :
   if (rep < 1) {
     stop("rep must greater than 1")
+  }
+
+  # Compute XBin
+  if (!is.null(X)) {
+    XBin <- matrix(0.0, nrow(X), ncol(X) * (ploidy + 1))
+    X2XBin(X, ploidy, XBin)
+    rm(X)
   }
 
   res <- list()
@@ -46,7 +55,8 @@ tess3project <- function(X,
     crossvalid.crossentropy = 1:rep
     tess3.run <- list()
     for (r in 1:rep) {
-      tess3.aux <- tess3(X = X,
+      tess3.aux <- tess3(X = NULL,
+                         XBin = XBin,
                          coord = coord,
                          K = K[i],
                          ploidy = ploidy,
@@ -57,7 +67,8 @@ tess3project <- function(X,
                          tolerance = tolerance,
                          openMP.core.num = openMP.core.num,
                          Q.init = Q.init,
-                         mask = mask)
+                         mask = mask,
+                         no.copy = no.copy)
       rmse[r] <- tess3.aux$rmse
       crossentropy[r] <- tess3.aux$crossentropy
       crossvalid.rmse[r] <- ifelse(!is.null(tess3.aux$crossvalid.rmse),tess3.aux$crossvalid.rmse, -1)

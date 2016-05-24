@@ -15,18 +15,6 @@ ComputeSpatialPenalty <- function(Q, W) {
 }
 
 
-#' compute the root mean square error
-#'
-#'
-#' @param Q1
-#' @param Q2
-#' @param na.rm
-#'
-#' @export
-ComputeRmse <- function(Q1, Q2, na.rm = FALSE) {
-  return(sqrt(mean((Q1 - Q2) ^ 2, na.rm = na.rm)))
-}
-
 #' Compute the root mean square error between matrix by permuting
 #' matrix column such that we have the best rmse.
 #'
@@ -94,14 +82,4 @@ ComputeRmseWithBestPermutationGreedy <- function(Q1, Q2) {
 
 
 
-#' Compute the averaged cross entropy mean(-P * log(Q))
-#'
-#'
-#'
-ComputeAveragedCrossEntropy <- function(P, Q, na.rm = FALSE, rm.logInfandNan = FALSE) {
-  if (rm.logInfandNan) {
-    Q[Q <= 0] <- 0.000001
-  }
-  aux <- -P * log(Q)
-  return(mean(aux, na.rm = na.rm))
-}
+

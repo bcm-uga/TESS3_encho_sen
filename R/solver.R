@@ -37,7 +37,9 @@ SolveTess3Projected <- function(X, K, d, Lapl, lambda, max.iteration) {
   # init
   n <- nrow(X)
   L <- ncol(X)
-  X <- X2XBin(X,d)
+  XBin <- matrix(0.0, n, L * (d + 1))
+  X2XBin(X, d, XBin)
+  X <- XBin
   D <- d + 1
   G <- matrix(0, nrow = D * L, ncol = K)
   Q <- matrix(runif(n*K),n,K)

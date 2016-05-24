@@ -11,11 +11,11 @@ using namespace Rcpp;
 //' TODO
 //' @export
 // [[Rcpp::export]]
-Eigen::MatrixXd X2XBin(const Rcpp::NumericMatrix & X, int ploidy) {
-        MatrixXd XBin = MatrixXd::Zero(X.rows(), X.cols() * (ploidy + 1));
-#ifdef _OPENMP
-          #pragma omp parallel for
-#endif
+void X2XBin(const Rcpp::NumericMatrix & X, int ploidy, Eigen::Map<Eigen::MatrixXd> & XBin) {
+        if (XBin.rows() != X.rows() || XBin.cols() != X.cols() * (ploidy + 1)) {
+          stop("XBin must be of size nrow(X) * (ncol(X) * (ploidy + 1))");
+        }
+        #pragma omp parallel for
         for (int i = 0; i < X.rows(); i++) {
                 for (int l = 0; l < X.cols(); l++) {
                         if (NumericMatrix::is_na(X(i,l))) {
@@ -28,7 +28,7 @@ Eigen::MatrixXd X2XBin(const Rcpp::NumericMatrix & X, int ploidy) {
                         }
                 }
         }
-        return XBin;
+        return;
 }
 
 //' TODO

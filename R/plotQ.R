@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-plot.tess3Q <- function(Q, coord, plot.type = "piechart", resolution = c(300,300), window = NULL, background = TRUE, raster.filename = NULL, interpolation.function = idw(), col = NULL, col.palette = NULL, map = TRUE, ...) {
+plot.tess3Q <- function(Q, coord, plot.type = "piechart", resolution = c(300,300), window = NULL, background = TRUE, raster.filename = NULL, interpolation.function = idw(), col = NULL, col.palette = NULL, map = TRUE, palette.step = 9, ...) {
 
   # parameters
 
@@ -25,14 +25,14 @@ plot.tess3Q <- function(Q, coord, plot.type = "piechart", resolution = c(300,300
   if (is.null(col.palette)) {
     TestRequiredPkg("RColorBrewer")
     col.palette = list(
-      c("gray95",RColorBrewer::brewer.pal(9,"Reds")),
-      c("gray95",RColorBrewer::brewer.pal(9,"Greens")),
-      c("gray95",RColorBrewer::brewer.pal(9,"Blues")),
-      c("gray95",RColorBrewer::brewer.pal(9,"YlOrBr")),
-      c("gray95",RColorBrewer::brewer.pal(9,"RdPu")),
-      c("gray95",RColorBrewer::brewer.pal(9,"Greys")),
-      c("gray95",RColorBrewer::brewer.pal(9,"Purples")),
-      c("gray95",RColorBrewer::brewer.pal(9,"Oranges"))
+      c(RColorBrewer::brewer.pal(palette.step,"Reds")),
+      c(RColorBrewer::brewer.pal(palette.step,"Greens")),
+      c(RColorBrewer::brewer.pal(palette.step,"Blues")),
+      c(RColorBrewer::brewer.pal(palette.step,"YlOrBr")),
+      c(RColorBrewer::brewer.pal(palette.step,"RdPu")),
+      c(RColorBrewer::brewer.pal(palette.step,"Greys")),
+      c(RColorBrewer::brewer.pal(palette.step,"Purples")),
+      c(RColorBrewer::brewer.pal(palette.step,"Oranges"))
     )
   }
   if (length(col.palette) < ncol(Q) & (plot.type == "max" | plot.type == "all")) {

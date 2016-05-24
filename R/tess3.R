@@ -12,12 +12,15 @@
 #' @param Q.init
 #' @param coord
 #' @param mask
+#' @param XBin
+#' @param no.copy if TRUE data will not be duplicate in memory but computation can take more time
 #'
 #' @return
 #' @export
 #'
 #' @examples
 tess3 <- function(X,
+                  XBin = NULL,
                   coord,
                   K,
                   ploidy,
@@ -28,7 +31,8 @@ tess3 <- function(X,
                   tolerance = 1e-5,
                   openMP.core.num = 1,
                   Q.init = NULL,
-                  mask = 0.0)
+                  mask = 0.0,
+                  no.copy = FALSE)
 {
   # mem <- c()
   # mem <- c(mem, pryr::mem_used())
@@ -44,8 +48,10 @@ tess3 <- function(X,
 
   ################################################
   # ensure type of X
-  X <- matrix(as.double(X), nrow(X), ncol(X))
-
+  if (!is.null(X)) {
+    X <- matrix(as.double(X), nrow(X), ncol(X))
+    CheckX(X, ploidy)
+  }
   ################################################
 
   # mem <- c(mem,pryr::mem_used())
@@ -101,7 +107,6 @@ tess3 <- function(X,
     W <- ComputeHeatKernelWeight(coord, ComputeMeanDist(coord) * 0.05)
   }
 
-  CheckXWCoord(X, ploidy, W, coord)
 
   # Q.init
   if (!is.null(Q.init)) {
@@ -117,15 +122,28 @@ tess3 <- function(X,
   ################################################
   # Compute parameters
   ## Laplacian
+  CheckW(W)
   Lapl <- ComputeGraphLaplacian(W)
 
   ## Compute number of loci and indiv
-  res$L <- ncol(X)
-  res$n <- nrow(X)
+  if (!is.null(X)) {
+    res$L <- ncol(X)
+  } else if (!is.null(XBin)) {
+    res$L <- ncol(XBin) %/% (ploidy + 1)
+  } else {
+    stop("Both X and XBin can not be null")
+  }
+
+  res$n <- nrow(coord)
   res$ploidy <- ploidy
   res$K <- K
 
-  X <- X2XBin(X, ploidy)# put Xbin in X to avoid several copy in memory
+  if (!is.null(X)) {
+    XBin <- matrix(0.0, res$n, res$L * (res$ploidy + 1))
+    X2XBin(X, ploidy, XBin)
+    rm(X)
+  }
+  CheckXBinWCoord(XBin, ploidy, W, coord)
   ################################################
 
   # mem <- c(mem,pryr::mem_used())
@@ -134,9 +152,9 @@ tess3 <- function(X,
   # mask if asked
   if (mask != 0.0) {
     message("Mask ", mask, "% of X for cross validation")
-    missing.index.X <- sample(1:(length(X)), length(X) * mask)
-    masked.X.value <- X[missing.index.X]
-    X[missing.index.X] <- NA
+    missing.index.X <- sample(1:(length(XBin)), length(XBin) * mask)
+    masked.X.value <- XBin[missing.index.X]
+    XBin[missing.index.X] <- NA
   }
   ################################################
 
@@ -144,12 +162,12 @@ tess3 <- function(X,
 
   ################################################
   # check if there is missing data and compute the binary representation
-  if (any(is.na(X))) {
+  if (any(is.na(XBin))) {
     message("Missing value detected in genotype")
     # Naive imputation by mean
-    geno.freq <- apply(X, 2, function(x) mean(x,na.rm = TRUE))
+    geno.freq <- apply(XBin, 2, function(x) mean(x,na.rm = TRUE))
     geno.freq <- matrix(geno.freq,1)[rep(1, res$n),]
-    X[is.na(X)] <- geno.freq[is.na(X)]
+    XBin[is.na(XBin)] <- geno.freq[is.na(XBin)]
     rm(geno.freq)
   }
   ################################################
@@ -159,7 +177,7 @@ tess3 <- function(X,
   ################################################
   # compute Q and G matrix
   if (method == "OQA") {
-    res <- c(res, SolveTess3QP(X,
+    res <- c(res, SolveTess3QP(XBin,
                                K,
                                ploidy,
                                Lapl,
@@ -178,16 +196,28 @@ tess3 <- function(X,
     }
 
     # mem <- c(mem,pryr::mem_used())
+    if (no.copy) {
+      ComputeMCPASolutionNoCopyX(X = XBin,
+                                 K = K,
+                                 Lapl = Lapl,
+                                 lambdaPrim = lambda,
+                                 D = ploidy + 1,
+                                 maxIteration = max.iteration,
+                                 tolerance = tolerance,
+                                 Q = res$Q,
+                                 G = res$G )
+    } else {
+      ComputeMCPASolution(X = XBin,
+                          K = K,
+                          Lapl = Lapl,
+                          lambdaPrim = lambda,
+                          D = ploidy + 1,
+                          maxIteration = max.iteration,
+                          tolerance = tolerance,
+                          Q = res$Q,
+                          G = res$G )
+    }
 
-    ComputeMCPASolution(X = X,
-                        K = K,
-                        Lapl = Lapl,
-                        lambdaPrim = lambda,
-                        D = ploidy + 1,
-                        maxIteration = max.iteration,
-                        tolerance = tolerance,
-                        Q = res$Q,
-                        G = res$G )
   } else {
     stop("Unknow method name")
   }
@@ -219,11 +249,11 @@ tess3 <- function(X,
   ################################################
   # Compute rmse
   QtG <- tcrossprod(res$Q, res$G)
-  res$rmse <- ComputeRmse(X, QtG)
-  res$crossentropy <- ploidy * ComputeAveragedCrossEntropy(X, QtG, rm.logInfandNan = TRUE) #because this function compute mean also by allele
+  res$rmse <- ComputeRmse(XBin, QtG)
+  res$crossentropy <- ploidy * ComputeAveragedCrossEntropy(XBin, QtG) #because this function compute mean also by allele
   if (mask > 0.0) {
-    res$crossvalid.rmse <- ComputeRmse(masked.X.value, QtG[missing.index.X], na.rm = TRUE)
-    res$crossvalid.crossentropy <- ploidy * ComputeAveragedCrossEntropy(masked.X.value, QtG[missing.index.X], na.rm = TRUE, rm.logInfandNan = TRUE)
+    res$crossvalid.rmse <- ComputeRmse(masked.X.value, QtG[missing.index.X])
+    res$crossvalid.crossentropy <- ploidy * ComputeAveragedCrossEntropy(masked.X.value, QtG[missing.index.X])
   }
   ################################################
   class(res) <- "tess3"
@@ -283,8 +313,9 @@ rmse.tess3 <- function(tess3.obj, X, ploidy, mask = NULL) {
   if (!is.null(mask)) {
     X[-mask] <- NA
   }
-  X <- X2XBin(X, ploidy)
-  return(ComputeRmse(X, tcrossprod(tess3.obj$Q, tess3.obj$G), na.rm = TRUE))
+  XBin <- matrix(0.0, nrow(X), ncol(X) * (ploidy + 1))
+  X2XBin(X, ploidy, XBin)
+  return(ComputeRmse(XBin, tcrossprod(tess3.obj$Q, tess3.obj$G)))
 }
 
 #' tess3r : estimation of spatial population structure
