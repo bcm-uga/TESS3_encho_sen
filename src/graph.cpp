@@ -47,3 +47,22 @@ Eigen::MatrixXd ComputeHeatKernelWeight(const Eigen::Map<Eigen::MatrixXd> coord,
         W = Eigen::MatrixXd(W.selfadjointView<Lower>());
         return W;
 }
+
+
+//' TODO
+//'
+//' @export
+// [[Rcpp::export]]
+Eigen::MatrixXd ComputeExponetialWeight(const Eigen::Map<Eigen::MatrixXd> coord, double sigma) {
+        Eigen::MatrixXd W(coord.rows(), coord.rows());
+
+        for(int i = 0; i < coord.rows(); i++) {
+                for(int j = 0; j <=i; j++) { // because W is symetric
+                        //exp(- d^2 / sigma^2)
+                        W(i,j) = std::exp(-std::sqrt((coord.row(i) - coord.row(j)).squaredNorm()) / sigma);
+
+                }
+        }
+        W = Eigen::MatrixXd(W.selfadjointView<Lower>());
+        return W;
+}

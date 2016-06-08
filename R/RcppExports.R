@@ -39,6 +39,13 @@ ComputeHeatKernelWeight <- function(coord, sigma) {
 }
 
 #' TODO
+#'
+#' @export
+ComputeExponetialWeight <- function(coord, sigma) {
+    .Call('tess3r_ComputeExponetialWeight', PACKAGE = 'tess3r', coord, sigma)
+}
+
+#' TODO
 #' @export
 SampleGenoFromGenerativeModelTESS3 <- function(Q, G, coord, ploidy, openMP_core_num = 1L) {
     .Call('tess3r_SampleGenoFromGenerativeModelTESS3', PACKAGE = 'tess3r', Q, G, coord, ploidy, openMP_core_num)

@@ -78,6 +78,18 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// ComputeExponetialWeight
+Eigen::MatrixXd ComputeExponetialWeight(const Eigen::Map<Eigen::MatrixXd> coord, double sigma);
+RcppExport SEXP tess3r_ComputeExponetialWeight(SEXP coordSEXP, SEXP sigmaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type coord(coordSEXP);
+    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
+    __result = Rcpp::wrap(ComputeExponetialWeight(coord, sigma));
+    return __result;
+END_RCPP
+}
 // SampleGenoFromGenerativeModelTESS3
 Rcpp::List SampleGenoFromGenerativeModelTESS3(const Rcpp::NumericMatrix& Q, const Rcpp::NumericMatrix& G, const Rcpp::NumericMatrix& coord, int ploidy, int openMP_core_num);
 RcppExport SEXP tess3r_SampleGenoFromGenerativeModelTESS3(SEXP QSEXP, SEXP GSEXP, SEXP coordSEXP, SEXP ploidySEXP, SEXP openMP_core_numSEXP) {
