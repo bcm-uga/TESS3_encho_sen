@@ -10,7 +10,7 @@ tess3project(X, XBin = NULL, coord, K, ploidy, lambda = 1, rep = 1,
   keep = "all")
 }
 \arguments{
-\item{mask}{}
+\item{no.copy}{}
 }
 \description{
 Run tess3 for multiple value of K and with repetition.

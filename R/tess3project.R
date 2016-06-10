@@ -12,6 +12,10 @@
 #' @param coord
 #' @param openMP.core.num
 #' @param mask
+#' @param XBin
+#' @param K
+#' @param Q.init
+#' @param no.copy
 #'
 #' @return
 #' @export

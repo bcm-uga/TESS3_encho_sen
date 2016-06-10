@@ -83,7 +83,7 @@ PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background,
           add = (k > 1),
           ...)
   }
-  points(coord, pch = 19)
+  points(coord, pch = 19, ...)
   if (map) {
     TestRequiredPkg("maps")
     require("maps")
