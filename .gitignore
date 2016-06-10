@@ -4,48 +4,36 @@
 
 # Session Data files
 .RData
-
 # Example code in package build process
 *-Ex.R
-
 # RStudio files
 .Rproj.user/
-
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
-
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
 .httr-oauth
 .Rproj.user
-
 # Comparison with old tess3
 compareWithTess3/
-
 # cpp file
 *.o
 *.so
-
 # css
 .sass-cache/
-
 # pdf
 Rplots.pdf
-
 # pcadapt
 *.pcadapt
-
 # Rmarkdown
 Rmarkdown/*_cache
 Rmarkdown/*_files
 Rmarkdown/*.html
-
 # lfmm
 *.lfmm
-
 # emacs
 *~
-
 # clang
 *.pch
 .clang_complete
+inst/doc
