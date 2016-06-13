@@ -225,9 +225,16 @@ void ComputeMCPASolutionNoCopyX(const Eigen::Map<Eigen::MatrixXd> X, int K, cons
                 #pragma omp barrier
                 #pragma omp for
                 for (int i = 0; i < n; i++) {
+#ifdef _OPENMP
                         RXi.row(omp_get_thread_num()) = R.row(i) * X;
-                        RQ.row(i) = ((G.transpose() * G + lambda * vps(i) * Ik).ldlt().solve(G.transpose() * RXi.row(omp_get_thread_num()).transpose())).transpose();
-                }
+                  RQ.row(i) = ((G.transpose() * G + lambda * vps(i) * Ik).ldlt().solve(G.transpose() * RXi.row(omp_get_thread_num()).transpose())).transpose();
+
+#else
+                  RXi.row(0) = R.row(i) * X;
+                  RQ.row(i) = ((G.transpose() * G + lambda * vps(i) * Ik).ldlt().solve(G.transpose() * RXi.row(0).transpose())).transpose();
+
+#endif
+                  }
                 #pragma omp master
                 {
                 Q = R.transpose() * RQ;
