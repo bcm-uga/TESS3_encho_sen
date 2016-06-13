@@ -49,7 +49,7 @@ Rcpp::List SampleGenoFromGenerativeModelTESS3(const Rcpp::NumericMatrix & Q, con
                         X(i, j) = (allele * ans.col(omp_get_thread_num())).sum();
 #else
                         R::rmultinom(1, &ePt(j * D, i), D, &ans(0, 0) );
-                        X(i, j) = (allele * ans.col(0).sum();
+                        X(i, j) = (allele * ans.col(0)).sum();
 #endif
                 }
         }
