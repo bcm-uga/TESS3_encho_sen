@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotQ.R
 \name{plot.tess3Q}
 \alias{plot.tess3Q}
-\title{Plot ancestry coeficient on a map.}
+\title{Plot individual ancestry coefficients on a map.}
 \usage{
 \method{plot}{tess3Q}(Q, coord, plot.type = "piechart", resolution = c(300,
   300), window = NULL, background = TRUE, raster.filename = NULL,
@@ -13,6 +13,6 @@
 \item{plot.type}{}
 }
 \description{
-Plot ancestry coeficient on a map.
+Plot individual ancestry coefficients on a map.
 }
 

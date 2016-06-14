@@ -2,7 +2,44 @@
 #######################Methods#####################
 ###################################################
 
-#' Plot ancestry coeficient on a map.
+#' structure barplot for Q-matrix objects.
+#'
+#' @param Q
+#' @param coord
+#' @param plot.type
+#'
+#' @return
+#' @export
+#'
+#' @examples
+barplot.tess3Q = function(Q, col.palette = NULL, palette.step = 9,...){
+  if (class(Q) != "tess3Q") stop("Object Q not of class tess3")
+  ## col.palette
+  if (is.null(col.palette)) {
+    TestRequiredPkg("RColorBrewer")
+    col.palette = list(
+      c(RColorBrewer::brewer.pal(palette.step,"Reds")),
+      c(RColorBrewer::brewer.pal(palette.step,"Greens")),
+      c(RColorBrewer::brewer.pal(palette.step,"Blues")),
+      c(RColorBrewer::brewer.pal(palette.step,"YlOrBr")),
+      c(RColorBrewer::brewer.pal(palette.step,"RdPu")),
+      c(RColorBrewer::brewer.pal(palette.step,"Greys")),
+      c(RColorBrewer::brewer.pal(palette.step,"Purples")),
+      c(RColorBrewer::brewer.pal(palette.step,"Oranges"))
+    )
+  }
+
+  gr = apply(Q, MARGIN = 1, which.max)
+  gm = max(gr)
+  gr.o= order(sapply(1:gm, FUN = function(g) mean(Q[,g])))
+  gr = sapply(gr, FUN = function(i) gr.o[i])
+  or = order(gr)
+  mycol = sapply(col.palette, FUN = function(x) x[palette.step / 2])
+  barplot(t(Q[or,]) , col = mycol, ...)
+}
+
+
+#' Plot individual ancestry coefficients on a map.
 #'
 #' @param Q
 #' @param coord
@@ -36,7 +73,7 @@ plot.tess3Q <- function(Q, coord, plot.type = "piechart", resolution = c(300,300
     )
   }
   if (length(col.palette) < ncol(Q) & (plot.type == "max" | plot.type == "all")) {
-    stop("col.palette must of lenght ncol(Q)")
+    stop("col.palette must of length ncol(Q)")
   }
 
 
