@@ -2,15 +2,34 @@
 % Please edit documentation in R/plotQ.R
 \name{barplot.tess3Q}
 \alias{barplot.tess3Q}
-\title{barplot for Q-matrix objects.}
+\title{Barplot representation of a Q-matrix}
 \usage{
 \method{barplot}{tess3Q}(Q, sort.by.Q = TRUE, col.palette = NULL,
-  palette.step = 9, ...)
+  palette.length = 9, ...)
 }
 \arguments{
-\item{plot.type}{}
+\item{Q}{an object of class \code{tess3Q} containing a matrix of ancestry coefficients computed from \code{tess3}.}
+
+\item{sort.by.Q}{a Boolean value indicating whether the individuals should be sorted by their ancestry level or not.}
+
+\item{col.palette}{is a list of color palettes. If \code{NULL}, a default list with 8 color palettes is used.}
+
+\item{palette.length}{an integer value for the number of colors in each element of the palette list.}
+}
+\value{
+None
 }
 \description{
-barplot for Q-matrix objects.
+This function displays a Structure-like barplot representation of the
+ancestry coefficient matrix. It includes a sort-by-Q option.
+}
+\examples{
+data(data.at)
+obj <- tess3(data.at$X, coord = data.at$coord, K = 5, ploidy = 1, openMP.core.num = 4)
+Qmatrix <- obj$Q
+barplot(Qmatrix, border = NA, space = 0, xlab = "individuals", ylab = "Ancestry proportions", main = "Ancestry matrix")
+}
+\author{
+Olivier François
 }
 

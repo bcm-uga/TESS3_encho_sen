@@ -10,6 +10,8 @@
   map = TRUE, palette.step = 9, ...)
 }
 \arguments{
+\item{Q}{an object of class \code{tess3Q} containing a matrix of ancestry coefficients computed from \code{tess3}.}
+
 \item{plot.type}{}
 }
 \description{

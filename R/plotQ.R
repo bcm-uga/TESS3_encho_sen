@@ -1,36 +1,41 @@
 ###################################################
 #######################Methods#####################
 ###################################################
-
+#' This function displays a Structure-like barplot representation of the
+#' ancestry coefficient matrix. It includes a sort-by-Q option.
+#' @title Barplot representation of a Q-matrix
+#' @author Olivier François
 #'
-#' barplot for Q-matrix objects.
-#' @param Q
-#' @param coord
-#' @param plot.type
-#'
-#' @return
-#' @export
-#'
+#' @param Q an object of class \code{tess3Q} containing a matrix of ancestry coefficients computed from \code{tess3}.
+#' @param sort.by.Q a Boolean value indicating whether the individuals should be sorted by their ancestry level or not.
+#' @param col.palette is a list of color palettes. If \code{NULL}, a default list with 8 color palettes is used.
+#' @param palette.length an integer value for the number of colors in each element of the palette list.
+#' @return None
 #' @examples
-barplot.tess3Q = function(Q, sort.by.Q = TRUE, col.palette = NULL, palette.step = 9,...){
-  if (class(Q) != "tess3Q") stop("Object Q not of class tess3.")
+#' data(data.at)
+#' obj <- tess3(data.at$X, coord = data.at$coord, K = 5, ploidy = 1, openMP.core.num = 4)
+#' Qmatrix <- obj$Q
+#' barplot(Qmatrix, border = NA, space = 0, xlab = "individuals", ylab = "Ancestry proportions", main = "Ancestry matrix")
+#' @export
+barplot.tess3Q = function(Q, sort.by.Q = TRUE, col.palette = NULL, palette.length = 9,...){
+  if (class(Q) != "tess3Q") stop("Object Q not of class tess3Q.")
   ## color palette
   if (is.null(col.palette)) {
-    if (ncol(Q) > 8)  stop("The default color palette contains 8 colors.")
+    if (ncol(Q) > 8)  stop("The default color palette contains 8 colors, and expects less than 9 clusters.")
     TestRequiredPkg("RColorBrewer")
     col.palette = list(
-      c(RColorBrewer::brewer.pal(palette.step,"Reds")),
-      c(RColorBrewer::brewer.pal(palette.step,"Greens")),
-      c(RColorBrewer::brewer.pal(palette.step,"Blues")),
-      c(RColorBrewer::brewer.pal(palette.step,"YlOrBr")),
-      c(RColorBrewer::brewer.pal(palette.step,"RdPu")),
-      c(RColorBrewer::brewer.pal(palette.step,"Greys")),
-      c(RColorBrewer::brewer.pal(palette.step,"Purples")),
-      c(RColorBrewer::brewer.pal(palette.step,"Oranges"))
+      c(RColorBrewer::brewer.pal(palette.length,"Reds")),
+      c(RColorBrewer::brewer.pal(palette.length,"Greens")),
+      c(RColorBrewer::brewer.pal(palette.length,"Blues")),
+      c(RColorBrewer::brewer.pal(palette.length,"YlOrBr")),
+      c(RColorBrewer::brewer.pal(palette.length,"RdPu")),
+      c(RColorBrewer::brewer.pal(palette.length,"Greys")),
+      c(RColorBrewer::brewer.pal(palette.length,"Purples")),
+      c(RColorBrewer::brewer.pal(palette.length,"Oranges"))
     )
   }
   ## colors
-  mycol = sapply(col.palette, FUN = function(x) x[palette.step/2])
+  mycol = sapply(col.palette, FUN = function(x) x[palette.length/2])
 
   if (sort.by.Q){
     gr = apply(Q, MARGIN = 1, which.max)
@@ -52,7 +57,7 @@ barplot.tess3Q = function(Q, sort.by.Q = TRUE, col.palette = NULL, palette.step 
 
 #' Plot individual ancestry coefficients on a map.
 #'
-#' @param Q
+#' @param Q an object of class \code{tess3Q} containing a matrix of ancestry coefficients computed from \code{tess3}.
 #' @param coord
 #' @param plot.type
 #'
