@@ -2,14 +2,15 @@
 % Please edit documentation in R/plotQ.R
 \name{barplot.tess3Q}
 \alias{barplot.tess3Q}
-\title{structure barplot for Q-matrix objects.}
+\title{barplot for Q-matrix objects.}
 \usage{
-\method{barplot}{tess3Q}(Q, col.palette = NULL, palette.step = 9, ...)
+\method{barplot}{tess3Q}(Q, sort.by.Q = TRUE, col.palette = NULL,
+  palette.step = 9, ...)
 }
 \arguments{
 \item{plot.type}{}
 }
 \description{
-structure barplot for Q-matrix objects.
+barplot for Q-matrix objects.
 }
 

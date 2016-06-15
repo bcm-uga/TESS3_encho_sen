@@ -2,8 +2,8 @@
 #######################Methods#####################
 ###################################################
 
-#' structure barplot for Q-matrix objects.
 #'
+#' barplot for Q-matrix objects.
 #' @param Q
 #' @param coord
 #' @param plot.type
@@ -12,10 +12,11 @@
 #' @export
 #'
 #' @examples
-barplot.tess3Q = function(Q, col.palette = NULL, palette.step = 9,...){
-  if (class(Q) != "tess3Q") stop("Object Q not of class tess3")
-  ## col.palette
+barplot.tess3Q = function(Q, sort.by.Q = TRUE, col.palette = NULL, palette.step = 9,...){
+  if (class(Q) != "tess3Q") stop("Object Q not of class tess3.")
+  ## color palette
   if (is.null(col.palette)) {
+    if (ncol(Q) > 8)  stop("The default color palette contains 8 colors.")
     TestRequiredPkg("RColorBrewer")
     col.palette = list(
       c(RColorBrewer::brewer.pal(palette.step,"Reds")),
@@ -28,14 +29,24 @@ barplot.tess3Q = function(Q, col.palette = NULL, palette.step = 9,...){
       c(RColorBrewer::brewer.pal(palette.step,"Oranges"))
     )
   }
+  ## colors
+  mycol = sapply(col.palette, FUN = function(x) x[palette.step/2])
 
-  gr = apply(Q, MARGIN = 1, which.max)
-  gm = max(gr)
-  gr.o= order(sapply(1:gm, FUN = function(g) mean(Q[,g])))
-  gr = sapply(gr, FUN = function(i) gr.o[i])
-  or = order(gr)
-  mycol = sapply(col.palette, FUN = function(x) x[palette.step / 2])
-  barplot(t(Q[or,]) , col = mycol, ...)
+  if (sort.by.Q){
+    gr = apply(Q, MARGIN = 1, which.max)
+    gm = max(gr)
+    gr.o = order(sapply(1:gm, FUN = function(g) mean(Q[,g])))
+    gr = sapply(gr, FUN = function(i) gr.o[i])
+    or = order(gr)
+    Qm = t(Q[or,])
+    class(Qm) = "matrix"
+    barplot(Qm, col = mycol, ...)
+    }
+  else {
+    Qm = t(Q)
+    class(Qm) = "matrix"
+    barplot(Qm, col = mycol, ...)
+  }
 }
 
 
