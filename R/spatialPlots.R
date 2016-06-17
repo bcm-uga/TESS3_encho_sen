@@ -98,7 +98,7 @@ PlotInterpotationAll <- function(coord, list.grid.z, grid.x, grid.y, background,
           list.grid.z[[k]] * background,
           col = col.palette[[k]],
           ...)
-    points(coord, pch = 19)
+    points(coord, pch = 19, ...)
     if (map) {
       TestRequiredPkg("maps")
       require("maps")

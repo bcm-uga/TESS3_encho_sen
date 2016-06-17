@@ -2,19 +2,37 @@
 % Please edit documentation in R/plotQ.R
 \name{plot.tess3Q}
 \alias{plot.tess3Q}
-\title{Plot individual ancestry coefficients on a map.}
+\title{Displays geographic maps for ancestry coefficients}
 \usage{
-\method{plot}{tess3Q}(Q, coord, plot.type = "piechart", resolution = c(300,
+\method{plot}{tess3Q}(Q, coord, method = "mapping.max", resolution = c(300,
   300), window = NULL, background = TRUE, raster.filename = NULL,
-  interpolation.function = idw(), col = NULL, col.palette = NULL,
-  map = TRUE, palette.step = 9, ...)
+  interpolation.function = kriging(10), col = NULL, col.palette = NULL,
+  map = TRUE, palette.length = 9, ...)
 }
 \arguments{
-\item{Q}{an object of class \code{tess3Q} containing a matrix of ancestry coefficients computed from \code{tess3}.}
+\item{Q}{an object of class \code{tess3Q} containing a matrix of ancestry coefficients.}
 
-\item{plot.type}{}
+\item{col.palette}{is a list of color palettes. If \code{NULL}, a default list with 8 color palettes is used.}
+
+\item{palette.length}{an integer value for the number of colors in each element of the palette list.}
 }
-\description{
-Plot individual ancestry coefficients on a map.
+\value{
+None
+}
+\details{
+details on interpolation methods
+\itemize{
+\item \code{kriging()} \code{\link[fields]{Krig}}
+\item
+}
+}
+\examples{
+data(data.at)
+obj <- tess3(data.at$X, coord = data.at$coord, K = 5, ploidy = 1, openMP.core.num = 4)
+Qmatrix <- obj$Q
+plot(obj$Q, data.at$coord, method = "mapping.max", interpol = kriging(10), cex = .4, xlab = "Longitude", ylab= "Latitude", main = "Ancestry coefficients")
+}
+\author{
+Kevin Caye, Flora Jay, Olivier François
 }
 

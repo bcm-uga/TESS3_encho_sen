@@ -8,19 +8,19 @@
   palette.length = 9, ...)
 }
 \arguments{
-\item{Q}{an object of class \code{tess3Q} containing a matrix of ancestry coefficients computed from \code{tess3}.}
+\item{Q}{an object of class \code{tess3Q} (Q matrix) containing a matrix of ancestry coefficients computed from \code{tess3} or converted from other program formats.}
 
-\item{sort.by.Q}{a Boolean value indicating whether the individuals should be sorted by their ancestry level or not.}
+\item{sort.by.Q}{a Boolean value indicating whether individuals should be sorted by their ancestry level or not.}
 
 \item{col.palette}{is a list of color palettes. If \code{NULL}, a default list with 8 color palettes is used.}
 
 \item{palette.length}{an integer value for the number of colors in each element of the palette list.}
 }
 \value{
-None
+Generates a graphical output.
 }
 \description{
-This function displays a Structure-like barplot representation of the
+This function displays a barplot representation of the
 ancestry coefficient matrix. It includes a sort-by-Q option.
 }
 \examples{
@@ -30,6 +30,9 @@ Qmatrix <- obj$Q
 barplot(Qmatrix, border = NA, space = 0, xlab = "individuals", ylab = "Ancestry proportions", main = "Ancestry matrix")
 }
 \author{
-Olivier François
+Kevin Caye, Olivier François
+}
+\seealso{
+\code{\link{plot.tess3Q}} \code{\link{as.qmatrix}} \code{\link{CreatePalette}}
 }
 
