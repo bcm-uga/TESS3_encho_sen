@@ -25,7 +25,7 @@ obj <- tess3(data.at$X, coord = data.at$coord, K = 5, ploidy = 1, openMP.core.nu
 Qmatrix <- obj$Q
 my.colors <- c("tomato", "yellow", "blue", "wheat","olivedrab")
 my.palette <- CreatePalette(my.colors, 9)
-plot(obj$Q, data.at$coord, method = "mapping.max", interpol = kriging(10), cex = .4, xlab = "Longitude", ylab= "Latitude", main = "Ancestry coefficients")
+plot(obj$Q, data.at$coord, method = "mapping.max", col.palette = my.palette, interpol = kriging(10), cex = .4, xlab = "Longitude", ylab= "Latitude", main = "Ancestry coefficients")
 }
 \author{
 Kevin Caye, Olivier François

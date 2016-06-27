@@ -21,7 +21,7 @@ as.qmatrix <- function(Q){
 }
 
 #' This function creates a list of color palettes for the plot and barplot functions
-#' @title Create lists of palettes
+#' @title Create a list of palettes
 #' @author Kevin Caye, Olivier François
 #' @param color.vector a vector of R colors.
 #' @param palette.length an integer number of colors in each palette.
@@ -34,7 +34,7 @@ as.qmatrix <- function(Q){
 #' Qmatrix <- obj$Q
 #' my.colors <- c("tomato", "yellow", "blue", "wheat","olivedrab")
 #' my.palette <- CreatePalette(my.colors, 9)
-#' plot(obj$Q, data.at$coord, method = "mapping.max", interpol = kriging(10), cex = .4, xlab = "Longitude", ylab= "Latitude", main = "Ancestry coefficients")
+#' plot(obj$Q, data.at$coord, method = "mapping.max", col.palette = my.palette, interpol = kriging(10), cex = .4, xlab = "Longitude", ylab= "Latitude", main = "Ancestry coefficients")
 #' @export
 CreatePalette <- function(color.vector = c("tomato", "chartreuse", "gold", "blue", "violet", "wheat","olivedrab"), palette.length = 9){
   ll = NULL

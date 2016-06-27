@@ -1,0 +1,91 @@
+%\VignetteIndexEntry{tess3r: spatial population genetic structure}
+%\VignetteDepends{tess3r,RColorBrewer,knitr,bibtex}
+%\VignetteKeyword{aplot}
+%\VignetteCompiler{knitr}
+%\VignetteEngine{knitr::knitr}
+
+
+\documentclass{article}
+
+\begin{document}
+
+\SweaveOpts{concordance=TRUE}
+
+
+\title{Inference of spatial population genetic structure and genome scans for selection \\
+Package \texttt{tess3r} - Version \Sexpr{utils::packageVersion('tess3r')}}
+
+\author{Kevin Caye \and Olivier Fran\c cois}
+
+\maketitle
+
+\begin{abstract}
+This vignette describes how inference of population genetic structure and genome scans for outlier loci can be performed using the package \texttt{tess3r}. The package \texttt{tess3r} implements fast algorithms for the inference of population structure from genetic and geographic data. It allows users to choose the number of clusters, to display barplots of admixture coefficients, and to interpolate admixture coefficients on geographic maps. The main objects are created by the function \texttt{tess3r}.
+\end{abstract}
+
+{\small \tableofcontents}
+
+\section{Introduction}
+
+
+<<setup, include=FALSE>>=
+knitr::opts_chunk$set(cache = TRUE, message = FALSE)
+@
+
+
+
+Load example dataset (sub sample of A. Thaliana dataset)
+
+<<data>>=
+library(tess3r)
+data(data.at)
+@
+
+
+
+Run of tess3
+<<run,include=FALSE>>=
+#bug sur K
+#verbose
+tess3.obj <- tess3project(X = data.at$X, coord = data.at$coord, K = 1:6, ploidy = 1, openMP.core.num = 4)
+@
+
+
+Plot of $RMSE(X, Q * G^T)$ for different value of $K$
+<<rmse.plot, fig=TRUE>>=
+plot(tess3.obj, ylab = " RMSE(X, Q * t(G))")
+@
+
+Plot of $Q$ for $K = 3$
+<<Q.plot, fig=TRUE>>=
+# retrieve tess3 result for K = 3
+tess3.res <- Gettess3res(tess3.obj, K = 6)
+# baplot of Q order along longitude
+#barplot(t(tess3.res$Q[order(data.at$coord[,1]),]), col = 2:4, border = NA)
+barplot(tess3.res$Q, border = NA, space = 0)
+@
+
+
+
+<<map.plot, fig=TRUE>>=
+# Q mapping on coord
+plot(tess3.res$Q, data.at$coord, method = "mapping.max", cex = .2, xlab = "Longitude", ylab = "Latitude")
+@
+
+
+Plot of $G$ for $K = 3$
+<<G.plot>>=
+# retrieve tess3 result for K = 3
+tess3.res <- Gettess3res(tess3.obj, K = 6)
+# histogram
+hist(tess3.res$pvalue)
+cat("gif = ",tess3.res$gif,"\n")
+# manhattan plot
+plot(tess3.res$pvalue, cex = 0.1)
+@
+
+
+
+
+
+\end{document}

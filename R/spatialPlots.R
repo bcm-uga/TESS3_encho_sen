@@ -12,7 +12,8 @@
 ComputeWindow <- function(coord) {
   sd.x <- sd(coord[,1])
   sd.y <- sd(coord[,2])
-  window <- c(min(coord[,1]) - 0.05 * sd.x, max(coord[,1]) + 0.05 * sd.x, min(coord[,2]) - 0.05 * sd.y, max(coord[,2]) + 0.05 * sd.y)
+  window <- c(min(coord[,1]) - 0.4 * sd.x, max(coord[,1]) + 0.4 * sd.x, min(coord[,2]) - 0.4 * sd.y,
+              max(coord[,2]) + 0.4 * sd.y)
   return(window)
 }
 
