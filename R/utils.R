@@ -53,7 +53,10 @@ ComputeTscoreAndPvalue <- function(Fst, K, n) {
   res$Fscore = Fst / (1 - Fst) * (n - K) / (K - 1)
   # Pvalue, we assume F.score ~ gif * F(df1 = K -1, df2 = n - K)
   res$gif = median(res$Fscore, na.rm = TRUE) / qf(0.5, df1 = K - 1, df2 = n - K)
-  res$pvalue <- pf(res$Fscore / res$gif, df1 = K - 1, df2 = n - K, lower.tail = FALSE)
+  res$pvalue <- pf(res$Fscore / res$gif, df1 = K - 1, df2 = n - K,
+                   lower.tail = FALSE)
+  res$log.pvalue <- pf(res$Fscore / res$gif, df1 = K - 1, df2 = n - K,
+                   lower.tail = FALSE, log = TRUE)
   return(res)
 }
 

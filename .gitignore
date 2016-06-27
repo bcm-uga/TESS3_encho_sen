@@ -37,3 +37,6 @@ Rmarkdown/*.html
 *.pch
 .clang_complete
 inst/doc
+
+# vignette stuf
+vignettes/my-vignette_cache/
