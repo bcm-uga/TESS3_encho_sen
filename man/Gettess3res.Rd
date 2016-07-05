@@ -4,7 +4,7 @@
 \alias{Gettess3res}
 \title{Get tess3 run result}
 \usage{
-Gettess3res(tess3project, K, rep = "best")
+Gettess3res(tess3, K, rep = "best")
 }
 \arguments{
 \item{rep}{}

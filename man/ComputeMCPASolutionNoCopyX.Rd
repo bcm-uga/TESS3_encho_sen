@@ -5,7 +5,7 @@
 \title{solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)}
 \usage{
 ComputeMCPASolutionNoCopyX(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance,
-  Q, G)
+  Q, G, verbose)
 }
 \description{
 solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)

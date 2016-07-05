@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{CreatePalette}
 \alias{CreatePalette}
-\title{Create lists of palettes}
+\title{Create a list of palettes}
 \usage{
 CreatePalette(color.vector = c("tomato", "chartreuse", "gold", "blue",
   "violet", "wheat", "olivedrab"), palette.length = 9)
