@@ -73,12 +73,12 @@ InitOpenMP <- function(n) {
 }
 
 #' solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
-ComputeMCPASolution <- function(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G) {
-    invisible(.Call('tess3r_ComputeMCPASolution', PACKAGE = 'tess3r', X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G))
+ComputeMCPASolution <- function(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G, verbose) {
+    invisible(.Call('tess3r_ComputeMCPASolution', PACKAGE = 'tess3r', X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G, verbose))
 }
 
 #' solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
-ComputeMCPASolutionNoCopyX <- function(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G) {
-    invisible(.Call('tess3r_ComputeMCPASolutionNoCopyX', PACKAGE = 'tess3r', X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G))
+ComputeMCPASolutionNoCopyX <- function(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G, verbose) {
+    invisible(.Call('tess3r_ComputeMCPASolutionNoCopyX', PACKAGE = 'tess3r', X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G, verbose))
 }
 

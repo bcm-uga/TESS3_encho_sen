@@ -95,9 +95,9 @@ SolveTess3Projected <- function(X, K, d, Lapl, lambda, max.iteration) {
 
 
 
-SolveTess3QP <- function(X, K, d, Lapl, lambda, max.iteration, tolerance) {
+SolveTess3QP <- function(X, K, d, Lapl, lambda, max.iteration, tolerance, verbose) {
 
-  if(is.null(lambda)) {
+  if (is.null(lambda)) {
     Lapl <- diag(1,nrow(X),nrow(X))
     lambda <- 0.0
   }
@@ -105,7 +105,7 @@ SolveTess3QP <- function(X, K, d, Lapl, lambda, max.iteration, tolerance) {
   # init
   n <- nrow(X)
   # X <- ComputeXBin(X,d) # done before this function
-  D <- d+1
+  D <- d + 1
   L <- ncol(X) / D
   G <- matrix(0, nrow = D * L, ncol = K)
   Q <- matrix(runif(n*K),n,K)
@@ -182,7 +182,7 @@ SolveTess3QP <- function(X, K, d, Lapl, lambda, max.iteration, tolerance) {
       errAux <- normilized.residual.error[it]
 
       # cat("iteration : ",it,"& error : ",normilized.residual.error[it],"in time = ",QP.time[it], "\n") # For debug
-      cat("---iteration: ",it,"\n")
+      if (verbose) cat("---iteration: ",it,"\n")
       # Test the convergence
       converg = (abs(errAux - err) < tolerance)
       err = errAux

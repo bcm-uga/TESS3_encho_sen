@@ -57,7 +57,7 @@ test_that("test GtoFreq", {
                                                   Q = SampleUnifQ(n, K),
                                                   coord = SampleNormalClusterCoord(n.by.pop = n, K = 1),
                                                   ploidy = ploidy)
-  tess3.res <- tess3(X = data.list$X,
+  tess3.res <- tess3Main(X = data.list$X,
                      coord = data.list$coord,
                      K = K,
                      ploidy = ploidy,

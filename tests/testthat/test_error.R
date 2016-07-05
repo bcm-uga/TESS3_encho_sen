@@ -77,16 +77,16 @@ test_that("Compute Rmse", {
 test_that("rmse.tess3", {
   data("data.for.test", package = "tess3r")
   set.seed(878)
-  tess3.res <- tess3(X = data.for.test$X,
-                     coord = data.for.test$coord,
-                     K = 6,
-                     ploidy = 1,
-                     lambda = 1.0,
-                     method = "MCPA")
-  expect_lte(rmse.tess3(tess3.res, data.for.test$X, 1), 0.37)
+  tess3.res <- tess3Main(X = data.for.test$X,
+                         coord = data.for.test$coord,
+                         K = 6,
+                         ploidy = 1,
+                         lambda = 1.0,
+                         method = "MCPA")
+  expect_lte(rmse.tess3Main(tess3.res, data.for.test$X, 1), 0.37)
 
   mask <- sample(1:(data.for.test$n * data.for.test$L), data.for.test$n * data.for.test$L * 0.25)
-  expect_lte(rmse.tess3(tess3.obj = tess3.res, X = data.for.test$X, ploidy = 1, mask = mask),0.368)
+  expect_lte(rmse.tess3Main(tess3.obj = tess3.res, X = data.for.test$X, ploidy = 1, mask = mask),0.368)
 })
 
 test_that("Compute spatial reg", {
@@ -114,11 +114,15 @@ test_that("Compute spatial reg", {
   ComputeSpatialPenalty(cppres$Q, W)
 
   aux <- capture.output(ComputeMCPASolution(XBin,
-                      K,
-                      Lapl,
-                      lambdaPrim = lambdaPrim,
-                      data.for.test$d + 1,
-                      maxIteration = 200, tolerance = 1e-10, Q = cppres$Q, G = cppres$G))
+                                            K,
+                                            Lapl,
+                                            lambdaPrim = lambdaPrim,
+                                            data.for.test$d + 1,
+                                            maxIteration = 200,
+                                            tolerance = 1e-10,
+                                            Q = cppres$Q,
+                                            G = cppres$G,
+                                            verbose = FALSE))
   spatial.penalty.k3 <- ComputeSpatialPenalty(cppres$Q, W) / (K * data.for.test$n )
 
   # with K = 5
@@ -130,14 +134,18 @@ test_that("Compute spatial reg", {
   ComputeSpatialPenalty(cppres$Q, W)
 
   aux <- capture.output(ComputeMCPASolution(XBin,
-                      K,
-                      Lapl,
-                      lambdaPrim = lambdaPrim,
-                      data.for.test$d + 1,
-                      maxIteration = 200, tolerance = 1e-10, Q = cppres$Q, G = cppres$G))
+                                            K,
+                                            Lapl,
+                                            lambdaPrim = lambdaPrim,
+                                            data.for.test$d + 1,
+                                            maxIteration = 200,
+                                            tolerance = 1e-10,
+                                            Q = cppres$Q,
+                                            G = cppres$G,
+                                            verbose = FALSE))
   spatial.penalty.k5 <- ComputeSpatialPenalty(cppres$Q, W) / (K * data.for.test$n )
 
   # must be equal 0.1340827
-  expect_less_than(abs(spatial.penalty.k5 - spatial.penalty.k3),0.14)
+  expect_lt(abs(spatial.penalty.k5 - spatial.penalty.k3),0.14)
 
 })

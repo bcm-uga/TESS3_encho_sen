@@ -66,7 +66,7 @@ void ProjectG(Eigen::Map<Eigen::MatrixXd> G, int D) {
 
 //' solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
 // [[Rcpp::export]]
-void ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance, Eigen::Map<Eigen::MatrixXd> Q, Eigen::Map<Eigen::MatrixXd> G) {
+void ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance, Eigen::Map<Eigen::MatrixXd> Q, Eigen::Map<Eigen::MatrixXd> G, bool verbose) {
         // Some const
         const int L = X.cols() / D;
         const int n = X.rows();
@@ -139,7 +139,7 @@ void ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen
                 // compute normalized residual error
                 errAux = (X - Q * G.transpose()).norm() / X.norm();
                 // Rcpp::Rcout << "iteration" << it << "& error : " << err << std::endl; // debug
-                Rcpp::Rcout << "---iteration: " << it <<"/" << maxIteration << std::endl;
+                if (verbose) Rcpp::Rcout << "---iteration: " << it <<"/" << maxIteration << std::endl;
                 // Test the convergence
                 converg = (std::abs(errAux - err) < tolerance);
                 err = errAux;
@@ -157,7 +157,7 @@ void ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen
 
 //' solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
 // [[Rcpp::export]]
-void ComputeMCPASolutionNoCopyX(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance, Eigen::Map<Eigen::MatrixXd> Q, Eigen::Map<Eigen::MatrixXd> G) {
+void ComputeMCPASolutionNoCopyX(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance, Eigen::Map<Eigen::MatrixXd> Q, Eigen::Map<Eigen::MatrixXd> G, bool verbose) {
         // Some const
         const int L = X.cols() / D;
         const int n = X.rows();
@@ -243,7 +243,7 @@ void ComputeMCPASolutionNoCopyX(const Eigen::Map<Eigen::MatrixXd> X, int K, cons
                 // compute normalized residual error
                 errAux = (X - Q * G.transpose()).norm() / X.norm();
                 // Rcpp::Rcout << "iteration" << it << "& error : " << err << std::endl; // debug
-                Rcpp::Rcout << "---iteration: " << it <<"/" << maxIteration << std::endl;
+                if (verbose) Rcpp::Rcout << "---iteration: " << it <<"/" << maxIteration << std::endl;
                 // Test the convergence
                 converg = (std::abs(errAux - err) < tolerance);
                 err = errAux;

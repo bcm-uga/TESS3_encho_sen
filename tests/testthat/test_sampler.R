@@ -178,12 +178,12 @@ test_that("Sample from TESS3 generative model", {
   expect_equal(dim(data.list$coord),c(n,2))
 
 
-  tess3.res <- tess3(X = data.list$X,
-                     coord = data.list$coord,
-                     K = data.list$K,
-                     ploidy = data.list$ploidy,
-                     lambda = 1.0,
-                     method = "MCPA")
+  tess3.res <- tess3Main(X = data.list$X,
+                         coord = data.list$coord,
+                         K = data.list$K,
+                         ploidy = data.list$ploidy,
+                         lambda = 1.0,
+                         method = "MCPA")
   expect_lt(ComputeRmseWithBestPermutation(tess3.res$Q, data.list$Q), 0.082)
   expect_lt(ComputeRmseWithBestPermutation(tess3.res$G, data.list$G), 0.086)
 })

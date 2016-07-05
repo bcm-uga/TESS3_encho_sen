@@ -21,28 +21,33 @@
 #' @export
 #'
 #' @examples
-tess3project <- function(X,
-                         XBin = NULL,
-                         coord,
-                         K,
-                         ploidy,
-                         lambda = 1.0,
-                         rep = 1,
-                         W = NULL,
-                         method = "MCPA",
-                         max.iteration = 200,
-                         tolerance = 1e-5,
-                         openMP.core.num = 1,
-                         Q.init = NULL,
-                         mask = 0.0,
-                         no.copy = FALSE,
-                         keep = "all")
+tess3 <- function(X,
+                  XBin = NULL,
+                  coord,
+                  K,
+                  ploidy,
+                  lambda = 1.0,
+                  rep = 1,
+                  W = NULL,
+                  method = "MCPA",
+                  max.iteration = 200,
+                  tolerance = 1e-5,
+                  openMP.core.num = 1,
+                  Q.init = NULL,
+                  mask = 0.0,
+                  copy = TRUE,
+                  algo.copy = TRUE,
+                  keep = "best",
+                  verbose = FALSE)
 {
   # test param :
   if (rep < 1) {
     stop("rep must greater than 1")
   }
 
+  if (!copy & is.null(XBin)) {
+    stop("To force the function not doing copy of the data, you must set XBin.")
+  }
   # Compute XBin
   if (!is.null(X)) {
     XBin <- matrix(0.0, nrow(X), ncol(X) * (ploidy + 1))
@@ -59,7 +64,7 @@ tess3project <- function(X,
     crossvalid.crossentropy = 1:rep
     tess3.run <- list()
     for (r in 1:rep) {
-      tess3.aux <- tess3(X = NULL,
+      tess3.aux <- tess3Main(X = NULL,
                          XBin = XBin,
                          coord = coord,
                          K = K[i],
@@ -72,7 +77,9 @@ tess3project <- function(X,
                          openMP.core.num = openMP.core.num,
                          Q.init = Q.init,
                          mask = mask,
-                         no.copy = no.copy)
+                         copy = copy,
+                         algo.copy = algo.copy,
+                         verbose = verbose)
       rmse[r] <- tess3.aux$rmse
       crossentropy[r] <- tess3.aux$crossentropy
       crossvalid.rmse[r] <- ifelse(!is.null(tess3.aux$crossvalid.rmse),tess3.aux$crossvalid.rmse, -1)
@@ -88,7 +95,7 @@ tess3project <- function(X,
     }
     res[[i]] <- list(K = K[i], tess3.run = tess3.run, rmse = rmse, crossentropy = crossentropy, crossvalid.rmse = crossvalid.rmse, crossvalid.crossentropy = crossvalid.crossentropy)
   }
-  class(res) <- "tess3project"
+  class(res) <- c("tess3",class(res))
   return(res)
 }
 
@@ -102,8 +109,8 @@ tess3project <- function(X,
 #' @export
 #'
 #' @examples
-summary.tess3project <- function(object, ...) {
-  cat(paste("=== Object of class tess3project ===\n"))
+summary.tess3 <- function(object, ...) {
+  cat(paste("=== Object of class tess3 ===\n"))
   if (length(object) > 0) {
     cat(paste("Number of individuals n:", object[[1]]$tess3.run[[1]]$n,"\n"))
     cat(paste("Number of loci L:", object[[1]]$tess3.run[[1]]$L,"\n"))
@@ -125,12 +132,12 @@ summary.tess3project <- function(object, ...) {
 #' @export
 #'
 #' @examples
-plot.tess3project <- function(object, crossvalid = FALSE, crossentropy = FALSE, ...) {
+plot.tess3 <- function(object, crossvalid = FALSE, crossentropy = FALSE, ...) {
   if (length(object) > 0) {
     if (crossvalid) {
       # test if cross valid rmse is not null
       if (object[[1]]$crossvalid.rmse[1] == -1)
-        stop("tess3project was run with mask = 0. Run it with mask > 0.0 to have the cross validation rmse computed")
+        stop("tess3 was run with mask = 0. Run it with mask > 0.0 to have the cross validation rmse computed")
     }
     med <- seq_along(object)
     min <- seq_along(object)
@@ -177,8 +184,8 @@ plot.tess3project <- function(object, crossvalid = FALSE, crossentropy = FALSE, 
 #' @export
 #'
 #' @examples
-is.tess3project <- function(x) {
-  inherits(x, "tess3project")
+is.tess3 <- function(x) {
+  inherits(x, "tess3")
 }
 
 #' Get tess3 run result
@@ -191,15 +198,15 @@ is.tess3project <- function(x) {
 #' @export
 #'
 #' @examples
-Gettess3res <- function(tess3project, K, rep = "best") {
-  if (!is.tess3project(tess3project)) {
-    stop("tess3project must of class tess3project")
+Gettess3res <- function(tess3, K, rep = "best") {
+  if (!is.tess3(tess3)) {
+    stop("tess3 must of class tess3")
   }
   if (rep == "best") {
-    best.rep <- min(which.min(tess3project[[K]]$rmse)[1],length(tess3project[[K]]$tess3.run))
+    best.rep <- min(which.min(tess3[[K]]$rmse)[1],length(tess3[[K]]$tess3.run))
   } else {
-    best.rep <- min(as.numeric(rep),length(tess3project[[K]]$tess3.run))
+    best.rep <- min(as.numeric(rep),length(tess3[[K]]$tess3.run))
   }
-  return(tess3project[[K]]$tess3.run[[best.rep]])
+  return(tess3[[K]]$tess3.run[[best.rep]])
 }
 

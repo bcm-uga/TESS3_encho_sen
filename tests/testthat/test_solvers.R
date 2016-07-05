@@ -34,10 +34,14 @@ test_that("test cpp implementation of MCPA, comparison with R code", {
                       Lapl,
                       lambdaPrim = 1.0,
                       data.for.test$d + 1,
-                      maxIteration = 25, tolerance = 1e-10, Q = cppres$Q, G = cppres$G)
+                      maxIteration = 25,
+                      tolerance = 1e-10,
+                      Q = cppres$Q,
+                      G = cppres$G,
+                      verbose = FALSE)
 
-  expect_less_than(ComputeRmseWithBestPermutation(cppres$Q, Rres$Q), 1e-12)
-  expect_less_than(ComputeRmseWithBestPermutation(cppres$G, Rres$G), 1e-12)
+  expect_lt(ComputeRmseWithBestPermutation(cppres$Q, Rres$Q), 1e-12)
+  expect_lt(ComputeRmseWithBestPermutation(cppres$G, Rres$G), 1e-12)
 })
 
 
@@ -66,7 +70,11 @@ test_that("test with copy and without copy", {
                                                Lapl,
                                                lambdaPrim = 1.0,
                                                data.for.test$d + 1,
-                                               maxIteration = 25, tolerance = 1e-10, Q = cppres.copy$Q, G = cppres.copy$G))
+                                               maxIteration = 25,
+                                               tolerance = 1e-10,
+                                               Q = cppres.copy$Q,
+                                               G = cppres.copy$G,
+                                               verbose = FALSE))
 
   # without copy
   set.seed(502)
@@ -83,11 +91,15 @@ test_that("test with copy and without copy", {
                                                        Lapl,
                                                        lambdaPrim = 1.0,
                                                        data.for.test$d + 1,
-                                                       maxIteration = 25, tolerance = 1e-10, Q = cppres.nocopy$Q, G = cppres.nocopy$G))
+                                                       maxIteration = 25,
+                                                       tolerance = 1e-10,
+                                                       Q = cppres.nocopy$Q,
+                                                       G = cppres.nocopy$G,
+                                                       verbose = FALSE))
 
 
-  expect_less_than(ComputeRmseWithBestPermutation(cppres.copy$Q, cppres.nocopy$Q), 1e-14)
-  expect_less_than(ComputeRmseWithBestPermutation(cppres.copy$G, cppres.nocopy$G), 1e-14)
+  expect_lt(ComputeRmseWithBestPermutation(cppres.copy$Q, cppres.nocopy$Q), 1e-14)
+  expect_lt(ComputeRmseWithBestPermutation(cppres.copy$G, cppres.nocopy$G), 1e-14)
 })
 
 

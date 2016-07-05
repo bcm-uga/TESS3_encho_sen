@@ -3,12 +3,12 @@ context("Plot")
 test_that("test of pvalue plot", {
   data("data.for.test", package = "tess3r")
   set.seed(0)
-  tess3.res <- tess3(X = data.for.test$X,
-                     coord = data.for.test$coord,
-                     K = 3,
-                     ploidy = 1,
-                     lambda = 1.0,
-                     method = "MCPA")
+  tess3.res <- tess3Main(X = data.for.test$X,
+                         coord = data.for.test$coord,
+                         K = 3,
+                         ploidy = 1,
+                         lambda = 1.0,
+                         method = "MCPA")
 
   plot(tess3.res$pvalue)
 })

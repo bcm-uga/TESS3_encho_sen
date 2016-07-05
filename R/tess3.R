@@ -13,26 +13,28 @@
 #' @param coord
 #' @param mask
 #' @param XBin
-#' @param no.copy if TRUE data will not be duplicate in memory but computation can take more time
+#' @param algo.copy if TRUE data will be copy to speed the algorithm
 #'
 #' @return
 #' @export
 #'
 #' @examples
-tess3 <- function(X,
-                  XBin = NULL,
-                  coord,
-                  K,
-                  ploidy,
-                  lambda = 1.0,
-                  W = NULL,
-                  method = "MCPA",
-                  max.iteration = 200,
-                  tolerance = 1e-5,
-                  openMP.core.num = 1,
-                  Q.init = NULL,
-                  mask = 0.0,
-                  no.copy = FALSE)
+tess3Main <- function(X,
+                      XBin = NULL,
+                      coord,
+                      K,
+                      ploidy,
+                      lambda = 1.0,
+                      W = NULL,
+                      method = "MCPA",
+                      max.iteration = 200,
+                      tolerance = 1e-5,
+                      openMP.core.num = 1,
+                      Q.init = NULL,
+                      mask = 0.0,
+                      copy = TRUE,
+                      algo.copy = TRUE,
+                      verbose = FALSE)
 {
   # mem <- c()
   # mem <- c(mem, pryr::mem_used())
@@ -47,10 +49,12 @@ tess3 <- function(X,
   # mem <- c(mem, pryr::mem_used())
 
   ################################################
-  # ensure type of X
-  if (!is.null(X)) {
+  # copy X
+  if (copy & !is.null(X)) {
     X <- matrix(as.double(X), nrow(X), ncol(X))
     CheckX(X, ploidy)
+  } else if (!copy & is.null(XBin)) {
+    stop("To force the function not doing copy of the data, you must set XBin.")
   }
   ################################################
 
@@ -129,6 +133,9 @@ tess3 <- function(X,
   if (!is.null(X)) {
     res$L <- ncol(X)
   } else if (!is.null(XBin)) {
+    if (ncol(XBin) %% (ploidy + 1) != 0) {
+      stop("Number of columns of XBin must be a multiple of ploidy + 1.")
+    }
     res$L <- ncol(XBin) %/% (ploidy + 1)
   } else {
     stop("Both X and XBin can not be null")
@@ -138,7 +145,7 @@ tess3 <- function(X,
   res$ploidy <- ploidy
   res$K <- K
 
-  if (!is.null(X)) {
+  if (is.null(XBin)) {
     XBin <- matrix(0.0, res$n, res$L * (res$ploidy + 1))
     X2XBin(X, ploidy, XBin)
     rm(X)
@@ -183,7 +190,8 @@ tess3 <- function(X,
                                Lapl,
                                lambda,
                                max.iteration = max.iteration,
-                               tolerance = tolerance))
+                               tolerance = tolerance,
+                               verbose = verbose))
   } else if (method == "MCPA") {
     Lapl <- as.matrix(Lapl)
     # Q and G
@@ -196,7 +204,7 @@ tess3 <- function(X,
     }
 
     # mem <- c(mem,pryr::mem_used())
-    if (no.copy) {
+    if (!algo.copy) {
       ComputeMCPASolutionNoCopyX(X = XBin,
                                  K = K,
                                  Lapl = Lapl,
@@ -205,7 +213,8 @@ tess3 <- function(X,
                                  maxIteration = max.iteration,
                                  tolerance = tolerance,
                                  Q = res$Q,
-                                 G = res$G )
+                                 G = res$G,
+                                 verbose = verbose)
     } else {
       ComputeMCPASolution(X = XBin,
                           K = K,
@@ -215,14 +224,15 @@ tess3 <- function(X,
                           maxIteration = max.iteration,
                           tolerance = tolerance,
                           Q = res$Q,
-                          G = res$G )
+                          G = res$G,
+                          verbose = verbose)
     }
 
   } else {
     stop("Unknow method name")
   }
-  class(res$Q) <- "tess3Q"
-  class(res$G) <- "tess3G"
+  class(res$Q) <- c("tess3Q", class(res$Q))
+  class(res$G) <- c("tess3G", class(res$G))
 
   ################################################
 
@@ -239,7 +249,7 @@ tess3 <- function(X,
 
     # Convert Fst into t score
     res <- c(res, ComputeTscoreAndPvalue(res$Fst, K, res$n))
-    class(res$pvalue) <- "tess3pvalue"
+    class(res$pvalue) <- c("tess3pvalue", class(res$pvalue))
   }
 
   ################################################
@@ -256,7 +266,7 @@ tess3 <- function(X,
     res$crossvalid.crossentropy <- ploidy * ComputeAveragedCrossEntropy(masked.X.value, QtG[missing.index.X])
   }
   ################################################
-  class(res) <- "tess3"
+  class(res) <- c("tess3Main", class(res))
 
   # mem <- c(mem,pryr::mem_used())
 
@@ -291,8 +301,8 @@ summary.tess3 <- function(object, ...) {
 #' @export
 #'
 #' @examples
-is.tess3 <- function(x) {
-  inherits(x, "tess3")
+is.tess3Main <- function(x) {
+  inherits(x, "tess3Main")
 }
 
 #' Title
@@ -305,9 +315,9 @@ is.tess3 <- function(x) {
 #' @export
 #'
 #' @examples
-rmse.tess3 <- function(tess3.obj, X, ploidy, mask = NULL) {
-  if (!is.tess3(tess3.obj)) {
-    stop("tess3.obj must of class tess3")
+rmse.tess3Main <- function(tess3.obj, X, ploidy, mask = NULL) {
+  if (!is.tess3Main(tess3.obj)) {
+    stop("tess3.obj must of class tess3Main")
   }
   CheckX(X, ploidy)
   if (!is.null(mask)) {

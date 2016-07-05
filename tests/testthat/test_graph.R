@@ -2,7 +2,7 @@ context("Graph")
 
 
 test_that("test of graph matrix computation based on variogram", {
-
+  skip("deprecated")
   data("data.for.test", package = "tess3r")
   W <- ComputeGraphBasedOnVariogram(coord = data.for.test$coord, X = data.for.test$X, plot = TRUE)
   expect_equal(dim(W), c(data.for.test$n, data.for.test$n))
