@@ -1,8 +1,8 @@
 ###################################################
 #######################Methods#####################
 ###################################################
-#' This function displays a barplot representation of the
-#' ancestry coefficient matrix. It includes a sort-by-Q option.
+#' Displays a barplot representation of the
+#' ancestry coefficient matrix. Includes a sort-by-Q option.
 #' @title Barplot representation of a Q-matrix
 #' @author Kevin Caye, Olivier François
 #'

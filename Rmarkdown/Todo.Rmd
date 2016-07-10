@@ -1,0 +1,20 @@
+---
+title: "To do tess3r"
+output: html_document
+---
+
+Le but de ce document est de fixer les objectifs, lister les tâches et gérer le partage du travail sur le package tess3r.
+
+
+
+input.file = "http://membres-timc.imag.fr/Olivier.Francois/secondary_contact.str"
+
+
+
+
+tess3project.R
+
+
+plotQ.R
+
+

@@ -1,7 +1,6 @@
 # History files
 .Rhistory
 .Rapp.history
-
 # Session Data files
 .RData
 # Example code in package build process
@@ -37,6 +36,6 @@ Rmarkdown/*.html
 *.pch
 .clang_complete
 inst/doc
-
 # vignette stuf
 vignettes/my-vignette_cache/
+todolist.txt
