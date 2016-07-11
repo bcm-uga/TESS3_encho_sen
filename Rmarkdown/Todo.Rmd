@@ -3,18 +3,129 @@ title: "To do tess3r"
 output: html_document
 ---
 
-Le but de ce document est de fixer les objectifs, lister les tâches et gérer le partage du travail sur le package tess3r.
+Le but de ce document est de fixer les objectifs, lister les tâches et gérer le partage du travail sur le package tess3r. Le package doit permettre à un utilisateur de lire ses données, d'exécuter la commande principale tess3 (où piger pourquoi ca plante), de générer barplot+piechart+map, de faire les tests outliers et un manhattan plot de base.  Il y a 4 wps à gérer. 
+
+* **wp1: Lire les données**
+    + tester les données en entrée
+    + renvoyer des messages d'erreur qui aident à comprendre
+    + permettre de convertir à partir des formats les plus classiques (structure/admixture -> genotype)
+
+* **wp2: Documenter les fonctions principales**
+    + trier les fonctions principales (avec des docs plus lourdes) et celles annexes (avec docs plus light) 
+    + vérifier les messages, warnings, break, etc, pour que l'utilisateur comprenne un peu ce qui ce passe
+    + noms de methodes et de fonctions explicites, precis, logiques
+    + doc complete avec details et exemples pour ces fonctions (moins de 10)
+
+* **wp3: Graphiques**
+    + creation de palettes, gestion des couleurs 
+    + gérer l'ordre des individus dans les barplots sort-by-Q
+    + method = "piechart" a faire pour les pops, idéalement superposer a une carte openStreetView (demande de lire "pop = ")
+    + améliorer le graphique des manhattan plots, lire une carte génétique "genetic.map =  ".
+
+* **wp4: Vignettes et manuel**
+    + vignette Rmd "Input files/formats"
+    + vignette Rmd "Tour horizon rapide, tess3 en moins de 10 lignes de codes"
+    + vignette Rmd "Les rasters si t'as peur"
+    + un tutorial complet en PDF, sur la base du tuto "structure" 
+
+* **autres taches:**
+    + si pas trop compliqué, permettre tessAdm (fonction tess2)
+    + si pas trop compliqué, permettre snmf 
+    + si pas trop compliqué, permettre structure et pops. 
 
 
+## wp1: Lire les données (kevin/olivier)
 
+On a pas de classe pour les données en entrée. Cela n'est pas génant pour les coordonnées spatiales, car on peut expliquer ce qu'on attend dans les man et dans les vignettes. Par exemple, certains utilisateurs utilisent le systeme dms. Les etats-uniens utilisent la reference longitude W, plutot que longitude E. 
+
+Pour la matrice de génotype, c'est plus génant de demander une matrice sans rien préciser car il y a plein de formats différents. Ce ne sont pas forcément des SNPs (pas encore la majorité). La definition officiel du génotype, c'est quelque chose du genre *Aa* ou *AA*. Donc on peut s'attendre au pire, et surtout que ca limite franchement l'usage. 
+
+Par exemple, un utilisateur de STRUCTURE aura ce type de données
+```{r}
 input.file = "http://membres-timc.imag.fr/Olivier.Francois/secondary_contact.str"
+mydata = read.table(input.file)
+mydata[1:10, 1:10]
+```
+
+ou les coordonnées spatiales précèdent les génotypes et les *a* et *A* sont remplacés par des identifiant assez arbitraires. Une utilisation naive et fausse 
+
+```{r}
+library(tess3r)
+# obj <- tess3(as.matrix(mydata[,-(1:2)]), coord = mydata[,1:2], K = 5, ploidy = 1, openMP.core.num = 4)
+```
+
+ne produit pas de message d'erreur (ne produit rien en fait quand on enleve le dièse). Une utilisation stupide
+
+```{r}
+#obj <- tess3(as.matrix(mydata[,-(1:2)]), coord = data.at$coord, K = 5, ploidy = 1, openMP.core.num = 4)
+```
+
+produit un message d'erreur dont le contenu est inexplicite. Donc, il est important d'inclure au moins une fonction du type conversion du format "structure" vers "objet d'entrée", et de rédiger une vignette qui explique comment on peut manipuler des formats classiques dans tess3r (ped, geno par exemple). Typiquement les formats de ADMIXTURE sont a prendre en compte. 
+
+## wp2: Documenter les fonctions principales (tous)
+
+#### trier les fonctions principales avec "doc lourde" et celles à rendre invisibles ou et avec "doc light" 
+
+Doc complete avec details et exemples pour les fonctions principales (moins de 10)
+
+tess3project.R (kevin/olivier): documenter la fonction principale tess3
+
+plotQ.R (flora):  barplot et plot (voir aussi l'inclusion des "piechart"). 
+
+plotG.R (olivier) : pvalue et manhattan plot de base
+
+décider pour les fonctions du type "variogram", utilité en pratique? @flora : pour les docs, on utilise la syntaxe roxygen2, en fait on s'y habitue vite, c'est assez simple, et ca génére automatiquement les Rd d'aide. Voir la fonction barplot pour un début de doc plus complet qu'ailleurs. 
 
 
+#### soigner les messages, warnings, break, etc, pour que l'utilisateur comprenne un peu ce qui ce passe. 
+
+C'est tres lié aux tests du wp1. Par exemple, je suis tombé la dessus
+
+```{r}
+# stop("To force the function not doing copy of the data, you must set XBin.")
+```
+
+pas tres parlant, on ne sait pas de quelles données on parle et a quoi on doit fixer XBin. Ca a l'air cryptique. améliorer ce type de message. 
 
 
-tess3project.R
+#### noms de methodes qui parlent et qui sont logiques (tous)
+
+ 
+Les noms des methodes de tess3 ne correspondent pas aux noms de l'article et il y des ameliorations a apporter a plusieurs endroits sur ces definitions. Par exemple, dans plot.tess3Q on devrait avoir deux methodes de plot "piechart" et "map" avec des options differentes.  
+
+Généralement, quand on utilise hclust( dist(X, method = "euclidean"), method = "single.link")) on comprend parfaitement de quoi il s'agit. Donc il faut que notre syntaxe colle le plus possible à l'usage le plus courant. 
 
 
-plotQ.R
+## wp3: Graphiques (flora)
+
+@flora c'est dans plotQ.R spatialPlots.R et utils.R, creation de palettes, gestion des couleurs, gerer l'ordre des individus dans les barplots (sort by Q), 
+
+créer une fonction pour method = "piechart" pour les pops, idéalement superposer a une carte openStreetView (demande de lire les pops).
+
+créer une fonction pour mapper un locus d'interet particulier (frequence dans l'espace) a partir de son identifiant ou de son numero. 
 
 
+@olivier améliorer le graphique des manhattan plots, demander de lire "genetic.map".
+
+
+## wp4: Vignettes et manuel. 
+
+Le but est de faire des mini tuto à lire en moins de 10 minutes et moins long que ce compte-rendu.
+
+#### vignette Rmd "Input files" (olivier/kevin)
+#### vignette Rmd "Tour horizon rapide, tess3 en moins de 8 lignes de codes" (olivier)
+#### vignette "Trucs pour les graphiques" (flora)
+#### vignette Rmd "Les rasters si t'as peur" (kevin)
+
+
+#### un tutorial complet en PDF, sur la base du tuto "structure" (olivier)
+
+plus sérieux et incluant les tests de selection
+
+
+## Autres taches:
+    + si pas trop compliqué, permettre tessAdm (fonction tess2)
+    + si pas trop compliqué, permettre snmf 
+    + si pas trop compliqué, permettre structure et pops.
+pour plus tard? mais pour faire un package qui dépotte...     
+    

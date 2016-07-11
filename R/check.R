@@ -1,3 +1,7 @@
+# checks input files, coord, X, W
+#
+
+
 #' Title
 #'
 #' @param X
@@ -11,14 +15,14 @@ CheckX <- function(X, ploidy) {
     stop("X must be a matrix")
   }
   if (!is.double(X)) {
-    stop("Element of X must of type double or integer")
+    stop("Elements of X must be of type double or integer")
   }
   ## check if rang of genotype matrix
   if (max(X, na.rm = TRUE) > ploidy) {
-    stop("The maximum value of the X matrix can not be superior than ploidy + 1")
+    stop("The maximum value of the genotype matrix (X) cannot be greater than ploidy + 1. Missing data must be encoded as NA.")
   }
   if (min(X, na.rm = TRUE) < 0) {
-    stop("Negative values in the X matrix are not allowed")
+    stop("Negative values in the genotype matrix (X) are not allowed. Missing data must be encoded as NA.")
   }
 }
 
@@ -35,10 +39,10 @@ CheckXBin <- function(XBin, ploidy) {
     stop("XBin must be a matrix")
   }
   if (!is.double(XBin)) {
-    stop("Element of XBin must of type double")
+    stop("Elements of XBin must be of type double")
   }
   if (ncol(XBin) %% (ploidy + 1) != 0) {
-    stop("The number of column must be a multiple of (ploidy + 1)")
+    stop("The number of columns in Xbin must be a multiple of (ploidy + 1)")
   }
   ## check if rang of genotype matrix
   if (max(XBin, na.rm = TRUE) != 1) {
@@ -62,10 +66,10 @@ CheckW <- function(W) {
     stop("W must be a matrix")
   }
   if (!is.double(W)) {
-    stop("Element of W must of type double")
+    stop("Elements of W must be of type double")
   }
   if (nrow(W) != ncol(W) | !Matrix::isSymmetric(W)) {
-    stop("W must be squared symetric matrix")
+    stop("W must be a squared symmetric matrix")
   }
 }
 
@@ -81,7 +85,7 @@ CheckCoord <- function(Coord) {
     stop("Coord must be a matrix")
   }
   if (!is.double(Coord)) {
-    stop("Element of Coord must of type double")
+    stop("Elements of Coord must be of type double")
   }
 }
 
@@ -99,7 +103,7 @@ CheckXW <- function(X, ploidy, W) {
   CheckW(W)
   CheckX(X, ploidy)
   if (nrow(W) != nrow(X)) {
-    stop("W must be of size nrow(X) x nrow(X)")
+    stop("W must be of size nrow(X) times nrow(X)")
   }
 }
 
@@ -116,7 +120,7 @@ CheckXBinW <- function(XBin, ploidy, W) {
   CheckW(W)
   CheckXBin(XBin, ploidy)
   if (nrow(W) != nrow(XBin)) {
-    stop("W must be of size nrow(X) x nrow(X)")
+    stop("W must be of size nrow(X) times nrow(X)")
   }
 }
 
