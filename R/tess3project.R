@@ -198,6 +198,9 @@ is.tess3 <- function(x) {
 #' @export
 #'
 #' @examples
+
+### cette fonction a un bug
+
 Gettess3res <- function(tess3, K, rep = "best") {
   if (!is.tess3(tess3)) {
     stop("tess3 must of class tess3")

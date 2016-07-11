@@ -11,6 +11,7 @@
 #'
 #' @examples
 CheckX <- function(X, ploidy) {
+  cat("Check genotype input file.\n")
   if (!is.matrix(X)) {
     stop("X must be a matrix")
   }

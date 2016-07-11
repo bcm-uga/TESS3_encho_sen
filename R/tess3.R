@@ -51,6 +51,7 @@ tess3Main <- function(X,
   ################################################
   # copy X
   if (copy & !is.null(X)) {
+    cat("yeah")
     X <- matrix(as.double(X), nrow(X), ncol(X))
     CheckX(X, ploidy)
   } else if (!copy & is.null(XBin)) {
@@ -61,11 +62,11 @@ tess3Main <- function(X,
   # mem <- c(mem,pryr::mem_used())
 
   ################################################
-  # check type of the input
+  # check type of input
 
   ## geographic.coordinate
   if (is.null(coord) && is.null(W)) {
-    stop("If no W graph weight matrix is specified, geographic.coordinate is mandatory")
+    stop("If no graph-weight matrix is specified, geographic coordinates must be provided as coord parameter")
   }
 
    ## K
