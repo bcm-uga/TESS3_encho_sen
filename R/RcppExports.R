@@ -64,6 +64,7 @@ ComputeAdmixtedGeno <- function(geno, Z, n, L) {
 }
 
 #' TODO
+#' @export
 ComputeFst <- function(Q, G, D) {
     .Call('tess3r_ComputeFst', PACKAGE = 'tess3r', Q, G, D)
 }

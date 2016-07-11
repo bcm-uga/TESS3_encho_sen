@@ -5,6 +5,7 @@
 using namespace Eigen;
 
 //' TODO
+//' @export
 // [[Rcpp::export]]
 Eigen::MatrixXd ComputeFst(const Eigen::Map<Eigen::MatrixXd> Q, const Eigen::Map<Eigen::MatrixXd> G, int D) {
 
