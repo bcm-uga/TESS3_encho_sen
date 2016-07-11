@@ -102,7 +102,7 @@ tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1
 
   if (!diploid & FORMAT == 2) stop("FORMAT = 2 is for diploids only.")
 
-  dat = read.table(data.frame)
+  dat = read.table(dataframe)
 
   if (TESS == FALSE){
     if (extra.row > 0) dat = dat[-(1:extra.row),]
