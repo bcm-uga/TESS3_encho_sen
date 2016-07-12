@@ -51,7 +51,6 @@ tess3Main <- function(X,
   ################################################
   # copy X
   if (copy & !is.null(X)) {
-    cat("yeah")
     X <- matrix(as.double(X), nrow(X), ncol(X))
     CheckX(X, ploidy)
   } else if (!copy & is.null(XBin)) {

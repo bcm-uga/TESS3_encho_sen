@@ -17,7 +17,9 @@
 #' @return coord a matrix of geographic coordinates
 #' @seealso \code{\link{tess3}}
 #' @examples
-#' ##
+#' data(durand09)
+#' d09tess3 <- tess2tess3(durand09, FORMAT = 2, extra.column = 1)
+#' obj <- tess3Main(X = d09tess3$X, coord = d09tess3$coord, K = 3, ploidy = 2, openMP.core.num = 4)
 #' @export
 tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1, extra.row = 0, extra.column = 0){
 
@@ -25,7 +27,7 @@ tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1
 
   if (is.null(dataframe)) stop("dataframe cannot be NULL.")
 
-  if (!is.data.frame(dataframe)) stop("dataframe must be a data.frame object")
+  if (!is.data.frame(dataframe)) stop("dataframe must be a data.frame object.")
 
   dat = dataframe
 
@@ -76,9 +78,9 @@ tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1
   unique.dat = unique(as.numeric(dat))
   missing.dat = unique.dat[unique.dat < 0]
 
-  if (length(missing.dat) == 0)  cat("The input file contains no missing genotypes","\n")
-  if (length(missing.dat) == 1)  cat("Missing alleles are encoded as",missing.dat,"\n")
-  if (length(missing.dat) > 1) stop("Multiple values for missing data","\n")
+  if (length(missing.dat) == 0)  cat("The input file contains no missing genotypes.","\n")
+  if (length(missing.dat) == 1)  cat("Missing alleles are encoded as",missing.dat,".\n")
+  if (length(missing.dat) > 1) stop("Multiple values for missing data.","\n")
 
 
 
@@ -147,7 +149,7 @@ tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1
       genotype[i, (genotype[i,] < 0)] = NA
     }}
 
-  return(list(X = genotype, coord = coord))
+  return(list(X = as.matrix(genotype), coord = as.matrix(coord)))
 }
 
 

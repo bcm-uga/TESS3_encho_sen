@@ -13,10 +13,10 @@
 CheckX <- function(X, ploidy) {
   cat("Check genotype input file.\n")
   if (!is.matrix(X)) {
-    stop("X must be a matrix")
+    stop("X must be a matrix.")
   }
   if (!is.double(X)) {
-    stop("Elements of X must be of type double or integer")
+    stop("Elements of X must be of type double or integer.")
   }
   ## check if rang of genotype matrix
   if (max(X, na.rm = TRUE) > ploidy) {
