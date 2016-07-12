@@ -1,6 +1,6 @@
 Package: tess3r
 Type: Package
-Title: Fast Estimation of Spatial Population Structure
+Title: Inference of Spatial Population Genetic Structure
 Version: 0.1
 Date: 2016-02-19
 Author: Kevin Caye
