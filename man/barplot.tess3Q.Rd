@@ -20,8 +20,8 @@
 Generates a graphical output.
 }
 \description{
-This function displays a barplot representation of the
-ancestry coefficient matrix. It includes a sort-by-Q option.
+Displays a barplot representation of the
+ancestry coefficient matrix. Includes a sort-by-Q option.
 }
 \examples{
 data(data.at)
