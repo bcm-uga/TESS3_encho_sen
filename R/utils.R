@@ -13,7 +13,8 @@
 #' in TESS 2.3 input files, and include individual ids, pop ids, phenotypes, etc. Geographic coordinates must be considered as extra columns if the flag \code{TESS}
 #' is set to \code{TESS = FALSE}. Missing data are encoded as "-9" or any negative values
 #' @return An object of class \code{list} containing a genotype matrix and individual geographic coordinates.
-#' @return Q
+#' @return X a matrix of genotypes
+#' @return coord a matrix of geographic coordinates
 #' @seealso \code{\link{tess3}}
 #' @examples
 #' ##
