@@ -13,13 +13,15 @@
 #' in TESS 2.3 input files, and include individual ids, pop ids, phenotypes, etc. Geographic coordinates must be considered as extra columns if the flag \code{TESS}
 #' is set to \code{TESS = FALSE}. Missing data are encoded as "-9" or any negative values
 #' @return An object of class \code{list} containing a genotype matrix and individual geographic coordinates.
-#' @return X a matrix of genotypes
-#' @return coord a matrix of geographic coordinates
+#' @return X a matrix of genotypes with values 0,1,2 or NA.
+#' @return coord a matrix of geographic coordinates.
 #' @seealso \code{\link{tess3}}
 #' @examples
 #' data(durand09)
 #' d09tess3 <- tess2tess3(durand09, FORMAT = 2, extra.column = 1)
-#' obj <- tess3Main(X = d09tess3$X, coord = d09tess3$coord, K = 3, ploidy = 2, openMP.core.num = 4)
+#' obj <- tess3(X = d09tess3$X, coord = d09tess3$coord, K = 1:3, ploidy = 2, openMP.core.num = 4)
+#' Qmatrix <- Gettess3res(obj, K = 3)$Q
+#' barplot(Qmatrix, sort.by.Q = FALSE, border = NA, space = 0, xlab = "Individuals", ylab = "Ancestry coefficients")
 #' @export
 tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1, extra.row = 0, extra.column = 0){
 

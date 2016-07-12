@@ -19,10 +19,11 @@
 #' barplot(Qmatrix, border = NA, space = 0, xlab = "individuals", ylab = "Ancestry proportions", main = "Ancestry matrix")
 #' @export
 barplot.tess3Q = function(Q, sort.by.Q = TRUE, col.palette = NULL, palette.length = 9, ...){
-  if (class(Q) != "tess3Q") stop("Object Q not of class tess3Q.")
+  if (class(Q)[1] != "tess3Q") {warning("Object Q not of class tess3Q.")}
   ## defines a default color palette (8 colors)
   if (is.null(col.palette)) {
-    if (ncol(Q) > 8)  stop("The default color palette expects 8 (or less) clusters.")
+    if (ncol(Q) > 8)  stop("The default color palette expects less than 9 clusters.
+                           Use CreatePalette() to create color palettes for more than 8 clusters.")
     TestRequiredPkg("RColorBrewer")
     col.palette = list(
       c(RColorBrewer::brewer.pal(palette.length,"Reds")),
