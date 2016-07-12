@@ -27,7 +27,9 @@ is set to \code{TESS = FALSE}. Missing data are encoded as "-9" or any negative 
 \value{
 An object of class \code{list} containing a genotype matrix and individual geographic coordinates.
 
-Q
+X a matrix of genotypes
+
+coord a matrix of geographic coordinates
 }
 \description{
 This function converts data sets imported from the STRUCTURE and the TESS 2.3 input file formats to the tess3 formats.
