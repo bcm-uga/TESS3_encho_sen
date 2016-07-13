@@ -1,6 +1,11 @@
-RSCRIPT = Rscript
-TEX = pdflatex
-PRINT = @echo -e "\e[1;34mBuilding $@\e[0m"
+RED = \033[0;31m
+GREEN =  \033[0;32m
+NC = \033[0m # No Color
+PRINT = @echo "$(GREEN)Building $@ $(NC)"
+
+################################################################################
+# compile
+
 SOURCE_CPP_ALL := $(wildcard src/*.cpp)
 SOURCE_CPP := $(filter-out src/RcppExports.cpp, $(SOURCE_CPP_ALL))
 SOURCE_R_ALL := $(wildcard R/*.R)
@@ -10,7 +15,7 @@ SOURCE_R := $(filter-out R/RcppExports.R, $(SOURCE_R_ALL))
 
 all: install
 
-test: install
+test:
 	$(PRINT)
 	R --vanilla -e 'devtools::test()'
 
@@ -30,3 +35,11 @@ R/RcppExports.R src/RcppExports.cpp: $(SOURCE_CPP)
 	R --vanilla -e 'Rcpp::compileAttributes()'
 	touch R/RcppExports.R # because compileAttributes have is own makefile system
 	touch src/RcppExports.cpp
+
+################################################################################
+# docker
+
+IMAGE_NAME = cayek/tess3r:latest
+CONTAINER_NAME = tess3r
+
+include	docker.mk
