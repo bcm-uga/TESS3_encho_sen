@@ -39,3 +39,5 @@ inst/doc
 # vignette stuf
 vignettes/my-vignette_cache/
 todolist.txt
+# mac stuf
+.DS_Store
