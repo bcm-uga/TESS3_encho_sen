@@ -1,0 +1,17 @@
+# Olivier 
+- vignette
+
+# Kevin
+- tess3 bug : see 22_07_2016_todo.html (check X do not work)
+- tess3 function return a list of list if K is a list or just a list of result
+- fix bugs in getResult (do not return good K) and plot of project
+- getter to return Q, G etc
+- option names must be consistent with name in article
+- documentations (all functions) (light documentation)
+
+
+# Flora
+- ...
+
+# Someone
+- vignette for different data format files
