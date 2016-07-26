@@ -9,6 +9,7 @@
 - option names must be consistent with name in article
 - documentations (all functions) (light documentation)
 - imputation function (X ~ Bin(Q*F^T,1))
+- check function : control class : "matrix" %inù class(Q) etc...
 
 # Flora
 - ...

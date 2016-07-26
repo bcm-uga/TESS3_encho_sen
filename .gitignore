@@ -32,6 +32,7 @@ Rmarkdown/*.html
 *.lfmm
 # emacs
 *~
+\#*\#
 # clang
 *.pch
 .clang_complete
