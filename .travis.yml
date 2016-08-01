@@ -11,3 +11,5 @@ r_packages:
 
 after_success:
   - Rscript -e 'covr::codecov()'
+  # Try to compile docker image
+  # - make docker_build
