@@ -36,39 +36,3 @@ ComputeMeanDist <- function(coord) {
   }
   return(mean(W))
 }
-
-#' Title
-#'
-#' @param X
-#' @param coord
-#' @param plot
-#'
-#' @return
-#'
-#' @examples
-ComputeGraphBasedOnVariogram <- function(X, coord, plot = TRUE, nugget = NULL, ...) {
-  message("DO not work !! ")
-  TestRequiredPkg("phylin")
-  TestRequiredPkg("raster")
-
-  message("# Compute matrix of genetic distance")
-  Dgen <- dist(X, method = "manhattan")
-  Dgeo <- dist(coord)
-
-  message("# Compute variogram and fit a gaussian model")
-  gv <- phylin::gen.variogram( as.matrix(Dgeo), as.matrix(Dgen), ...)
-  if (plot) {
-    phylin::plot.gv(gv)
-  }
-  gv.fit <- phylin::gv.model(gv, model = 'gaussian', nugget = ifelse(is.null(nugget),gv$gamma[1], nugget) )
-  if (plot) {
-    phylin::plot.gv(gv.fit)
-  }
-  message("range = ",gv.fit$model$range)
-  message("# Compute graphe with heat kernel weight")
-  W <- as.matrix(tess3r::ComputeHeatKernelWeight(coord, gv.fit$model$range))
-  if (plot) {
-    raster::plot(raster::raster(W), axes = FALSE)
-  }
-  return(W)
-}
