@@ -12,9 +12,19 @@ Suggests:
     testthat,
     sp,
     raster,
-    gstat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    maps,
+    permute,
+    RColorBrewer,
+    gtools,
+    MASS,
+    LEA,
+    mapplots,
+    gstat,
+    sp,
+    automap,
+    fields
 Imports:
     Rcpp (>= 0.12.3),
     RcppEigen (>= 0.3.2.8.1)
