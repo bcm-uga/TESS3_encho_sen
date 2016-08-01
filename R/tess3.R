@@ -26,7 +26,7 @@ tess3Main <- function(X,
                       ploidy,
                       lambda = 1.0,
                       W = NULL,
-                      method = "MCPA",
+                      method = "projected.ls",
                       max.iteration = 200,
                       tolerance = 1e-5,
                       openMP.core.num = 1,
@@ -65,7 +65,7 @@ tess3Main <- function(X,
 
   ## geographic.coordinate
   if (is.null(coord) && is.null(W)) {
-    stop("If no graph-weight matrix is specified, geographic coordinates must be provided as coord parameter")
+    stop("If no graph matrix is specified, geographic coordinates must be provided as coord parameter")
   }
 
    ## K
@@ -84,7 +84,10 @@ tess3Main <- function(X,
   }
   ## method
   if (!is.character(method)) {
-    stop("method must be the name of the method to use")
+    stop("method must be a character string for the method to use")
+  }
+  if (method != "projected.ls" & method != "qp") {
+    stop("method must be projected.ls or qp")
   }
   ## max.iteration
   if (!is.numeric(max.iteration)) {
@@ -115,7 +118,7 @@ tess3Main <- function(X,
   # Q.init
   if (!is.null(Q.init)) {
     if (nrow(Q.init) != nrow(X) | ncol(Q.init) != K) {
-      stop("Q.init must be of size n * K")
+      stop("Q.init must be of dimensions (number of individuals) x K.")
     }
   }
 
@@ -138,7 +141,7 @@ tess3Main <- function(X,
     }
     res$L <- ncol(XBin) %/% (ploidy + 1)
   } else {
-    stop("Both X and XBin can not be null")
+    stop("X or XBin must be non-null")
   }
 
   res$n <- nrow(coord)
@@ -158,7 +161,7 @@ tess3Main <- function(X,
   ################################################
   # mask if asked
   if (mask != 0.0) {
-    message("Mask ", mask, "% of X for cross validation")
+    message("Mask ", mask, "% of genotypes for cross validation")
     missing.index.X <- sample(1:(length(XBin)), length(XBin) * mask)
     masked.X.value <- XBin[missing.index.X]
     XBin[missing.index.X] <- NA
@@ -183,7 +186,7 @@ tess3Main <- function(X,
 
   ################################################
   # compute Q and G matrix
-  if (method == "OQA") {
+  if (method == "qp") {
     res <- c(res, SolveTess3QP(XBin,
                                K,
                                ploidy,
@@ -192,7 +195,7 @@ tess3Main <- function(X,
                                max.iteration = max.iteration,
                                tolerance = tolerance,
                                verbose = verbose))
-  } else if (method == "MCPA") {
+  } else if (method == "projected.ls") {
     Lapl <- as.matrix(Lapl)
     # Q and G
     res$G <- matrix(0.0, nrow = (res$ploidy + 1) * res$L, ncol = res$K)
@@ -285,11 +288,11 @@ tess3Main <- function(X,
 #' @examples
 summary.tess3 <- function(object, ...) {
   cat(paste("=== Object of class tess3 ===\n"))
-  cat(paste("Number of individuals n:", object$n,"\n"))
-  cat(paste("Number of loci L:", object$L,"\n"))
+  cat(paste("Number of individuals (n):", object$n,"\n"))
+  cat(paste("Number of loci (L):", object$L,"\n"))
   cat(paste("Ploidy:", object$ploidy,"\n"))
-  cat(paste("Number of ancestral populations K:", object$K,"\n"))
-  cat(paste("RMSE(genotype, Q * G^T):", object$rmse,"\n"))
+  cat(paste("Number of ancestral populations (K):", object$K,"\n"))
+  cat(paste("Residual error:", object$rmse,"\n"))
 }
 
 
@@ -317,7 +320,7 @@ is.tess3Main <- function(x) {
 #' @examples
 rmse.tess3Main <- function(tess3.obj, X, ploidy, mask = NULL) {
   if (!is.tess3Main(tess3.obj)) {
-    stop("tess3.obj must of class tess3Main")
+    stop("tess3.obj must of class tess3Main.")
   }
   CheckX(X, ploidy)
   if (!is.null(mask)) {
