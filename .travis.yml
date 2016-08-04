@@ -1,19 +1,16 @@
-# Sample .travis.yml for R projects
+language: R
+cache: packages
+sudo: false
 
-language: r
 warnings_are_errors: true
-sudo: required
 
-services:
-  - docker
+
+bioc_required: true
 
 r_packages:
   - covr
-  - raster
-  - maps
-  - permute
-  - gtools
-  - quadprog
 
 after_success:
-  - Rscript -e 'library(covr); codecov()'
+  - Rscript -e 'covr::codecov()'
+  # Try to compile docker image
+  # - make docker_build

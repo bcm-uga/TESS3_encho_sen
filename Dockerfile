@@ -4,9 +4,27 @@ MAINTAINER cayek "https://github.com/cayek"
 
 ################################################################################
 # install dependencies
-RUN R -e 'install.packages(c("raster", \
-"maps", \
-"permute", "gtools", "quadprog"))'
+RUN install2.r --error \
+    -r "http://cran.rstudio.com" \
+    -r "http://www.bioconductor.org/packages/release/bioc" \
+    testthat \
+    sp \
+    raster \
+    knitr \
+    rmarkdown \
+    maps \
+    permute \
+    RColorBrewer \
+    gtools \
+    MASS \
+    LEA \
+    mapplots \
+    gstat \
+    sp \
+    automap \
+    fields \
+    Rcpp \
+    RcppEigen
 
 ################################################################################
 # install tess3
