@@ -1,17 +1,19 @@
+# Sample .travis.yml for R projects
+
+language: r
+warnings_are_errors: true
 sudo: required
 
 services:
   - docker
 
-before_install:
-  - docker build -t cayek/tess3r .
-  - docker run -it --name tess3r -w /data -v $(pwd):/data -d -P cayek/tess3r
-
-script:
-  - docker exec -it tess3r make test
+r_packages:
+  - covr
+  - raster
+  - maps
+  - permute
+  - gtools
+  - quadprog
 
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push cayek/tess3r;
-    fi
+  - Rscript -e 'library(covr); codecov()'

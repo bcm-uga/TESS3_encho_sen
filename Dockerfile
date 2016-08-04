@@ -6,7 +6,7 @@ MAINTAINER cayek "https://github.com/cayek"
 # install dependencies
 RUN R -e 'install.packages(c("raster", \
 "maps", \
-"permute"))'
+"permute", "gtools", "quadprog"))'
 
 ################################################################################
 # install tess3

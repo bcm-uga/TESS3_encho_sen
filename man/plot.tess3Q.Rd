@@ -4,7 +4,7 @@
 \alias{plot.tess3Q}
 \title{Displays geographic maps for ancestry coefficients}
 \usage{
-\method{plot}{tess3Q}(Q, coord, method = "mapping.max", resolution = c(300,
+\method{plot}{tess3Q}(Q, coord, method = "map.max", resolution = c(300,
   300), window = NULL, background = TRUE, raster.filename = NULL,
   interpolation.function = kriging(10), col = NULL, col.palette = NULL,
   map = TRUE, palette.length = 9, ...)
@@ -12,7 +12,7 @@
 \arguments{
 \item{Q}{an object of class \code{tess3Q} containing a matrix of ancestry coefficients.}
 
-\item{col.palette}{is a list of color palettes. If \code{NULL}, a default list with 8 color palettes is used.}
+\item{col.palette}{a list of color palettes. If \code{NULL}, a default list with 8 color palettes is used.}
 
 \item{palette.length}{an integer value for the number of colors in each element of the palette list.}
 }
@@ -28,9 +28,9 @@ details on interpolation methods
 }
 \examples{
 data(data.at)
-obj <- tess3(data.at$X, coord = data.at$coord, K = 5, ploidy = 1, openMP.core.num = 4)
+obj <- tess3Main(data.at$X, coord = data.at$coord, K = 5, ploidy = 1, openMP.core.num = 4)
 Qmatrix <- obj$Q
-plot(obj$Q, data.at$coord, method = "mapping.max", interpol = kriging(10), cex = .4, xlab = "Longitude", ylab= "Latitude", main = "Ancestry coefficients")
+plot(obj$Q, data.at$coord, method = "map.max", interpol = kriging(10), cex = .4, xlab = "Longitude", ylab= "Latitude", main = "Ancestry coefficients")
 }
 \author{
 Kevin Caye, Flora Jay, Olivier François
