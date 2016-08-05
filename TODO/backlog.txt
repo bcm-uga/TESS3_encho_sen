@@ -4,10 +4,14 @@
 
 # Kevin
 - plot of project
-- getter to return Q, G etc
+- getter to return Q, G etc cad :
+  - qmatrix(obj , K, run ="best")
+  - pvalue(obj , K, run ="best")
+  - ...
 - option names must be consistent with name in article
-- check function : control class : "matrix" %inù class(Q) etc...
-- fix warning and note when running maik check
+- check function : control class : "matrix" %in% class(Q) etc...
+- fix warning and note when running make check
+- option chisq = TRUE (use chisq to compute pvalue)
 
 # Flora
 - ...
