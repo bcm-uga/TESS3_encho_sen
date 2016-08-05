@@ -269,7 +269,7 @@ tess3Main <- function(X,
     res$crossvalid.crossentropy <- ploidy * ComputeAveragedCrossEntropy(masked.X.value, QtG[missing.index.X])
   }
   ################################################
-  class(res) <- c("tess3Main", class(res))
+  class(res) <- c(class(res), "tess3Main")
 
   # mem <- c(mem,pryr::mem_used())
 
@@ -286,8 +286,8 @@ tess3Main <- function(X,
 #' @export
 #'
 #' @examples
-summary.tess3 <- function(object, ...) {
-  cat(paste("=== Object of class tess3 ===\n"))
+summary.tess3Main <- function(object, ...) {
+  cat(paste("=== Object of class tess3Main ===\n"))
   cat(paste("Number of individuals (n):", object$n,"\n"))
   cat(paste("Number of loci (L):", object$L,"\n"))
   cat(paste("Ploidy:", object$ploidy,"\n"))
@@ -329,6 +329,19 @@ rmse.tess3Main <- function(tess3.obj, X, ploidy, mask = NULL) {
   XBin <- matrix(0.0, nrow(X), ncol(X) * (ploidy + 1))
   X2XBin(X, ploidy, XBin)
   return(ComputeRmse(XBin, tcrossprod(tess3.obj$Q, tess3.obj$G)))
+}
+
+#' Title
+#'
+#' @param object
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
+plot.tess3Main <- function(object, ...) {
+  message("Nothing to plot")
 }
 
 #' tess3r : estimation of spatial population structure

@@ -20,7 +20,7 @@ test_that("TESS3 copy", {
                                   ploidy,
                                   lambda = 1.0,
                                   W = NULL,
-                                  method = "MCPA",
+                                  method = "projected.ls",
                                   max.iteration = 200,
                                   tolerance = 1e-5,
                                   openMP.core.num = 4,
@@ -36,7 +36,7 @@ test_that("TESS3 copy", {
                                   ploidy,
                                   lambda = 1.0,
                                   W = NULL,
-                                  method = "MCPA",
+                                  method = "projected.ls",
                                   max.iteration = 200,
                                   tolerance = 1e-5,
                                   openMP.core.num = 4,
@@ -52,7 +52,7 @@ test_that("TESS3 copy", {
                      ploidy,
                      lambda = 1.0,
                      W = NULL,
-                     method = "MCPA",
+                     method = "projected.ls",
                      max.iteration = 200,
                      tolerance = 1e-5,
                      openMP.core.num = 4,
@@ -82,7 +82,7 @@ test_that("TESS3 to dataframe", {
                          ploidy,
                          lambda = 1.0,
                          W = NULL,
-                         method = "MCPA",
+                         method = "projected.ls",
                          max.iteration = 200,
                          tolerance = 1e-5,
                          openMP.core.num = 4)
@@ -119,7 +119,7 @@ test_that("TESS3 main, algo.copy and XBin", {
                      ploidy,
                      lambda = 1.0,
                      W = NULL,
-                     method = "MCPA",
+                     method = "projected.ls",
                      max.iteration = 200,
                      tolerance = 1e-5,
                      openMP.core.num = 4,
@@ -135,7 +135,7 @@ test_that("TESS3 main, algo.copy and XBin", {
                             ploidy,
                             lambda = 1.0,
                             W = NULL,
-                            method = "MCPA",
+                            method = "projected.ls",
                             max.iteration = 200,
                             tolerance = 1e-5,
                             openMP.core.num = 4,
@@ -151,7 +151,7 @@ test_that("TESS3 main, algo.copy and XBin", {
                           ploidy,
                           lambda = 1.0,
                           W = NULL,
-                          method = "MCPA",
+                          method = "projected.ls",
                           max.iteration = 200,
                           tolerance = 1e-5,
                           openMP.core.num = 4,
@@ -168,7 +168,7 @@ test_that("TESS3 main, algo.copy and XBin", {
                             ploidy,
                             lambda = 1.0,
                             W = NULL,
-                            method = "MCPA",
+                            method = "projected.ls",
                             max.iteration = 200,
                             tolerance = 1e-5,
                             openMP.core.num = 4,
@@ -196,7 +196,7 @@ test_that("TESS3 main with method MCPA", {
                      K = 3,
                      ploidy = 1,
                      lambda = 1.0,
-                     method = "MCPA")
+                     method = "projected.ls")
 
   # consistent error ?
   expect_lt(ComputeRmseWithBestPermutation(data.for.test$Q, tess3.res$Q), 0.03)
@@ -216,7 +216,7 @@ test_that("TESS3 main with method MCPA", {
                      K = K,
                      ploidy = 1,
                      lambda = 1.0,
-                     method = "MCPA",
+                     method = "projected.ls",
                      Q.init = Q.init)
   # consistent error ?
   expect_lt(ComputeRmseWithBestPermutation(data.for.test$Q, tess3.res$Q), 0.03)
@@ -237,7 +237,7 @@ test_that("TESS3 main with method OQA", {
                      K = 3,
                      ploidy = 1,
                      lambda = 1.0,
-                     method = "OQA",
+                     method = "qp",
                      tolerance = 0.00001)
 
   # consistent error ?
@@ -265,7 +265,7 @@ test_that("TESS3 main check arg", {
                                   ploidy = 1,
                                   lambda = 1.0,
                                   method = "OA",
-                                  tolerance = 0.00001),".*Unknow method name.*")
+                                  tolerance = 0.00001),"method must be projected.ls or qp")
 
   W <- matrix(2, nrow = 3)
   expect_error(tess3.res <- tess3Main(X = data.for.test$X,
@@ -274,7 +274,7 @@ test_that("TESS3 main check arg", {
                                   ploidy = 1,
                                   lambda = 1.0,
                                   W = W,
-                                  tolerance = 0.00001),"W must be squared symetric matrix")
+                                  tolerance = 0.00001),"W must be a squared symmetric matrix")
   W = matrix(runif(data.for.test$n ^ 2), data.for.test$n,data.for.test$n)
   expect_error(tess3.res <- tess3Main(X = data.for.test$X,
                                   coord = data.for.test$coord,
@@ -282,15 +282,16 @@ test_that("TESS3 main check arg", {
                                   ploidy = 1,
                                   lambda = 1.0,
                                   W = W,
-                                  tolerance = 0.00001),"W must be squared symetric matrix")
+                                  tolerance = 0.00001),"W must be a squared symmetric matrix")
 
   expect_error(tess3Main(X = data.for.test$X,
                      coord = data.for.test$coord,
                      K = 3,
                      ploidy = 0,
                      lambda = 1.0,
-                     method = "MCPA",
-                     tolerance = 0.00001),"The maximum value of the X matrix can not be superior than ploidy \\+ 1")
+                     method = "projected.ls",
+                     tolerance = 0.00001),
+               "The maximum value of the genotype matrix \\(X\\) cannot be greater than ploidy \\+ 1\\. Missing data must be encoded as NA\\.")
 
   genotype <- data.for.test$X
   genotype[1,1] <- -9
@@ -299,15 +300,16 @@ test_that("TESS3 main check arg", {
                      K = 3,
                      ploidy = 1,
                      lambda = 1.0,
-                     method = "MCPA",
-                     tolerance = 0.00001),"Negative values in the X matrix are not allowed")
+                     method = "projected.ls",
+                     tolerance = 0.00001),
+               "Negative values in the genotype matrix \\(X\\) are not allowed\\. Missing data must be encoded as NA\\.")
 
   expect_error(tess3Main(X = data.for.test$X,
                      coord = data.for.test$coord[-1,],
                      K = 3,
                      ploidy = 1,
                      lambda = 1.0,
-                     method = "MCPA",
+                     method = "projected.ls",
                      tolerance = 0.00001),"XBin must be of size nrow\\(X\\) \\* \\(ncol\\(X\\) \\* \\(ploidy \\+ 1\\)\\)")
 
 })
@@ -328,7 +330,7 @@ test_that("TESS3 main with missing value", {
                      K = 3,
                      ploidy = 1,
                      lambda = 1.0,
-                     method = "MCPA")
+                     method = "projected.ls")
 
   # consistent error ?
   expect_lt(ComputeRmseWithBestPermutation(data.for.test$Q, tess3.res$Q), 0.05)
@@ -349,7 +351,7 @@ test_that("TESS3 main with missing value", {
                      K = 3,
                      ploidy = 1,
                      lambda = 1.0,
-                     method = "OQA")
+                     method = "qp")
 
   # consistent error ?
   expect_lt(ComputeRmseWithBestPermutation(data.for.test$Q, tess3.res$Q), 0.05)
@@ -360,7 +362,7 @@ test_that("TESS3 main with missing value", {
 
   # rmse and cross entropy
   expect_lte(tess3.res$rmse, 0.3608441)
-  expect_lte(tess3.res$crossentropy, 0.2308974)
+  expect_lte(tess3.res$crossentropy, 0.2309072)
 
 })
 
@@ -374,7 +376,7 @@ test_that("TESS3 main Fst", {
                      K = 3,
                      ploidy = 1,
                      lambda = 1.0,
-                     method = "MCPA")
+                     method = "projected.ls")
 
   # Consistent Fst ?
   Fst <- ComputeFst(data.for.test$Q, data.for.test$G, data.for.test$d + 1)
@@ -405,7 +407,7 @@ test_that("TESS3 cross validation", {
                      K = K,
                      ploidy = data.list$ploidy,
                      lambda = 1.0,
-                     method = "MCPA",
+                     method = "projected.ls",
                      mask = 0.05), "Mask 0.05% of X for cross validation|Missing value detected in genotype")
 
   expect_lte(ComputeRmseWithBestPermutation(data.list$G, tess3.res$G), 0.0857528)
@@ -434,7 +436,7 @@ test_that("TESS3 cross validation", {
                                     K = K,
                                     ploidy = data.list$ploidy,
                                     lambda = 1.0,
-                                    method = "MCPA",
+                                    method = "projected.ls",
                                     mask = 0.5), "Mask 0.05% of X for cross validation|Missing value detected in genotype")
 
   expect_lte(ComputeRmseWithBestPermutation(data.list$G, tess3.res$G), 0.2417362)
@@ -447,7 +449,3 @@ test_that("TESS3 cross validation", {
   expect_lte(tess3.res$crossvalid.crossentropy, 0.9144449)
 
 })
-
-
-
-

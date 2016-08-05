@@ -58,7 +58,7 @@ tess3 <- function(X,
 
   # if user want only 1 run of tess3 we return a list of result
   if (length(K) == 1 & rep == 1) {
-    return(tess3Main(X = NULL,
+    res <- tess3Main(X = NULL,
                      XBin = XBin,
                      coord = coord,
                      K = K,
@@ -73,7 +73,9 @@ tess3 <- function(X,
                      mask = mask,
                      copy = copy,
                      algo.copy = algo.copy,
-                     verbose = verbose))
+                     verbose = verbose)
+    class(res) <- c(class(res), "tess3")
+    return(res)
   }
 
   res <- list()
@@ -114,9 +116,9 @@ tess3 <- function(X,
         tess3.run[[r]] <- tess3.aux
       }
     }
-    res[[i]] <- list(K = K[i], tess3.run = tess3.run, rmse = rmse, crossentropy = crossentropy, crossvalid.rmse = crossvalid.rmse, crossvalid.crossentropy = crossvalid.crossentropy)
+    res[[K[i]]] <- list(K = K[i], tess3.run = tess3.run, rmse = rmse, crossentropy = crossentropy, crossvalid.rmse = crossvalid.rmse, crossvalid.crossentropy = crossvalid.crossentropy)
   }
-  class(res) <- c("tess3",class(res))
+  class(res) <- c(class(res), "tess3")
   return(res)
 }
 
@@ -219,10 +221,18 @@ is.tess3 <- function(x) {
 #' @export
 #'
 #' @examples
-
-### cette fonction a un bug
-
 Gettess3res <- function(tess3, K, rep = "best") {
+  if (is.tess3Main(tess3)) {
+    if (rep != 1 & rep != "best") {
+      # stop("Tess3 algorithm was run only one time.")
+      return(NULL)
+    }
+    if (K != ncol(tess3$Q)) {
+      # stop("This value of K is not available.")
+      return(NULL)
+    }
+    return(tess3)
+  }
   if (!is.tess3(tess3)) {
     stop("tess3 must of class tess3")
   }

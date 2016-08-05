@@ -24,7 +24,8 @@ RUN install2.r --error \
     automap \
     fields \
     Rcpp \
-    RcppEigen
+    RcppEigen \
+    quadprog
 
 ################################################################################
 # install tess3
