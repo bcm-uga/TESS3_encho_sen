@@ -109,6 +109,9 @@ tess3Main <- function(X,
   ################################################
   # Check consistence of input
 
+  # check coord
+  CheckCoord(coord)
+
   # Compute W
   if (is.null(W)) {
     W <- ComputeHeatKernelWeight(coord, ComputeMeanDist(coord) * 0.05)
@@ -153,7 +156,12 @@ tess3Main <- function(X,
     X2XBin(X, ploidy, XBin)
     rm(X)
   }
-  CheckXBinWCoord(XBin, ploidy, W, coord)
+  CheckXBin(XBin, ploidy)
+  CheckCoord(coord)
+  CheckXBinCoord(XBin, coord)
+  CheckW(W)
+  CheckWCoord(W, coord)
+  CheckXBinW(XBin, W)
   ################################################
 
   # mem <- c(mem,pryr::mem_used())

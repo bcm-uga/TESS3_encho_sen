@@ -143,3 +143,23 @@ test_that("Gettess3res", {
   expect_null(tess3Main.res)
 
 })
+
+test_that("tess3project bad use", {
+
+  # structure format genotype matrix
+  input.file = "http://membres-timc.imag.fr/Olivier.Francois/secondary_contact.str"
+  mydata = read.table(input.file)
+  mydata[1:10, 1:10]
+
+  expect_error(obj <- tess3(as.matrix(mydata[,-(1:2)]), coord = mydata[,1:2], K = 5, ploidy = 1, openMP.core.num = 4),
+               "The maximum value of the genotype matrix \\(X\\) cannot be greater than ploidy \\+ 1. Missing data must be encoded as NA\\.")
+
+
+  data("data.at", package = "tess3r")
+  expect_error(obj <- tess3(as.matrix(mydata[,-(1:2)]), coord = data.at$coord, K = 5, ploidy = 1, openMP.core.num = 4),
+               "The maximum value of the genotype matrix \\(X\\) cannot be greater than ploidy \\+ 1. Missing data must be encoded as NA\\.")
+
+  expect_error(obj <- tess3(data.at$X, coord = as.matrix(mydata[,1:2])[1:30,], K = 5, ploidy = 1, openMP.core.num = 4),
+               "Number of row of coord and X must be the same")
+
+}

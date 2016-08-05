@@ -11,7 +11,7 @@
 #'
 #' @examples
 CheckX <- function(X, ploidy) {
-  cat("Check genotype input file.\n")
+  #cat("Checking genotype input file.\n")
   if (!is.matrix(X)) {
     stop("X must be a matrix.")
   }
@@ -76,7 +76,7 @@ CheckW <- function(W) {
 
 #' Title
 #'
-#' @param W
+#' @param Coord
 #'
 #' @return
 #'
@@ -95,14 +95,11 @@ CheckCoord <- function(Coord) {
 #'
 #' @param X
 #' @param W
-#' @param ploidy
 #'
 #' @return
 #'
 #' @examples
-CheckXW <- function(X, ploidy, W) {
-  CheckW(W)
-  CheckX(X, ploidy)
+CheckXW <- function(X, W) {
   if (nrow(W) != nrow(X)) {
     stop("W must be of size nrow(X) times nrow(X)")
   }
@@ -110,16 +107,13 @@ CheckXW <- function(X, ploidy, W) {
 
 #' Title
 #'
-#' @param X
+#' @param XBin
 #' @param W
-#' @param ploidy
 #'
 #' @return
 #'
 #' @examples
-CheckXBinW <- function(XBin, ploidy, W) {
-  CheckW(W)
-  CheckXBin(XBin, ploidy)
+CheckXBinW <- function(XBin, W) {
   if (nrow(W) != nrow(XBin)) {
     stop("W must be of size nrow(X) times nrow(X)")
   }
@@ -129,14 +123,11 @@ CheckXBinW <- function(XBin, ploidy, W) {
 #'
 #' @param X
 #' @param coord
-#' @param ploidy
 #'
 #' @return
 #'
 #' @examples
-CheckXCoord <- function(X, ploidy, coord) {
-  CheckCoord(coord)
-  CheckX(X, ploidy)
+CheckXCoord <- function(X, coord) {
   ## check dim of geno, coord,  are consistent
   if (nrow(X) != nrow(coord)) {
     stop("Number of row of coord and X must be the same")
@@ -145,39 +136,22 @@ CheckXCoord <- function(X, ploidy, coord) {
 
 #' Title
 #'
-#' @param X
-#' @param W
-#' @param ploidy
+#' @param XBin
+#' @param coord
 #'
 #' @return
 #'
 #' @examples
-CheckXWCoord <- function(X, ploidy, W, coord) {
-  CheckXW(X, ploidy, W)
-  CheckCoord(coord)
-
-  ## check dim of geno, coord,  are consistent
-  if (nrow(X) != nrow(coord)) {
-    stop("Number of row of coord and X must be the same")
-  }
-}
-
-
-#' Title
-#'
-#' @param X
-#' @param W
-#' @param ploidy
-#'
-#' @return
-#'
-#' @examples
-CheckXBinWCoord <- function(XBin, ploidy, W, coord) {
-  CheckXBinW(XBin, ploidy, W)
-  CheckCoord(coord)
-
+CheckXBinCoord <- function(XBin, coord) {
   ## check dim of geno, coord,  are consistent
   if (nrow(XBin) != nrow(coord)) {
-    stop("Number of row of coord and X must be the same")
+    stop("Number of row of coord and X/XBin must be the same")
   }
 }
+
+CheckWCoord <- function(W, coord) {
+  if ((nrow(W) != nrow(coord)) & (ncol(W) != nrow(coord))) {
+    stop("Number of row of coord and W must be the same")
+  }
+}
+

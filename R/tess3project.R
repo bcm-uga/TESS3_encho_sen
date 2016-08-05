@@ -29,7 +29,7 @@ tess3 <- function(X,
                   lambda = 1.0,
                   rep = 1,
                   W = NULL,
-                  method = "MCPA",
+                  method = "projected.ls",
                   max.iteration = 200,
                   tolerance = 1e-5,
                   openMP.core.num = 1,
@@ -45,9 +45,13 @@ tess3 <- function(X,
     stop("rep must greater than 1")
   }
 
-  if (!copy & is.null(XBin)) {
+  if (copy & !is.null(X)) {
+    X <- matrix(as.double(X), nrow(X), ncol(X))
+    CheckX(X, ploidy)
+  } else if (!copy & is.null(XBin)) {
     stop("To force the function not doing copy of the data, you must set XBin.")
   }
+
   # Compute XBin
   if (!is.null(X)) {
     XBin <- matrix(0.0, nrow(X), ncol(X) * (ploidy + 1))

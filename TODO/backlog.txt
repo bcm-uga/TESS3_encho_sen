@@ -2,7 +2,6 @@
 - vignette
 
 # Kevin
-- tess3 bug : see 22_07_2016_todo.html (check X do not work)
 - plot of project
 - getter to return Q, G etc
 - option names must be consistent with name in article

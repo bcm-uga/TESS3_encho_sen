@@ -12,21 +12,19 @@ test_that("cheks", {
   CheckW(W)
 
   # W X
-  CheckXW(data.for.test$X, 1, W)
+  CheckXW(data.for.test$X, W)
 
-  # X W Coord
-  CheckXWCoord(data.for.test$X, 1, W, data.for.test$coord)
   # raise error
   # W
   W[1,2] <- 1000
-  expect_error(CheckW(W), "W must be squared symetric")
-  expect_error(CheckXW(data.for.test$X, 1, W), "W must be squared symetric")
+  expect_error(CheckW(W), "W must be a squared symmetric matrix")
   # W X
   W <- matrix(0,1,1)
-  expect_error(CheckXW(data.for.test$X, 1, W), "*W must be of size*")
+  expect_error(CheckXW(data.for.test$X, W), "*W must be of size*")
   # W X Coord
   W <- matrix(0, nrow(data.for.test$X), nrow(data.for.test$X))
   coord <- matrix(1,10,2)
-  expect_error(CheckXWCoord(data.for.test$X, 1, W, coord), "*Number of row of coord and X must be the same*")
+  expect_error(CheckWCoord(W, coord), "Number of row of coord and W must be the same")
+  expect_error(CheckXW(X, W), "W must be of size nrow\\(X\\) times nrow\\(X\\)")
 
 })
