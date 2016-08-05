@@ -82,7 +82,7 @@ test_that("rmse.tess3", {
                          K = 6,
                          ploidy = 1,
                          lambda = 1.0,
-                         method = "MCPA")
+                         method = "projected.ls")
   expect_lte(rmse.tess3Main(tess3.res, data.for.test$X, 1), 0.37)
 
   mask <- sample(1:(data.for.test$n * data.for.test$L), data.for.test$n * data.for.test$L * 0.25)

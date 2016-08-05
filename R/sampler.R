@@ -2,10 +2,10 @@
 #######################Q sampler###################
 ###################################################
 
-#' sample Q = f(coord)
+#' Sample ancestral coefficient matrix such as Q = f(coord).
 #'
-#' @param n
-#' @param K
+#' @param coord Coodinate matrix.
+#' @param f Function of the coordinate.
 #'
 #' @return
 #' @export
@@ -17,10 +17,10 @@ SampleFuncQ <- function(coord, f = function(X) c(1 / (1 + exp(-0.5 * X[1])), 1 -
   return(Q)
 }
 
-#' sample Q such as alpha ~ unif(0,1) and Q ~ Dirichlet(alpha)
+#' Sample ancestral coefficient matrix such as alpha ~ unif(0,1) and Q ~ Dirichlet(alpha).
 #'
-#' @param n
-#' @param K
+#' @param n Number of row of Q.
+#' @param K Number of column of Q.
 #'
 #' @return
 #' @export
@@ -41,9 +41,12 @@ SampleUnifQ <- function(n, K) {
 #'
 #' @return TODO
 #'
-#' @examples
-#' TODO
 #
+#' @param coord Coordinate matrix.
+#' @param n.by.pop Number of individual by population.
+#' @param K Number of column of Q.
+#' @param f Distribution function.
+#'
 #' @export
 SampleDistFromCenterQ <- function(coord, n.by.pop, K, f = function(D) exp(-D / 0.2)) {
 
@@ -77,9 +80,11 @@ SampleDistFromCenterQ <- function(coord, n.by.pop, K, f = function(D) exp(-D / 0
 #'
 #' @return TODO
 #'
-#' @examples
-#' TODO
-#
+#' @param coord Coordinate matrix.
+#' @param n.by.pop Number of individual by population.
+#' @param K Number of column of Q.
+#' @param f Distribution function.
+#'
 #' @export
 SampleDistFromCenterDirichletQ <- function(coord, n.by.pop, K, f = function(D) exp(-D / 0.2)) {
 
@@ -113,9 +118,16 @@ SampleDistFromCenterDirichletQ <- function(coord, n.by.pop, K, f = function(D) e
 #'
 #' @return TODO
 #'
-#' @examples
-#' TODO
 #
+#' @param coord
+#'
+#' @param K
+#' @param W
+#' @param sigma
+#' @param rho
+#' @param f
+#' @param beta
+#'
 #' @export
 SampleTESS2.3Q <- function(coord, K, W, sigma, rho, f = function(X) c(1.0,X[1], X[2]), beta = matrix(0.0, 3, K)) {
   TestRequiredPkg("gtools")
@@ -151,8 +163,6 @@ SampleTESS2.3Q <- function(coord, K, W, sigma, rho, f = function(X) c(1.0,X[1], 
 #'
 #' @return TODO
 #'
-#' @examples
-#' TODO
 #
 #' @param L
 #'
@@ -176,16 +186,20 @@ SampleUnifDirichletG <- function(L, ploidy, K) {
 ###################coord sampler###################
 ###################################################
 
-#' sample coord such as a mixture of K cluster distributed with gaussian law
+#' sample coord such as a mixture of K cluster distributed with gaussian law.
 #'
 #'
 #' TODO
 #'
 #' @return TODO
 #'
-#' @examples
-#' TODO
 #
+#' @param n.by.pop
+#'
+#' @param K
+#' @param sigma1
+#' @param sigma2
+#'
 #' @export
 SampleNormalClusterCoord <- function(n.by.pop, K, sigma1 = 1.0, sigma2 = 0.2 ) {
 
@@ -264,6 +278,19 @@ SampleNormalClusterCoord <- function(n.by.pop, K, sigma1 = 1.0, sigma2 = 0.2 ) {
 #####################ms sampler####################
 ###################################################
 
+#' Helper function. Run ms.
+#'
+#' @param ms.file
+#' @param nsam
+#' @param nreps
+#' @param theta
+#' @param rho
+#' @param nsites
+#' @param M
+#'
+#' @return
+#'
+#' @examples
 run.ms <- function(ms.file, nsam, nreps, theta, rho, nsites, M) {
   res <- list()
   tmp.file <- paste0(tempfile(),".geno")
@@ -291,7 +318,8 @@ run.ms <- function(ms.file, nsam, nreps, theta, rho, nsites, M) {
 }
 
 
-#' Title
+#' Sample ancestral population with ms 2 island model. Then admixe ancestral population
+#' along a longitudinal gradient.
 #'
 #' @param k
 #' @param min.maf the locus with a maf less than this parameter are removed

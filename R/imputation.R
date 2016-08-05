@@ -1,7 +1,9 @@
-#' Title
+#' Impute missing value with the Q ancestry coeficient matrix and G ancestral
+#' frequencies estimates. Missing values are sampled with the estimated genotype
+#' frequencies (P = Q G^T).
 #'
-#' @param tess3.res
-#' @param masked.X
+#' @param tess3.res tess3Main object with Q and G estimates.
+#' @param masked.X Genotype matrix with the missing values (NA values).
 #'
 #' @return
 #' @export
@@ -25,6 +27,17 @@ ImputeRandom <- function(tess3.res, masked.X) {
   return(masked.X)
 }
 
+#' Impute missing value with the Q ancestry coeficient matrix and G ancestral
+#' frequencies estimates. Missing values are computed as a round of estimated genotype
+#' frequencies (P = Q G^T).
+#'
+#' @param tess3.res tess3Main object with Q and G estimates.
+#' @param masked.X Genotype matrix with the missing values (NA values).
+#'
+#' @return
+#' @export
+#'
+#' @examples
 ImputeRound <- function(tess3.res, masked.X) {
   if (!is.tess3Main(tess3.res)) {
     stop("tess3.res must be a tess3 result of class tess3Main. You can use function tess3Main or Gettess3res on a tess3 object.")

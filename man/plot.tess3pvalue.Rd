@@ -2,14 +2,16 @@
 % Please edit documentation in R/plotG.R
 \name{plot.tess3pvalue}
 \alias{plot.tess3pvalue}
-\title{Manhattan plot}
+\title{Plot the manhattan plot of -log(p.value).}
 \usage{
 \method{plot}{tess3pvalue}(pvalue, ...)
 }
 \arguments{
+\item{pvalue}{tess3pvalue object.}
+
 \item{...}{}
 }
 \description{
-Manhattan plot
+Plot the manhattan plot of -log(p.value).
 }
 

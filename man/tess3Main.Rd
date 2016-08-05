@@ -11,6 +11,8 @@ tess3Main(X, XBin = NULL, coord, K, ploidy, lambda = 1, W = NULL,
 }
 \arguments{
 \item{algo.copy}{if TRUE data will be copy to speed the algorithm}
+
+\item{verbose}{}
 }
 \description{
 Main function.

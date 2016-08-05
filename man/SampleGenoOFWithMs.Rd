@@ -2,7 +2,8 @@
 % Please edit documentation in R/sampler.R
 \name{SampleGenoOFWithMs}
 \alias{SampleGenoOFWithMs}
-\title{Title}
+\title{Sample ancestral population with ms 2 island model. Then admixe ancestral population
+along a longitudinal gradient.}
 \usage{
 SampleGenoOFWithMs(n, nsites.neutral, nsites.selected, crossover.proba,
   m.neutral, m.selected, mutation.rate.per.site, N0 = 10^6, k = 0.5,
@@ -30,7 +31,8 @@ SampleGenoOFWithMs(n, nsites.neutral, nsites.selected, crossover.proba,
 \item{plot.debug}{if TRUE plot at different stage of the simulation}
 }
 \description{
-Title
+Sample ancestral population with ms 2 island model. Then admixe ancestral population
+along a longitudinal gradient.
 }
 \examples{
 

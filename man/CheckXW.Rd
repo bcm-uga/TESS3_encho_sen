@@ -2,17 +2,19 @@
 % Please edit documentation in R/check.R
 \name{CheckXW}
 \alias{CheckXW}
-\title{Title}
+\title{Raise error if X and W are not consistent.}
 \usage{
-CheckXW(X, ploidy, W)
+CheckXW(X, W)
 }
 \arguments{
-\item{ploidy}{}
+\item{X}{Genotype matrix.}
+
+\item{W}{Graph weight matrix.}
 }
 \value{
 
 }
 \description{
-Title
+Raise error if X and W are not consistent.
 }
 

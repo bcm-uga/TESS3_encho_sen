@@ -14,6 +14,8 @@
 #' @param mask
 #' @param XBin
 #' @param algo.copy if TRUE data will be copy to speed the algorithm
+#' @param copy
+#' @param verbose
 #'
 #' @return
 #' @export
@@ -138,16 +140,17 @@ tess3Main <- function(X,
   ## Compute number of loci and indiv
   if (!is.null(X)) {
     res$L <- ncol(X)
+    res$n <- nrow(X)
   } else if (!is.null(XBin)) {
     if (ncol(XBin) %% (ploidy + 1) != 0) {
       stop("Number of columns of XBin must be a multiple of ploidy + 1.")
     }
     res$L <- ncol(XBin) %/% (ploidy + 1)
+    res$n <- nrow(coord)
   } else {
     stop("X or XBin must be non-null")
   }
 
-  res$n <- nrow(coord)
   res$ploidy <- ploidy
   res$K <- K
 

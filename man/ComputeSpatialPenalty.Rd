@@ -7,7 +7,9 @@
 ComputeSpatialPenalty(Q, W)
 }
 \arguments{
-\item{W}{}
+\item{Q}{Ancestry coeficient matrix.}
+
+\item{W}{Graph weight matrix.}
 }
 \description{
 Compute the value spatial penalty used in TESS3 objectif function.

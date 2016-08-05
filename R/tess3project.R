@@ -14,13 +14,13 @@
 #' @param mask
 #' @param XBin
 #' @param K
+#' @param copy
+#' @param algo.copy If TRUE data will be copy to speed the algorithm.
+#' @param verbose
 #' @param Q.init
-#' @param no.copy
 #'
-#' @return
+#' @return tess3 object.
 #' @export
-#'
-#' @examples
 tess3 <- function(X,
                   XBin = NULL,
                   coord,

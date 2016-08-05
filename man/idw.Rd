@@ -2,11 +2,16 @@
 % Please edit documentation in R/spatialPlots.R
 \name{idw}
 \alias{idw}
-\title{TODO}
+\title{Return an interpolation function. Return a wrapper function of the function idw of
+the package gstat.}
 \usage{
 idw(idp = 1)
 }
+\arguments{
+\item{idp}{numeric; specify the inverse distance weighting power.}
+}
 \description{
-TODO
+Return an interpolation function. Return a wrapper function of the function idw of
+the package gstat.
 }
 

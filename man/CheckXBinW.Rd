@@ -2,17 +2,19 @@
 % Please edit documentation in R/check.R
 \name{CheckXBinW}
 \alias{CheckXBinW}
-\title{Title}
+\title{Raise error if XBin and W are not consistent.}
 \usage{
-CheckXBinW(XBin, ploidy, W)
+CheckXBinW(XBin, W)
 }
 \arguments{
-\item{ploidy}{}
+\item{XBin}{Binary genotype matrix.}
+
+\item{W}{Graph weight matrix.}
 }
 \value{
 
 }
 \description{
-Title
+Raise error if XBin and W are not consistent.
 }
 

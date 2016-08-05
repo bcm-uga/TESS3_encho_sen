@@ -310,7 +310,7 @@ test_that("TESS3 main check arg", {
                      ploidy = 1,
                      lambda = 1.0,
                      method = "projected.ls",
-                     tolerance = 0.00001),"XBin must be of size nrow\\(X\\) \\* \\(ncol\\(X\\) \\* \\(ploidy \\+ 1\\)\\)")
+                     tolerance = 0.00001),"Number of row of coord and X/XBin must be the same")
 
 })
 
@@ -413,8 +413,8 @@ test_that("TESS3 cross validation", {
   expect_lte(ComputeRmseWithBestPermutation(data.list$G, tess3.res$G), 0.0857528)
   expect_lte(ComputeRmseWithBestPermutation(data.list$Q, tess3.res$Q), 0.09725877)
 
-  expect_lte(tess3.res$crossvalid.rmse, 0.3947185)
-  expect_lte(tess3.res$rmse, 0.3784213)
+  expect_lte(tess3.res$crossvalid.rmse, 0.3947187)
+  expect_lte(tess3.res$rmse, 0.3947187)
 
   expect_lte(tess3.res$crossentropy, 0.5104649)
   expect_lte(tess3.res$crossvalid.crossentropy, 0.5292129)
@@ -445,7 +445,7 @@ test_that("TESS3 cross validation", {
   expect_lte(tess3.res$crossvalid.rmse, 0.3940670)
   expect_lte(tess3.res$rmse, 0.2698213) # because rmse is computed on naive impuation of X
 
-  expect_lte(tess3.res$crossentropy, 0.8473532)
+  expect_lte(tess3.res$crossentropy, 0.8473548)
   expect_lte(tess3.res$crossvalid.crossentropy, 0.9144449)
 
 })

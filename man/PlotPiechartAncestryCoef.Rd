@@ -2,16 +2,20 @@
 % Please edit documentation in R/spatialPlots.R
 \name{PlotPiechartAncestryCoef}
 \alias{PlotPiechartAncestryCoef}
-\title{Title}
+\title{Plot pie chart of ancestry coefficient.}
 \usage{
 PlotPiechartAncestryCoef(Q, coord, window, background, col,
   radius = sqrt((window[2] - window[1])^2 + (window[4] - window[3])^2) * 0.01,
   ...)
 }
 \arguments{
-\item{window}{}
+\item{Q}{Ancestry coefficient matrix.}
+
+\item{coord}{Coordinate matrix.}
+
+\item{window}{Window of the graph.}
 }
 \description{
-Title
+Plot pie chart of ancestry coefficient.
 }
 

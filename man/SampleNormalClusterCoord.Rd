@@ -2,17 +2,19 @@
 % Please edit documentation in R/sampler.R
 \name{SampleNormalClusterCoord}
 \alias{SampleNormalClusterCoord}
-\title{sample coord such as a mixture of K cluster distributed with gaussian law}
+\title{sample coord such as a mixture of K cluster distributed with gaussian law.}
 \usage{
 SampleNormalClusterCoord(n.by.pop, K, sigma1 = 1, sigma2 = 0.2)
+}
+\arguments{
+\item{n.by.pop}{}
+
+\item{sigma2}{}
 }
 \value{
 TODO
 }
 \description{
-TODO
-}
-\examples{
 TODO
 }
 

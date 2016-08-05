@@ -1,6 +1,6 @@
-#' Manhattan plot
+#' Plot the manhattan plot of -log(p.value).
 #'
-#' @param pvalue
+#' @param pvalue tess3pvalue object.
 #' @param ...
 #'
 #' @return

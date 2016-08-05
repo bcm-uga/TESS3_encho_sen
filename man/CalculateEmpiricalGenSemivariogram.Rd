@@ -2,16 +2,27 @@
 % Please edit documentation in R/variogram.R
 \name{CalculateEmpiricalGenSemivariogram}
 \alias{CalculateEmpiricalGenSemivariogram}
-\title{Title}
+\title{Calculate empirical semi variance from genotype matrix.}
 \usage{
 CalculateEmpiricalGenSemivariogram(X, ploidy, coord, breaks = "FD",
   na.rm = TRUE)
 }
 \arguments{
-\item{na.rm}{}
+\item{X}{Genotype matrix.}
+
+\item{ploidy}{The number of chromosome.}
+
+\item{coord}{Coordinate matrix.}
+
+\item{breaks}{Same parameter that in hist R base function.}
+
+\item{na.rm}{A logical indicating whether missing values should be removed.}
+}
+\value{
+Semi-variance
 }
 \description{
-Title
+Calculate empirical semi variance from genotype matrix.
 }
 \examples{
 library(tess3r)

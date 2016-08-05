@@ -25,6 +25,5 @@ test_that("cheks", {
   W <- matrix(0, nrow(data.for.test$X), nrow(data.for.test$X))
   coord <- matrix(1,10,2)
   expect_error(CheckWCoord(W, coord), "Number of row of coord and W must be the same")
-  expect_error(CheckXW(X, W), "W must be of size nrow\\(X\\) times nrow\\(X\\)")
 
 })

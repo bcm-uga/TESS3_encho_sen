@@ -1,7 +1,7 @@
-#' Title
+#' Compute allele frquencies matrix from the genotype frequencie matrix.
 #'
-#' @param G
-#' @param ploidy
+#' @param G Genotype frequencie matrix.
+#' @param ploidy The number of chromosome.
 #'
 #' @return
 #' @export

@@ -6,13 +6,19 @@
 \usage{
 SampleDistFromCenterQ(coord, n.by.pop, K, f = function(D) exp(-D/0.2))
 }
+\arguments{
+\item{coord}{Coordinate matrix.}
+
+\item{n.by.pop}{Number of individual by population.}
+
+\item{K}{Number of column of Q.}
+
+\item{f}{Distribution function.}
+}
 \value{
 TODO
 }
 \description{
-TODO
-}
-\examples{
 TODO
 }
 

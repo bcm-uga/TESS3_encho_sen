@@ -2,11 +2,16 @@
 % Please edit documentation in R/spatialPlots.R
 \name{universalkriging}
 \alias{universalkriging}
-\title{TODO}
+\title{Return an interpolation function. Return a wrapper function of the function autoKrige of
+the package automap.}
 \usage{
 universalkriging(formula = as.formula(Z ~ X + Y))
 }
+\arguments{
+\item{formula}{Formula that defines the dependent variable as a linear model of independent variables.}
+}
 \description{
-TODO
+Return an interpolation function. Return a wrapper function of the function autoKrige of
+the package automap.
 }
 

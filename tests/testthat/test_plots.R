@@ -8,7 +8,7 @@ test_that("test of pvalue plot", {
                          K = 3,
                          ploidy = 1,
                          lambda = 1.0,
-                         method = "MCPA")
+                         method = "projected.ls")
 
   plot(tess3.res$pvalue)
 })

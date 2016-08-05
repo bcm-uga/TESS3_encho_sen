@@ -205,6 +205,9 @@ CreatePalette <- function(color.vector = c("tomato", "chartreuse", "gold", "blue
 #'
 #'
 #'
+#' @param Fst Matrix of Fst.
+#' @param K Number of ancestral populations.
+#' @param n Number of individuals.
 ComputeTscoreAndPvalue <- function(Fst, K, n) {
   res <- list()
   res$Fscore = Fst / (1 - Fst) * (n - K) / (K - 1)
@@ -221,6 +224,9 @@ ComputeTscoreAndPvalue <- function(Fst, K, n) {
 #'
 #'
 #'
+#' @param Fst Matrix of Fst.
+#' @param K Number of ancestral populations.
+#' @param n Number of individuals.
 ComputeChi2AndPvalue <- function(Fst, K, n) {
   res <- list()
   # Convert Fst into chi 2

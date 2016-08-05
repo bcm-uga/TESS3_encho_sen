@@ -5,12 +5,17 @@
 \title{Run tess3 for multiple value of K and with repetition.}
 \usage{
 tess3(X, XBin = NULL, coord, K, ploidy, lambda = 1, rep = 1, W = NULL,
-  method = "MCPA", max.iteration = 200, tolerance = 1e-05,
+  method = "projected.ls", max.iteration = 200, tolerance = 1e-05,
   openMP.core.num = 1, Q.init = NULL, mask = 0, copy = TRUE,
   algo.copy = TRUE, keep = "best", verbose = FALSE)
 }
 \arguments{
-\item{no.copy}{}
+\item{Q.init}{}
+
+\item{algo.copy}{If TRUE data will be copy to speed the algorithm.}
+}
+\value{
+tess3 object.
 }
 \description{
 Run tess3 for multiple value of K and with repetition.

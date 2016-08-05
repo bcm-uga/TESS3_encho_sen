@@ -7,13 +7,15 @@
 SampleTESS2.3Q(coord, K, W, sigma, rho, f = function(X) c(1, X[1], X[2]),
   beta = matrix(0, 3, K))
 }
+\arguments{
+\item{coord}{}
+
+\item{beta}{}
+}
 \value{
 TODO
 }
 \description{
-TODO
-}
-\examples{
 TODO
 }
 

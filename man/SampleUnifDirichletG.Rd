@@ -17,7 +17,4 @@ TODO
 \description{
 TODO
 }
-\examples{
-TODO
-}
 

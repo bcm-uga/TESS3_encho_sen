@@ -1,9 +1,16 @@
+################################################################################
+# First implementation of numerical solver
+# (projected least square and alternated quadratic programing).
+# There are kept here to debug cpp implementations.
+#
+################################################################################
+
 SolveLeastSquare <- function(A,b) {
   return(solve( crossprod(A,A) ,crossprod(A,b)))
 }
 
 ProjectQ <- function(Q) {
-  Q <- apply(Q, 1:2, function(e){max(e,0)})
+  Q <- apply(Q, 1:2, function(e){max(e,1e-5)})
   for(i in 1:nrow(Q)){
     s <- sum(Q[i,])
     if(s != 0.0) {
@@ -14,7 +21,7 @@ ProjectQ <- function(Q) {
 }
 
 ProjectG <- function(G,L,D) {
-  G <- apply(G, 1:2, function(e){max(e,0)})
+  G <- apply(G, 1:2, function(e){max(e,1e-5)})
   for (k in 1:ncol(G)) {
     for (l in 1:L) {
       s <- sum(G[(1 + D * (l - 1)):(D * l) ,k])

@@ -7,7 +7,12 @@
 run.ms(ms.file, nsam, nreps, theta, rho, nsites, M)
 }
 \arguments{
+\item{M}{}
+
 \item{ploidy}{}
+}
+\value{
+
 }
 \description{
 Sample X such that P(X_i_dl + j) = Sum(Q_i_k G_k_dl + j).
@@ -21,5 +26,7 @@ data.list <- SampleGenoFromGenerativeModelTESS3(G = SampleUnifDirichletG(L, ploi
                                                 Q = SampleUnifQ(n, K),
                                                 coord = SampleNormalClusterCoord(n.by.pop = n, K = 1),
                                                 ploidy = ploidy)
+Helper function. Run ms.
+
 }
 

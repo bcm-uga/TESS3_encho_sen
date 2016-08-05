@@ -16,7 +16,7 @@ test_that("tess3project constructor", {
                             keep = "all")
 
   expect_equal(class(tess3project.res)[2],"tess3")
-  expect_equal(length(tess3project.res),2)
+  expect_equal(length(tess3project.res),3) # because length for list take last indice...
   expect_equal(length(tess3project.res[[2]]$tess3.run),2)
   summary(tess3project.res)
 
@@ -160,6 +160,6 @@ test_that("tess3project bad use", {
                "The maximum value of the genotype matrix \\(X\\) cannot be greater than ploidy \\+ 1. Missing data must be encoded as NA\\.")
 
   expect_error(obj <- tess3(data.at$X, coord = as.matrix(mydata[,1:2])[1:30,], K = 5, ploidy = 1, openMP.core.num = 4),
-               "Number of row of coord and X must be the same")
+               "Number of row of coord and X/XBin must be the same")
 
-}
+})

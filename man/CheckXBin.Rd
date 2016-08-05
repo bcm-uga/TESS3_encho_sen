@@ -2,17 +2,19 @@
 % Please edit documentation in R/check.R
 \name{CheckXBin}
 \alias{CheckXBin}
-\title{Title}
+\title{Raise error if XBin is not well formated.}
 \usage{
 CheckXBin(XBin, ploidy)
 }
 \arguments{
-\item{ploidy}{}
+\item{XBin}{Binary genotype matrix.}
+
+\item{ploidy}{The number of chromosome.}
 }
 \value{
 
 }
 \description{
-Title
+Raise error if XBin is not well formated.
 }
 

@@ -2,11 +2,16 @@
 % Please edit documentation in R/spatialPlots.R
 \name{kriging}
 \alias{kriging}
-\title{TODO}
+\title{Return an interpolation function. Return a wrapper function of the function Krig of
+the package fields}
 \usage{
 kriging(theta = 10)
 }
+\arguments{
+\item{theta}{Numeric.}
+}
 \description{
-TODO
+Return an interpolation function. Return a wrapper function of the function Krig of
+the package fields
 }
 

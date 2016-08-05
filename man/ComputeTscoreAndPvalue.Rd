@@ -6,6 +6,13 @@
 \usage{
 ComputeTscoreAndPvalue(Fst, K, n)
 }
+\arguments{
+\item{Fst}{Matrix of Fst.}
+
+\item{K}{Number of ancestral populations.}
+
+\item{n}{Number of individuals.}
+}
 \description{
 Convert Fst into t-score and compute p value
 }

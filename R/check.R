@@ -2,10 +2,10 @@
 #
 
 
-#' Title
+#' Raise error if X is not well formated.
 #'
-#' @param X
-#' @param ploidy
+#' @param X Genotype matrix.
+#' @param ploidy The number of chromosome.
 #'
 #' @return
 #'
@@ -27,10 +27,10 @@ CheckX <- function(X, ploidy) {
   }
 }
 
-#' Title
+#' Raise error if XBin is not well formated.
 #'
-#' @param XBin
-#' @param ploidy
+#' @param XBin Binary genotype matrix.
+#' @param ploidy The number of chromosome.
 #'
 #' @return
 #'
@@ -55,9 +55,9 @@ CheckXBin <- function(XBin, ploidy) {
 }
 
 
-#' Title
+#' Raise error if W is not well formated.
 #'
-#' @param W
+#' @param W Graph weight matrix.
 #'
 #' @return
 #'
@@ -74,27 +74,27 @@ CheckW <- function(W) {
   }
 }
 
-#' Title
+#' Raise error if coord is not well formated.
 #'
-#' @param Coord
+#' @param coord Coordinate matrix.
 #'
 #' @return
 #'
 #' @examples
-CheckCoord <- function(Coord) {
-  if (!is.matrix(Coord)) {
+CheckCoord <- function(coord) {
+  if (!is.matrix(coord)) {
     stop("Coord must be a matrix")
   }
-  if (!is.double(Coord)) {
+  if (!is.double(coord)) {
     stop("Elements of Coord must be of type double")
   }
 }
 
 
-#' Title
+#' Raise error if X and W are not consistent.
 #'
-#' @param X
-#' @param W
+#' @param X Genotype matrix.
+#' @param W Graph weight matrix.
 #'
 #' @return
 #'
@@ -105,10 +105,10 @@ CheckXW <- function(X, W) {
   }
 }
 
-#' Title
+#' Raise error if XBin and W are not consistent.
 #'
-#' @param XBin
-#' @param W
+#' @param XBin Binary genotype matrix.
+#' @param W Graph weight matrix.
 #'
 #' @return
 #'
@@ -119,10 +119,10 @@ CheckXBinW <- function(XBin, W) {
   }
 }
 
-#' Title
+#' Raise error if X and coord are not consistent.
 #'
-#' @param X
-#' @param coord
+#' @param X Genotype matrix.
+#' @param coord Coordinate matrix.
 #'
 #' @return
 #'
@@ -134,10 +134,10 @@ CheckXCoord <- function(X, coord) {
   }
 }
 
-#' Title
+#' Raise error if XBin and coord are not consistent.
 #'
-#' @param XBin
-#' @param coord
+#' @param XBin Binary genotype matrix.
+#' @param coord Coordinate matrix.
 #'
 #' @return
 #'
@@ -149,6 +149,15 @@ CheckXBinCoord <- function(XBin, coord) {
   }
 }
 
+#' Raise error if W and coord are not consistent.
+#'
+#' @param W Graph weight matrix.
+#' @param coord Coordinate matrix.
+#'
+#' @return
+#' @export
+#'
+#' @examples
 CheckWCoord <- function(W, coord) {
   if ((nrow(W) != nrow(coord)) & (ncol(W) != nrow(coord))) {
     stop("Number of row of coord and W must be the same")

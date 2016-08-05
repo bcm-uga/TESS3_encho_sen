@@ -2,17 +2,17 @@
 % Please edit documentation in R/check.R
 \name{CheckW}
 \alias{CheckW}
-\title{Title}
+\title{Raise error if W is not well formated.}
 \usage{
 CheckW(W)
 }
 \arguments{
-\item{W}{}
+\item{W}{Graph weight matrix.}
 }
 \value{
 
 }
 \description{
-Title
+Raise error if W is not well formated.
 }
 
