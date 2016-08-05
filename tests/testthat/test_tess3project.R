@@ -6,13 +6,13 @@ test_that("tess3project constructor", {
 
   data("data.for.test", package = "tess3r")
   tess3project.res <- tess3(X = data.for.test$X,
-                     coord = data.for.test$coord,
-                     K = 2:3,
-                     ploidy = 1,
-                     lambda = 1.0,
-                     method = "MCPA",
-                     rep = 2,
-                     keep = "all")
+                            coord = data.for.test$coord,
+                            K = 2:3,
+                            ploidy = 1,
+                            lambda = 1.0,
+                            method = "projected.ls",
+                            rep = 2,
+                            keep = "all")
 
   expect_equal(class(tess3project.res)[1],"tess3")
   expect_equal(length(tess3project.res),2)
@@ -25,7 +25,7 @@ test_that("tess3project constructor", {
                                    K = 2,
                                    ploidy = 1,
                                    lambda = 1.0,
-                                   method = "MCPA",
+                                   method = "projected.ls",
                                    rep = 2,
                                    keep = "all")
   expect_equal(length(tess3project.res[[1]]$tess3.run),2)
@@ -39,7 +39,7 @@ test_that("tess3project constructor", {
                                    K = NULL,
                                    ploidy = 1,
                                    lambda = 1.0,
-                                   method = "MCPA",
+                                   method = "projected.ls",
                                    rep = 2,
                                    keep = "best")
   summary(tess3project.res)
@@ -48,11 +48,10 @@ test_that("tess3project constructor", {
                                    K = NULL,
                                    ploidy = 1,
                                    lambda = 1.0,
-                                   method = "MCPA",
+                                   method = "projected.ls",
                                    rep = -1,
                                    keep = "best"), "rep must greater than 1")
-
-
+ICI test que avec lenght(K) == 1 et rep == 1 on a bien une list de result
 })
 
 

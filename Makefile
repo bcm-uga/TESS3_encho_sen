@@ -31,6 +31,10 @@ doc:
 	$(PRINT)
 	R --vanilla -e 'devtools::document(roclets=c("rd", "collate", "namespace"))'
 
+vignette:
+	$(PRINT)
+	R --vanilla -e 'devtools::build_vignettes()'
+
 rcpp: R/RcppExports.R src/RcppExports.cpp
 
 R/RcppExports.R src/RcppExports.cpp: $(SOURCE_CPP)

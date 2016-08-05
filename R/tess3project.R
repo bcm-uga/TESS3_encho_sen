@@ -55,6 +55,27 @@ tess3 <- function(X,
     rm(X)
   }
 
+
+  # if user want only 1 run of tess3 we return a list of result
+  if (length(K) == 1 & rep == 1) {
+    return(tess3Main(X = NULL,
+                     XBin = XBin,
+                     coord = coord,
+                     K = K,
+                     ploidy = ploidy,
+                     lambda = lambda,
+                     W = W,
+                     method = method,
+                     max.iteration = max.iteration,
+                     tolerance = tolerance,
+                     openMP.core.num = openMP.core.num,
+                     Q.init = Q.init,
+                     mask = mask,
+                     copy = copy,
+                     algo.copy = algo.copy,
+                     verbose = verbose))
+  }
+
   res <- list()
   for (i in seq_along(K)) {
     rmse.max = Inf

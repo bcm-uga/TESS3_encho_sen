@@ -5,7 +5,7 @@
 \title{Main function.}
 \usage{
 tess3Main(X, XBin = NULL, coord, K, ploidy, lambda = 1, W = NULL,
-  method = "MCPA", max.iteration = 200, tolerance = 1e-05,
+  method = "projected.ls", max.iteration = 200, tolerance = 1e-05,
   openMP.core.num = 1, Q.init = NULL, mask = 0, copy = TRUE,
   algo.copy = TRUE, verbose = FALSE)
 }

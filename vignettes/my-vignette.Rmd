@@ -24,7 +24,7 @@ data(data.at)
 
 Run of tess3
 ```{r run, dependson=c("data"), results="hide"}
-tess3.obj <- tess3project(X = data.at$X, coord = data.at$coord, K = 1:10, ploidy = 1, openMP.core.num = 4)
+tess3.obj <- tess3(X = data.at$X, coord = data.at$coord, K = 1:10, ploidy = 1, openMP.core.num = 4)
 ```
 
 Plot of $RMSE(X, Q * G^T)$ for different value of $K$
