@@ -2,31 +2,17 @@
 % Please edit documentation in R/sampler.R
 \name{run.ms}
 \alias{run.ms}
-\title{Sample X such that P(X_i_dl + j) = Sum(Q_i_k G_k_dl + j).}
+\title{Helper function which call ms.}
 \usage{
 run.ms(ms.file, nsam, nreps, theta, rho, nsites, M)
 }
 \arguments{
 \item{M}{}
-
-\item{ploidy}{}
 }
 \value{
 
 }
 \description{
-Sample X such that P(X_i_dl + j) = Sum(Q_i_k G_k_dl + j).
-}
-\examples{
-n <- 100
-K <- 3
-ploidy <- 2
-L <- 1000
-data.list <- SampleGenoFromGenerativeModelTESS3(G = SampleUnifDirichletG(L, ploidy, K),
-                                                Q = SampleUnifQ(n, K),
-                                                coord = SampleNormalClusterCoord(n.by.pop = n, K = 1),
-                                                ploidy = ploidy)
-Helper function. Run ms.
-
+Helper function which call ms.
 }
 

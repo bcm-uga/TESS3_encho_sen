@@ -31,6 +31,10 @@ doc:
 	$(PRINT)
 	R --vanilla -e 'devtools::document(roclets=c("rd", "collate", "namespace"))'
 
+run_examples:
+	$(PRINT)
+	R --vanilla -e 'devtools::run_examples()'
+
 vignette:
 	$(PRINT)
 	R --vanilla -e 'devtools::build_vignettes()'

@@ -40,7 +40,7 @@ tess3.res <- Gettess3res(tess3.obj, K = 3)
 barplot(t(tess3.res$Q[order(data.at$coord[,1]),]), col = 2:4, border = NA)
 barplot(tess3.res$Q, border = NA, space = 0)
 # Q mapping on coord
-plot(tess3.res$Q, data.at$coord, plot.type = "max", interpolation.function = krigging())
+plot(tess3.res$Q, data.at$coord, plot.type = "max", interpolation.function = kriging())
 ```
 
 

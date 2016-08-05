@@ -35,6 +35,7 @@ coord a matrix of geographic coordinates.
 This function converts data sets imported from the STRUCTURE and the TESS 2.3 input file formats to the tess3 formats.
 }
 \examples{
+library(tess3r)
 data(durand09)
 d09tess3 <- tess2tess3(durand09, FORMAT = 2, extra.column = 1)
 obj <- tess3(X = d09tess3$X, coord = d09tess3$coord, K = 1:3, ploidy = 2, openMP.core.num = 4)

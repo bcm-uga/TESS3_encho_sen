@@ -28,7 +28,8 @@ Suggests:
     quadprog
 Imports:
     Rcpp (>= 0.12.3),
-    RcppEigen (>= 0.3.2.8.1)
+    RcppEigen (>= 0.3.2.8.1),
+    graphics
 LinkingTo: Rcpp, RcppEigen
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr

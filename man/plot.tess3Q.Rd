@@ -27,6 +27,8 @@ details on interpolation methods
 }
 }
 \examples{
+library(tess3r)
+
 data(data.at)
 obj <- tess3Main(data.at$X, coord = data.at$coord, K = 5, ploidy = 1, openMP.core.num = 4)
 Qmatrix <- obj$Q

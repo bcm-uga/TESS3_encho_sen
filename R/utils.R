@@ -17,6 +17,7 @@
 #' @return coord a matrix of geographic coordinates.
 #' @seealso \code{\link{tess3}}
 #' @examples
+#' library(tess3r)
 #' data(durand09)
 #' d09tess3 <- tess2tess3(durand09, FORMAT = 2, extra.column = 1)
 #' obj <- tess3(X = d09tess3$X, coord = d09tess3$coord, K = 1:3, ploidy = 2, openMP.core.num = 4)
@@ -163,6 +164,7 @@ tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1
 #' @return An object of class \code{tess3Q}.
 #' @seealso \code{\link{plot.tess3Q}} \code{\link{barplot.tess3Q}}
 #' @examples
+#' library(tess3r)
 #' ## an example with 3 individuals and 2 clusters
 #' Qmatrix <- matrix(c(0.4,0.6,0.3,0.7, 0.2, 0.8), byrow = T, nrow = 3)
 #' Qmatrix <- as.qmatrix(Qmatrix)

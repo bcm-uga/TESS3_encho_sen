@@ -229,26 +229,26 @@ SampleNormalClusterCoord <- function(n.by.pop, K, sigma1 = 1.0, sigma2 = 0.2 ) {
 ###################################################
 
 
-
-#' Sample X such that P(X_i_dl + j) = Sum(Q_i_k G_k_dl + j).
-#'
-#' @param Q
-#' @param G
-#' @param coord
-#' @param ploidy
-#'
-#' @return
-#' @export
-#'
-#' @examples
-#' n <- 100
-#' K <- 3
-#' ploidy <- 2
-#' L <- 1000
-#' data.list <- SampleGenoFromGenerativeModelTESS3(G = SampleUnifDirichletG(L, ploidy, K),
-#'                                                 Q = SampleUnifQ(n, K),
-#'                                                 coord = SampleNormalClusterCoord(n.by.pop = n, K = 1),
-#'                                                 ploidy = ploidy)
+#
+# #' Sample X such that P(X_i_dl + j) = Sum(Q_i_k G_k_dl + j).
+# #'
+# #' @param Q
+# #' @param G
+# #' @param coord
+# #' @param ploidy
+# #'
+# #' @return
+# #' @export
+# #'
+# #' @examples
+# #' n <- 100
+# #' K <- 3
+# #' ploidy <- 2
+# #' L <- 1000
+# #' data.list <- SampleGenoFromGenerativeModelTESS3(G = SampleUnifDirichletG(L, ploidy, K),
+# #'                                                 Q = SampleUnifQ(n, K),
+# #'                                                 coord = SampleNormalClusterCoord(n.by.pop = n, K = 1),
+# #'                                                 ploidy = ploidy)
 # SampleGenoFromGenerativeModelTESS3 <- function(Q, G, coord, ploidy) {
 #   res <- list()
 #
@@ -278,7 +278,7 @@ SampleNormalClusterCoord <- function(n.by.pop, K, sigma1 = 1.0, sigma2 = 0.2 ) {
 #####################ms sampler####################
 ###################################################
 
-#' Helper function. Run ms.
+#' Helper function which call ms.
 #'
 #' @param ms.file
 #' @param nsam
@@ -290,7 +290,6 @@ SampleNormalClusterCoord <- function(n.by.pop, K, sigma1 = 1.0, sigma2 = 0.2 ) {
 #'
 #' @return
 #'
-#' @examples
 run.ms <- function(ms.file, nsam, nreps, theta, rho, nsites, M) {
   res <- list()
   tmp.file <- paste0(tempfile(),".geno")
@@ -337,24 +336,21 @@ run.ms <- function(ms.file, nsam, nreps, theta, rho, nsites, M) {
 #' @export
 #'
 #' @examples
-#'
-#' tess3.ms <- "~/BiocompSoftware/msdir/ms"
-#' n <- 200
-#' K <- 2
-#' ploidy <- 1
-#' data.list <- SampleGenoOFWithMs(n = n,
-#'                                nsites.neutral = 100000,
-#'                                nsites.selected = 1000,
-#'                                crossover.proba = 0.25 * 10 ^ -8,
-#'                                m.neutral = 0.25 * 10 ^ -6,
-#'                                m.selected = 0.25 * 10 ^ -7,
-#'                                mutation.rate.per.site = 0.25 * 10 ^ -8,
-#'                                N0 = 10 ^ 6,
-#'                                k = 0.5,
-#'                                min.maf = 0.05,
-#'                                plot.debug = TRUE)
-#'
-#'
+#' # tess3.ms <- "~/BiocompSoftware/msdir/ms"
+#' # n <- 200
+#' # K <- 2
+#' # ploidy <- 1
+#' # data.list <- SampleGenoOFWithMs(n = n,
+#' #                              nsites.neutral = 100000,
+#' #                              nsites.selected = 1000,
+#' #                              crossover.proba = 0.25 * 10 ^ -8,
+#' #                              m.neutral = 0.25 * 10 ^ -6,
+#' #                              m.selected = 0.25 * 10 ^ -7,
+#' #                              mutation.rate.per.site = 0.25 * 10 ^ -8,
+#' #                              N0 = 10 ^ 6,
+#' #                              k = 0.5,
+#' #                              min.maf = 0.05,
+#' #                              plot.debug = TRUE)
 SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.proba, m.neutral, m.selected, mutation.rate.per.site, N0 = 10 ^ 6, k = 0.5, min.maf = 0.05, plot.debug = FALSE, tess3.ms = getOption("tess3.ms")) {
 
   #######################
@@ -452,7 +448,7 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
     LEA::write.geno(neutral.X, tmp.file)
     capture.output(obj <- LEA::snmf(tmp.file, K = K, entropy = FALSE, ploidy = 1, project = "new", alpha = 100), file = "/dev/null")
     q.K = LEA::Q(obj, K = K, run = 1)
-    barplot(t(q.K), col = rainbow(2), main = "snmf Q computed from neutral dataset")
+    graphics::barplot(t(q.K), col = rainbow(2), main = "snmf Q computed from neutral dataset")
 
     fst.values = fst(obj, K = K, ploidy = 1)
 
@@ -523,7 +519,7 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
       LEA::write.geno(selected.X, tmp.file)
       capture.output(obj <- LEA::snmf(tmp.file, K = K, entropy = T, ploidy = 1, project = "new", alpha = 100), file = "/dev/null")
       q.K = LEA::Q(obj, K = K, run = 1)
-      barplot(t(q.K), col = rainbow(2), main = "snmf Q computed from selected dataset")
+      graphics::barplot(t(q.K), col = rainbow(2), main = "snmf Q computed from selected dataset")
 
       fst.values = fst(obj, K = K, ploidy = 1)
 
@@ -559,7 +555,7 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
     LEA::write.geno(X, tmp.file)
     capture.output(obj <- LEA::snmf(tmp.file, K = K, entropy = T, ploidy = 1, project = "new", alpha = 100), file = "/dev/null")
     q.K = LEA::Q(obj, K = K, run = 1)
-    barplot(t(q.K), col = rainbow(2), main = "snmf Q computed from neutral + selected dataset")
+    graphics::barplot(t(q.K), col = rainbow(2), main = "snmf Q computed from neutral + selected dataset")
 
     fst.values = fst(obj, K = K, ploidy = 1)
 
@@ -607,7 +603,7 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
   res$Q <- SampleFuncQ(res$coord, f = function(X) c(sigmoid(k * X[1]), 1 - sigmoid(k * X[1])))
 
   if (plot.debug) {
-    barplot(t(res$Q), col = rainbow(2), main = "admixture Q")
+    graphics::barplot(t(res$Q), col = rainbow(2), main = "admixture Q")
   }
 
   # compute latent factor matrix
@@ -625,7 +621,7 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
     LEA::write.geno(res$admixed.genotype, tmp.file)
     capture.output(obj <- LEA::snmf(tmp.file, K = K, entropy = T, ploidy = 1, project = "new", alpha = 100), file = "/dev/null")
     q.K = LEA::Q(obj, K = K, run = 1)
-    barplot(t(q.K), col = rainbow(2), main = "snmf Q computed from admixed dataset")
+    graphics::barplot(t(q.K), col = rainbow(2), main = "snmf Q computed from admixed dataset")
 
     fst.values = fst(obj, K = K, ploidy = 1)
 
