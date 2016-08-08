@@ -5,8 +5,8 @@ sudo: false
 addons:
   apt:
     packages:
-      - libgdal1-dev
       - libproj-dev
+      - libgdal-dev
 
 
 warnings_are_errors: true
