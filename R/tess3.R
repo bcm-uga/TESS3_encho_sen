@@ -1,26 +1,25 @@
 #' Main function.
 #'
-#' @param K
-#' @param ploidy
-#' @param lambda
-#' @param W
-#' @param method
-#' @param max.iteration
-#' @param tolerance
-#' @param X
-#' @param openMP.core.num
-#' @param Q.init
-#' @param coord
-#' @param mask
-#' @param XBin
+#' @param K TODOC
+#' @param ploidy TODOC
+#' @param lambda TODOC
+#' @param W TODOC
+#' @param method TODOC
+#' @param max.iteration TODOC
+#' @param tolerance TODOC
+#' @param X TODOC
+#' @param openMP.core.num TODOC
+#' @param Q.init TODOC
+#' @param coord TODOC
+#' @param mask TODOC
+#' @param XBin TODOC
 #' @param algo.copy if TRUE data will be copy to speed the algorithm
-#' @param copy
-#' @param verbose
+#' @param copy TODOC
+#' @param verbose TODOC
 #'
-#' @return
+#' @return TODOC
 #' @export
 #'
-#' @examples
 tess3Main <- function(X,
                       XBin = NULL,
                       coord,
@@ -290,13 +289,11 @@ tess3Main <- function(X,
 
 #' Summary of tess3 object.
 #'
-#' @param object
-#' @param ...
+#' @param object TODOC
+#' @param ... TODOC
 #'
-#' @return
+#' @return TODOCC
 #' @export
-#'
-#' @examples
 summary.tess3Main <- function(object, ...) {
   cat(paste("=== Object of class tess3Main ===\n"))
   cat(paste("Number of individuals (n):", object$n,"\n"))
@@ -309,26 +306,22 @@ summary.tess3Main <- function(object, ...) {
 
 #' Title
 #'
-#' @param x
+#' @param x TODOC
 #'
-#' @return
+#' @return TODOC
 #' @export
-#'
-#' @examples
 is.tess3Main <- function(x) {
   inherits(x, "tess3Main")
 }
 
 #' Title
 #'
-#' @param tess3.obj
-#' @param genotype
-#' @param ploidy
+#' @param tess3.obj TODOCC
+#' @param X TODOC
+#' @param ploidy TODOC
+#' @param mask TODOC
 #'
-#' @return
 #' @export
-#'
-#' @examples
 rmse.tess3Main <- function(tess3.obj, X, ploidy, mask = NULL) {
   if (!is.tess3Main(tess3.obj)) {
     stop("tess3.obj must of class tess3Main.")
@@ -344,14 +337,11 @@ rmse.tess3Main <- function(tess3.obj, X, ploidy, mask = NULL) {
 
 #' Title
 #'
-#' @param object
-#' @param ...
+#' @param x tess3Main object.
+#' @param ... TODOC
 #'
-#' @return
 #' @export
-#'
-#' @examples
-plot.tess3Main <- function(object, ...) {
+plot.tess3Main <- function(x, ...) {
   message("Nothing to plot")
 }
 
@@ -363,6 +353,28 @@ plot.tess3Main <- function(object, ...) {
 #'
 #' @name tess3r
 #' @importFrom Rcpp evalCpp
+#' @importFrom graphics barplot
 #' @import RcppEigen
 #' @useDynLib tess3r
+NULL
+
+#' TODOC
+#'
+#' @name data.at
+#' @docType data
+#' @keywords data
+NULL
+
+#' TODOC
+#'
+#' @name data.for.test
+#' @docType data
+#' @keywords data
+NULL
+
+#' TODOC
+#'
+#' @name durand09
+#' @docType data
+#' @keywords data
 NULL

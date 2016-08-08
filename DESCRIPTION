@@ -3,11 +3,18 @@ Type: Package
 Title: Inference of Spatial Population Genetic Structure
 Version: 0.1
 Date: 2016-02-19
-Author: Kevin Caye
-Maintainer: Who to complain to <kevin.caye@imag.fr>
-Description: TESS3 is a fast and efficient program for estimating spatial population structure based on geographically constrained non-negative matrix factorization and population genetics.
-License: What license is it under?
+Authors@R: c(person("Kevin", "Caye", role = c("aut", "cre"),
+		     email = "kevin.caye@imag.fr"),
+	      person("Olivier", "Francois", role = "aut",
+        email = "olivier.francois@imag.fr"))
+Description: TESS3 is a fast and efficient program for estimating spatial
+  population structure based on geographically constrained non-negative matrix
+  factorization and population genetics.
+License: GPL-3 + file LICENSE
+Encoding: UTF-8
 LazyData: TRUE
+Depends:
+    R (>= 2.10)
 Suggests:
     testthat,
     sp,
@@ -22,14 +29,17 @@ Suggests:
     LEA,
     mapplots,
     gstat,
-    sp,
     automap,
     fields,
-    quadprog
+    quadprog,
+		Matrix,
+		RSpectra,
+		igraph,
+		ggplot2
 Imports:
     Rcpp (>= 0.12.3),
     RcppEigen (>= 0.3.2.8.1),
-    graphics
+		graphics
 LinkingTo: Rcpp, RcppEigen
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr

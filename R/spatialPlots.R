@@ -5,10 +5,6 @@
 #' Compute the graph window.
 #'
 #' @param coord Coordinate matrix.
-#'
-#' @return
-#'
-#' @examples
 ComputeWindow <- function(coord) {
   sd.x <- sd(coord[,1])
   sd.y <- sd(coord[,2])
@@ -27,11 +23,11 @@ ComputeWindow <- function(coord) {
 #' @param Q Ancestry coefficient matrix.
 #' @param coord Coordinate matrix.
 #' @param window Window of the graph.
+#' @param background if TRUE compute a background stencil.
+#' @param col colors
+#' @param radius radius of pies.
+#' @param ... TODOC
 #'
-#' @return
-#' @export
-#'
-#' @examples
 PlotPiechartAncestryCoef <- function(Q, coord, window, background, col, radius = sqrt((window[2] - window[1]) ^ 2 + (window[4] - window[3]) ^ 2) * 0.01, ...) {
   TestRequiredPkg("mapplots")
 
@@ -64,17 +60,13 @@ PlotPiechartAncestryCoef <- function(Q, coord, window, background, col, radius =
 #'
 #' @param coord Coordinate matrix.
 #' @param list.grid.z List of interpolation surface matrices.
-#' @param grid.x
-#' @param grid.y
+#' @param grid.x TODOC
+#' @param grid.y TODOC
 #' @param background Boolean marix.
 #' @param col.palette List of color palette.
 #' @param map If true map function of maps package is call to plot polygon from
 #' map database.
-#' @param ...
-#'
-#' @return
-#'
-#' @examples
+#' @param ... TODOC
 PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background, col.palette, map,...) {
 
   # rmk : bag data structure for list.grid.z ...
@@ -112,17 +104,14 @@ PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background,
 #'
 #' @param coord Coordinate matrix.
 #' @param list.grid.z List of interpolation surface matrices.
-#' @param grid.x
-#' @param grid.y
+#' @param grid.x TODOC
+#' @param grid.y TODOC
 #' @param background Boolean marix.
 #' @param col.palette List of color palette.
 #' @param map If true map function of maps package is call to plot polygon from
 #' map database.
-#' @param ...
+#' @param ... TODOC
 #'
-#' @return
-#'
-#' @examples
 PlotInterpotationAll <- function(coord, list.grid.z, grid.x, grid.y, background, col.palette, map,...) {
   for (k in 1:length(list.grid.z)) {
     image(grid.x, grid.y,

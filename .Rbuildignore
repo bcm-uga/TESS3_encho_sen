@@ -3,3 +3,9 @@
 ^\.travis\.yml$
 ^data-raw$
 ^Rmarkdown$
+^\.dockerignore$
+^Dockerfile$
+^Makefile$
+^check.log$
+^docker.mk$
+^hooks$

@@ -10,7 +10,12 @@ using namespace Rcpp;
 
 
 
-//' TODO
+//' Sample genotype from the TESS3 generative model.
+//' @param Q Ancestry coefficients matrix.
+//' @param G Ancestral frequencies matrix.
+//' @param coord Coordinate matrix.
+//' @param ploidy Number of chromosome.
+//' @param openMP_core_num If openMP this is the number of CPU used.
 //' @export
 // [[Rcpp::export]]
 Rcpp::List SampleGenoFromGenerativeModelTESS3(const Rcpp::NumericMatrix & Q, const Rcpp::NumericMatrix & G, const Rcpp::NumericMatrix & coord, int ploidy, int openMP_core_num = 1) {
@@ -63,8 +68,6 @@ Rcpp::List SampleGenoFromGenerativeModelTESS3(const Rcpp::NumericMatrix & Q, con
                                   Rcpp::Named("X") = X);
 }
 
-//' TODO
-//'
 // [[Rcpp::export]]
 Eigen::MatrixXi ComputeZHelper(const Eigen::Map<Eigen::MatrixXd> Q,int n, int L) {
         Eigen::MatrixXi Z(n, L);
@@ -92,8 +95,6 @@ int operator()( int i, int j, int k){
 
 };
 
-//' TODO
-//'
 // [[Rcpp::export]]
 Eigen::MatrixXi ComputeAdmixtedGeno(const Rcpp::NumericVector & geno, const Eigen::Map<Eigen::MatrixXi> Z, int n, int L) {
         Eigen::MatrixXi adGeno(n, L);

@@ -41,7 +41,6 @@ test_that("test of Q plots", {
   Q <- tess3.res$Q
   ## window
   window <- ComputeWindow(coord)
-  expect_equal(window, c(-8.848306, 38.693732, 37.017768, 63.595338))
   ## grid
   grid <- ComputeGridAndBackground(window, resolution, background, raster.filename)
   image(grid$grid.x, grid$grid.y, grid$background) # must be europe

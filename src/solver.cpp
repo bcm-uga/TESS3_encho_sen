@@ -60,7 +60,7 @@ void ProjectG(Eigen::Map<Eigen::MatrixXd> G, int D) {
 //******************************* With copy  ***********************************
 
 
-//' solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
+// solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
 // [[Rcpp::export]]
 void ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance, Eigen::Map<Eigen::MatrixXd> Q, Eigen::Map<Eigen::MatrixXd> G, bool verbose) {
         // Some const
@@ -152,7 +152,7 @@ void ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen
 //******************************* No   copy  ***********************************
 
 
-//' solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
+// solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
 // [[Rcpp::export]]
 void ComputeMCPASolutionNoCopyX(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance, Eigen::Map<Eigen::MatrixXd> Q, Eigen::Map<Eigen::MatrixXd> G, bool verbose) {
         // Some const

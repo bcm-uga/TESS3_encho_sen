@@ -5,10 +5,8 @@
 #' @param tess3.res tess3Main object with Q and G estimates.
 #' @param masked.X Genotype matrix with the missing values (NA values).
 #'
-#' @return
+#' @return TODOC
 #' @export
-#'
-#' @examples
 ImputeRandom <- function(tess3.res, masked.X) {
   if (!is.tess3Main(tess3.res)) {
     stop("tess3.res must be a tess3 result of class tess3Main. You can use function tess3Main or Gettess3res on a tess3 object.")
@@ -34,10 +32,8 @@ ImputeRandom <- function(tess3.res, masked.X) {
 #' @param tess3.res tess3Main object with Q and G estimates.
 #' @param masked.X Genotype matrix with the missing values (NA values).
 #'
-#' @return
+#' @return TODOC
 #' @export
-#'
-#' @examples
 ImputeRound <- function(tess3.res, masked.X) {
   if (!is.tess3Main(tess3.res)) {
     stop("tess3.res must be a tess3 result of class tess3Main. You can use function tess3Main or Gettess3res on a tess3 object.")

@@ -7,10 +7,8 @@
 #' @param coord Coodinate matrix.
 #' @param f Function of the coordinate.
 #'
-#' @return
+#' @return TODOC
 #' @export
-#'
-#' @examples
 SampleFuncQ <- function(coord, f = function(X) c(1 / (1 + exp(-0.5 * X[1])), 1 - 1 / (1 + exp(-0.5 * X[1])))) {
   Q = t(apply(coord, 1, f))
   class(Q) <- "tess3Q"
@@ -22,10 +20,8 @@ SampleFuncQ <- function(coord, f = function(X) c(1 / (1 + exp(-0.5 * X[1])), 1 -
 #' @param n Number of row of Q.
 #' @param K Number of column of Q.
 #'
-#' @return
+#' @return TODOC
 #' @export
-#'
-#' @examples
 SampleUnifQ <- function(n, K) {
   TestRequiredPkg("gtools")
   alpha = matrix(runif(n*K,min = 0, max = 1),n,K)
@@ -37,9 +33,9 @@ SampleUnifQ <- function(n, K) {
 #' For population the center mu_k is computed. Then D_i_k = ||coord_i - mu_k|| is computed. finally Q = f(D) and Q is projected to statisfy constraints.
 #'
 #'
-#' TODO
+#' TODOC
 #'
-#' @return TODO
+#' @return TODOC
 #'
 #
 #' @param coord Coordinate matrix.
@@ -76,9 +72,9 @@ SampleDistFromCenterQ <- function(coord, n.by.pop, K, f = function(D) exp(-D / 0
 #'  For population the center mu_k is computed. Then D_i_k = ||coord_i - mu_k|| is computed. finally alpha = f(D) and Q ~ Dirichlet(alpha).
 #'
 #'
-#' TODO
+#' TODOC
 #'
-#' @return TODO
+#' @return TODOC
 #'
 #' @param coord Coordinate matrix.
 #' @param n.by.pop Number of individual by population.
@@ -114,19 +110,18 @@ SampleDistFromCenterDirichletQ <- function(coord, n.by.pop, K, f = function(D) e
 #' sample Q as describe in "Spatial Inference of Admixture Proportions and Segondary Contact Zones" E. Durand et al.
 #'
 #'
-#' TODO
+#' TODOC
 #'
-#' @return TODO
+#' @return TODOC
 #'
 #
-#' @param coord
-#'
-#' @param K
-#' @param W
-#' @param sigma
-#' @param rho
-#' @param f
-#' @param beta
+#' @param coord TODOC
+#' @param K TODOC
+#' @param W TODOC
+#' @param sigma TODOC
+#' @param rho TODOC
+#' @param f TODOC
+#' @param beta TODOC
 #'
 #' @export
 SampleTESS2.3Q <- function(coord, K, W, sigma, rho, f = function(X) c(1.0,X[1], X[2]), beta = matrix(0.0, 3, K)) {
@@ -159,15 +154,14 @@ SampleTESS2.3Q <- function(coord, K, W, sigma, rho, f = function(X) c(1.0,X[1], 
 #' sample G such as G_dl+._k ~ Dirichlet(1/(ploidy + 1))
 #'
 #'
-#' TODO
+#' TODOC
 #'
-#' @return TODO
+#' @return TODOC
 #'
 #
-#' @param L
-#'
-#' @param ploidy
-#' @param K
+#' @param L TODOC
+#' @param ploidy TODOC
+#' @param K TODOC
 #'
 #' @export
 SampleUnifDirichletG <- function(L, ploidy, K) {
@@ -189,16 +183,15 @@ SampleUnifDirichletG <- function(L, ploidy, K) {
 #' sample coord such as a mixture of K cluster distributed with gaussian law.
 #'
 #'
-#' TODO
+#' TODOC
 #'
-#' @return TODO
+#' @return TODOC
 #'
 #
-#' @param n.by.pop
-#'
-#' @param K
-#' @param sigma1
-#' @param sigma2
+#' @param n.by.pop TODOC
+#' @param K TODOC
+#' @param sigma1 TODOC
+#' @param sigma2 TODOC
 #'
 #' @export
 SampleNormalClusterCoord <- function(n.by.pop, K, sigma1 = 1.0, sigma2 = 0.2 ) {
@@ -232,10 +225,10 @@ SampleNormalClusterCoord <- function(n.by.pop, K, sigma1 = 1.0, sigma2 = 0.2 ) {
 #
 # #' Sample X such that P(X_i_dl + j) = Sum(Q_i_k G_k_dl + j).
 # #'
-# #' @param Q
-# #' @param G
-# #' @param coord
-# #' @param ploidy
+# #' @param Q TODOC
+# #' @param G TODOC
+# #' @param coord TODOC
+# #' @param ploidy TODOC
 # #'
 # #' @return
 # #' @export
@@ -280,16 +273,15 @@ SampleNormalClusterCoord <- function(n.by.pop, K, sigma1 = 1.0, sigma2 = 0.2 ) {
 
 #' Helper function which call ms.
 #'
-#' @param ms.file
-#' @param nsam
-#' @param nreps
-#' @param theta
-#' @param rho
-#' @param nsites
-#' @param M
+#' @param ms.file TODOC
+#' @param nsam TODOC
+#' @param nreps TODOC
+#' @param theta TODOC
+#' @param rho TODOC
+#' @param nsites TODOC
+#' @param M TODOC
 #'
-#' @return
-#'
+#' @return TODOC
 run.ms <- function(ms.file, nsam, nreps, theta, rho, nsites, M) {
   res <- list()
   tmp.file <- paste0(tempfile(),".geno")
@@ -320,7 +312,7 @@ run.ms <- function(ms.file, nsam, nreps, theta, rho, nsites, M) {
 #' Sample ancestral population with ms 2 island model. Then admixe ancestral population
 #' along a longitudinal gradient.
 #'
-#' @param k
+#' @param k TODOC
 #' @param min.maf the locus with a maf less than this parameter are removed
 #' @param plot.debug if TRUE plot at different stage of the simulation
 #' @param n number of indivudual to sample
@@ -331,8 +323,8 @@ run.ms <- function(ms.file, nsam, nreps, theta, rho, nsites, M) {
 #' @param crossover.proba corss-over probability between adjacent site per generation
 #' @param mutation.rate.per.site mutation rate per site
 #' @param N0 population size
-#'
-#' @return
+#' @param tess3.ms ms binary path.
+#' @return TODOC
 #' @export
 #'
 #' @examples
@@ -660,4 +652,3 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
   return(res)
 
 }
-

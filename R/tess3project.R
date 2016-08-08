@@ -1,23 +1,23 @@
 #' Run tess3 for multiple value of K and with repetition.
 #'
-#' @param ploidy
-#' @param lambda
-#' @param rep
-#' @param W
-#' @param method
-#' @param max.iteration
-#' @param tolerance
-#' @param keep
-#' @param X
-#' @param coord
-#' @param openMP.core.num
-#' @param mask
-#' @param XBin
-#' @param K
-#' @param copy
+#' @param ploidy TODOC
+#' @param lambda TODOC
+#' @param rep TODOC
+#' @param W TODOC
+#' @param method TODOC
+#' @param max.iteration TODOC
+#' @param tolerance TODOC
+#' @param keep TODOC
+#' @param X TODOC
+#' @param coord TODOC
+#' @param openMP.core.num TODOC
+#' @param mask TODOC
+#' @param XBin TODOC
+#' @param K TODOC
+#' @param copy TODOC
 #' @param algo.copy If TRUE data will be copy to speed the algorithm.
-#' @param verbose
-#' @param Q.init
+#' @param verbose TODOC
+#' @param Q.init TODOC
 #'
 #' @return tess3 object.
 #' @export
@@ -109,8 +109,11 @@ tess3 <- function(X,
                          verbose = verbose)
       rmse[r] <- tess3.aux$rmse
       crossentropy[r] <- tess3.aux$crossentropy
-      crossvalid.rmse[r] <- ifelse(!is.null(tess3.aux$crossvalid.rmse),tess3.aux$crossvalid.rmse, -1)
-      crossvalid.crossentropy[r] <- ifelse(!is.null(tess3.aux$crossvalid.crossentropy),tess3.aux$crossvalid.crossentropy, -1)
+      crossvalid.rmse[r] <- ifelse(!is.null(tess3.aux$crossvalid.rmse),
+                                    tess3.aux$crossvalid.rmse, -1)
+      crossvalid.crossentropy[r] <-
+      ifelse(!is.null(tess3.aux$crossvalid.crossentropy),
+      tess3.aux$crossvalid.crossentropy, -1)
       if (keep == "best") {
         if (rmse[r] < rmse.max) {
           tess3.run[[1]] <- tess3.aux
@@ -120,7 +123,11 @@ tess3 <- function(X,
         tess3.run[[r]] <- tess3.aux
       }
     }
-    res[[K[i]]] <- list(K = K[i], tess3.run = tess3.run, rmse = rmse, crossentropy = crossentropy, crossvalid.rmse = crossvalid.rmse, crossvalid.crossentropy = crossvalid.crossentropy)
+    res[[K[i]]] <- list(K = K[i], tess3.run = tess3.run,
+                        rmse = rmse,
+                        crossentropy = crossentropy,
+                        crossvalid.rmse = crossvalid.rmse,
+                        crossvalid.crossentropy = crossvalid.crossentropy)
   }
   class(res) <- c(class(res), "tess3")
   return(res)
@@ -129,13 +136,11 @@ tess3 <- function(X,
 
 #' Title
 #'
-#' @param object
-#' @param ...
+#' @param object tess3 object.
+#' @param ... TODOC
 #'
-#' @return
 #' @export
 #'
-#' @examples
 summary.tess3 <- function(object, ...) {
   cat(paste("=== Object of class tess3 ===\n"))
   if (length(object) > 0) {
@@ -152,45 +157,46 @@ summary.tess3 <- function(object, ...) {
 
 #' Plot RMSE(X, Q * t(G)) for all K number of ancestral population with error bars.
 #'
-#' @param object
-#' @param ...
+#' @param x A tess3 object.
+#' @param crossvalid If TRUE error is computed on masked data.
+#' @param crossentropy If TRUE the cross entropy error metric is used. If FALSE
+#' the RMSE is used.
+#' @param ... TODOC
 #'
-#' @return
 #' @export
 #'
-#' @examples
-plot.tess3 <- function(object, crossvalid = FALSE, crossentropy = FALSE, ...) {
-  if (length(object) > 0) {
+plot.tess3 <- function(x, crossvalid = FALSE, crossentropy = FALSE, ...) {
+  if (length(x) > 0) {
     if (crossvalid) {
       # test if cross valid rmse is not null
-      if (object[[1]]$crossvalid.rmse[1] == -1)
+      if (x[[1]]$crossvalid.rmse[1] == -1)
         stop("tess3 was run with mask = 0. Run it with mask > 0.0 to have the cross validation rmse computed")
     }
-    med <- seq_along(object)
-    min <- seq_along(object)
-    max <- seq_along(object)
-    K <- seq_along(object)
-    for (i in seq_along(object)) {
-      K[i] <- object[[i]]$K
+    med <- seq_along(x)
+    min <- seq_along(x)
+    max <- seq_along(x)
+    K <- seq_along(x)
+    for (i in seq_along(x)) {
+      K[i] <- x[[i]]$K
       if (!crossentropy) {
         if (!crossvalid) {
-          med[i] <- median(object[[i]]$rmse)
-          min[i] <- min(object[[i]]$rmse)
-          max[i] <- max(object[[i]]$rmse)
+          med[i] <- median(x[[i]]$rmse)
+          min[i] <- min(x[[i]]$rmse)
+          max[i] <- max(x[[i]]$rmse)
         } else {
-          med[i] <- median(object[[i]]$crossvalid.rmse)
-          min[i] <- min(object[[i]]$crossvalid.rmse)
-          max[i] <- max(object[[i]]$crossvalid.rmse)
+          med[i] <- median(x[[i]]$crossvalid.rmse)
+          min[i] <- min(x[[i]]$crossvalid.rmse)
+          max[i] <- max(x[[i]]$crossvalid.rmse)
         }
       } else {
         if (!crossvalid) {
-          med[i] <- median(object[[i]]$crossentropy)
-          min[i] <- min(object[[i]]$crossentropy)
-          max[i] <- max(object[[i]]$crossentropy)
+          med[i] <- median(x[[i]]$crossentropy)
+          min[i] <- min(x[[i]]$crossentropy)
+          max[i] <- max(x[[i]]$crossentropy)
         } else {
-          med[i] <- median(object[[i]]$crossvalid.crossentropy)
-          min[i] <- min(object[[i]]$crossvalid.crossentropy)
-          max[i] <- max(object[[i]]$crossvalid.crossentropy)
+          med[i] <- median(x[[i]]$crossvalid.crossentropy)
+          min[i] <- min(x[[i]]$crossvalid.crossentropy)
+          max[i] <- max(x[[i]]$crossvalid.crossentropy)
         }
       }
     }
@@ -205,46 +211,10 @@ plot.tess3 <- function(object, crossvalid = FALSE, crossentropy = FALSE, ...) {
 
 #' Test if x is a tess3project object
 #'
-#' @param x
+#' @param x An object.
 #'
-#' @return
+#' @return TRUE if x is an tess3 object.
 #' @export
-#'
-#' @examples
 is.tess3 <- function(x) {
   inherits(x, "tess3")
 }
-
-#' Get tess3 run result
-#'
-#' @param x
-#' @param K
-#' @param rep
-#'
-#' @return
-#' @export
-#'
-#' @examples
-Gettess3res <- function(tess3, K, rep = "best") {
-  if (is.tess3Main(tess3)) {
-    if (rep != 1 & rep != "best") {
-      # stop("Tess3 algorithm was run only one time.")
-      return(NULL)
-    }
-    if (K != ncol(tess3$Q)) {
-      # stop("This value of K is not available.")
-      return(NULL)
-    }
-    return(tess3)
-  }
-  if (!is.tess3(tess3)) {
-    stop("tess3 must of class tess3")
-  }
-  if (rep == "best") {
-    best.rep <- min(which.min(tess3[[K]]$rmse)[1],length(tess3[[K]]$tess3.run))
-  } else {
-    best.rep <- min(as.numeric(rep),length(tess3[[K]]$tess3.run))
-  }
-  return(tess3[[K]]$tess3.run[[best.rep]])
-}
-

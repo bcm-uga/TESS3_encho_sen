@@ -3,10 +3,8 @@
 #' @param Q Ancestry coeficient matrix.
 #' @param W Graph weight matrix.
 #'
-#' @return
+#' @return TODOC
 #' @export
-#'
-#' @examples
 ComputeSpatialPenalty <- function(Q, W) {
   Lapl <- as.matrix(ComputeGraphLaplacian(W))
   aux <- crossprod(Lapl, Q)
@@ -52,7 +50,7 @@ ComputeRmseWithBestPermutation <- function(Q1, Q2) {
 #'
 #'
 #'
-#' @param Q1Numeric.
+#' @param Q1 Numeric.
 #' @param Q2 Numeric.
 #'
 #' @export

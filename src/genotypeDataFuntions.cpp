@@ -8,7 +8,10 @@
 using namespace Eigen;
 using namespace Rcpp;
 
-//' TODO
+//' Binary coding of the genotype data matrix.
+//' @param X Genotype matrix.
+//' @param ploidy Numbet of chromosomes.
+//' @param XBin Binary genotype matrix to fill.
 //' @export
 // [[Rcpp::export]]
 void X2XBin(const Rcpp::NumericMatrix & X, int ploidy, Eigen::Map<Eigen::MatrixXd> & XBin) {
@@ -31,7 +34,9 @@ void X2XBin(const Rcpp::NumericMatrix & X, int ploidy, Eigen::Map<Eigen::MatrixX
         return;
 }
 
-//' TODO
+//' Convert the binary genotype matrix into genotype matrix.
+//' @param ploidy Numbet of chromosomes.
+//' @param XBin Binary genotype matrix.
 //' @export
 // [[Rcpp::export]]
 Eigen::MatrixXd XBin2X(const Eigen::Map<Eigen::MatrixXd> XBin, int ploidy) {

@@ -1,14 +1,11 @@
 #' Plot the manhattan plot of -log(p.value).
 #'
-#' @param pvalue tess3pvalue object.
-#' @param ...
+#' @param x tess3pvalue object.
+#' @param ... TODOC
 #'
-#' @return
+#' @return TODOC
 #' @export
-#'
-#' @examples
-plot.tess3pvalue <- function(pvalue, ...) {
-  loci.index <- 1:length(pvalue)
-  plot(loci.index, -log(pvalue), ...)
+plot.tess3pvalue <- function(x, ...) {
+  loci.index <- 1:length(x)
+  plot(loci.index, -log(x), ...)
 }
-

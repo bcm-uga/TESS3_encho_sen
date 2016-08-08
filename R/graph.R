@@ -1,10 +1,6 @@
 #' Compute laplacian of a graph.
 #'
 #' @param W Graph weight matrix.
-#'
-#' @return
-#'
-#' @examples
 ComputeGraphLaplacian <- function(W) {
   D <- diag(apply(W,1,sum))
   return(D - W)
@@ -14,10 +10,6 @@ ComputeGraphLaplacian <- function(W) {
 #'
 #' @param Lapl Graph laplacian matrix.
 #' @param k Number of eigen values.
-#'
-#' @return
-#'
-#' @examples
 ComputeEigenValuesWithIgraphArpack <- function(Lapl, k) {
   if (!requireNamespace("igraph", quietly = TRUE)) {
     stop("igraph needed for ComputeEigenValuesWithIgraph function to work. Please install it.",
@@ -35,10 +27,6 @@ ComputeEigenValuesWithIgraphArpack <- function(Lapl, k) {
 #'
 #' @param Lapl Graph laplacian matrix.
 #' @param k Number of eigen values.
-#'
-#' @return
-#'
-#' @examples
 ComputeEigenValuesWithRSpectra <- function(Lapl, k) {
   if (!requireNamespace("RSpectra", quietly = TRUE)) {
     stop("RSpectra needed for ComputeEigenValuesWithRSpectra function to work. Please install it.",
@@ -53,10 +41,6 @@ ComputeEigenValuesWithRSpectra <- function(Lapl, k) {
 #' Compute the average distance between points.
 #'
 #' @param coord Coordinate matrix.
-#'
-#' @return
-#'
-#' @examples
 ComputeMeanDist <- function(coord) {
   W <- matrix(0,nrow(coord),nrow(coord))
   for (i in 1:nrow(coord)) {

@@ -7,8 +7,6 @@
 #'
 #' @return Semi-variance.
 #' @export
-#'
-#' @examples
 CalculateEmpiricalSemivariogram <- function(Dz, Dx, breaks = "FD", na.rm = TRUE) {
 
   message("Computing semi variance")
