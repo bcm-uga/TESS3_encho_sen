@@ -7,7 +7,7 @@ warnings_are_errors: true
 addons:
   apt:
     packages:
-      - gdal
+      - libgdal-dev
 
 bioc_required: true
 
