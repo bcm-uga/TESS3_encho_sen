@@ -1,3 +1,4 @@
+dist: trusty
 language: R
 cache: packages
 sudo: false
@@ -15,10 +16,6 @@ bioc_required: true
 
 r_packages:
   - covr
-
-before_script:
-  - R -e "install.packages('rgdal', repos = 'http://cran.rstudio.com')"
-
 
 after_success:
   - Rscript -e 'covr::codecov()'

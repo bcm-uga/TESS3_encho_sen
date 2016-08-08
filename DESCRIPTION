@@ -35,7 +35,8 @@ Suggests:
 		Matrix,
 		RSpectra,
 		igraph,
-		ggplot2
+		ggplot2,
+		rgdal
 Imports:
     Rcpp (>= 0.12.3),
     RcppEigen (>= 0.3.2.8.1),
