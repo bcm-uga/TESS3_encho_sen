@@ -1,7 +1,7 @@
-dist: trusty
 language: R
 cache: packages
-sudo: false
+sudo: required
+dist: trusty
 
 addons:
   apt:
