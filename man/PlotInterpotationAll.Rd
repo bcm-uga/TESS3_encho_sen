@@ -12,6 +12,10 @@ PlotInterpotationAll(coord, list.grid.z, grid.x, grid.y, background,
 
 \item{list.grid.z}{List of interpolation surface matrices.}
 
+\item{grid.x}{TODOC}
+
+\item{grid.y}{TODOC}
+
 \item{background}{Boolean marix.}
 
 \item{col.palette}{List of color palette.}
@@ -19,10 +23,7 @@ PlotInterpotationAll(coord, list.grid.z, grid.x, grid.y, background,
 \item{map}{If true map function of maps package is call to plot polygon from
 map database.}
 
-\item{...}{}
-}
-\value{
-
+\item{...}{TODOC}
 }
 \description{
 Plot all the interpolation surfaces on several graphs.

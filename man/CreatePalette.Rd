@@ -16,16 +16,20 @@ CreatePalette(color.vector = c("tomato", "chartreuse", "gold", "blue",
 An object of class \code{list} containing a list of color palettes.
 }
 \description{
-This function creates a list of color palettes for the plot and barplot functions
+This function creates a list of color palettes for the plot and barplot
+functions
 }
 \examples{
 ## an A. thaliana example
 data(data.at)
-obj <- tess3(data.at$X, coord = data.at$coord, K = 5, ploidy = 1, openMP.core.num = 4)
+obj <- tess3(data.at$X, coord = data.at$coord, K = 5, ploidy = 1,
+             openMP.core.num = 4)
 Qmatrix <- obj$Q
 my.colors <- c("tomato", "yellow", "blue", "wheat","olivedrab")
 my.palette <- CreatePalette(my.colors, 9)
-plot(obj$Q, data.at$coord, method = "mapping.max", col.palette = my.palette, interpol = kriging(10), cex = .4, xlab = "Longitude", ylab= "Latitude", main = "Ancestry coefficients")
+plot(obj$Q, data.at$coord, method = "mapping.max", col.palette = my.palette,
+     interpol = kriging(10), cex = .4, xlab = "Longitude", ylab= "Latitude",
+     main = "Ancestry coefficients")
 }
 \author{
 Kevin Caye, Olivier François

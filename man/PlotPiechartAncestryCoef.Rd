@@ -14,6 +14,14 @@ PlotPiechartAncestryCoef(Q, coord, window, background, col,
 \item{coord}{Coordinate matrix.}
 
 \item{window}{Window of the graph.}
+
+\item{background}{if TRUE compute a background stencil.}
+
+\item{col}{colors}
+
+\item{radius}{radius of pies.}
+
+\item{...}{TODOC}
 }
 \description{
 Plot pie chart of ancestry coefficient.

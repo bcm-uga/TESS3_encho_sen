@@ -7,7 +7,9 @@
 \method{summary}{tess3}(object, ...)
 }
 \arguments{
-\item{...}{}
+\item{object}{tess3 object.}
+
+\item{...}{TODOC}
 }
 \description{
 Title

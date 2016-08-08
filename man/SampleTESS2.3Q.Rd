@@ -8,14 +8,24 @@ SampleTESS2.3Q(coord, K, W, sigma, rho, f = function(X) c(1, X[1], X[2]),
   beta = matrix(0, 3, K))
 }
 \arguments{
-\item{coord}{}
+\item{coord}{TODOC}
 
-\item{beta}{}
+\item{K}{TODOC}
+
+\item{W}{TODOC}
+
+\item{sigma}{TODOC}
+
+\item{rho}{TODOC}
+
+\item{f}{TODOC}
+
+\item{beta}{TODOC}
 }
 \value{
-TODO
+TODOC
 }
 \description{
-TODO
+TODOC
 }
 

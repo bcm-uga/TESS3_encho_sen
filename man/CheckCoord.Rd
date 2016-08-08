@@ -9,9 +9,6 @@ CheckCoord(coord)
 \arguments{
 \item{coord}{Coordinate matrix.}
 }
-\value{
-
-}
 \description{
 Raise error if coord is not well formated.
 }

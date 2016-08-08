@@ -26,9 +26,16 @@ SampleGenoOFWithMs(n, nsites.neutral, nsites.selected, crossover.proba,
 
 \item{N0}{population size}
 
+\item{k}{TODOC}
+
 \item{min.maf}{the locus with a maf less than this parameter are removed}
 
 \item{plot.debug}{if TRUE plot at different stage of the simulation}
+
+\item{tess3.ms}{ms binary path.}
+}
+\value{
+TODOC
 }
 \description{
 Sample ancestral population with ms 2 island model. Then admixe ancestral population

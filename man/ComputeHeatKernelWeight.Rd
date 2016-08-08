@@ -2,11 +2,16 @@
 % Please edit documentation in R/RcppExports.R
 \name{ComputeHeatKernelWeight}
 \alias{ComputeHeatKernelWeight}
-\title{TODO}
+\title{Compute graph matrix with the heat kernel function.}
 \usage{
 ComputeHeatKernelWeight(coord, sigma)
 }
+\arguments{
+\item{coord}{Coordinate matrix.}
+
+\item{sigma}{sigma numeric parameter.}
+}
 \description{
-TODO
+Compute graph matrix with the heat kernel function.
 }
 

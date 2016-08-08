@@ -11,9 +11,6 @@ CheckXBinW(XBin, W)
 
 \item{W}{Graph weight matrix.}
 }
-\value{
-
-}
 \description{
 Raise error if XBin and W are not consistent.
 }

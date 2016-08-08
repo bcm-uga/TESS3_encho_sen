@@ -38,9 +38,11 @@ This function converts data sets imported from the STRUCTURE and the TESS 2.3 in
 library(tess3r)
 data(durand09)
 d09tess3 <- tess2tess3(durand09, FORMAT = 2, extra.column = 1)
-obj <- tess3(X = d09tess3$X, coord = d09tess3$coord, K = 1:3, ploidy = 2, openMP.core.num = 4)
+obj <- tess3(X = d09tess3$X, coord = d09tess3$coord,
+             K = 1:3, ploidy = 2, openMP.core.num = 4)
 Qmatrix <- Gettess3res(obj, K = 3)$Q
-barplot(Qmatrix, sort.by.Q = FALSE, border = NA, space = 0, xlab = "Individuals", ylab = "Ancestry coefficients")
+barplot(Qmatrix, sort.by.Q = FALSE, border = NA,
+        space = 0, xlab = "Individuals", ylab = "Ancestry coefficients")
 }
 \author{
 Kevin Caye, Flora Jay, Olivier François

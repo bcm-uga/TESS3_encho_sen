@@ -10,9 +10,40 @@ tess3Main(X, XBin = NULL, coord, K, ploidy, lambda = 1, W = NULL,
   algo.copy = TRUE, verbose = FALSE)
 }
 \arguments{
+\item{X}{TODOC}
+
+\item{XBin}{TODOC}
+
+\item{coord}{TODOC}
+
+\item{K}{TODOC}
+
+\item{ploidy}{TODOC}
+
+\item{lambda}{TODOC}
+
+\item{W}{TODOC}
+
+\item{method}{TODOC}
+
+\item{max.iteration}{TODOC}
+
+\item{tolerance}{TODOC}
+
+\item{openMP.core.num}{TODOC}
+
+\item{Q.init}{TODOC}
+
+\item{mask}{TODOC}
+
+\item{copy}{TODOC}
+
 \item{algo.copy}{if TRUE data will be copy to speed the algorithm}
 
-\item{verbose}{}
+\item{verbose}{TODOC}
+}
+\value{
+TODOC
 }
 \description{
 Main function.

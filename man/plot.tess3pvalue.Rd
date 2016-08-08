@@ -4,12 +4,15 @@
 \alias{plot.tess3pvalue}
 \title{Plot the manhattan plot of -log(p.value).}
 \usage{
-\method{plot}{tess3pvalue}(pvalue, ...)
+\method{plot}{tess3pvalue}(x, ...)
 }
 \arguments{
-\item{pvalue}{tess3pvalue object.}
+\item{x}{tess3pvalue object.}
 
-\item{...}{}
+\item{...}{TODOC}
+}
+\value{
+TODOC
 }
 \description{
 Plot the manhattan plot of -log(p.value).

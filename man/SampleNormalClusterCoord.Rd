@@ -7,14 +7,18 @@
 SampleNormalClusterCoord(n.by.pop, K, sigma1 = 1, sigma2 = 0.2)
 }
 \arguments{
-\item{n.by.pop}{}
+\item{n.by.pop}{TODOC}
 
-\item{sigma2}{}
+\item{K}{TODOC}
+
+\item{sigma1}{TODOC}
+
+\item{sigma2}{TODOC}
 }
 \value{
-TODO
+TODOC
 }
 \description{
-TODO
+TODOC
 }
 

@@ -11,9 +11,6 @@ ComputeEigenValuesWithRSpectra(Lapl, k)
 
 \item{k}{Number of eigen values.}
 }
-\value{
-
-}
 \description{
 Compute eigen values with RSpectra.
 }

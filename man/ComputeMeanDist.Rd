@@ -9,9 +9,6 @@ ComputeMeanDist(coord)
 \arguments{
 \item{coord}{Coordinate matrix.}
 }
-\value{
-
-}
 \description{
 Compute the average distance between points.
 }

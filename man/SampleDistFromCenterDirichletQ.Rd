@@ -17,9 +17,9 @@ SampleDistFromCenterDirichletQ(coord, n.by.pop, K, f = function(D)
 \item{f}{Distribution function.}
 }
 \value{
-TODO
+TODOC
 }
 \description{
-TODO
+TODOC
 }
 

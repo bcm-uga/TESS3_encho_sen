@@ -7,7 +7,12 @@
 \method{summary}{tess3Main}(object, ...)
 }
 \arguments{
-\item{...}{}
+\item{object}{TODOC}
+
+\item{...}{TODOC}
+}
+\value{
+TODOCC
 }
 \description{
 Summary of tess3 object.

@@ -11,9 +11,6 @@ CheckXBinCoord(XBin, coord)
 
 \item{coord}{Coordinate matrix.}
 }
-\value{
-
-}
 \description{
 Raise error if XBin and coord are not consistent.
 }

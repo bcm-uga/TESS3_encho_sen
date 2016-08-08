@@ -7,10 +7,22 @@
 run.ms(ms.file, nsam, nreps, theta, rho, nsites, M)
 }
 \arguments{
-\item{M}{}
+\item{ms.file}{TODOC}
+
+\item{nsam}{TODOC}
+
+\item{nreps}{TODOC}
+
+\item{theta}{TODOC}
+
+\item{rho}{TODOC}
+
+\item{nsites}{TODOC}
+
+\item{M}{TODOC}
 }
 \value{
-
+TODOC
 }
 \description{
 Helper function which call ms.

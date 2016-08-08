@@ -11,9 +11,6 @@ CheckXW(X, W)
 
 \item{W}{Graph weight matrix.}
 }
-\value{
-
-}
 \description{
 Raise error if X and W are not consistent.
 }

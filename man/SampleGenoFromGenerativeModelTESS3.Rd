@@ -2,11 +2,22 @@
 % Please edit documentation in R/RcppExports.R
 \name{SampleGenoFromGenerativeModelTESS3}
 \alias{SampleGenoFromGenerativeModelTESS3}
-\title{TODO}
+\title{Sample genotype from the TESS3 generative model.}
 \usage{
 SampleGenoFromGenerativeModelTESS3(Q, G, coord, ploidy, openMP_core_num = 1L)
 }
+\arguments{
+\item{Q}{Ancestry coefficients matrix.}
+
+\item{G}{Ancestral frequencies matrix.}
+
+\item{coord}{Coordinate matrix.}
+
+\item{ploidy}{Number of chromosome.}
+
+\item{openMP_core_num}{If openMP this is the number of CPU used.}
+}
 \description{
-TODO
+Sample genotype from the TESS3 generative model.
 }
 

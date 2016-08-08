@@ -11,9 +11,6 @@ CheckXCoord(X, coord)
 
 \item{coord}{Coordinate matrix.}
 }
-\value{
-
-}
 \description{
 Raise error if X and coord are not consistent.
 }

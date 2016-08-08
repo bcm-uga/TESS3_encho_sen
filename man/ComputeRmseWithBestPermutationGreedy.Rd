@@ -8,6 +8,8 @@ matrix column such that we have the best rmse. Warning : Greedy algorithm !}
 ComputeRmseWithBestPermutationGreedy(Q1, Q2)
 }
 \arguments{
+\item{Q1}{Numeric.}
+
 \item{Q2}{Numeric.}
 }
 \description{

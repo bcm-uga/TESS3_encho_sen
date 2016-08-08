@@ -9,9 +9,6 @@ CheckW(W)
 \arguments{
 \item{W}{Graph weight matrix.}
 }
-\value{
-
-}
 \description{
 Raise error if W is not well formated.
 }

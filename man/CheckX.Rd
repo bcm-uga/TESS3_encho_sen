@@ -11,9 +11,6 @@ CheckX(X, ploidy)
 
 \item{ploidy}{The number of chromosome.}
 }
-\value{
-
-}
 \description{
 Raise error if X is not well formated.
 }

@@ -4,20 +4,43 @@
 \alias{plot.tess3Q}
 \title{Displays geographic maps for ancestry coefficients}
 \usage{
-\method{plot}{tess3Q}(Q, coord, method = "map.max", resolution = c(300,
+\method{plot}{tess3Q}(x, coord, method = "map.max", resolution = c(300,
   300), window = NULL, background = TRUE, raster.filename = NULL,
   interpolation.function = kriging(10), col = NULL, col.palette = NULL,
   map = TRUE, palette.length = 9, ...)
 }
 \arguments{
-\item{Q}{an object of class \code{tess3Q} containing a matrix of ancestry coefficients.}
+\item{x}{an object of class \code{tess3Q} containing a matrix of ancestry coefficients.}
+
+\item{coord}{TODOC}
+
+\item{method}{TODOC}
+
+\item{resolution}{TODOC}
+
+\item{window}{TODOC}
+
+\item{background}{TODOC}
+
+\item{raster.filename}{TODOC}
+
+\item{interpolation.function}{TODOC}
+
+\item{col}{TODOC}
 
 \item{col.palette}{a list of color palettes. If \code{NULL}, a default list with 8 color palettes is used.}
 
+\item{map}{TODOC}
+
 \item{palette.length}{an integer value for the number of colors in each element of the palette list.}
+
+\item{...}{TODOC}
 }
 \value{
 None
+}
+\description{
+Displays geographic maps for ancestry coefficients.
 }
 \details{
 details on interpolation methods
@@ -30,9 +53,12 @@ details on interpolation methods
 library(tess3r)
 
 data(data.at)
-obj <- tess3Main(data.at$X, coord = data.at$coord, K = 5, ploidy = 1, openMP.core.num = 4)
+obj <- tess3Main(data.at$X, coord = data.at$coord,
+                 K = 5, ploidy = 1, openMP.core.num = 4)
 Qmatrix <- obj$Q
-plot(obj$Q, data.at$coord, method = "map.max", interpol = kriging(10), cex = .4, xlab = "Longitude", ylab= "Latitude", main = "Ancestry coefficients")
+plot(obj$Q, data.at$coord, method = "map.max",
+     interpol = kriging(10), cex = .4,
+     xlab = "Longitude", ylab= "Latitude", main = "Ancestry coefficients")
 }
 \author{
 Kevin Caye, Flora Jay, Olivier François

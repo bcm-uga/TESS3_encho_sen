@@ -11,6 +11,9 @@ GtoFreq(G, ploidy)
 
 \item{ploidy}{The number of chromosome.}
 }
+\value{
+TODOC
+}
 \description{
 Compute allele frquencies matrix from the genotype frequencie matrix.
 }

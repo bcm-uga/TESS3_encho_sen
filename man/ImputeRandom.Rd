@@ -13,6 +13,9 @@ ImputeRandom(tess3.res, masked.X)
 
 \item{masked.X}{Genotype matrix with the missing values (NA values).}
 }
+\value{
+TODOC
+}
 \description{
 Impute missing value with the Q ancestry coeficient matrix and G ancestral
 frequencies estimates. Missing values are sampled with the estimated genotype

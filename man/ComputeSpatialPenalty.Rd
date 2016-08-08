@@ -11,6 +11,9 @@ ComputeSpatialPenalty(Q, W)
 
 \item{W}{Graph weight matrix.}
 }
+\value{
+TODOC
+}
 \description{
 Compute the value spatial penalty used in TESS3 objectif function.
 }

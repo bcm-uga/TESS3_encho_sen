@@ -4,10 +4,12 @@
 \alias{plot.tess3Main}
 \title{Title}
 \usage{
-\method{plot}{tess3Main}(object, ...)
+\method{plot}{tess3Main}(x, ...)
 }
 \arguments{
-\item{...}{}
+\item{x}{tess3Main object.}
+
+\item{...}{TODOC}
 }
 \description{
 Title

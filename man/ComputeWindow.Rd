@@ -9,9 +9,6 @@ ComputeWindow(coord)
 \arguments{
 \item{coord}{Coordinate matrix.}
 }
-\value{
-
-}
 \description{
 Compute the graph window.
 }

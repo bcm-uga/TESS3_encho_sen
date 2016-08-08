@@ -9,9 +9,6 @@ ComputeGraphLaplacian(W)
 \arguments{
 \item{W}{Graph weight matrix.}
 }
-\value{
-
-}
 \description{
 Compute laplacian of a graph.
 }

@@ -11,9 +11,6 @@ CheckXBin(XBin, ploidy)
 
 \item{ploidy}{The number of chromosome.}
 }
-\value{
-
-}
 \description{
 Raise error if XBin is not well formated.
 }

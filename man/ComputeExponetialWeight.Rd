@@ -2,11 +2,16 @@
 % Please edit documentation in R/RcppExports.R
 \name{ComputeExponetialWeight}
 \alias{ComputeExponetialWeight}
-\title{TODO}
+\title{Compute graph matrix with an exponiential function.}
 \usage{
 ComputeExponetialWeight(coord, sigma)
 }
+\arguments{
+\item{coord}{Coordinate matrix.}
+
+\item{sigma}{sigma numeric parameter.}
+}
 \description{
-TODO
+Compute graph matrix with an exponiential function.
 }
 

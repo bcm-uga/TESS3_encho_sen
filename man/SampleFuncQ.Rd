@@ -12,6 +12,9 @@ SampleFuncQ(coord, f = function(X) c(1/(1 + exp(-0.5 * X[1])), 1 - 1/(1 +
 
 \item{f}{Function of the coordinate.}
 }
+\value{
+TODOC
+}
 \description{
 Sample ancestral coefficient matrix such as Q = f(coord).
 }

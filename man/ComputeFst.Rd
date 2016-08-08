@@ -2,11 +2,18 @@
 % Please edit documentation in R/RcppExports.R
 \name{ComputeFst}
 \alias{ComputeFst}
-\title{TODO}
+\title{Compute Fst statistic}
 \usage{
 ComputeFst(Q, G, D)
 }
+\arguments{
+\item{Q}{Ancestry coefficients matrix.}
+
+\item{G}{Ancestral frequencies matrix.}
+
+\item{D}{Number of chromosome + 1.}
+}
 \description{
-TODO
+Compute Fst statistic
 }
 

@@ -16,9 +16,9 @@ SampleDistFromCenterQ(coord, n.by.pop, K, f = function(D) exp(-D/0.2))
 \item{f}{Distribution function.}
 }
 \value{
-TODO
+TODOC
 }
 \description{
-TODO
+TODOC
 }
 
