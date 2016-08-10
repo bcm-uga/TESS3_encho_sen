@@ -15,8 +15,8 @@
 #' data(data.at)
 #' obj <- tess3Main(data.at$X, coord = data.at$coord, K = 5, ploidy = 1, openMP.core.num = 4)
 #' Q.matrix <- obj$Q
-#' ord = barplot(Q.matrix, border = NA, space = 0, xlab = "Individuals", ylab = "Ancestry proportions", main = "Ancestry matrix")
-#' axis(1, at = 1:170, labels = ord, las = 3, cex.axis = .6)
+#' barplot(Q.matrix, border = NA, space = 0, xlab = "Individuals", ylab = "Ancestry proportions", main = "Ancestry matrix") -> bp
+#' axis(1, at = 1:nrow(Q.matrix), labels = bp$order, las = 3, cex.axis = .6)
 #' @export
 barplot.tess3Q = function(Q, sort.by.Q = TRUE, col.palette = NULL, palette.length = 9, lab = FALSE, ...){
   if (class(Q)[1] != "tess3Q") {warning("Object Q not of class tess3Q.")}
