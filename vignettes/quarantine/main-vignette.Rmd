@@ -1,0 +1,179 @@
+--- 
+title: "Analyzing population genomic data with tess3" 
+author: "Kevin Caye -- Flora Jay -- Olivier François" 
+date: "`r Sys.Date()`" 
+output: 
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(cache = TRUE, message = FALSE)
+```
+
+
+
+
+----
+
+**Summary:** Geography is one of the most important determinant of genetic variation in natural populations. The **tess3** package is dedicated to estimating population genetic structure from large genotypic data sets, and incorporates geographic data in its methods. Based on machine learning algorithms, **tess3** computes estimates of ancestry proportions and ancestral allele frequencies, and displays the ancestry coefficients on geographic maps. In addition, **tess3** performs genome scans for selection by separating adaptive from nonadaptive genetic variation based on allele frequency differentiation tests. 
+
+----
+
+#### Introduction
+
+
+Estimating and visualizing population genetic structure is commonly achieved through algorithms like STRUCTURE, TESS, ADMIXTURE (Pritchard et al. 2000, Chen et al. 2007, Alexander et al. 2009) or the recent sNMF approach (Frichot et al. 2014). Those programs estimates individual ancestry coefficients, defined as *the proportions of an individual's genome originating from a giving ancestral population*. In this framework, the number of ancestral populations, $K$, is often unkown.
+
+A typical population genetic structure analysis includes three main steps: 
+
+ 1. Running one (or more) inference algorithm,
+
+ 2. Choosing the number of clusters,
+
+ 3. Showing ancestry bar-plots and displaying pie-charts on geographic maps.
+ 
+The programs store ancestry coefficients in the $Q$-matrix, and use external programs or packages to visualize the results. This vignette presents a brief tutorial on how to use the R package **tess3r** to perform analyses of population genetic structure from large population genetic data sets in a geographically explicit framework. 
+
+The algorithm used in the package implements a new version of the program TESS (Chen et al. 2007). The **tess3** estimates are based on geographically constrained matrix factorization and quadratic programming techniques (Caye et al. 2016). The new algorithms are several order faster than Monte-Carlo algorithms, and can handle much larger data sets having hundreds of individuals and hundreds of thousands of genotypes. The package also takes as input the outputs of the Bayesian program TESS 2.3 and display graphical results for these outputs. 
+
+The main analytical steps highlighted are illustrated through the description  of  two  examples. A first example concerns single nucleotide polymorphism data for 170 European accessions of the plant species *A. thaliana* (about 27k SNPs from Atwell et al. 2010). A second example concerns simulated allelic markers (STRs) for two subspecies hybridizing in Central Europe (Durand et al. 2009). The next paragraphs will guide users through each step of analysis, making the operations easily reproducible within their computing environment.
+
+To start an R session with **tess3**, use
+
+```{r}
+library(tess3r)
+```
+
+
+
+#### SNP data
+
+
+##### Data files
+
+Running **tess3** requires two files as input to the program: 1) a file encoding individual genotypes, and 2) a file with individual geographic coordinates. For example, consider some SNP data from the plant species *A. thaliana* (Atwell et al. 2010).
+
+
+```{r data} 
+data(data.at)
+genotype = data.at$X
+coordinates = data.at$coord
+```
+
+For SNPs, the **genotype** matrix encodes each individual multilocus genotype in a single row. Each locus corresponds to a specific column. For SNP data, genotypes are encoded as 0,1,2 for diploids, and 0,1 for haploids. Those numbers represent the number of reference or derived allele at each particular locus. *A. thaliana* is a diploid species with very high levels of inbreeding. In our example 170 European genotypes were encoded as haploid (26,943 loci). Let us print the genotypes for the first 3 individuals in the sample at 10 loci. We have  
+
+```{r}
+dim(genotype)
+genotype[1:3,1:10]
+```
+
+The genotype file can be read from an external text file having any suffix. The matrix format also corresponds to the **.lfmm** format in the **LEA** package. This package, which is available from bioconductor, contains functions to convert data files from other formats such as **.ped** or **.geno**.
+
+```{r}
+coordinates[1:3,]
+plot(coordinates, pch = 19, cex = .5, xlab = "Longitude (E)", ylab = "Latitude (N)")
+map(add=T, interior = F)
+```
+
+The **coordinate** file is a two-column file that contains longitude and latitude for each individual in the sample. Longitude (E) and latitude (N) must be encoded in the decimal format. Headers must be ignored when loading the data into the R program. 
+
+
+##### Estimating ancestry coefficients
+
+The main function of the **tess3r** package is the **tess3** function. This function creates an object of class **tess3** that contains the results of one or several runs of the estimation algorithm. For example, running the program for numbers of ancestral populations ranging from $K = 1$ to $K = 8$ using 4 CPUs is programmed as follows. 
+
+```{r run, dependson=c("data"), results="hide"} 
+# silence
+tess3.obj <- tess3(X = genotype, coord = coordinates, K = 1:8, method = "projected.ls", ploidy = 1, openMP.core.num = 4) 
+```
+
+The **X** argument refers to the genotype matrix, the **coord** argument corresponds to the geographic coordinates of individuals, **K** is the number of clusters or ancestral populations, and **openMP.core.num** is the number of processes used by the multi-threading option. 
+
+
+The **plot** function generates a plot of the model residual error on a subset of loci used for (cross-)validation. 
+
+```{r rmse.plot, dependson=c("run")} 
+# silence 
+plot(tess3.obj) 
+```
+
+The interpretation of this plot is similar to the *cross-entropy* plot of **LEA** or the *cross-validation* plot of ADMIXTURE. The cross-validation criterion is based on the prediction of a fraction of masked genotypes via matrix completion, and comparison with the masked values (considered as the truth).  Smaller  values  of  the  cross-validation criterion  usually  mean  better runs. The best choice for the $K$ value is when the cross-validation curve exhibits a plateau or starts increasing. 
+
+**Warning:** We must be cautious about over-interpreting the value of $K$ and the folkore around the choice of this value. Population structure is often hierarchical, and the estimation of $K$ strongly depends on sampling and genotyping efforts. The number of genetic groups  detected  by ancestry estimation programs does not necessarily correspond to the  number  of  biologically  meaningful  populations  in the  sample (Francois and Durand 2010).   
+
+Looking at the results for our data set, the cross-validation criterion does not exhibit a minimum value or a plateau. The results indicate that there are 3 major clusters in Europe, and finer levels of population structure could be detected. The results reflect a potentially important role for isolation-by-distance processes in having shaped allelic frequencies during the history of the species.
+
+##### Visualizing the results
+
+Next, we want to display the $Q$-matrix for $K = 5$ clusters using a barplot representation. For this representation, we use the **barplot** function of the package.
+
+```{r Q.plot, dependson=c("run")} 
+# silence
+# retrieve tess3 result for K = 5 
+q.matrix <- Gettess3res(tess3.obj, K = 5)$Q #changer en qmatrix
+# STRUCTURE-like barplot for the Q-matrix 
+barplot(q.matrix, border = NA, space = 0, xlab = "Individuals", ylab = "Ancestry proportions", main = "Ancestry matrix") -> bp
+axis(1, at = 1:nrow(q.matrix), labels = bp$order, las = 3, cex.axis = .4) 
+```
+
+The **barplot** function is very similar to the function of the **graphics** library of R. It contains a 'sort-by-Q' option, and allows users to color it with the same color palettes as used for the maps.  
+
+The **plot** function maps the values of in the $Q$-matrix on a geographic (world) map inferred from the sampling coordinates. 
+ 
+```{r map.plot, dependson=c("run")} 
+#silence
+plot(q.matrix, coordinates, method = "map.max", interpol = kriging(10), cex = .4, xlab = "Longitude", ylab = "Latitude", main = "Ancestry coefficients", resolution = c(500,500))
+```
+
+##### Genome scans for selection
+
+An additional feature of **tess3r** is to allow users to screen the genomic data for outlier loci. The genme scan compares single-locus estimates of a population differentiation statistic with the genomewide background, and convert those estimates into statistical $p$-values. 
+
+
+```{r G.plot, dependson=c("run")} 
+# retrieve tess3 results for K = 5 
+p.values <- Gettess3res(tess3.obj, K = 5)$pvalue
+hist(p.values, col = "lightblue") 
+```
+
+Whether the tests are correctly calibrated  can be checked by inspecting histograms of $p$-values, which are ideally flat and show a peak near zero. Under this condition, lists of outlier loci can be derived from standard FDR control algorithms, such as those found in the **qvalue** package or using a basic Benjamini-Hochberg correction.
+
+
+```{r G.plot2, dependson=c("run")} 
+# BH FDR control algorithm
+L = length(p.values)
+fdr.level = 0.01
+w = which(sort(p.values) < fdr.level * (1:L)/L)
+candidates = order(p.values)[w]
+```
+
+Now, our list of candidate loci is recorded in the object **candidates**, and we can draw a basic 'manhattan' plot highlighting the outlier loci.
+
+
+```{r G.plot3, dependson=c("run")} 
+# manhattan plot 
+plot(-log10(p.values), main="Manhattan plot", xlab = "Locus Ids", cex = .4, col = "grey")
+points(candidates, -log10(p.values)[candidates], pch = 19, cex = .5, col = "orange")
+```
+
+
+
+
+
+
+
+#### Multi-allelic data 
+
+
+n  this  section,  we  analyze  the  results  of  spatially  explicit  coalescent  simulations  generating
+genetic data for populations after secondary contact in Europe (Durand et al.  2009).  After
+an initial phase of divergence, a species started to colonize Europe from two distant southern
+refugia, one in the Iberian peninsula and the other one in Turkey.  Secondary contact occurred
+in Central Europe, in an area close to Germany.  The data consists of 60 population samples
+of 10 diploid individuals that were genotyped at 100 multi-allelic markers.  The data can be
+downloaded and converted as follows.
+

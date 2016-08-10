@@ -38,7 +38,7 @@ Rmarkdown/*.html
 .clang_complete
 inst/doc
 # vignette stuf
-vignettes/my-vignette_cache/
+*_cache/
 todolist.txt
 # mac stuf
 .DS_Store
