@@ -1,7 +1,8 @@
 context("parallel")
 
 test_that("how fast is the parralel version ", {
-  skip_on_cran()
+  skip("Work only if openMP is installed")
+
   data("data.at", package = "tess3r")
   set.seed(377645)
   # run tess3

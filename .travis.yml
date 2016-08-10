@@ -1,17 +1,23 @@
+language: R
+cache: packages
 sudo: required
+dist: trusty
 
-services:
-  - docker
+addons:
+  apt:
+    packages:
+      - libproj-dev
+      - libgdal-dev
 
-before_install:
-  - docker build -t cayek/tess3r .
-  - docker run -it --name tess3r -w /data -v $(pwd):/data -d -P cayek/tess3r
 
-script:
-  - docker exec -it tess3r make test
+warnings_are_errors: true
 
-after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push cayek/tess3r;
-    fi
+bioc_required: true
+
+r_packages:
+  - covr
+
+#after_success:
+  # - Rscript -e 'covr::codecov()'
+  # Try to compile docker image
+  # - make docker_build

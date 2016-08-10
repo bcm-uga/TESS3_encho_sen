@@ -2,11 +2,16 @@
 % Please edit documentation in R/RcppExports.R
 \name{XBin2X}
 \alias{XBin2X}
-\title{TODO}
+\title{Convert the binary genotype matrix into genotype matrix.}
 \usage{
 XBin2X(XBin, ploidy)
 }
+\arguments{
+\item{XBin}{Binary genotype matrix.}
+
+\item{ploidy}{Numbet of chromosomes.}
+}
 \description{
-TODO
+Convert the binary genotype matrix into genotype matrix.
 }
 

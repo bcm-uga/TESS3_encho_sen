@@ -1,24 +1,25 @@
 #' Main function.
 #'
-#' @param K
-#' @param ploidy
-#' @param lambda
-#' @param W
-#' @param method
-#' @param max.iteration
-#' @param tolerance
-#' @param X
-#' @param openMP.core.num
-#' @param Q.init
-#' @param coord
-#' @param mask
-#' @param XBin
+#' @param K TODOC
+#' @param ploidy TODOC
+#' @param lambda TODOC
+#' @param W TODOC
+#' @param method TODOC
+#' @param max.iteration TODOC
+#' @param tolerance TODOC
+#' @param X TODOC
+#' @param openMP.core.num TODOC
+#' @param Q.init TODOC
+#' @param coord TODOC
+#' @param mask TODOC
+#' @param XBin TODOC
 #' @param algo.copy if TRUE data will be copy to speed the algorithm
+#' @param copy TODOC
+#' @param verbose TODOC
 #'
-#' @return
+#' @return TODOC
 #' @export
 #'
-#' @examples
 tess3Main <- function(X,
                       XBin = NULL,
                       coord,
@@ -109,6 +110,9 @@ tess3Main <- function(X,
   ################################################
   # Check consistence of input
 
+  # check coord
+  CheckCoord(coord)
+
   # Compute W
   if (is.null(W)) {
     W <- ComputeHeatKernelWeight(coord, ComputeMeanDist(coord) * 0.05)
@@ -135,16 +139,17 @@ tess3Main <- function(X,
   ## Compute number of loci and indiv
   if (!is.null(X)) {
     res$L <- ncol(X)
+    res$n <- nrow(X)
   } else if (!is.null(XBin)) {
     if (ncol(XBin) %% (ploidy + 1) != 0) {
       stop("Number of columns of XBin must be a multiple of ploidy + 1.")
     }
     res$L <- ncol(XBin) %/% (ploidy + 1)
+    res$n <- nrow(coord)
   } else {
     stop("X or XBin must be non-null")
   }
 
-  res$n <- nrow(coord)
   res$ploidy <- ploidy
   res$K <- K
 
@@ -153,7 +158,12 @@ tess3Main <- function(X,
     X2XBin(X, ploidy, XBin)
     rm(X)
   }
-  CheckXBinWCoord(XBin, ploidy, W, coord)
+  CheckXBin(XBin, ploidy)
+  CheckCoord(coord)
+  CheckXBinCoord(XBin, coord)
+  CheckW(W)
+  CheckWCoord(W, coord)
+  CheckXBinW(XBin, W)
   ################################################
 
   # mem <- c(mem,pryr::mem_used())
@@ -269,7 +279,7 @@ tess3Main <- function(X,
     res$crossvalid.crossentropy <- ploidy * ComputeAveragedCrossEntropy(masked.X.value, QtG[missing.index.X])
   }
   ################################################
-  class(res) <- c("tess3Main", class(res))
+  class(res) <- c(class(res), "tess3Main")
 
   # mem <- c(mem,pryr::mem_used())
 
@@ -279,15 +289,13 @@ tess3Main <- function(X,
 
 #' Summary of tess3 object.
 #'
-#' @param object
-#' @param ...
+#' @param object TODOC
+#' @param ... TODOC
 #'
-#' @return
+#' @return TODOCC
 #' @export
-#'
-#' @examples
-summary.tess3 <- function(object, ...) {
-  cat(paste("=== Object of class tess3 ===\n"))
+summary.tess3Main <- function(object, ...) {
+  cat(paste("=== Object of class tess3Main ===\n"))
   cat(paste("Number of individuals (n):", object$n,"\n"))
   cat(paste("Number of loci (L):", object$L,"\n"))
   cat(paste("Ploidy:", object$ploidy,"\n"))
@@ -298,26 +306,22 @@ summary.tess3 <- function(object, ...) {
 
 #' Title
 #'
-#' @param x
+#' @param x TODOC
 #'
-#' @return
+#' @return TODOC
 #' @export
-#'
-#' @examples
 is.tess3Main <- function(x) {
   inherits(x, "tess3Main")
 }
 
 #' Title
 #'
-#' @param tess3.obj
-#' @param genotype
-#' @param ploidy
+#' @param tess3.obj TODOCC
+#' @param X TODOC
+#' @param ploidy TODOC
+#' @param mask TODOC
 #'
-#' @return
 #' @export
-#'
-#' @examples
 rmse.tess3Main <- function(tess3.obj, X, ploidy, mask = NULL) {
   if (!is.tess3Main(tess3.obj)) {
     stop("tess3.obj must of class tess3Main.")
@@ -331,6 +335,16 @@ rmse.tess3Main <- function(tess3.obj, X, ploidy, mask = NULL) {
   return(ComputeRmse(XBin, tcrossprod(tess3.obj$Q, tess3.obj$G)))
 }
 
+#' Title
+#'
+#' @param x tess3Main object.
+#' @param ... TODOC
+#'
+#' @export
+plot.tess3Main <- function(x, ...) {
+  message("Nothing to plot")
+}
+
 #' tess3r : estimation of spatial population structure
 #'
 #' This R package implements the TESS3 method and tools useful to plot program outputs.
@@ -339,6 +353,28 @@ rmse.tess3Main <- function(tess3.obj, X, ploidy, mask = NULL) {
 #'
 #' @name tess3r
 #' @importFrom Rcpp evalCpp
+#' @importFrom graphics barplot
 #' @import RcppEigen
 #' @useDynLib tess3r
+NULL
+
+#' TODOC
+#'
+#' @name data.at
+#' @docType data
+#' @keywords data
+NULL
+
+#' TODOC
+#'
+#' @name data.for.test
+#' @docType data
+#' @keywords data
+NULL
+
+#' TODOC
+#'
+#' @name durand09
+#' @docType data
+#' @keywords data
 NULL

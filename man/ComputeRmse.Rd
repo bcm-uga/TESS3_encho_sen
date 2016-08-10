@@ -2,11 +2,16 @@
 % Please edit documentation in R/RcppExports.R
 \name{ComputeRmse}
 \alias{ComputeRmse}
-\title{TODO}
+\title{Compute root squared mean error}
 \usage{
 ComputeRmse(Q1, Q2)
 }
+\arguments{
+\item{Q1}{Numeric.}
+
+\item{Q2}{Numeric.}
+}
 \description{
-TODO
+Compute root squared mean error
 }
 

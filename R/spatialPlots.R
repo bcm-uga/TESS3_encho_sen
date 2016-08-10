@@ -2,13 +2,9 @@
 #######################helpers#####################
 ###################################################
 
-#' Title
+#' Compute the graph window.
 #'
-#' @param coord
-#'
-#' @return
-#'
-#' @examples
+#' @param coord Coordinate matrix.
 ComputeWindow <- function(coord) {
   sd.x <- sd(coord[,1])
   sd.y <- sd(coord[,2])
@@ -22,16 +18,16 @@ ComputeWindow <- function(coord) {
 ##################pie chart #######################
 ###################################################
 
-#' Title
+#' Plot pie chart of ancestry coefficient.
 #'
-#' @param Q
-#' @param coord
-#' @param window
+#' @param Q Ancestry coefficient matrix.
+#' @param coord Coordinate matrix.
+#' @param window Window of the graph.
+#' @param background if TRUE compute a background stencil.
+#' @param col colors
+#' @param radius radius of pies.
+#' @param ... TODOC
 #'
-#' @return
-#' @export
-#'
-#' @examples
 PlotPiechartAncestryCoef <- function(Q, coord, window, background, col, radius = sqrt((window[2] - window[1]) ^ 2 + (window[4] - window[3]) ^ 2) * 0.01, ...) {
   TestRequiredPkg("mapplots")
 
@@ -60,6 +56,17 @@ PlotPiechartAncestryCoef <- function(Q, coord, window, background, col, radius =
 ##################interpolated maps ###############
 ###################################################
 
+#' Plot map with the maximum values of the interpolation surfaces.
+#'
+#' @param coord Coordinate matrix.
+#' @param list.grid.z List of interpolation surface matrices.
+#' @param grid.x TODOC
+#' @param grid.y TODOC
+#' @param background Boolean marix.
+#' @param col.palette List of color palette.
+#' @param map If true map function of maps package is call to plot polygon from
+#' map database.
+#' @param ... TODOC
 PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background, col.palette, map,...) {
 
   # rmk : bag data structure for list.grid.z ...
@@ -93,6 +100,18 @@ PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background,
   }
 }
 
+#' Plot all the interpolation surfaces on several graphs.
+#'
+#' @param coord Coordinate matrix.
+#' @param list.grid.z List of interpolation surface matrices.
+#' @param grid.x TODOC
+#' @param grid.y TODOC
+#' @param background Boolean marix.
+#' @param col.palette List of color palette.
+#' @param map If true map function of maps package is call to plot polygon from
+#' map database.
+#' @param ... TODOC
+#'
 PlotInterpotationAll <- function(coord, list.grid.z, grid.x, grid.y, background, col.palette, map,...) {
   for (k in 1:length(list.grid.z)) {
     image(grid.x, grid.y,
@@ -124,11 +143,13 @@ ComputeGridAndBackground <- function(window, resolution, background, raster.file
   return(res)
 }
 
-#' TODO
+#' Return an interpolation function. Return a wrapper function of the function idw of
+#' the package gstat.
 #'
 #'
 #' @export
-#' @param idp
+#'
+#' @param idp numeric; specify the inverse distance weighting power.
 idw <- function(idp=1.0){
   TestRequiredPkg("gstat")
   TestRequiredPkg("sp")
@@ -153,8 +174,11 @@ idw <- function(idp=1.0){
   })
 }
 
-#' TODO
+#' Return an interpolation function. Return a wrapper function of the function autoKrige of
+#' the package automap.
 #'
+#'
+#' @param formula Formula that defines the dependent variable as a linear model of independent variables.
 #'
 #' @export
 universalkriging <- function(formula = as.formula(Z ~ X + Y)){
@@ -180,8 +204,10 @@ universalkriging <- function(formula = as.formula(Z ~ X + Y)){
   })
 }
 
-#' TODO
+#' Return an interpolation function. Return a wrapper function of the function Krig of
+#' the package fields
 #'
+#' @param theta Numeric.
 #'
 #' @export
 kriging <- function(theta = 10){

@@ -2,16 +2,12 @@
 #
 
 
-#' Title
+#' Raise error if X is not well formated.
 #'
-#' @param X
-#' @param ploidy
-#'
-#' @return
-#'
-#' @examples
+#' @param X Genotype matrix.
+#' @param ploidy The number of chromosome.
 CheckX <- function(X, ploidy) {
-  cat("Check genotype input file.\n")
+  #cat("Checking genotype input file.\n")
   if (!is.matrix(X)) {
     stop("X must be a matrix.")
   }
@@ -27,14 +23,10 @@ CheckX <- function(X, ploidy) {
   }
 }
 
-#' Title
+#' Raise error if XBin is not well formated.
 #'
-#' @param XBin
-#' @param ploidy
-#'
-#' @return
-#'
-#' @examples
+#' @param XBin Binary genotype matrix.
+#' @param ploidy The number of chromosome.
 CheckXBin <- function(XBin, ploidy) {
   if (!is.matrix(XBin)) {
     stop("XBin must be a matrix")
@@ -55,13 +47,9 @@ CheckXBin <- function(XBin, ploidy) {
 }
 
 
-#' Title
+#' Raise error if W is not well formated.
 #'
-#' @param W
-#'
-#' @return
-#'
-#' @examples
+#' @param W Graph weight matrix.
 CheckW <- function(W) {
   if (!is.matrix(W)) {
     stop("W must be a matrix")
@@ -74,110 +62,67 @@ CheckW <- function(W) {
   }
 }
 
-#' Title
+#' Raise error if coord is not well formated.
 #'
-#' @param W
-#'
-#' @return
-#'
-#' @examples
-CheckCoord <- function(Coord) {
-  if (!is.matrix(Coord)) {
+#' @param coord Coordinate matrix.
+CheckCoord <- function(coord) {
+  if (!is.matrix(coord)) {
     stop("Coord must be a matrix")
   }
-  if (!is.double(Coord)) {
+  if (!is.double(coord)) {
     stop("Elements of Coord must be of type double")
   }
 }
 
 
-#' Title
+#' Raise error if X and W are not consistent.
 #'
-#' @param X
-#' @param W
-#' @param ploidy
-#'
-#' @return
-#'
-#' @examples
-CheckXW <- function(X, ploidy, W) {
-  CheckW(W)
-  CheckX(X, ploidy)
+#' @param X Genotype matrix.
+#' @param W Graph weight matrix.
+CheckXW <- function(X, W) {
   if (nrow(W) != nrow(X)) {
     stop("W must be of size nrow(X) times nrow(X)")
   }
 }
 
-#' Title
+#' Raise error if XBin and W are not consistent.
 #'
-#' @param X
-#' @param W
-#' @param ploidy
-#'
-#' @return
-#'
-#' @examples
-CheckXBinW <- function(XBin, ploidy, W) {
-  CheckW(W)
-  CheckXBin(XBin, ploidy)
+#' @param XBin Binary genotype matrix.
+#' @param W Graph weight matrix.
+CheckXBinW <- function(XBin, W) {
   if (nrow(W) != nrow(XBin)) {
     stop("W must be of size nrow(X) times nrow(X)")
   }
 }
 
-#' Title
+#' Raise error if X and coord are not consistent.
 #'
-#' @param X
-#' @param coord
-#' @param ploidy
-#'
-#' @return
-#'
-#' @examples
-CheckXCoord <- function(X, ploidy, coord) {
-  CheckCoord(coord)
-  CheckX(X, ploidy)
+#' @param X Genotype matrix.
+#' @param coord Coordinate matrix.
+CheckXCoord <- function(X, coord) {
   ## check dim of geno, coord,  are consistent
   if (nrow(X) != nrow(coord)) {
     stop("Number of row of coord and X must be the same")
   }
 }
 
-#' Title
+#' Raise error if XBin and coord are not consistent.
 #'
-#' @param X
-#' @param W
-#' @param ploidy
-#'
-#' @return
-#'
-#' @examples
-CheckXWCoord <- function(X, ploidy, W, coord) {
-  CheckXW(X, ploidy, W)
-  CheckCoord(coord)
-
-  ## check dim of geno, coord,  are consistent
-  if (nrow(X) != nrow(coord)) {
-    stop("Number of row of coord and X must be the same")
-  }
-}
-
-
-#' Title
-#'
-#' @param X
-#' @param W
-#' @param ploidy
-#'
-#' @return
-#'
-#' @examples
-CheckXBinWCoord <- function(XBin, ploidy, W, coord) {
-  CheckXBinW(XBin, ploidy, W)
-  CheckCoord(coord)
-
+#' @param XBin Binary genotype matrix.
+#' @param coord Coordinate matrix.
+CheckXBinCoord <- function(XBin, coord) {
   ## check dim of geno, coord,  are consistent
   if (nrow(XBin) != nrow(coord)) {
-    stop("Number of row of coord and X must be the same")
+    stop("Number of row of coord and X/XBin must be the same")
+  }
+}
+
+#' Raise error if W and coord are not consistent.
+#'
+#' @param W Graph weight matrix.
+#' @param coord Coordinate matrix.
+CheckWCoord <- function(W, coord) {
+  if ((nrow(W) != nrow(coord)) & (ncol(W) != nrow(coord))) {
+    stop("Number of row of coord and W must be the same")
   }
 }

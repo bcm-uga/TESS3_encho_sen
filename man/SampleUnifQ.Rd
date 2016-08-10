@@ -2,14 +2,19 @@
 % Please edit documentation in R/sampler.R
 \name{SampleUnifQ}
 \alias{SampleUnifQ}
-\title{sample Q such as alpha ~ unif(0,1) and Q ~ Dirichlet(alpha)}
+\title{Sample ancestral coefficient matrix such as alpha ~ unif(0,1) and Q ~ Dirichlet(alpha).}
 \usage{
 SampleUnifQ(n, K)
 }
 \arguments{
-\item{K}{}
+\item{n}{Number of row of Q.}
+
+\item{K}{Number of column of Q.}
+}
+\value{
+TODOC
 }
 \description{
-sample Q such as alpha ~ unif(0,1) and Q ~ Dirichlet(alpha)
+Sample ancestral coefficient matrix such as alpha ~ unif(0,1) and Q ~ Dirichlet(alpha).
 }
 

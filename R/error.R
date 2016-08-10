@@ -1,12 +1,10 @@
 #' Compute the value spatial penalty used in TESS3 objectif function.
 #'
-#' @param Q
-#' @param W
+#' @param Q Ancestry coeficient matrix.
+#' @param W Graph weight matrix.
 #'
-#' @return
+#' @return TODOC
 #' @export
-#'
-#' @examples
 ComputeSpatialPenalty <- function(Q, W) {
   Lapl <- as.matrix(ComputeGraphLaplacian(W))
   aux <- crossprod(Lapl, Q)
@@ -20,8 +18,8 @@ ComputeSpatialPenalty <- function(Q, W) {
 #'
 #'
 #'
-#' @param Q1
-#' @param Q2
+#' @param Q1 Numeric.
+#' @param Q2 Numeric.
 #'
 #' @export
 ComputeRmseWithBestPermutation <- function(Q1, Q2) {
@@ -51,6 +49,9 @@ ComputeRmseWithBestPermutation <- function(Q1, Q2) {
 #' matrix column such that we have the best rmse. Warning : Greedy algorithm !
 #'
 #'
+#'
+#' @param Q1 Numeric.
+#' @param Q2 Numeric.
 #'
 #' @export
 ComputeRmseWithBestPermutationGreedy <- function(Q1, Q2) {

@@ -2,11 +2,16 @@
 % Please edit documentation in R/RcppExports.R
 \name{ComputeAveragedCrossEntropy}
 \alias{ComputeAveragedCrossEntropy}
-\title{TODO}
+\title{Compute average cross entropy}
 \usage{
 ComputeAveragedCrossEntropy(P, Q)
 }
+\arguments{
+\item{P}{Numeric.}
+
+\item{Q}{Numeric.}
+}
 \description{
-TODO
+Compute average cross entropy
 }
 

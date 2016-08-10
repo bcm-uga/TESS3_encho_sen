@@ -2,15 +2,20 @@
 % Please edit documentation in R/sampler.R
 \name{SampleFuncQ}
 \alias{SampleFuncQ}
-\title{sample Q = f(coord)}
+\title{Sample ancestral coefficient matrix such as Q = f(coord).}
 \usage{
 SampleFuncQ(coord, f = function(X) c(1/(1 + exp(-0.5 * X[1])), 1 - 1/(1 +
   exp(-0.5 * X[1]))))
 }
 \arguments{
-\item{K}{}
+\item{coord}{Coodinate matrix.}
+
+\item{f}{Function of the coordinate.}
+}
+\value{
+TODOC
 }
 \description{
-sample Q = f(coord)
+Sample ancestral coefficient matrix such as Q = f(coord).
 }
 

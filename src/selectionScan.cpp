@@ -4,7 +4,10 @@
 // [[Rcpp::depends(RcppEigen)]]
 using namespace Eigen;
 
-//' TODO
+//' Compute Fst statistic
+//' @param Q Ancestry coefficients matrix.
+//' @param G Ancestral frequencies matrix.
+//' @param D Number of chromosome + 1.
 //' @export
 // [[Rcpp::export]]
 Eigen::MatrixXd ComputeFst(const Eigen::Map<Eigen::MatrixXd> Q, const Eigen::Map<Eigen::MatrixXd> G, int D) {

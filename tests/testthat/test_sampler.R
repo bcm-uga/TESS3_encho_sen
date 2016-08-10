@@ -183,7 +183,7 @@ test_that("Sample from TESS3 generative model", {
                          K = data.list$K,
                          ploidy = data.list$ploidy,
                          lambda = 1.0,
-                         method = "MCPA")
+                         method = "projected.ls")
   expect_lt(ComputeRmseWithBestPermutation(tess3.res$Q, data.list$Q), 0.082)
   expect_lt(ComputeRmseWithBestPermutation(tess3.res$G, data.list$G), 0.086)
 })

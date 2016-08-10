@@ -27,15 +27,22 @@ is set to \code{TESS = FALSE}. Missing data are encoded as "-9" or any negative 
 \value{
 An object of class \code{list} containing a genotype matrix and individual geographic coordinates.
 
-X a matrix of genotypes
+X a matrix of genotypes with values 0,1,2 or NA.
 
-coord a matrix of geographic coordinates
+coord a matrix of geographic coordinates.
 }
 \description{
 This function converts data sets imported from the STRUCTURE and the TESS 2.3 input file formats to the tess3 formats.
 }
 \examples{
-##
+library(tess3r)
+data(durand09)
+d09tess3 <- tess2tess3(durand09, FORMAT = 2, extra.column = 1)
+obj <- tess3(X = d09tess3$X, coord = d09tess3$coord,
+             K = 1:3, ploidy = 2, openMP.core.num = 4)
+Qmatrix <- Gettess3res(obj, K = 3)$Q
+barplot(Qmatrix, sort.by.Q = FALSE, border = NA,
+        space = 0, xlab = "Individuals", ylab = "Ancestry coefficients")
 }
 \author{
 Kevin Caye, Flora Jay, Olivier François

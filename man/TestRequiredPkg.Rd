@@ -2,11 +2,14 @@
 % Please edit documentation in R/helpers.R
 \name{TestRequiredPkg}
 \alias{TestRequiredPkg}
-\title{TODO}
+\title{Test if a package is installed.}
 \usage{
 TestRequiredPkg(pkg)
 }
+\arguments{
+\item{pkg}{Package name to test.}
+}
 \description{
-TODO
+Test if a package is installed.
 }
 

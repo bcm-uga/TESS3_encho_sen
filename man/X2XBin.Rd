@@ -2,11 +2,18 @@
 % Please edit documentation in R/RcppExports.R
 \name{X2XBin}
 \alias{X2XBin}
-\title{TODO}
+\title{Binary coding of the genotype data matrix.}
 \usage{
 X2XBin(X, ploidy, XBin)
 }
+\arguments{
+\item{X}{Genotype matrix.}
+
+\item{ploidy}{Numbet of chromosomes.}
+
+\item{XBin}{Binary genotype matrix to fill.}
+}
 \description{
-TODO
+Binary coding of the genotype data matrix.
 }
 

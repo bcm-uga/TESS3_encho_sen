@@ -2,11 +2,16 @@
 % Please edit documentation in R/RcppExports.R
 \name{ComputeHeatKernelWeightSparse}
 \alias{ComputeHeatKernelWeightSparse}
-\title{TODO}
+\title{Compute graph sparse matrix with the heat kernel function.}
 \usage{
 ComputeHeatKernelWeightSparse(coord, sigma)
 }
+\arguments{
+\item{coord}{Coordinate matrix.}
+
+\item{sigma}{sigma numeric parameter.}
+}
 \description{
-TODO
+Compute graph sparse matrix with the heat kernel function.
 }
 

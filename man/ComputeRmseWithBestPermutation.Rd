@@ -8,7 +8,9 @@ matrix column such that we have the best rmse.}
 ComputeRmseWithBestPermutation(Q1, Q2)
 }
 \arguments{
-\item{Q2}{}
+\item{Q1}{Numeric.}
+
+\item{Q2}{Numeric.}
 }
 \description{
 Compute the root mean square error between matrix by permuting

@@ -7,7 +7,13 @@
 rmse.tess3Main(tess3.obj, X, ploidy, mask = NULL)
 }
 \arguments{
-\item{ploidy}{}
+\item{tess3.obj}{TODOCC}
+
+\item{X}{TODOC}
+
+\item{ploidy}{TODOC}
+
+\item{mask}{TODOC}
 }
 \description{
 Title

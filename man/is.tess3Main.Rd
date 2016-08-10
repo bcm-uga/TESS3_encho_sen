@@ -7,7 +7,10 @@
 is.tess3Main(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{TODOC}
+}
+\value{
+TODOC
 }
 \description{
 Title

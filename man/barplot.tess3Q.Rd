@@ -4,17 +4,21 @@
 \alias{barplot.tess3Q}
 \title{Barplot representation of a Q-matrix}
 \usage{
-\method{barplot}{tess3Q}(Q, sort.by.Q = TRUE, col.palette = NULL,
-  palette.length = 9, ...)
+\method{barplot}{tess3Q}(height, sort.by.Q = TRUE, col.palette = NULL,
+  palette.length = 9, lab = FALSE, ...)
 }
 \arguments{
-\item{Q}{an object of class \code{tess3Q} (Q matrix) containing a matrix of ancestry coefficients computed from \code{tess3} or converted from other program formats.}
+\item{height}{an object of class \code{tess3Q} (Q matrix) containing a matrix of ancestry coefficients computed from \code{tess3} or converted from other program formats.}
 
 \item{sort.by.Q}{a Boolean value indicating whether individuals should be sorted by their ancestry level or not.}
 
 \item{col.palette}{is a list of color palettes. If \code{NULL}, a default list with 8 color palettes is used.}
 
 \item{palette.length}{an integer value for the number of colors in each element of the palette list.}
+
+\item{lab}{TODOC}
+
+\item{...}{TODOC}
 }
 \value{
 Generates a graphical output.
@@ -24,10 +28,15 @@ Displays a barplot representation of the
 ancestry coefficient matrix. Includes a sort-by-Q option.
 }
 \examples{
+library(tess3r)
 data(data.at)
-obj <- tess3(data.at$X, coord = data.at$coord, K = 5, ploidy = 1, openMP.core.num = 4)
-Qmatrix <- obj$Q
-barplot(Qmatrix, border = NA, space = 0, xlab = "individuals", ylab = "Ancestry proportions", main = "Ancestry matrix")
+obj <- tess3Main(data.at$X, coord = data.at$coord, K = 5,
+                 ploidy = 1, openMP.core.num = 4)
+Q.matrix <- obj$Q
+ord = barplot(Q.matrix, border = NA, space = 0,
+              xlab = "Individuals", ylab = "Ancestry proportions",
+              main = "Ancestry matrix")
+# axis(1, at = 1:170, labels = ord, las = 3, cex.axis = .6)
 }
 \author{
 Kevin Caye, Olivier François

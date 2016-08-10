@@ -5,11 +5,12 @@ using namespace Eigen;
 using namespace Rcpp;
 
 
-
-//' TODO
-//'
+//' Compute graph sparse matrix with the heat kernel function.
+//' @param coord Coordinate matrix.
+//' @param sigma sigma numeric parameter.
 // [[Rcpp::export]]
-Eigen::SparseMatrix<double> ComputeHeatKernelWeightSparse(const Eigen::Map<Eigen::MatrixXd> coord, double sigma) {
+Eigen::SparseMatrix<double> ComputeHeatKernelWeightSparse(const Eigen::Map<Eigen::MatrixXd> coord,
+                                                          double sigma) {
         SparseMatrix<double> W(coord.rows(), coord.rows());
 
         W.reserve(VectorXi::Constant(coord.rows(),0.1 * coord.rows())); // we reserve room for 0.1 % of  non-zeros values per column
@@ -29,9 +30,9 @@ Eigen::SparseMatrix<double> ComputeHeatKernelWeightSparse(const Eigen::Map<Eigen
         return W;
 }
 
-
-//' TODO
-//'
+//' Compute graph matrix with the heat kernel function.
+//' @param coord Coordinate matrix.
+//' @param sigma sigma numeric parameter.
 //' @export
 // [[Rcpp::export]]
 Eigen::MatrixXd ComputeHeatKernelWeight(const Eigen::Map<Eigen::MatrixXd> coord, double sigma) {
@@ -49,8 +50,9 @@ Eigen::MatrixXd ComputeHeatKernelWeight(const Eigen::Map<Eigen::MatrixXd> coord,
 }
 
 
-//' TODO
-//'
+//' Compute graph matrix with an exponiential function.
+//' @param coord Coordinate matrix.
+//' @param sigma sigma numeric parameter.
 //' @export
 // [[Rcpp::export]]
 Eigen::MatrixXd ComputeExponetialWeight(const Eigen::Map<Eigen::MatrixXd> coord, double sigma) {

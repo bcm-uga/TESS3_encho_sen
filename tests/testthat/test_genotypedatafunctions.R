@@ -62,7 +62,7 @@ test_that("test GtoFreq", {
                      K = K,
                      ploidy = ploidy,
                      lambda = 1.0,
-                     method = "MCPA")
+                     method = "projected.ls")
   Freq <- GtoFreq(tess3.res$G, ploidy)
   expect_equal(dim(Freq),c(L,K))
   expect_gte(min(Freq),0.0)

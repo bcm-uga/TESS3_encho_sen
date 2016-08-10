@@ -4,10 +4,17 @@
 \alias{plot.tess3}
 \title{Plot RMSE(X, Q * t(G)) for all K number of ancestral population with error bars.}
 \usage{
-\method{plot}{tess3}(object, crossvalid = FALSE, crossentropy = FALSE, ...)
+\method{plot}{tess3}(x, crossvalid = FALSE, crossentropy = FALSE, ...)
 }
 \arguments{
-\item{...}{}
+\item{x}{A tess3 object.}
+
+\item{crossvalid}{If TRUE error is computed on masked data.}
+
+\item{crossentropy}{If TRUE the cross entropy error metric is used. If FALSE
+the RMSE is used.}
+
+\item{...}{TODOC}
 }
 \description{
 Plot RMSE(X, Q * t(G)) for all K number of ancestral population with error bars.

@@ -17,11 +17,14 @@
 #' @return coord a matrix of geographic coordinates.
 #' @seealso \code{\link{tess3}}
 #' @examples
+#' library(tess3r)
 #' data(durand09)
 #' d09tess3 <- tess2tess3(durand09, FORMAT = 2, extra.column = 1)
-#' obj <- tess3(X = d09tess3$X, coord = d09tess3$coord, K = 1:3, ploidy = 2, openMP.core.num = 4)
+#' obj <- tess3(X = d09tess3$X, coord = d09tess3$coord,
+#'              K = 1:3, ploidy = 2, openMP.core.num = 4)
 #' Qmatrix <- Gettess3res(obj, K = 3)$Q
-#' barplot(Qmatrix, sort.by.Q = FALSE, border = NA, space = 0, xlab = "Individuals", ylab = "Ancestry coefficients")
+#' barplot(Qmatrix, sort.by.Q = FALSE, border = NA,
+#'         space = 0, xlab = "Individuals", ylab = "Ancestry coefficients")
 #' @export
 tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1, extra.row = 0, extra.column = 0){
 
@@ -163,10 +166,12 @@ tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1
 #' @return An object of class \code{tess3Q}.
 #' @seealso \code{\link{plot.tess3Q}} \code{\link{barplot.tess3Q}}
 #' @examples
+#' library(tess3r)
 #' ## an example with 3 individuals and 2 clusters
-#' Qmatrix <- matrix(c(0.4,0.6,0.3,0.7, 0.2, 0.8), byrow = T, nrow = 3)
+#' Qmatrix <- matrix(c(0.4,0.6,0.3,0.7, 0.2, 0.8), byrow = TRUE, nrow = 3)
 #' Qmatrix <- as.qmatrix(Qmatrix)
-#' barplot(Qmatrix, space = 0, xlab = "individuals", ylab = "Ancestry proportions", main = "Ancestry matrix")
+#' barplot(Qmatrix, space = 0, xlab = "individuals",
+#'         ylab = "Ancestry proportions", main = "Ancestry matrix")
 #' @export
 as.qmatrix <- function(Q){
   if (class(Q) != "matrix") stop("Input matrix is not an ancestry matrix.")
@@ -177,7 +182,8 @@ as.qmatrix <- function(Q){
   return(Q)
 }
 
-#' This function creates a list of color palettes for the plot and barplot functions
+#' This function creates a list of color palettes for the plot and barplot
+#' functions
 #' @title Create a list of palettes
 #' @author Kevin Caye, Olivier François
 #' @param color.vector a vector of R colors.
@@ -187,11 +193,14 @@ as.qmatrix <- function(Q){
 #' @examples
 #' ## an A. thaliana example
 #' data(data.at)
-#' obj <- tess3(data.at$X, coord = data.at$coord, K = 5, ploidy = 1, openMP.core.num = 4)
+#' obj <- tess3(data.at$X, coord = data.at$coord, K = 5, ploidy = 1,
+#'              openMP.core.num = 4)
 #' Qmatrix <- obj$Q
 #' my.colors <- c("tomato", "yellow", "blue", "wheat","olivedrab")
 #' my.palette <- CreatePalette(my.colors, 9)
-#' plot(obj$Q, data.at$coord, method = "mapping.max", col.palette = my.palette, interpol = kriging(10), cex = .4, xlab = "Longitude", ylab= "Latitude", main = "Ancestry coefficients")
+#' plot(obj$Q, data.at$coord, method = "mapping.max", col.palette = my.palette,
+#'      interpol = kriging(10), cex = .4, xlab = "Longitude", ylab= "Latitude",
+#'      main = "Ancestry coefficients")
 #' @export
 CreatePalette <- function(color.vector = c("tomato", "chartreuse", "gold", "blue", "violet", "wheat","olivedrab"), palette.length = 9){
   ll = NULL
@@ -205,6 +214,9 @@ CreatePalette <- function(color.vector = c("tomato", "chartreuse", "gold", "blue
 #'
 #'
 #'
+#' @param Fst Matrix of Fst.
+#' @param K Number of ancestral populations.
+#' @param n Number of individuals.
 ComputeTscoreAndPvalue <- function(Fst, K, n) {
   res <- list()
   res$Fscore = Fst / (1 - Fst) * (n - K) / (K - 1)
@@ -221,6 +233,9 @@ ComputeTscoreAndPvalue <- function(Fst, K, n) {
 #'
 #'
 #'
+#' @param Fst Matrix of Fst.
+#' @param K Number of ancestral populations.
+#' @param n Number of individuals.
 ComputeChi2AndPvalue <- function(Fst, K, n) {
   res <- list()
   # Convert Fst into chi 2

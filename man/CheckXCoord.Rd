@@ -2,17 +2,16 @@
 % Please edit documentation in R/check.R
 \name{CheckXCoord}
 \alias{CheckXCoord}
-\title{Title}
+\title{Raise error if X and coord are not consistent.}
 \usage{
-CheckXCoord(X, ploidy, coord)
+CheckXCoord(X, coord)
 }
 \arguments{
-\item{ploidy}{}
-}
-\value{
+\item{X}{Genotype matrix.}
 
+\item{coord}{Coordinate matrix.}
 }
 \description{
-Title
+Raise error if X and coord are not consistent.
 }
 

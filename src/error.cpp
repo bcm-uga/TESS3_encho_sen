@@ -30,7 +30,9 @@ double ComputeRmse(const Map<T> Q1, const Map<T> Q2) {
   return sqrt(aux / double(n));
 }
 
-//' TODO
+//' Compute root squared mean error
+//' @param Q1 Numeric.
+//' @param Q2 Numeric.
 //' @export
 // [[Rcpp::export]]
 double ComputeRmse(SEXP Q1, SEXP Q2) {
@@ -67,7 +69,9 @@ double ComputeAveragedCrossEntropy(const Map<T> P, const Map<T> Q) {
   return aux / double(n);
 }
 
-//' TODO
+//' Compute average cross entropy
+//' @param P Numeric.
+//' @param Q Numeric.
 //' @export
 // [[Rcpp::export]]
 double ComputeAveragedCrossEntropy(SEXP P, SEXP Q) {

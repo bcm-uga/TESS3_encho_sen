@@ -2,17 +2,16 @@
 % Please edit documentation in R/check.R
 \name{CheckX}
 \alias{CheckX}
-\title{Title}
+\title{Raise error if X is not well formated.}
 \usage{
 CheckX(X, ploidy)
 }
 \arguments{
-\item{ploidy}{}
-}
-\value{
+\item{X}{Genotype matrix.}
 
+\item{ploidy}{The number of chromosome.}
 }
 \description{
-Title
+Raise error if X is not well formated.
 }
 

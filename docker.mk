@@ -1,4 +1,4 @@
-.PHONY : docker_run docker_shell docker_rstudio docker_start docker_start \
+.PHONY : docker_run docker_shell docker_rstudio docker_start \
 docker_stop docker_rm_container docker_build docker_push docker_login \
 docker_rm_image docker_pull
 

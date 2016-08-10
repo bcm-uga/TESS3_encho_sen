@@ -7,6 +7,11 @@ matrix column such that we have the best rmse. Warning : Greedy algorithm !}
 \usage{
 ComputeRmseWithBestPermutationGreedy(Q1, Q2)
 }
+\arguments{
+\item{Q1}{Numeric.}
+
+\item{Q2}{Numeric.}
+}
 \description{
 Compute the root mean square error between matrix by permuting
 matrix column such that we have the best rmse. Warning : Greedy algorithm !

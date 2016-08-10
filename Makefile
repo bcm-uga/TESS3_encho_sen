@@ -11,7 +11,7 @@ SOURCE_CPP := $(filter-out src/RcppExports.cpp, $(SOURCE_CPP_ALL))
 SOURCE_R_ALL := $(wildcard R/*.R)
 SOURCE_R := $(filter-out R/RcppExports.R, $(SOURCE_R_ALL))
 
-.PHONY: all test doc check_install rcpp vignette
+.PHONY: all test doc check_install rcpp vignette check
 
 all: install
 
@@ -19,13 +19,25 @@ test:
 	$(PRINT)
 	R --vanilla -e 'devtools::test()'
 
-install: doc
+check:
+	$(PRINT)
+	R --vanilla -e 'devtools::check()'
+
+install:
 	$(PRINT)
 	R --vanilla -e 'devtools::install()'
 
-doc: R/RcppExports.R
+doc:
 	$(PRINT)
 	R --vanilla -e 'devtools::document(roclets=c("rd", "collate", "namespace"))'
+
+run_examples:
+	$(PRINT)
+	R --vanilla -e 'devtools::run_examples()'
+
+vignette:
+	$(PRINT)
+	R --vanilla -e 'devtools::build_vignettes()'
 
 rcpp: R/RcppExports.R src/RcppExports.cpp
 

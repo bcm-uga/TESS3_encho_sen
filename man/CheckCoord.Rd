@@ -2,17 +2,14 @@
 % Please edit documentation in R/check.R
 \name{CheckCoord}
 \alias{CheckCoord}
-\title{Title}
+\title{Raise error if coord is not well formated.}
 \usage{
-CheckCoord(Coord)
+CheckCoord(coord)
 }
 \arguments{
-\item{W}{}
-}
-\value{
-
+\item{coord}{Coordinate matrix.}
 }
 \description{
-Title
+Raise error if coord is not well formated.
 }
 

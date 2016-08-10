@@ -47,7 +47,7 @@ Run of tess3
 <<run,include=FALSE>>=
 #bug sur K
 #verbose
-tess3.obj <- tess3project(X = data.at$X, coord = data.at$coord, K = 1:6, ploidy = 1, openMP.core.num = 4)
+tess3.obj <- tess3(X = data.at$X, coord = data.at$coord, K = 1:6, ploidy = 1, openMP.core.num = 4)
 @
 
 

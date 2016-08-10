@@ -7,17 +7,16 @@
 SampleUnifDirichletG(L, ploidy, K)
 }
 \arguments{
-\item{L}{}
+\item{L}{TODOC}
 
-\item{K}{}
+\item{ploidy}{TODOC}
+
+\item{K}{TODOC}
 }
 \value{
-TODO
+TODOC
 }
 \description{
-TODO
-}
-\examples{
-TODO
+TODOC
 }
 

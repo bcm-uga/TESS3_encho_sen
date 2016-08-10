@@ -2,7 +2,8 @@
 % Please edit documentation in R/sampler.R
 \name{SampleGenoOFWithMs}
 \alias{SampleGenoOFWithMs}
-\title{Title}
+\title{Sample ancestral population with ms 2 island model. Then admixe ancestral population
+along a longitudinal gradient.}
 \usage{
 SampleGenoOFWithMs(n, nsites.neutral, nsites.selected, crossover.proba,
   m.neutral, m.selected, mutation.rate.per.site, N0 = 10^6, k = 0.5,
@@ -25,31 +26,36 @@ SampleGenoOFWithMs(n, nsites.neutral, nsites.selected, crossover.proba,
 
 \item{N0}{population size}
 
+\item{k}{TODOC}
+
 \item{min.maf}{the locus with a maf less than this parameter are removed}
 
 \item{plot.debug}{if TRUE plot at different stage of the simulation}
+
+\item{tess3.ms}{ms binary path.}
+}
+\value{
+TODOC
 }
 \description{
-Title
+Sample ancestral population with ms 2 island model. Then admixe ancestral population
+along a longitudinal gradient.
 }
 \examples{
-
-tess3.ms <- "~/BiocompSoftware/msdir/ms"
-n <- 200
-K <- 2
-ploidy <- 1
-data.list <- SampleGenoOFWithMs(n = n,
-                               nsites.neutral = 100000,
-                               nsites.selected = 1000,
-                               crossover.proba = 0.25 * 10 ^ -8,
-                               m.neutral = 0.25 * 10 ^ -6,
-                               m.selected = 0.25 * 10 ^ -7,
-                               mutation.rate.per.site = 0.25 * 10 ^ -8,
-                               N0 = 10 ^ 6,
-                               k = 0.5,
-                               min.maf = 0.05,
-                               plot.debug = TRUE)
-
-
+# tess3.ms <- "~/BiocompSoftware/msdir/ms"
+# n <- 200
+# K <- 2
+# ploidy <- 1
+# data.list <- SampleGenoOFWithMs(n = n,
+#                              nsites.neutral = 100000,
+#                              nsites.selected = 1000,
+#                              crossover.proba = 0.25 * 10 ^ -8,
+#                              m.neutral = 0.25 * 10 ^ -6,
+#                              m.selected = 0.25 * 10 ^ -7,
+#                              mutation.rate.per.site = 0.25 * 10 ^ -8,
+#                              N0 = 10 ^ 6,
+#                              k = 0.5,
+#                              min.maf = 0.05,
+#                              plot.debug = TRUE)
 }
 

@@ -24,7 +24,7 @@ data(data.at)
 
 Run of tess3
 ```{r run, dependson=c("data"), results="hide"}
-tess3.obj <- tess3project(X = data.at$X, coord = data.at$coord, K = 1:10, ploidy = 1, openMP.core.num = 4)
+tess3.obj <- tess3(X = data.at$X, coord = data.at$coord, K = 1:10, ploidy = 1, openMP.core.num = 4)
 ```
 
 Plot of $RMSE(X, Q * G^T)$ for different value of $K$
@@ -40,7 +40,7 @@ tess3.res <- Gettess3res(tess3.obj, K = 3)
 barplot(t(tess3.res$Q[order(data.at$coord[,1]),]), col = 2:4, border = NA)
 barplot(tess3.res$Q, border = NA, space = 0)
 # Q mapping on coord
-plot(tess3.res$Q, data.at$coord, plot.type = "max", interpolation.function = krigging())
+plot(tess3.res$Q, data.at$coord, plot.type = "max", interpolation.function = kriging())
 ```
 
 

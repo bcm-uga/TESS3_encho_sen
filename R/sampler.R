@@ -2,30 +2,26 @@
 #######################Q sampler###################
 ###################################################
 
-#' sample Q = f(coord)
+#' Sample ancestral coefficient matrix such as Q = f(coord).
 #'
-#' @param n
-#' @param K
+#' @param coord Coodinate matrix.
+#' @param f Function of the coordinate.
 #'
-#' @return
+#' @return TODOC
 #' @export
-#'
-#' @examples
 SampleFuncQ <- function(coord, f = function(X) c(1 / (1 + exp(-0.5 * X[1])), 1 - 1 / (1 + exp(-0.5 * X[1])))) {
   Q = t(apply(coord, 1, f))
   class(Q) <- "tess3Q"
   return(Q)
 }
 
-#' sample Q such as alpha ~ unif(0,1) and Q ~ Dirichlet(alpha)
+#' Sample ancestral coefficient matrix such as alpha ~ unif(0,1) and Q ~ Dirichlet(alpha).
 #'
-#' @param n
-#' @param K
+#' @param n Number of row of Q.
+#' @param K Number of column of Q.
 #'
-#' @return
+#' @return TODOC
 #' @export
-#'
-#' @examples
 SampleUnifQ <- function(n, K) {
   TestRequiredPkg("gtools")
   alpha = matrix(runif(n*K,min = 0, max = 1),n,K)
@@ -37,13 +33,16 @@ SampleUnifQ <- function(n, K) {
 #' For population the center mu_k is computed. Then D_i_k = ||coord_i - mu_k|| is computed. finally Q = f(D) and Q is projected to statisfy constraints.
 #'
 #'
-#' TODO
+#' TODOC
 #'
-#' @return TODO
+#' @return TODOC
 #'
-#' @examples
-#' TODO
 #
+#' @param coord Coordinate matrix.
+#' @param n.by.pop Number of individual by population.
+#' @param K Number of column of Q.
+#' @param f Distribution function.
+#'
 #' @export
 SampleDistFromCenterQ <- function(coord, n.by.pop, K, f = function(D) exp(-D / 0.2)) {
 
@@ -73,13 +72,15 @@ SampleDistFromCenterQ <- function(coord, n.by.pop, K, f = function(D) exp(-D / 0
 #'  For population the center mu_k is computed. Then D_i_k = ||coord_i - mu_k|| is computed. finally alpha = f(D) and Q ~ Dirichlet(alpha).
 #'
 #'
-#' TODO
+#' TODOC
 #'
-#' @return TODO
+#' @return TODOC
 #'
-#' @examples
-#' TODO
-#
+#' @param coord Coordinate matrix.
+#' @param n.by.pop Number of individual by population.
+#' @param K Number of column of Q.
+#' @param f Distribution function.
+#'
 #' @export
 SampleDistFromCenterDirichletQ <- function(coord, n.by.pop, K, f = function(D) exp(-D / 0.2)) {
 
@@ -109,13 +110,19 @@ SampleDistFromCenterDirichletQ <- function(coord, n.by.pop, K, f = function(D) e
 #' sample Q as describe in "Spatial Inference of Admixture Proportions and Segondary Contact Zones" E. Durand et al.
 #'
 #'
-#' TODO
+#' TODOC
 #'
-#' @return TODO
+#' @return TODOC
 #'
-#' @examples
-#' TODO
 #
+#' @param coord TODOC
+#' @param K TODOC
+#' @param W TODOC
+#' @param sigma TODOC
+#' @param rho TODOC
+#' @param f TODOC
+#' @param beta TODOC
+#'
 #' @export
 SampleTESS2.3Q <- function(coord, K, W, sigma, rho, f = function(X) c(1.0,X[1], X[2]), beta = matrix(0.0, 3, K)) {
   TestRequiredPkg("gtools")
@@ -147,17 +154,14 @@ SampleTESS2.3Q <- function(coord, K, W, sigma, rho, f = function(X) c(1.0,X[1], 
 #' sample G such as G_dl+._k ~ Dirichlet(1/(ploidy + 1))
 #'
 #'
-#' TODO
+#' TODOC
 #'
-#' @return TODO
+#' @return TODOC
 #'
-#' @examples
-#' TODO
 #
-#' @param L
-#'
-#' @param ploidy
-#' @param K
+#' @param L TODOC
+#' @param ploidy TODOC
+#' @param K TODOC
 #'
 #' @export
 SampleUnifDirichletG <- function(L, ploidy, K) {
@@ -176,16 +180,19 @@ SampleUnifDirichletG <- function(L, ploidy, K) {
 ###################coord sampler###################
 ###################################################
 
-#' sample coord such as a mixture of K cluster distributed with gaussian law
+#' sample coord such as a mixture of K cluster distributed with gaussian law.
 #'
 #'
-#' TODO
+#' TODOC
 #'
-#' @return TODO
+#' @return TODOC
 #'
-#' @examples
-#' TODO
 #
+#' @param n.by.pop TODOC
+#' @param K TODOC
+#' @param sigma1 TODOC
+#' @param sigma2 TODOC
+#'
 #' @export
 SampleNormalClusterCoord <- function(n.by.pop, K, sigma1 = 1.0, sigma2 = 0.2 ) {
 
@@ -215,26 +222,26 @@ SampleNormalClusterCoord <- function(n.by.pop, K, sigma1 = 1.0, sigma2 = 0.2 ) {
 ###################################################
 
 
-
-#' Sample X such that P(X_i_dl + j) = Sum(Q_i_k G_k_dl + j).
-#'
-#' @param Q
-#' @param G
-#' @param coord
-#' @param ploidy
-#'
-#' @return
-#' @export
-#'
-#' @examples
-#' n <- 100
-#' K <- 3
-#' ploidy <- 2
-#' L <- 1000
-#' data.list <- SampleGenoFromGenerativeModelTESS3(G = SampleUnifDirichletG(L, ploidy, K),
-#'                                                 Q = SampleUnifQ(n, K),
-#'                                                 coord = SampleNormalClusterCoord(n.by.pop = n, K = 1),
-#'                                                 ploidy = ploidy)
+#
+# #' Sample X such that P(X_i_dl + j) = Sum(Q_i_k G_k_dl + j).
+# #'
+# #' @param Q TODOC
+# #' @param G TODOC
+# #' @param coord TODOC
+# #' @param ploidy TODOC
+# #'
+# #' @return
+# #' @export
+# #'
+# #' @examples
+# #' n <- 100
+# #' K <- 3
+# #' ploidy <- 2
+# #' L <- 1000
+# #' data.list <- SampleGenoFromGenerativeModelTESS3(G = SampleUnifDirichletG(L, ploidy, K),
+# #'                                                 Q = SampleUnifQ(n, K),
+# #'                                                 coord = SampleNormalClusterCoord(n.by.pop = n, K = 1),
+# #'                                                 ploidy = ploidy)
 # SampleGenoFromGenerativeModelTESS3 <- function(Q, G, coord, ploidy) {
 #   res <- list()
 #
@@ -264,6 +271,17 @@ SampleNormalClusterCoord <- function(n.by.pop, K, sigma1 = 1.0, sigma2 = 0.2 ) {
 #####################ms sampler####################
 ###################################################
 
+#' Helper function which call ms.
+#'
+#' @param ms.file TODOC
+#' @param nsam TODOC
+#' @param nreps TODOC
+#' @param theta TODOC
+#' @param rho TODOC
+#' @param nsites TODOC
+#' @param M TODOC
+#'
+#' @return TODOC
 run.ms <- function(ms.file, nsam, nreps, theta, rho, nsites, M) {
   res <- list()
   tmp.file <- paste0(tempfile(),".geno")
@@ -291,9 +309,10 @@ run.ms <- function(ms.file, nsam, nreps, theta, rho, nsites, M) {
 }
 
 
-#' Title
+#' Sample ancestral population with ms 2 island model. Then admixe ancestral population
+#' along a longitudinal gradient.
 #'
-#' @param k
+#' @param k TODOC
 #' @param min.maf the locus with a maf less than this parameter are removed
 #' @param plot.debug if TRUE plot at different stage of the simulation
 #' @param n number of indivudual to sample
@@ -304,29 +323,26 @@ run.ms <- function(ms.file, nsam, nreps, theta, rho, nsites, M) {
 #' @param crossover.proba corss-over probability between adjacent site per generation
 #' @param mutation.rate.per.site mutation rate per site
 #' @param N0 population size
-#'
-#' @return
+#' @param tess3.ms ms binary path.
+#' @return TODOC
 #' @export
 #'
 #' @examples
-#'
-#' tess3.ms <- "~/BiocompSoftware/msdir/ms"
-#' n <- 200
-#' K <- 2
-#' ploidy <- 1
-#' data.list <- SampleGenoOFWithMs(n = n,
-#'                                nsites.neutral = 100000,
-#'                                nsites.selected = 1000,
-#'                                crossover.proba = 0.25 * 10 ^ -8,
-#'                                m.neutral = 0.25 * 10 ^ -6,
-#'                                m.selected = 0.25 * 10 ^ -7,
-#'                                mutation.rate.per.site = 0.25 * 10 ^ -8,
-#'                                N0 = 10 ^ 6,
-#'                                k = 0.5,
-#'                                min.maf = 0.05,
-#'                                plot.debug = TRUE)
-#'
-#'
+#' # tess3.ms <- "~/BiocompSoftware/msdir/ms"
+#' # n <- 200
+#' # K <- 2
+#' # ploidy <- 1
+#' # data.list <- SampleGenoOFWithMs(n = n,
+#' #                              nsites.neutral = 100000,
+#' #                              nsites.selected = 1000,
+#' #                              crossover.proba = 0.25 * 10 ^ -8,
+#' #                              m.neutral = 0.25 * 10 ^ -6,
+#' #                              m.selected = 0.25 * 10 ^ -7,
+#' #                              mutation.rate.per.site = 0.25 * 10 ^ -8,
+#' #                              N0 = 10 ^ 6,
+#' #                              k = 0.5,
+#' #                              min.maf = 0.05,
+#' #                              plot.debug = TRUE)
 SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.proba, m.neutral, m.selected, mutation.rate.per.site, N0 = 10 ^ 6, k = 0.5, min.maf = 0.05, plot.debug = FALSE, tess3.ms = getOption("tess3.ms")) {
 
   #######################
@@ -424,7 +440,7 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
     LEA::write.geno(neutral.X, tmp.file)
     capture.output(obj <- LEA::snmf(tmp.file, K = K, entropy = FALSE, ploidy = 1, project = "new", alpha = 100), file = "/dev/null")
     q.K = LEA::Q(obj, K = K, run = 1)
-    barplot(t(q.K), col = rainbow(2), main = "snmf Q computed from neutral dataset")
+    graphics::barplot(t(q.K), col = rainbow(2), main = "snmf Q computed from neutral dataset")
 
     fst.values = fst(obj, K = K, ploidy = 1)
 
@@ -495,7 +511,7 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
       LEA::write.geno(selected.X, tmp.file)
       capture.output(obj <- LEA::snmf(tmp.file, K = K, entropy = T, ploidy = 1, project = "new", alpha = 100), file = "/dev/null")
       q.K = LEA::Q(obj, K = K, run = 1)
-      barplot(t(q.K), col = rainbow(2), main = "snmf Q computed from selected dataset")
+      graphics::barplot(t(q.K), col = rainbow(2), main = "snmf Q computed from selected dataset")
 
       fst.values = fst(obj, K = K, ploidy = 1)
 
@@ -531,7 +547,7 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
     LEA::write.geno(X, tmp.file)
     capture.output(obj <- LEA::snmf(tmp.file, K = K, entropy = T, ploidy = 1, project = "new", alpha = 100), file = "/dev/null")
     q.K = LEA::Q(obj, K = K, run = 1)
-    barplot(t(q.K), col = rainbow(2), main = "snmf Q computed from neutral + selected dataset")
+    graphics::barplot(t(q.K), col = rainbow(2), main = "snmf Q computed from neutral + selected dataset")
 
     fst.values = fst(obj, K = K, ploidy = 1)
 
@@ -579,7 +595,7 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
   res$Q <- SampleFuncQ(res$coord, f = function(X) c(sigmoid(k * X[1]), 1 - sigmoid(k * X[1])))
 
   if (plot.debug) {
-    barplot(t(res$Q), col = rainbow(2), main = "admixture Q")
+    graphics::barplot(t(res$Q), col = rainbow(2), main = "admixture Q")
   }
 
   # compute latent factor matrix
@@ -597,7 +613,7 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
     LEA::write.geno(res$admixed.genotype, tmp.file)
     capture.output(obj <- LEA::snmf(tmp.file, K = K, entropy = T, ploidy = 1, project = "new", alpha = 100), file = "/dev/null")
     q.K = LEA::Q(obj, K = K, run = 1)
-    barplot(t(q.K), col = rainbow(2), main = "snmf Q computed from admixed dataset")
+    graphics::barplot(t(q.K), col = rainbow(2), main = "snmf Q computed from admixed dataset")
 
     fst.values = fst(obj, K = K, ploidy = 1)
 
@@ -636,4 +652,3 @@ SampleGenoOFWithMs <- function(n, nsites.neutral, nsites.selected, crossover.pro
   return(res)
 
 }
-

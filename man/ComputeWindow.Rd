@@ -2,17 +2,14 @@
 % Please edit documentation in R/spatialPlots.R
 \name{ComputeWindow}
 \alias{ComputeWindow}
-\title{Title}
+\title{Compute the graph window.}
 \usage{
 ComputeWindow(coord)
 }
 \arguments{
-\item{coord}{}
-}
-\value{
-
+\item{coord}{Coordinate matrix.}
 }
 \description{
-Title
+Compute the graph window.
 }
 
