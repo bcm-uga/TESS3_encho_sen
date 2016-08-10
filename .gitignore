@@ -33,15 +33,25 @@ Rmarkdown/*.html
 # emacs
 *~
 \#*\#
+
 # clang
 *.pch
 .clang_complete
 inst/doc
+
 # vignette stuf
 *_cache/
 todolist.txt
+vignettes/.build.timestamp
+
 # mac stuf
 .DS_Store
 
 # log
 check.log
+
+# testthat
+tests/testthat/core.*
+
+# check stuf
+tess3r-Ex.*
