@@ -14,6 +14,13 @@
 - Trouver des data au format vcf avec la likelihood
 - Faire la vignette de cette feature
 
+## gplot
+- implement all graphics function with gplot (see TESS3Article figures)
+
+## Geodesic distance
+- Use geodesic distance to compute geographic distance between indiv rather than
+euclidean distance
+
 # Flora
 - ...
 
