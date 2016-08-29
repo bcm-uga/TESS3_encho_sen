@@ -307,7 +307,7 @@ summary.tess3Main <- function(object, ...) {
 #' Title
 #'
 #' @param x TODOC
-#'
+  #'
 #' @return TODOC
 #' @export
 is.tess3Main <- function(x) {

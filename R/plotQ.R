@@ -18,12 +18,12 @@
 #' @examples
 #' library(tess3r)
 #' data(data.at)
-#' obj <- tess3Main(data.at$X, coord = data.at$coord, K = 5,
-#'                  ploidy = 1, openMP.core.num = 4)
-#' Q.matrix <- obj$Q
+#' obj <- tess3(data.at$X, coord = data.at$coord, K = 5,
+#'                  ploidy = 1, method = "projected.ls", openMP.core.num = 4)
+#' Q.matrix <- qmatrix(obj, K = 5)
 #' barplot(Q.matrix, border = NA, space = 0, xlab = "Individuals",
 #'         ylab = "Ancestry proportions", main = "Ancestry matrix") -> bp
-#' axis(1, at = 1:nrow(Q.matrix), labels = bp$order, las = 3, cex.axis = .6)
+#' axis(1, at = 1:nrow(Q.matrix), labels = bp$order, las = 3, cex.axis = .4)
 #' @export
 barplot.tess3Q = function(height, sort.by.Q = TRUE, col.palette = NULL, palette.length = 9, lab = FALSE, ...){
   # Because prototype of this S3 method must be the same that barplot.default
@@ -102,10 +102,11 @@ barplot.tess3Q = function(height, sort.by.Q = TRUE, col.palette = NULL, palette.
 #' library(tess3r)
 #'
 #' data(data.at)
-#' obj <- tess3Main(data.at$X, coord = data.at$coord,
+#' obj <- tess3(data.at$X, coord = data.at$coord,
 #'                  K = 5, ploidy = 1, openMP.core.num = 4)
-#' Qmatrix <- obj$Q
-#' plot(obj$Q, data.at$coord, method = "map.max",
+#' Q.matrix <- qmatrix(obj, K = 5)
+#' plot(Q.matrix, data.at$coord, method = "map.max",
+#'      resolution = c(400,400),
 #'      interpol = kriging(10), cex = .4,
 #'      xlab = "Longitude", ylab= "Latitude", main = "Ancestry coefficients")
 #' @export
