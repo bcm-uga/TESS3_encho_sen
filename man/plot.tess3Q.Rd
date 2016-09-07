@@ -53,10 +53,11 @@ details on interpolation methods
 library(tess3r)
 
 data(data.at)
-obj <- tess3Main(data.at$X, coord = data.at$coord,
+obj <- tess3(data.at$X, coord = data.at$coord,
                  K = 5, ploidy = 1, openMP.core.num = 4)
-Qmatrix <- obj$Q
-plot(obj$Q, data.at$coord, method = "map.max",
+Q.matrix <- qmatrix(obj, K = 5)
+plot(Q.matrix, data.at$coord, method = "map.max",
+     resolution = c(400,400),
      interpol = kriging(10), cex = .4,
      xlab = "Longitude", ylab= "Latitude", main = "Ancestry coefficients")
 }

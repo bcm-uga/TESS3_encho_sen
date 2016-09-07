@@ -30,12 +30,12 @@ ancestry coefficient matrix. Includes a sort-by-Q option.
 \examples{
 library(tess3r)
 data(data.at)
-obj <- tess3Main(data.at$X, coord = data.at$coord, K = 5,
-                 ploidy = 1, openMP.core.num = 4)
-Q.matrix <- obj$Q
+obj <- tess3(data.at$X, coord = data.at$coord, K = 5,
+                 ploidy = 1, method = "projected.ls", openMP.core.num = 4)
+Q.matrix <- qmatrix(obj, K = 5)
 barplot(Q.matrix, border = NA, space = 0, xlab = "Individuals",
         ylab = "Ancestry proportions", main = "Ancestry matrix") -> bp
-axis(1, at = 1:nrow(Q.matrix), labels = bp$order, las = 3, cex.axis = .6)
+axis(1, at = 1:nrow(Q.matrix), labels = bp$order, las = 3, cex.axis = .4)
 }
 \author{
 Kevin Caye, Olivier François

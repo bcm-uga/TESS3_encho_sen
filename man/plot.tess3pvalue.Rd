@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotG.R
 \name{plot.tess3pvalue}
 \alias{plot.tess3pvalue}
-\title{Plot the manhattan plot of -log(p.value).}
+\title{Manhattan plot for tess3 significance values.}
 \usage{
 \method{plot}{tess3pvalue}(x, ...)
 }
@@ -15,6 +15,6 @@
 TODOC
 }
 \description{
-Plot the manhattan plot of -log(p.value).
+Manhattan plot for tess3 significance values.
 }
 
