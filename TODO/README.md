@@ -8,9 +8,12 @@
 - option chisq = TRUE (use chisq to compute pvalue)
 - Documentation : TODOC comments and others...
 - Release sur CRAN : http://r-pkgs.had.co.nz/release.html + Release sur github
-- vignette must compile (main-vignette) (cf mail OF) + documentation des fonctions used dans la vignette
 - plot with ggplot and add to vignette
 
+## Vignette
+- Doc function used in the vignette
+- css
+- publish on BioShock38 site
 
 ## Matrice de likelihood :
 - Possibilité d'avoir une matrice de likelihood des génotypes en entré de TESS3.
