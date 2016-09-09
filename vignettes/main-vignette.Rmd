@@ -3,7 +3,9 @@ title: "Analyzing population genomic data with tess3r"
 author: "Kevin Caye - Flora Jay - Olivier François" 
 date: "`r Sys.Date()`" 
 output: 
-  rmarkdown::html_vignette
+  # rmarkdown::html_vignette
+  pdf_document:
+    latex_engine: xelatex
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
@@ -11,7 +13,7 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE} 
-knitr::opts_chunk$set(cache = TRUE, message = FALSE,)
+knitr::opts_chunk$set(cache = TRUE, message = FALSE)
 ```
 
 

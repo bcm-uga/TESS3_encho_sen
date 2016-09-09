@@ -19,7 +19,7 @@
 #' @param verbose TODOC
 #' @param Q.init TODOC
 #'
-#' @return tess3 object.
+#' @return An object of class tess3.
 #' @export
 tess3 <- function(X,
                   XBin = NULL,
