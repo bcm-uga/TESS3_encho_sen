@@ -4,15 +4,13 @@
 \alias{tess3}
 \title{Run tess3 for multiple value of K and with repetition.}
 \usage{
-tess3(X, XBin = NULL, coord, K, ploidy, lambda = 1, rep = 1, W = NULL,
+tess3(X, XProba = NULL, coord, K, ploidy, lambda = 1, rep = 1, W = NULL,
   method = "projected.ls", max.iteration = 200, tolerance = 1e-05,
   openMP.core.num = 1, Q.init = NULL, mask = 0, copy = TRUE,
   algo.copy = TRUE, keep = "best", verbose = FALSE)
 }
 \arguments{
 \item{X}{TODOC}
-
-\item{XBin}{TODOC}
 
 \item{coord}{TODOC}
 
@@ -45,9 +43,11 @@ tess3(X, XBin = NULL, coord, K, ploidy, lambda = 1, rep = 1, W = NULL,
 \item{keep}{TODOC}
 
 \item{verbose}{TODOC}
+
+\item{XBin}{TODOC}
 }
 \value{
-tess3 object.
+An object of class tess3.
 }
 \description{
 Run tess3 for multiple value of K and with repetition.

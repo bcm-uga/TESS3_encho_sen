@@ -122,13 +122,13 @@ test_that("Gettess3res", {
   # K = 2:3, rep = 3
   data("data.for.test", package = "tess3r")
   tess3project.res <- tess3(X = data.for.test$X,
-                                   coord = data.for.test$coord,
-                                   K = 2:3,
-                                   ploidy = 1,
-                                   lambda = 1.0,
-                                   method = "projected.ls",
-                                   rep = 3,
-                                   keep = "all")
+                            coord = data.for.test$coord,
+                            K = 2:3,
+                            ploidy = 1,
+                            lambda = 1.0,
+                            method = "projected.ls",
+                            rep = 3,
+                            keep = "all")
   expect_false(!is.tess3(tess3project.res))
   tess3Main.res <- Gettess3res(tess3project.res, K = 2, rep = 1)
   expect_false(!is.tess3Main(tess3Main.res))

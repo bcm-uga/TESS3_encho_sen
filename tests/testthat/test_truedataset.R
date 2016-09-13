@@ -11,36 +11,34 @@ test_that("TESS3 on arabidopsis thaliana", {
   At$XBin <- matrix(0.0, nrow(At$X), ncol(At$X) * (2 + 1))
   X2XBin(At$X, 2, At$XBin)
 
-  tess3.res <- tess3(X = NULL,
-                     XBin = At$XBin,
+  tess3.res <- tess3Main(X = NULL,
+                     XProba = At$XBin,
                      coord = At$coord,
                      K = 3,
                      ploidy = 2,
                      lambda = 1.0,
                      W = NULL,
-                     method = "MCPA",
+                     method = "projected.ls",
                      max.iteration = 200,
                      tolerance = 1e-5,
                      openMP.core.num = 4,
                      Q.init = NULL,
-                     mask = 0.0,
-                     no.copy = TRUE)
+                     mask = 0.0)
   gc()
-  tess3project.res <- tess3project(X = NULL,
-                                   XBin = At$XBin,
+  tess3project.res <- tess3(X = NULL,
+                                   XProba = At$XBin,
                                    coord = At$coord,
                                    K = 3,
                                    ploidy = 2,
                                    lambda = 1.0,
                                    rep = 1,
                                    W = NULL,
-                                   method = "MCPA",
+                                   method = "projected.ls",
                                    max.iteration = 200,
                                    tolerance = 1e-5,
                                    openMP.core.num = 4,
                                    Q.init = NULL,
                                    mask = 0.0,
-                                   no.copy = TRUE,
                                    keep = "all")
   gc()
 

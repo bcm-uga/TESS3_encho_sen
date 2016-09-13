@@ -22,7 +22,7 @@
 #' @return An object of class tess3.
 #' @export
 tess3 <- function(X,
-                  XBin = NULL,
+                  XProba = NULL,
                   coord,
                   K,
                   ploidy,
@@ -48,14 +48,14 @@ tess3 <- function(X,
   if (copy & !is.null(X)) {
     X <- matrix(as.double(X), nrow(X), ncol(X))
     CheckX(X, ploidy)
-  } else if (!copy & is.null(XBin)) {
-    stop("To force the function not doing copy of the data, you must set XBin.")
+  } else if (!copy & is.null(XProba)) {
+    stop("To force the function not doing copy of the data, you must set XProba")
   }
 
   # Compute XBin
   if (!is.null(X)) {
-    XBin <- matrix(0.0, nrow(X), ncol(X) * (ploidy + 1))
-    X2XBin(X, ploidy, XBin)
+    XProba <- matrix(0.0, nrow(X), ncol(X) * (ploidy + 1))
+    X2XBin(X, ploidy, XProba)
     rm(X)
   }
 
@@ -63,7 +63,7 @@ tess3 <- function(X,
   # if user want only 1 run of tess3 we return a list of result
   if (length(K) == 1 & rep == 1) {
     res <- tess3Main(X = NULL,
-                     XBin = XBin,
+                     XProba = XProba,
                      coord = coord,
                      K = K,
                      ploidy = ploidy,
@@ -92,28 +92,28 @@ tess3 <- function(X,
     tess3.run <- list()
     for (r in 1:rep) {
       tess3.aux <- tess3Main(X = NULL,
-                         XBin = XBin,
-                         coord = coord,
-                         K = K[i],
-                         ploidy = ploidy,
-                         lambda = lambda,
-                         W = W,
-                         method = method,
-                         max.iteration = max.iteration,
-                         tolerance = tolerance,
-                         openMP.core.num = openMP.core.num,
-                         Q.init = Q.init,
-                         mask = mask,
-                         copy = copy,
-                         algo.copy = algo.copy,
-                         verbose = verbose)
+                             XProba = XProba,
+                             coord = coord,
+                             K = K[i],
+                             ploidy = ploidy,
+                             lambda = lambda,
+                             W = W,
+                             method = method,
+                             max.iteration = max.iteration,
+                             tolerance = tolerance,
+                             openMP.core.num = openMP.core.num,
+                             Q.init = Q.init,
+                             mask = mask,
+                             copy = copy,
+                             algo.copy = algo.copy,
+                             verbose = verbose)
       rmse[r] <- tess3.aux$rmse
       crossentropy[r] <- tess3.aux$crossentropy
       crossvalid.rmse[r] <- ifelse(!is.null(tess3.aux$crossvalid.rmse),
-                                    tess3.aux$crossvalid.rmse, -1)
+                                   tess3.aux$crossvalid.rmse, -1)
       crossvalid.crossentropy[r] <-
-      ifelse(!is.null(tess3.aux$crossvalid.crossentropy),
-      tess3.aux$crossvalid.crossentropy, -1)
+        ifelse(!is.null(tess3.aux$crossvalid.crossentropy),
+               tess3.aux$crossvalid.crossentropy, -1)
       if (keep == "best") {
         if (rmse[r] < rmse.max) {
           tess3.run[[1]] <- tess3.aux

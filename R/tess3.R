@@ -21,7 +21,7 @@
 #' @export
 #'
 tess3Main <- function(X,
-                      XBin = NULL,
+                      XProba = NULL,
                       coord,
                       K,
                       ploidy,
@@ -54,8 +54,8 @@ tess3Main <- function(X,
   if (copy & !is.null(X)) {
     X <- matrix(as.double(X), nrow(X), ncol(X))
     CheckX(X, ploidy)
-  } else if (!copy & is.null(XBin)) {
-    stop("To force the function not doing copy of the data, you must set XBin.")
+  } else if (!copy & is.null(XProba)) {
+    stop("To force the function not doing copy of the data, you must set XProba")
   }
   ################################################
 
@@ -140,30 +140,30 @@ tess3Main <- function(X,
   if (!is.null(X)) {
     res$L <- ncol(X)
     res$n <- nrow(X)
-  } else if (!is.null(XBin)) {
-    if (ncol(XBin) %% (ploidy + 1) != 0) {
-      stop("Number of columns of XBin must be a multiple of ploidy + 1.")
+  } else if (!is.null(XProba)) {
+    if (ncol(XProba) %% (ploidy + 1) != 0) {
+      stop("Number of columns of XProba must be a multiple of ploidy + 1.")
     }
-    res$L <- ncol(XBin) %/% (ploidy + 1)
+    res$L <- ncol(XProba) %/% (ploidy + 1)
     res$n <- nrow(coord)
   } else {
-    stop("X or XBin must be non-null")
+    stop("X or XProba must be non-null")
   }
 
   res$ploidy <- ploidy
   res$K <- K
 
-  if (is.null(XBin)) {
-    XBin <- matrix(0.0, res$n, res$L * (res$ploidy + 1))
-    X2XBin(X, ploidy, XBin)
+  if (is.null(XProba)) {
+    XProba <- matrix(0.0, res$n, res$L * (res$ploidy + 1))
+    X2XBin(X, ploidy, XProba)
     rm(X)
   }
-  CheckXBin(XBin, ploidy)
+  CheckXBin(XProba, ploidy)
   CheckCoord(coord)
-  CheckXBinCoord(XBin, coord)
+  CheckXBinCoord(XProba, coord)
   CheckW(W)
   CheckWCoord(W, coord)
-  CheckXBinW(XBin, W)
+  CheckXBinW(XProba, W)
   ################################################
 
   # mem <- c(mem,pryr::mem_used())
@@ -172,9 +172,9 @@ tess3Main <- function(X,
   # mask if asked
   if (mask != 0.0) {
     message("Mask ", mask, "% of genotypes for cross validation")
-    missing.index.X <- sample(1:(length(XBin)), length(XBin) * mask)
-    masked.X.value <- XBin[missing.index.X]
-    XBin[missing.index.X] <- NA
+    missing.index.X <- sample(1:(length(XProba)), length(XProba) * mask)
+    masked.X.value <- XProba[missing.index.X]
+    XProba[missing.index.X] <- NA
   }
   ################################################
 
@@ -182,12 +182,12 @@ tess3Main <- function(X,
 
   ################################################
   # check if there is missing data and compute the binary representation
-  if (any(is.na(XBin))) {
+  if (any(is.na(XProba))) {
     message("Missing value detected in genotype")
     # Naive imputation by mean
-    geno.freq <- apply(XBin, 2, function(x) mean(x,na.rm = TRUE))
+    geno.freq <- apply(XProba, 2, function(x) mean(x,na.rm = TRUE))
     geno.freq <- matrix(geno.freq,1)[rep(1, res$n),]
-    XBin[is.na(XBin)] <- geno.freq[is.na(XBin)]
+    XProba[is.na(XProba)] <- geno.freq[is.na(XProba)]
     rm(geno.freq)
   }
   ################################################
@@ -197,7 +197,7 @@ tess3Main <- function(X,
   ################################################
   # compute Q and G matrix
   if (method == "qp") {
-    res <- c(res, SolveTess3QP(XBin,
+    res <- c(res, SolveTess3QP(XProba,
                                K,
                                ploidy,
                                Lapl,
@@ -218,7 +218,7 @@ tess3Main <- function(X,
 
     # mem <- c(mem,pryr::mem_used())
     if (!algo.copy) {
-      ComputeMCPASolutionNoCopyX(X = XBin,
+      ComputeMCPASolutionNoCopyX(X = XProba,
                                  K = K,
                                  Lapl = Lapl,
                                  lambdaPrim = lambda,
@@ -229,7 +229,7 @@ tess3Main <- function(X,
                                  G = res$G,
                                  verbose = verbose)
     } else {
-      ComputeMCPASolution(X = XBin,
+      ComputeMCPASolution(X = XProba,
                           K = K,
                           Lapl = Lapl,
                           lambdaPrim = lambda,
@@ -272,8 +272,8 @@ tess3Main <- function(X,
   ################################################
   # Compute rmse
   QtG <- tcrossprod(res$Q, res$G)
-  res$rmse <- ComputeRmse(XBin, QtG)
-  res$crossentropy <- ploidy * ComputeAveragedCrossEntropy(XBin, QtG) #because this function compute mean also by allele
+  res$rmse <- ComputeRmse(XProba, QtG)
+  res$crossentropy <- ploidy * ComputeAveragedCrossEntropy(XProba, QtG) #because this function compute mean also by allele
   if (mask > 0.0) {
     res$crossvalid.rmse <- ComputeRmse(masked.X.value, QtG[missing.index.X])
     res$crossvalid.crossentropy <- ploidy * ComputeAveragedCrossEntropy(masked.X.value, QtG[missing.index.X])

@@ -4,15 +4,13 @@
 \alias{tess3Main}
 \title{Main function.}
 \usage{
-tess3Main(X, XBin = NULL, coord, K, ploidy, lambda = 1, W = NULL,
+tess3Main(X, XProba = NULL, coord, K, ploidy, lambda = 1, W = NULL,
   method = "projected.ls", max.iteration = 200, tolerance = 1e-05,
   openMP.core.num = 1, Q.init = NULL, mask = 0, copy = TRUE,
   algo.copy = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{X}{TODOC}
-
-\item{XBin}{TODOC}
 
 \item{coord}{TODOC}
 
@@ -41,6 +39,8 @@ tess3Main(X, XBin = NULL, coord, K, ploidy, lambda = 1, W = NULL,
 \item{algo.copy}{if TRUE data will be copy to speed the algorithm}
 
 \item{verbose}{TODOC}
+
+\item{XBin}{TODOC}
 }
 \value{
 TODOC
