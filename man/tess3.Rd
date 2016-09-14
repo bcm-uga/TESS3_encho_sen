@@ -6,8 +6,8 @@
 \usage{
 tess3(X, XProba = NULL, coord, K, ploidy, lambda = 1, rep = 1, W = NULL,
   method = "projected.ls", max.iteration = 200, tolerance = 1e-05,
-  openMP.core.num = 1, Q.init = NULL, mask = 0, copy = TRUE,
-  algo.copy = TRUE, keep = "best", verbose = FALSE)
+  openMP.core.num = 1, Q.init = NULL, mask = 0, algo.copy = TRUE,
+  keep = "best", verbose = FALSE)
 }
 \arguments{
 \item{X}{TODOC}
@@ -36,8 +36,6 @@ tess3(X, XProba = NULL, coord, K, ploidy, lambda = 1, rep = 1, W = NULL,
 
 \item{mask}{TODOC}
 
-\item{copy}{TODOC}
-
 \item{algo.copy}{If TRUE data will be copy to speed the algorithm.}
 
 \item{keep}{TODOC}
@@ -45,6 +43,8 @@ tess3(X, XProba = NULL, coord, K, ploidy, lambda = 1, rep = 1, W = NULL,
 \item{verbose}{TODOC}
 
 \item{XBin}{TODOC}
+
+\item{copy}{TODOC}
 }
 \value{
 An object of class tess3.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tess3.R
 \name{tess3Main}
 \alias{tess3Main}
-\title{Main function.}
+\title{Estimates spatial population structure}
 \usage{
 tess3Main(X, XProba = NULL, coord, K, ploidy, lambda = 1, W = NULL,
   method = "projected.ls", max.iteration = 200, tolerance = 1e-05,
@@ -10,42 +10,83 @@ tess3Main(X, XProba = NULL, coord, K, ploidy, lambda = 1, W = NULL,
   algo.copy = TRUE, verbose = FALSE)
 }
 \arguments{
-\item{X}{TODOC}
+\item{X}{A numeric matrix which corresponds to the genotype matrix. This matrix
+must be of size \eqn{n \times L} where \eqn{n} is the number of individual and
+\eqn{L} is the number of loci. Values of this matrix are integer corresponding
+to the number of variant alleles observed at a locus. If \code{NULL}, \code{XProba}
+is used.}
 
-\item{coord}{TODOC}
+\item{XProba}{A numeric matrix which correspond to the probability for the genotype.
+This matrix must be of size \eqn{n \times (ploidy + 1)L} where
+\eqn{n} is the number of individual, \eqn{L} is the number of loci. Values of
+this matrix are numeric between 0 and 1 corresponding
+to the genome probability. It is the matrix used in graph based non negative
+factorization matrix. If \code{NULL}, it is computed from \code{X}. See reference
+for more details.}
 
-\item{K}{TODOC}
+\item{coord}{The numeric matrix of size \eqn{n \times 2} where \eqn{n} is the
+number of individuals.}
 
-\item{ploidy}{TODOC}
+\item{K}{An integer which corresponds to
+the number of ancestral populations.}
 
-\item{lambda}{TODOC}
+\item{ploidy}{An integer which corresponds to
+the number of set of chromosomes.}
 
-\item{W}{TODOC}
+\item{lambda}{A numeric which corresponds to the
+spatial regularization parameter.}
 
-\item{method}{TODOC}
+\item{W}{A numeric matrix which corresponds to the graph weiht matrix.
+If NULL, W it is computed as
+\eqn{W_{ij} = \exp( - {\rm dist}( coord_i, coord_j )^2/ \sigma^2)}.
+Where dist is the euclidian norm, \eqn{coord_i} is
+the gegraphic coordinate for the individual i and
+\eqn{sigma} equal 5 \% of the average geographic distance between individual}
 
-\item{max.iteration}{TODOC}
+\item{method}{\code{"projected.ls"} or \code{"qp"}. If \code{"projected.ls"},
+an aleternated projected least squares algorithm is used. If \code{"qp"},
+an alternated quadratic programing algorithm is used. See references for more
+details}
 
-\item{tolerance}{TODOC}
+\item{max.iteration}{The max number of
+iteration of the optimization algorithm.}
 
-\item{openMP.core.num}{TODOC}
+\item{tolerance}{A numeric which corresponds to the tolerance of the
+stopping criteria of the optimization algorithm.}
 
-\item{Q.init}{TODOC}
+\item{openMP.core.num}{If openMP is available on your computer, it is the
+number of core used by the algorithm.}
 
-\item{mask}{TODOC}
+\item{Q.init}{A numeric matrix which corresponds to the initial value of
+\code{Q} for the algorithm.}
 
-\item{copy}{TODOC}
+\item{mask}{If not \code{NULL} this the proportion of the data matrix which
+is masked to compute the cross validation criteria.}
 
-\item{algo.copy}{if TRUE data will be copy to speed the algorithm}
+\item{copy}{if TRUE data will be copy 1 time.}
 
-\item{verbose}{TODOC}
+\item{algo.copy}{if TRUE data will be copy 1 time to speed the algorithm.}
 
-\item{XBin}{TODOC}
+\item{verbose}{If \code{TRUE} more information are printed.}
 }
 \value{
-TODOC
+An object of class tess3Main which is a list with components:
+\describe{
+   \item{Q}{First item}
+   \item{G}{Second item}
+}
 }
 \description{
-Main function.
+\code{tess3Main} estimates spatial population structure using a graph based non
+negative matrix factorization.
+}
+\examples{
+
+}
+\references{
+\url{http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12471/full}
+}
+\seealso{
+\code{\link{tess3}}
 }
 

@@ -1,25 +1,64 @@
-#' Main function.
+#' Estimates spatial population structure
 #'
-#' @param K TODOC
-#' @param ploidy TODOC
-#' @param lambda TODOC
-#' @param W TODOC
-#' @param method TODOC
-#' @param max.iteration TODOC
-#' @param tolerance TODOC
-#' @param X TODOC
-#' @param openMP.core.num TODOC
-#' @param Q.init TODOC
-#' @param coord TODOC
-#' @param mask TODOC
-#' @param XBin TODOC
-#' @param algo.copy if TRUE data will be copy to speed the algorithm
-#' @param copy TODOC
-#' @param verbose TODOC
+#' \code{tess3Main} estimates spatial population structure using a graph based non
+#' negative matrix factorization.
 #'
-#' @return TODOC
+#' @param K An integer which corresponds to
+#' the number of ancestral populations.
+#' @param ploidy An integer which corresponds to
+#' the number of set of chromosomes.
+#' @param lambda A numeric which corresponds to the
+#' spatial regularization parameter.
+#' @param W A numeric matrix which corresponds to the graph weiht matrix.
+#' If NULL, W it is computed as
+#' \eqn{W_{ij} = \exp( - {\rm dist}( coord_i, coord_j )^2/ \sigma^2)}.
+#' Where dist is the euclidian norm, \eqn{coord_i} is
+#' the gegraphic coordinate for the individual i and
+#' \eqn{sigma} equal 5 \% of the average geographic distance between individual
+#' @param method \code{"projected.ls"} or \code{"qp"}. If \code{"projected.ls"},
+#' an aleternated projected least squares algorithm is used. If \code{"qp"},
+#' an alternated quadratic programing algorithm is used. See references for more
+#' details
+#' @param max.iteration The max number of
+#' iteration of the optimization algorithm.
+#' @param tolerance A numeric which corresponds to the tolerance of the
+#' stopping criteria of the optimization algorithm.
+#' @param X A numeric matrix which corresponds to the genotype matrix. This matrix
+#' must be of size \eqn{n \times L} where \eqn{n} is the number of individual and
+#' \eqn{L} is the number of loci. Values of this matrix are integer corresponding
+#' to the number of variant alleles observed at a locus. If \code{NULL}, \code{XProba}
+#' is used.
+#' @param openMP.core.num If openMP is available on your computer, it is the
+#' number of core used by the algorithm.
+#' @param Q.init A numeric matrix which corresponds to the initial value of
+#' \code{Q} for the algorithm.
+#' @param coord The numeric matrix of size \eqn{n \times 2} where \eqn{n} is the
+#' number of individuals.
+#' @param mask If not \code{NULL} this the proportion of the data matrix which
+#' is masked to compute the cross validation criteria.
+#' @param algo.copy if TRUE data will be copy 1 time to speed the algorithm.
+#' @param copy if TRUE data will be copy 1 time.
+#' @param verbose If \code{TRUE} more information are printed.
+#' @param XProba A numeric matrix which correspond to the probability for the genotype.
+#' This matrix must be of size \eqn{n \times (ploidy + 1)L} where
+#' \eqn{n} is the number of individual, \eqn{L} is the number of loci. Values of
+#' this matrix are numeric between 0 and 1 corresponding
+#' to the genome probability. It is the matrix used in graph based non negative
+#' factorization matrix. If \code{NULL}, it is computed from \code{X}. See reference
+#' for more details.
+#'
+#' @return An object of class tess3Main which is a list with components:
+#' \describe{
+#'    \item{Q}{First item}
+#'    \item{G}{Second item}
+#' }
+#'
+#'
 #' @export
+#' @examples
 #'
+#' @references \url{http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12471/full}
+#' @seealso \code{\link{tess3}}
 tess3Main <- function(X,
                       XProba = NULL,
                       coord,

@@ -38,7 +38,7 @@ CheckXBin <- function(XBin, ploidy) {
     stop("The number of columns in Xbin must be a multiple of (ploidy + 1)")
   }
   ## check if rang of genotype matrix
-  if (max(XBin, na.rm = TRUE) != 1) {
+  if (max(XBin, na.rm = TRUE) > 1) {
     stop("The maximum value of the XBin matrix must be 1")
   }
   if (min(XBin, na.rm = TRUE) < 0) {

@@ -35,7 +35,6 @@ tess3 <- function(X,
                   openMP.core.num = 1,
                   Q.init = NULL,
                   mask = 0.0,
-                  copy = TRUE,
                   algo.copy = TRUE,
                   keep = "best",
                   verbose = FALSE)
@@ -75,7 +74,7 @@ tess3 <- function(X,
                      openMP.core.num = openMP.core.num,
                      Q.init = Q.init,
                      mask = mask,
-                     copy = copy,
+                     copy = TRUE,
                      algo.copy = algo.copy,
                      verbose = verbose)
     class(res) <- c(class(res), "tess3")
