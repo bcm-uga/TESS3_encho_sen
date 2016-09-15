@@ -1,7 +1,8 @@
 #' Estimates spatial population structure
 #'
 #' \code{tess3Main} estimates spatial population structure using a graph based non
-#' negative matrix factorization.
+#' negative matrix factorization. After estimating the population structure is used to
+#' compute a Fst statistic for each locus. See references for more details.
 #'
 #' @param K An integer which corresponds to
 #' the number of ancestral populations.
@@ -11,10 +12,10 @@
 #' spatial regularization parameter.
 #' @param W A numeric matrix which corresponds to the graph weiht matrix.
 #' If NULL, W it is computed as
-#' \eqn{W_{ij} = \exp( - {\rm dist}( coord_i, coord_j )^2/ \sigma^2)}.
-#' Where dist is the euclidian norm, \eqn{coord_i} is
-#' the gegraphic coordinate for the individual i and
-#' \eqn{sigma} equal 5 \% of the average geographic distance between individual
+#' \code{W[i,j] = exp( - (coord[i] - coord[j])^2 / sigma^2)}.
+#' Where \code{coord[i]} is
+#' the geographic coordinate for the individual i and
+#' \code{sigma} equals 5 percent of the average geographic distance between individuals.
 #' @param method \code{"projected.ls"} or \code{"qp"}. If \code{"projected.ls"},
 #' an aleternated projected least squares algorithm is used. If \code{"qp"},
 #' an alternated quadratic programing algorithm is used. See references for more
@@ -44,18 +45,58 @@
 #' \eqn{n} is the number of individual, \eqn{L} is the number of loci. Values of
 #' this matrix are numeric between 0 and 1 corresponding
 #' to the genome probability. It is the matrix used in graph based non negative
-#' factorization matrix. If \code{NULL}, it is computed from \code{X}. See reference
-#' for more details.
+#' factorization matrix. If \code{NULL}, it is computed from the genotype matrix \code{X}.
+#' See reference for more details.
 #'
 #' @return An object of class tess3Main which is a list with components:
 #' \describe{
-#'    \item{Q}{First item}
-#'    \item{G}{Second item}
+#'    \item{L}{The number of loci.}
+#'    \item{n}{The number of individuals.}
+#'    \item{ploidy}{The number of set of chromosomes.}
+#'    \item{K}{The number of ancestral population.}
+#'    \item{G}{The ancestral genotype frequency matrix.}
+#'    \item{Q}{The ancestry coefficient matrix.}
+#'    \item{Fst}{The Fst statistic computed for each locus.}
+#'    \item{Fscore}{The Fscore computed from Fst.}
+#'    \item{pvalue}{The pvalues computed from Fscore.}
+#'    \item{log.pvalue}{The \eqn{log(pvalue)}.}
+#'    \item{rmse}{The root square mean error between \code{XProba} and
+#'    \code{tcrossprod(Q, G)}.}
+#'    \item{crossentropy}{The cross entropy error between \code{XProba} and
+#'    \code{tcrossprod(Q, G)}.}
+#'   \item{crossvalid.rmse}{If masked not \code{NULL}.
+#'   The root square mean error between \code{XProba[masked]} and
+#'   \code{tcrossprod(Q, G)[masked]}.}
+#'    \item{crossvalid.crossentropy}{If masked not \code{NULL}.
+#'    The cross entropy error between \code{XProba[masked]} and
+#'    \code{tcrossprod(Q, G)[masked]}.}
 #' }
 #'
 #'
 #' @export
 #' @examples
+#' library(tess3r)
+#'
+#' # Arabidopsis thaliana data set
+#' data(data.at)
+#' genotype <- data.at$X
+#' coordinates <- data.at$coord
+#'
+#' # Run of tess3 main algorithm
+#' tess3.obj <- tess3Main(X = genotype,
+#'                       coord = coordinates,
+#'                       K = 3,
+#'                       method = "projected.ls",
+#'                       ploidy = 1)
+#'
+#' # Run of tess3 main algorithm with cross validation errors computation.
+#' tess3.obj <- tess3Main(X = genotype,
+#'                       coord = coordinates,
+#'                       K = 3,
+#'                       method = "projected.ls",
+#'                       ploidy = 1,
+#'                       mask = 0.05)
+#'
 #'
 #' @references \url{http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12471/full}
 #' @seealso \code{\link{tess3}}

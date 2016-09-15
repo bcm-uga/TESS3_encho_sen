@@ -1,8 +1,15 @@
 #' Get tess3 run result
 #'
+#' Get the \code{\link{tess3Main}} object returned by the TESS3 algorithm.
+#'
 #' @param tess3 A tess3 object.
 #' @param K Number of ancestral populations.
 #' @param rep Repetition index.
+#'
+#' @return An object of class \code{\link{tess3Main}}.
+#'
+#'
+#' @seealso \code{\link{tess3}}
 #'
 #' @export
 Gettess3res <- function(tess3, K, rep = "best") {
@@ -30,9 +37,15 @@ Gettess3res <- function(tess3, K, rep = "best") {
 
 #' Get Q matrix estimate.
 #'
+#' Get the \code{Q} ancestry coefficient matrix returned by the TESS3 algorithm.
+#'
 #' @param tess3 A tess3 object.
 #' @param K Number of ancestral populations.
 #' @param rep Repetition index.
+#'
+#' @seealso \code{\link{tess3}}
+#'
+#' @return The \code{Q} ancestry coefficient matrix.
 #'
 #' @export
 qmatrix <- function(tess3, K, rep = "best") {
@@ -40,11 +53,17 @@ qmatrix <- function(tess3, K, rep = "best") {
 }
 
 
-#' Get Q matrix estimate.
+#' Get pvalue vector.
+#'
+#' Get the \code{pvalue} vector returned by the TESS3 algorithm.
 #'
 #' @param tess3 A tess3 object.
 #' @param K Number of ancestral populations.
 #' @param rep Repetition index.
+#'
+#' @return The \code{pvalue} ancestry coefficient matrix.
+#'
+#' @seealso \code{\link{tess3}}
 #'
 #' @export
 pvalue <- function(tess3, K, rep = "best") {

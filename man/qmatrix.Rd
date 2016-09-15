@@ -13,7 +13,13 @@ qmatrix(tess3, K, rep = "best")
 
 \item{rep}{Repetition index.}
 }
+\value{
+The \code{Q} ancestry coefficient matrix.
+}
 \description{
-Get Q matrix estimate.
+Get the \code{Q} ancestry coefficient matrix returned by the TESS3 algorithm.
+}
+\seealso{
+\code{\link{tess3}}
 }
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/getter.R
 \name{pvalue}
 \alias{pvalue}
-\title{Get Q matrix estimate.}
+\title{Get pvalue vector.}
 \usage{
 pvalue(tess3, K, rep = "best")
 }
@@ -13,7 +13,13 @@ pvalue(tess3, K, rep = "best")
 
 \item{rep}{Repetition index.}
 }
+\value{
+The \code{pvalue} ancestry coefficient matrix.
+}
 \description{
-Get Q matrix estimate.
+Get the \code{pvalue} vector returned by the TESS3 algorithm.
+}
+\seealso{
+\code{\link{tess3}}
 }
 

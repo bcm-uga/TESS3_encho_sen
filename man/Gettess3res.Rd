@@ -13,7 +13,13 @@ Gettess3res(tess3, K, rep = "best")
 
 \item{rep}{Repetition index.}
 }
+\value{
+An object of class \code{\link{tess3Main}}.
+}
 \description{
-Get tess3 run result
+Get the \code{\link{tess3Main}} object returned by the TESS3 algorithm.
+}
+\seealso{
+\code{\link{tess3}}
 }
 

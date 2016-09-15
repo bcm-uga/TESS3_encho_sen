@@ -1,26 +1,126 @@
-#' Run tess3 for multiple value of K and with repetition.
+#' Estimates spatial population structure
 #'
-#' @param ploidy TODOC
-#' @param lambda TODOC
-#' @param rep TODOC
-#' @param W TODOC
-#' @param method TODOC
-#' @param max.iteration TODOC
-#' @param tolerance TODOC
-#' @param keep TODOC
-#' @param X TODOC
-#' @param coord TODOC
-#' @param openMP.core.num TODOC
-#' @param mask TODOC
-#' @param XBin TODOC
-#' @param K TODOC
-#' @param copy TODOC
-#' @param algo.copy If TRUE data will be copy to speed the algorithm.
-#' @param verbose TODOC
-#' @param Q.init TODOC
+#' \code{tess3} estimates spatial population structure using a graph based non
+#' negative matrix factorization for several value of ancestry population number.
+#' After estimating the population structure is used to
+#' compute a Fst statistic for each locus. See references for more details.
 #'
-#' @return An object of class tess3.
+#' @param K An integer vector which corresponds to
+#' the number of ancestral populations.
+#' @param ploidy An integer which corresponds to
+#' the number of set of chromosomes.
+#' @param lambda A numeric which corresponds to the
+#' spatial regularization parameter.
+#' @param W A numeric matrix which corresponds to the graph weiht matrix.
+#' If NULL, W it is computed as
+#' \code{W[i,j] = exp( - (coord[i] - coord[j])^2 / sigma^2)}.
+#' Where \code{coord[i]} is
+#' the geographic coordinate for the individual i and
+#' \code{sigma} equals 5 percent of the average geographic distance between individuals.
+#' @param method \code{"projected.ls"} or \code{"qp"}. If \code{"projected.ls"},
+#' an aleternated projected least squares algorithm is used. If \code{"qp"},
+#' an alternated quadratic programing algorithm is used. See references for more
+#' details
+#' @param max.iteration The max number of
+#' iteration of the optimization algorithm.
+#' @param tolerance A numeric which corresponds to the tolerance of the
+#' stopping criteria of the optimization algorithm.
+#' @param X A numeric matrix which corresponds to the genotype matrix. This matrix
+#' must be of size \eqn{n \times L} where \eqn{n} is the number of individual and
+#' \eqn{L} is the number of loci. Values of this matrix are integer corresponding
+#' to the number of variant alleles observed at a locus. If \code{NULL}, \code{XProba}
+#' is used.
+#' @param openMP.core.num If openMP is available on your computer, it is the
+#' number of core used by the algorithm.
+#' @param Q.init A numeric matrix which corresponds to the initial value of
+#' \code{Q} for the algorithm.
+#' @param coord The numeric matrix of size \eqn{n \times 2} where \eqn{n} is the
+#' number of individuals.
+#' @param mask If not \code{NULL} this the proportion of the data matrix which
+#' is masked to compute the cross validation criteria.
+#' @param algo.copy if TRUE data will be copy 1 time to speed the algorithm.
+#' @param verbose If \code{TRUE} more information are printed.
+#' @param XProba A numeric matrix which correspond to the probability for the genotype.
+#' This matrix must be of size \eqn{n \times (ploidy + 1)L} where
+#' \eqn{n} is the number of individual, \eqn{L} is the number of loci. Values of
+#' this matrix are numeric between 0 and 1 corresponding
+#' to the genome probability. It is the matrix used in graph based non negative
+#' factorization matrix. If \code{NULL}, it is computed from the genotype matrix \code{X}.
+#' See reference for more details.
+#' @param rep The number of time the algorithm will be repeated for each value of
+#' \code{K}.
+#' @param keep If \code{"best"}, for each value of \code{K} only result with best \code{rmse} will be keep. If \code{"all"}, for each value of \code{K} all results will be keep
+#' and returned. This second option take more room in memory.
+#'
+#' @return An object of class tess3 which is a list of size \code{length(K)}.
+#' Each element of this list is a list with:
+#' \describe{
+#'    \item{K}{The number of ancestral population.}
+#'    \item{tess3.run}{If \code{keep = "best"}, the \code{\link{tess3Main}} result
+#'    with the best \code{rmse}. If \code{keep = "all"}, a list of \code{\link{tess3Main}} result
+#'    for each repetition.}
+#'    \item{rmse}{The list of the root square mean error between \code{XProba} and
+#'                \code{tcrossprod(Q, G)} for each repetition.}
+#'    \item{crossentropy}{The list of the cross entropy error between \code{XProba} and
+#'                        \code{tcrossprod(Q, G)} for each repetition.}
+#'    \item{crossvalid.rmse}{If masked not \code{NULL}.
+#'       The list of the root square mean error between \code{XProba[masked]} and
+#'        \code{tcrossprod(Q, G)[masked]} for each repetition.}
+#'    \item{crossvalid.crossentropy}{If masked not \code{NULL}. The list of
+#         the cross entropy error between \code{XProba[masked]} and
+#'        \code{tcrossprod(Q, G)[masked]} for each repetition.}
+#' }
+#' Methods available for this class:
+#' \itemize{
+#'   \item \code{\link{plot.tess3}}
+#'   \item \code{\link{summary.tess3}}
+#'   \item \code{\link{is.tess3}}
+#'   \item \code{\link{Gettess3res}}
+#'   \item \code{\link{qmatrix}}
+#'   \item \code{\link{pvalue}}
+#' }
+#'
 #' @export
+#' @examples
+#' library(tess3r)
+#'
+#' # Arabidopsis thaliana data set
+#' data(data.at)
+#' genotype <- data.at$X
+#' coordinates <- data.at$coord
+#'
+#' # Run of tess3 algorithm
+#' tess3.obj <- tess3(X = genotype, coord = coordinates, K = 1:4,
+#'                    method = "projected.ls",
+#'                    ploidy = 1)
+#'
+#' # Plot error
+#' plot(tess3.obj, pch = 19, col = "blue",
+#'      xlab = "Number of ancestral populations",
+#'      ylab = "Cross-validation score")
+#'
+#' # Retrieve tess3 Q matrix for K = 3 clusters
+#' q.matrix <- qmatrix(tess3.obj, K = 3)
+#' ## STRUCTURE-like barplot for the Q-matrix
+#' barplot(q.matrix, border = NA, space = 0,
+#'        xlab = "Individuals", ylab = "Ancestry proportions",
+#'        main = "Ancestry matrix") -> bp
+#' axis(1, at = 1:nrow(q.matrix), labels = bp$order, las = 3, cex.axis = .4)
+#' ## Spatial interpolation of ancestry coefficient
+#' plot(q.matrix, coordinates, method = "map.max", interpol = kriging(10),
+#'      main = "Ancestry coefficients",
+#'      xlab = "Longitude", ylab = "Latitude",
+#'      resolution = c(500,500), cex = .4,
+#'      col.palette = my.palette)
+#'
+#' # Retrieve tess3 results for K = 3
+#' p.values <- pvalue(tess3.obj, K = 3)
+#' hist(p.values, col = "lightblue")
+#'
+#' @references \url{http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12471/full}
+#'
+#' @seealso \code{\link{tess3Main}}, \code{\link{plot.tess3Q}},
+#' \code{\link{barplot.tess3Q)}}
 tess3 <- function(X,
                   XProba = NULL,
                   coord,
@@ -44,6 +144,7 @@ tess3 <- function(X,
     stop("rep must greater than 1")
   }
 
+  copy = TRUE
   if (copy & !is.null(X)) {
     X <- matrix(as.double(X), nrow(X), ncol(X))
     CheckX(X, ploidy)
