@@ -78,12 +78,16 @@ barplot.tess3Q = function(height, sort.by.Q = TRUE, col.palette = NULL, palette.
 #' @title Displays geographic maps for ancestry coefficients
 #' @author Kevin Caye, Flora Jay, Olivier François
 #'
-#' @param x an object of class \code{tess3Q} containing a matrix of ancestry coefficients.
+#' @param x an object of class \code{tess3Q}. The ancestry coefficient matrix.
 #' @param col.palette a list of color palettes. If \code{NULL}, a default list with 8 color palettes is used.
-#' @param coord TODOC
-#' @param method TODOC
-#' @param resolution TODOC
-#' @param window TODOC
+#' @param coord The numeric matrix of size \eqn{n \times 2} where \eqn{n} is the
+#' number of individuals.
+#' @param method \code{"map.max"} or \code{"map.all"}. If \code{"map.all"}, a
+#' interpolating surface of the ancestry coefficient is plotted for each ancestral
+#' population. If \code{"map.max"} only the maximum union of the interpolating surfaces is plotted.
+#' @param resolution An integer vector of the resolution of the grid used to
+#' computed the interpolating surface
+#' @param window A
 #' @param background TODOC
 #' @param raster.filename TODOC
 #' @param interpolation.function TODOC
