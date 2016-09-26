@@ -24,7 +24,7 @@ functions
 data(data.at)
 obj <- tess3(data.at$X, coord = data.at$coord, K = 5, ploidy = 1,
              openMP.core.num = 4)
-Qmatrix <- obj$Q
+Qmatrix <- qmatrix(obj,K=5)
 my.colors <- c("tomato", "yellow", "blue", "wheat","olivedrab")
 my.palette <- CreatePalette(my.colors, 9)
 plot(obj$Q, data.at$coord, method = "mapping.max", col.palette = my.palette,

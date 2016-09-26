@@ -7,5 +7,5 @@
 #' @export
 plot.tess3pvalue <- function(x, ...) {
   locus.index <- 1:length(x)
-  plot(locus.index, -log10(x), ylab = "-log10(P-values)",...)
+  plot(locus.index, -log10(x),...)
 }

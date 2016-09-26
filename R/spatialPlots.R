@@ -128,10 +128,17 @@ PlotInterpotationAll <- function(coord, list.grid.z, grid.x, grid.y, background,
   }
 }
 
+SanitizeRaster <- function(raster) {
+  raster[raster >= 0.0] <- 1
+  raster[raster < 0.0] <- NA
+  return(raster)
+}
+
 ComputeGridAndBackground <- function(window, resolution, background, raster.filename) {
   TestRequiredPkg("raster")
   if (background) {
     imported.raster <- raster::raster(raster.filename)
+    imported.raster <- SanitizeRaster(imported.raster)
     imported.raster <- raster::resample(imported.raster,raster::raster(raster::extent(window), ncol = resolution[1], nrow = resolution[2]))
   } else {
     imported.raster <- raster::raster(raster::extent(window), ncol = resolution[1], nrow = resolution[2], vals = 1)
