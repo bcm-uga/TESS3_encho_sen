@@ -2,12 +2,12 @@
 #' This function converts data sets imported from the STRUCTURE and the TESS 2.3 input file formats to the tess3 formats.
 #' @title Import input files from STRUCTURE and TESS 2.3
 #' @author Kevin Caye, Flora Jay, Olivier François
-#' @param dataframe a data frame read from a STRUCTURE or a TESS file.
+#' @param dataframe a data frame read from a STRUCTURE or a TESS input file.
 #' @param TESS a boolean value set to \code{TRUE} if the TESS 2.3 format is used. If \code{TRUE}, the
 #' geographic coordinates (Longitude, Latitude) must be binded left to the genetic marker matrix.
 #' @param diploid a boolean value set to \code{TRUE} for diploids and \code{FALSE} for haploids.
 #' @param FORMAT an integer value equal to 1 for markers encoded using one row of data for each individual, and
-#' \code{FORMAT = 2} for markers encoded using two rows of data for each individual.
+#' 2 for markers encoded using two rows of data for each individual.
 #' @param extra.row an integer value indicating the number of extra rows in the header of the input file (marker ids).
 #' @param extra.column an integer value indicating the number of extra columns in the input file. Extra columns come before the geographic coordinates
 #' in TESS 2.3 input files, and include individual ids, pop ids, phenotypes, etc. Geographic coordinates must be considered as extra columns if the flag \code{TESS}
@@ -101,7 +101,7 @@ tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1
       allele = sort(unique(dat[,j]))
       for (i in allele[allele >= 0]) dat.binary=cbind(dat.binary, dat[,j]== i )
       LL = dim(dat.binary)[2]
-      ind = which(allele < 0)
+      ind = which(dat[,j] < 0)
       if (length(ind) != 0){dat.binary[ind, (LL - length(allele) + 2):LL] = -9}
     }}
 
@@ -119,7 +119,7 @@ tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1
       allele = sort(unique(dat.2[,j]))
       for (i in allele[allele >= 0]) dat.binary=cbind(dat.binary, dat.2[,j]==i)
       LL = dim(dat.binary)[2]
-      ind = which(allele < 0)
+      ind = which(dat[,j] < 0)
       if (length(ind) != 0){dat.binary[ind, (LL - length(allele) + 2):LL] = -9}
     }}
 
@@ -131,7 +131,7 @@ tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1
       allele = sort(unique(dat[,j]))
       for (i in allele[allele >= 0]) dat.binary=cbind(dat.binary, dat[,j]==i)
       LL = dim(dat.binary)[2]
-      ind = which(allele < 0)
+      ind = which(dat[,j] < 0)
       if (length(ind) != 0){dat.binary[ind, (LL - length(allele) + 2):LL] = -9}
     }}
 

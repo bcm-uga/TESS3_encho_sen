@@ -287,6 +287,6 @@ of individual ancestry coefficients. Genetics 196, 973-983.
 
 * Martins H, Caye K, Luu K, Blum MG,  Francois O (2016). Identifying outlier loci in admixed and in continuous populations using ancestral population differentiation statistics. Molecular Ecology, (bioRxiv, 054585).
 
-* Pritchard Pritchard JK, Stephens M, Donnelly P (2000). Inference of population structure using multilocus genotype data. Genetics 155(2), 945-959.
+* Pritchard JK, Stephens M, Donnelly P (2000). Inference of population structure using multilocus genotype data. Genetics 155(2), 945-959.
 
 
