@@ -1,0 +1,29 @@
+--- 
+title: "Analyzing likelihood genomes" 
+author: "Kevin Caye - Flora Jay - Olivier François" 
+date: "`r Sys.Date()`" 
+output: 
+  # rmarkdown::html_vignette
+  pdf_document:
+    latex_engine: xelatex
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data Populus
+
+Data can be donwload from Dryad: 
+
+
+## Run of tess3 on SNPs data
+Extract SNPs matrix (in python) (use feather to make link)
+
+
+## Run of tess3 on likelihood genotypes
+Extract likelihood matrix (in python)

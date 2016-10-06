@@ -3,7 +3,7 @@
 \name{idw}
 \alias{idw}
 \title{Return an interpolation function. Return a wrapper function of the function idw of
-the package gstat.}
+the package gstat. See \code{\link[gstat]{idw}}}
 \usage{
 idw(idp = 1)
 }
@@ -12,6 +12,6 @@ idw(idp = 1)
 }
 \description{
 Return an interpolation function. Return a wrapper function of the function idw of
-the package gstat.
+the package gstat. See \code{\link[gstat]{idw}}
 }
 

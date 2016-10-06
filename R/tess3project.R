@@ -116,11 +116,16 @@
 #' # Retrieve tess3 results for K = 3
 #' p.values <- pvalue(tess3.obj, K = 3)
 #' hist(p.values, col = "lightblue")
+#' ## Manhatan plot
+#'plot(p.values, main = "Manhattan plot",
+#'     xlab = "Locus id",
+#'     ylab = "-log10(P-values)",
+#'     cex = .3, col = "grey")
 #'
 #' @references \url{http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12471/full}
 #'
 #' @seealso \code{\link{tess3Main}}, \code{\link{plot.tess3Q}},
-#' \code{\link{barplot.tess3Q)}}
+#' \code{\link{barplot.tess3Q}}
 tess3 <- function(X,
                   XProba = NULL,
                   coord,
