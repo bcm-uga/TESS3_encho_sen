@@ -9,18 +9,26 @@
 #' @param height an object of class \code{tess3Q} (Q matrix) containing a matrix of ancestry coefficients computed from \code{tess3} or converted from other program formats.
 #' @param sort.by.Q a Boolean value indicating whether individuals should be sorted by their ancestry level or not.
 #' @param col.palette is a list of color palettes. If \code{NULL}, a default list with 8 color palettes is used.
-#' @param lab TODOC
-#' @param ... TODOC
+#' @param lab a list of individual labels.
+#' @param ... other parameters of the function \code{\link{barplot.default}}.
 #' @param palette.length an integer value for the number of colors in each element of the palette list.
 #'
 #' @return Generates a graphical output.
 #' @seealso \code{\link{plot.tess3Q}} \code{\link{as.qmatrix}} \code{\link{CreatePalette}}
 #' @examples
 #' library(tess3r)
+#'
+#' # Retrieve a dataset
 #' data(data.at)
+#'
+#' # Run of TESS3
 #' obj <- tess3(data.at$X, coord = data.at$coord, K = 5,
 #'                  ploidy = 1, method = "projected.ls", openMP.core.num = 4)
+#'
+#' # Get the ancestry matrix
 #' Q.matrix <- qmatrix(obj, K = 5)
+#'
+#' # Plot the barplot
 #' barplot(Q.matrix, border = NA, space = 0, xlab = "Individuals",
 #'         ylab = "Ancestry proportions", main = "Ancestry matrix") -> bp
 #' axis(1, at = 1:nrow(Q.matrix), labels = bp$order, las = 3, cex.axis = .4)
@@ -87,28 +95,35 @@ barplot.tess3Q = function(height, sort.by.Q = TRUE, col.palette = NULL, palette.
 #' population. If \code{"map.max"} only the maximum union of the interpolating surfaces is plotted.
 #' @param resolution An integer vector of the resolution of the grid used to
 #' computed the interpolating surface
-#' @param window A
-#' @param background TODOC
-#' @param raster.filename TODOC
-#' @param interpolation.function TODOC
-#' @param col TODOC
-#' @param map TODOC
-#' @param ... TODOC
-#' @param palette.length an integer value for the number of colors in each element of the palette list.
+#' @param window The window size, such that \code{window = c(xmin, xmax, ymin, ymax)}
+#' contains the window mina nd max coordinates.
+#' @param background If TRUE the raster file is used as a stencil to render only
+#' raster pixel on earth.
+#' @param raster.filename The raster file name used to compute the background stencil.
+#' @param interpolation.function The interpolation function used to compute compute
+#' the interpolating surface. You can use functions \code{\link{kriging}},
+#' \code{\link{universalkriging}} or \code{\link{idw}}.
+#' @param col set to NULL.
+#' @param map use the function \code{\link[maps]{map}} to plot earth shape contour.
+#' @param ... \code{\link{plot.default}} other parameters.
+#' @param palette.length an integer value for the number of colors in each
+#' element of the palette list.
 #'
-#' @details details on interpolation methods
-#' \itemize{
-#' \item \code{kriging()} \code{\link[fields]{Krig}}
-#' \item
-#' }
 #' @return None
 #' @examples
 #' library(tess3r)
 #'
+#' # Retrieve a dataset
 #' data(data.at)
-#' obj <- tess3(data.at$X, coord = data.at$coord,
-#'                  K = 5, ploidy = 1, openMP.core.num = 4)
+#'
+#' # Run of TESS3
+#' obj <- tess3(data.at$X, coord = data.at$coord, K = 5,
+#'                  ploidy = 1, method = "projected.ls", openMP.core.num = 4)
+#'
+#' # Get the ancestry matrix
 #' Q.matrix <- qmatrix(obj, K = 5)
+#'
+#' # Plot the spatial interpolation of the ancestry matrix
 #' plot(Q.matrix, data.at$coord, method = "map.max",
 #'      resolution = c(400,400),
 #'      interpol = kriging(10), cex = .4,

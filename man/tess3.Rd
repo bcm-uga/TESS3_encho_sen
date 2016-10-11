@@ -149,6 +149,6 @@ hist(p.values, col = "lightblue")
 }
 \seealso{
 \code{\link{tess3Main}}, \code{\link{plot.tess3Q}},
-\code{\link{barplot.tess3Q)}}
+\code{\link{barplot.tess3Q}}
 }
 

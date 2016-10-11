@@ -3,7 +3,7 @@
 \name{universalkriging}
 \alias{universalkriging}
 \title{Return an interpolation function. Return a wrapper function of the function autoKrige of
-the package automap.}
+the package automap. See \code{\link[automap]{autoKrige}}}
 \usage{
 universalkriging(formula = as.formula(Z ~ X + Y))
 }
@@ -12,6 +12,6 @@ universalkriging(formula = as.formula(Z ~ X + Y))
 }
 \description{
 Return an interpolation function. Return a wrapper function of the function autoKrige of
-the package automap.
+the package automap. See \code{\link[automap]{autoKrige}}
 }
 
