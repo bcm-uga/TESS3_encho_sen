@@ -10,8 +10,8 @@ test_that("Minimal example", {
   plot(obj) #plot l'erreur de CV, choix de K
   q.matrix <- qmatrix(obj, K = 3) #get Q
   expect_equal(dim(q.matrix), c(data.for.test$n, 3))
-  barplot(q.matrix, K = 3)
-  plot(q.matrix, data.for.test$coord, K=3) #map les coeffs par krig
-  p.values = pvalue(obj, K=3) #get les pvaleurs
+  barplot(q.matrix) -> bp
+  plot(q.matrix, data.for.test$coord, background = FALSE) #map les coeffs par krig
+  p.values = pvalue(obj, K = 3) #get les pvaleurs
   expect_equal(dim(p.values), c(data.for.test$L, 1))
 })

@@ -10,7 +10,6 @@
 - plot with ggplot and add to vignette
 
 ## Vignette
-- Doc function used in the vignette
 - css
 - publish on BioShock38 site
 

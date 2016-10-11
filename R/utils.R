@@ -241,8 +241,8 @@ ComputeChi2AndPvalue <- function(Fst, K, n) {
   # Convert Fst into chi 2
   res$chi2 = Fst * (n - K)/(1 - Fst)
   # compute the gif
-  res$gif = median(res$chi2) / qchisq(1 / 2, df = K - 1)
+  res$gif = stats::median(res$chi2) / stats::qchisq(1 / 2, df = K - 1)
   # compute adjusted p-values from the combined z-scores
-  res$pvalue = as.numeric(pchisq(res$chi2 / res$gif, df = K - 1, lower.tail = FALSE))
+  res$pvalue = as.numeric(stats::pchisq(res$chi2 / res$gif, df = K - 1, lower.tail = FALSE))
   return(res)
 }

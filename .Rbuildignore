@@ -9,3 +9,11 @@
 ^check.log$
 ^docker.mk$
 ^hooks$
+^\.sass-cache$
+^vignettes/my-vignette_cache$
+^vignettes/quarantine/$
+^Case1.lfmm$
+^popres.pcadapt$
+^tess3r-Ex.R$
+^tess3r-Ex.Rout.fail$
+^tess3r-Ex.pdf$

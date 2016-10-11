@@ -121,7 +121,7 @@ PlotInterpotationAll <- function(coord, list.grid.z, grid.x, grid.y, background,
     points(coord, pch = 19, ...)
     if (map) {
       TestRequiredPkg("maps")
-      require("maps")
+      requireNamespace("maps")
       message("This function required to attach maps namespace.")
       maps::map(add = TRUE, interior = FALSE)
     }

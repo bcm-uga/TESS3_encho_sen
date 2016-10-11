@@ -27,7 +27,7 @@ test_that("TESS3 copy", {
                                       Q.init = NULL,
                                       mask = 0.0,
                                       copy = FALSE),
-               "To force the function not doing copy of the data, you must set XProba\\.")
+               "To force the function not doing copy of the data, you must set XProba")
 
   expect_error(tess3.res <- tess3Main(X = NULL,
                                       XProba = data.list$X,
@@ -43,7 +43,7 @@ test_that("TESS3 copy", {
                                       Q.init = NULL,
                                       mask = 0.0,
                                       copy = FALSE),
-               "Number of columns of XBin must be a multiple of ploidy \\+ 1")
+               "Number of columns of XProba must be a multiple of ploidy \\+ 1")
 
   tess3.res <- tess3Main(X = NULL,
                          XProba = data.list$XBin,

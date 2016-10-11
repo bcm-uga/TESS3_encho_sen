@@ -29,9 +29,9 @@ test_that("test of Q plots", {
                             coord = data.at$coord, K = 3, ploidy = 1, lambda = 1.0)
 
   # piechart
-  plot(tess3.res$Q, data.at$coord, plot.type = "piechart", main = "piechart", xlab = "x", ylab = "y", background = FALSE)
-  plot(tess3.res$Q, data.at$coord, plot.type = "piechart", window = c(0,20,40,50), main = "piechart", xlab = "x", ylab = "y", col = rainbow(4))
-  plot(tess3.res$Q, data.at$coord, plot.type = "piechart", window = c(0,20,40,50), main = "piechart", xlab = "x", ylab = "y", col = rainbow(4), radius = 0.25)
+  plot(tess3.res$Q, data.at$coord, method = "piechart", main = "piechart", xlab = "x", ylab = "y", background = FALSE)
+  plot(tess3.res$Q, data.at$coord, method = "piechart", window = c(0,20,40,50), main = "piechart", xlab = "x", ylab = "y", col = rainbow(4))
+  plot(tess3.res$Q, data.at$coord, method = "piechart", window = c(0,20,40,50), main = "piechart", xlab = "x", ylab = "y", col = rainbow(4), radius = 0.25)
 
   # interpolation maps
   coord <- data.at$coord
@@ -52,28 +52,28 @@ test_that("test of Q plots", {
   list.grid.z <- interpolation.function(Q, coord, grid$grid.x, grid$grid.y)
   image(grid$grid.x, grid$grid.y, list.grid.z[[2]] * grid$background)
 
-  plot(tess3.res$Q, data.at$coord, plot.type = "max", main = "max", xlab = "x", ylab = "y",
+  plot(tess3.res$Q, data.at$coord, method = "max", main = "max", xlab = "x", ylab = "y",
        resolution = c(300,300),
        window = NULL,
        background = FALSE,
        raster.filename = NULL,
        interpolation.function = idw(2.0), map = FALSE)
 
-  plot(tess3.res$Q, data.at$coord, plot.type = "all", main = "max", xlab = "x", ylab = "y",
+  plot(tess3.res$Q, data.at$coord, method = "all", main = "max", xlab = "x", ylab = "y",
        resolution = c(300,300),
        window = NULL,
        background = FALSE,
        raster.filename = NULL,
        interpolation.function = idw(2.0), map = TRUE)
 
-  plot(tess3.res$Q, data.at$coord, plot.type = "max", main = "max", xlab = "x", ylab = "y",
+  plot(tess3.res$Q, data.at$coord, method = "max", main = "max", xlab = "x", ylab = "y",
        resolution = c(300,300),
        window = NULL,
        background = TRUE,
        raster.filename = NULL,
        interpolation.function = kriging(), map = TRUE)
 
-  plot(tess3.res$Q, data.at$coord, plot.type = "all", main = "max", xlab = "x", ylab = "y",
+  plot(tess3.res$Q, data.at$coord, method = "all", main = "max", xlab = "x", ylab = "y",
        resolution = c(300,300),
        window = NULL,
        background = TRUE,

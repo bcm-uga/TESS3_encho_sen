@@ -9,12 +9,15 @@
 \arguments{
 \item{x}{tess3pvalue object.}
 
-\item{...}{TODOC}
+\item{...}{\code{\link{plot.default}} other parameters.}
 }
 \value{
-TODOC
+none
 }
 \description{
 Manhattan plot for tess3 significance values.
+}
+\seealso{
+See \code{\link{tess3Main}} more explainations and examples.
 }
 

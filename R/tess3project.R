@@ -107,6 +107,8 @@
 #'        main = "Ancestry matrix") -> bp
 #' axis(1, at = 1:nrow(q.matrix), labels = bp$order, las = 3, cex.axis = .4)
 #' ## Spatial interpolation of ancestry coefficient
+#' my.colors <- c("tomato", "orange", "lightblue")
+#' my.palette <- CreatePalette(my.colors, 9)
 #' plot(q.matrix, coordinates, method = "map.max", interpol = kriging(10),
 #'      main = "Ancestry coefficients",
 #'      xlab = "Longitude", ylab = "Latitude",
@@ -117,7 +119,7 @@
 #' p.values <- pvalue(tess3.obj, K = 3)
 #' hist(p.values, col = "lightblue")
 #' ## Manhatan plot
-#'plot(p.values, main = "Manhattan plot",
+#' plot(p.values, main = "Manhattan plot",
 #'     xlab = "Locus id",
 #'     ylab = "-log10(P-values)",
 #'     cex = .3, col = "grey")
