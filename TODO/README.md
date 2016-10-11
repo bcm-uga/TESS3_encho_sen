@@ -14,7 +14,6 @@
 - publish on BioShock38 site
 
 ## Matrice de likelihood :
-- Possibilité d'avoir une matrice de likelihood des génotypes en entré de TESS3.
 - Trouver des data au format vcf avec la likelihood
 - Faire la vignette de cette feature
 
