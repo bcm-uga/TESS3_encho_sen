@@ -5,12 +5,9 @@ tess3r is the R package implementation the TESS3 method (see [References](## Ref
 
 tess3r is a fast and efficient program for estimating spatial population structure based on geographically constrained non-negative matrix factorization and population genetics.
 
-This R package is still in development, you can only download the development
-version.
-
 ## Installation
 
-Get the development version from github:
+Get the last version from github:
 ```R
 # install.packages("devtools")
 devtools::install_github("BioShock38/TESS3_encho_sen")
