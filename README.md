@@ -15,3 +15,8 @@ Get the development version from github:
 # install.packages("devtools")
 devtools::install_github("BioShock38/TESS3_encho_sen")
 ```
+
+## References
+- Kevin Caye, Timo Deist, Helena Martins, Olivier Michel, Olivier Francois, et al.. TESS3: fast inference of spatial population structure and genome scans for selection. Molecular Ecology Resources, Blackwell, 2015, [<10.1111/1755-0998.12471>](http://dx.doi.org/10.1111/1755-0998.12471). [<hal-01222555>](https://hal.archives-ouvertes.fr/hal-01222555)
+
+- 
