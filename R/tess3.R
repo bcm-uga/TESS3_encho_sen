@@ -98,7 +98,7 @@
 #'                       mask = 0.05)
 #'
 #'
-#' @references \url{http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12471/full}
+#' @references \url{https://hal.archives-ouvertes.fr/hal-01222555/} \url{http://biorxiv.org/content/early/2016/10/12/080291}
 #' @seealso \code{\link{tess3}}
 tess3Main <- function(X,
                       XProba = NULL,

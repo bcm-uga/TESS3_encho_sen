@@ -1,0 +1,27 @@
+title: tess3r
+
+template_path: templates/
+
+template:
+  bootswatch: lumen
+
+reference:
+  - title: Principal functions
+    contents:
+    - tess3
+    - barplot.tess3Q
+    - plot.tess3Q
+
+navbar:
+  title: tess3r
+  type: default
+  left:
+  - text: Home
+    href: index.html
+  - text: Overview
+    href: articles/main-vignette.html
+  - text: Reference
+    href: reference/index.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/BioShock38/TESS3_encho_sen

@@ -1,7 +1,7 @@
 Package: tess3r
 Type: Package
 Title: Inference of Spatial Population Genetic Structure
-Version: 0.1
+Version: 1.0.0
 Date: 2016-02-19
 Authors@R: c(person("Kevin", "Caye", role = c("aut", "cre"),
 		     email = "kevin.caye@imag.fr"),
