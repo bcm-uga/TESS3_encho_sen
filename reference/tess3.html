@@ -74,16 +74,21 @@
       </header>
 
       <div class="page-header">
-  <h1>Estimates spatial population structure</h1>
+  <h1>Estimation of ancestry proportions and genome scans for selection</h1>
 </div>
 
 <div class="row">
   <div class="col-md-9">
     
-    <p><code>tess3</code> estimates spatial population structure using a graph based non
-negative matrix factorization for several value of ancestry population number.
-After estimating the population structure is used to
-compute a Fst statistic for each locus. See references for more details.</p>
+    <p><code>tess3</code> is the main function of the <code>tess3r</code> package. It runs
+a graph-based nonnegative matrix factorization algorithm that includes
+geographic data in the estimation of spatial population structure.
+The function requires individual genotypes, geographic coordinates, and
+it can be run for multiple values of the number of ancestral populations.
+In addition, the function uses the estimates of ancestry coefficients to
+compute an Fst statistic for each locus, and to return test significance
+values for a null hypothesis of selective neutrality. See the references
+for more details.</p>
     
 
     <pre><span class='fu'>tess3</span>(<span class='no'>X</span>, <span class='kw'>XProba</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>coord</span>, <span class='no'>K</span>, <span class='no'>ploidy</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>rep</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>W</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -94,89 +99,88 @@ compute a Fst statistic for each locus. See references for more details.</p>
     <h2>Arguments</h2>
     <dl class="dl-horizontal">
       <dt>X</dt>
-      <dd>A numeric matrix which corresponds to the genotype matrix. This matrix
-must be of size \(n \times L\) where \(n\) is the number of individual and
-\(L\) is the number of loci. Values of this matrix are integer corresponding
-to the number of variant alleles observed at a locus. If <code>NULL</code>, <code>XProba</code>
-is used.</dd>
+      <dd>a matrix of individual genotypes. This matrix must
+have \(n\) rows and  \(L\) columns where \(n\) is the number of individuals and
+\(L\) is the number of loci. The entries of this matrix are integers between 0 and
+ploidy, that correspond to the number of derived/reference alleles observed at each locus.
+If <code>NULL</code>, the matrix of genotype likelihood, <code>XProba</code>, is used.</dd>
       <dt>XProba</dt>
-      <dd>A numeric matrix which correspond to the probability for the genotype.
-This matrix must be of size \(n \times (ploidy + 1)L\) where
-\(n\) is the number of individual, \(L\) is the number of loci. Values of
-this matrix are numeric between 0 and 1 corresponding
-to the genome probability. It is the matrix used in graph based non negative
-factorization matrix. If <code>NULL</code>, it is computed from the genotype matrix <code>X</code>.
-See reference for more details.</dd>
+      <dd>A matrix which contains individual genotype likelihoods (probabilities) for each
+locus. This matrix must contain \(n\) rows and \((ploidy + 1)L\) columns where
+\(n\) is the number of individuals, and \(L\) is the number of loci. The entries of
+this matrix are numeric values ranging between 0 and 1, and corresponding to genotype
+probabilities for each locus. If <code>NULL</code>, deterministic values are computed from the
+genotypic matrix <code>X</code>. See the references for more details.</dd>
       <dt>coord</dt>
-      <dd>The numeric matrix of size \(n \times 2\) where \(n\) is the
-number of individuals.</dd>
+      <dd>a matrix of size \(n \times 2\) where \(n\) is the
+number of individuals encoding the longitude and latitude of each individual (numeric system).</dd>
       <dt>K</dt>
-      <dd>An integer vector which corresponds to
+      <dd>an integer or a vector of integers corresponding to
 the number of ancestral populations.</dd>
       <dt>ploidy</dt>
-      <dd>An integer which corresponds to
-the number of set of chromosomes.</dd>
+      <dd>an integer corresponding to ploidy of the studied
+organism. Haploids have ploidy = 1, diploids have ploidy = 2, etc.</dd>
       <dt>lambda</dt>
-      <dd>A numeric which corresponds to the
-spatial regularization parameter.</dd>
+      <dd>a numeric value for the spatial regularization parameter.
+The default value lambda = 1 attributes equal weights to the loss function
+and to the penalty function.</dd>
       <dt>rep</dt>
-      <dd>The number of time the algorithm will be repeated for each value of
+      <dd>integer. The number of time the algorithm will be repeated for each value of
 <code>K</code>.</dd>
       <dt>W</dt>
-      <dd>A numeric matrix which corresponds to the graph weiht matrix.
-If NULL, W it is computed as
-<code>W[i,j] = exp( - (coord[i] - coord[j])^2 / sigma^2)</code>.
-Where <code>coord[i]</code> is
-the geographic coordinate for the individual i and
-<code>sigma</code> equals 5 percent of the average geographic distance between individuals.</dd>
+      <dd>a matrix which corresponds to the graph weightings.
+If NULL, W is computed as
+<code>W[i,j] = exp( - (coord[i] - coord[j])^2 / sigma^2)</code>,
+where <code>coord[i]</code> represents
+the geographic coordinates for individual i, and where
+<code>sigma</code> is equal to 5 percent of the average geographic distance between individuals.</dd>
       <dt>method</dt>
-      <dd><code>&quot;projected.ls&quot;</code> or <code>&quot;qp&quot;</code>. If <code>&quot;projected.ls&quot;</code>,
-an aleternated projected least squares algorithm is used. If <code>&quot;qp&quot;</code>,
-an alternated quadratic programing algorithm is used. See references for more
+      <dd>a character string <code>&quot;projected.ls&quot;</code> or <code>&quot;qp&quot;</code>. If <code>&quot;projected.ls&quot;</code>,
+an alternating projected least squares algorithm is used. If <code>&quot;qp&quot;</code>,
+an alternating quadratic programing algorithm is used. See references for more
 details</dd>
       <dt>max.iteration</dt>
-      <dd>The max number of
-iteration of the optimization algorithm.</dd>
+      <dd>the maximum number of iterations of the optimization algorithm.</dd>
       <dt>tolerance</dt>
-      <dd>A numeric which corresponds to the tolerance of the
+      <dd>a numeric value corresponding to the
 stopping criteria of the optimization algorithm.</dd>
       <dt>openMP.core.num</dt>
-      <dd>If openMP is available on your computer, it is the
-number of core used by the algorithm.</dd>
+      <dd>integer representing the number of cores used by the optimization
+algorithm. It requires that the openMP library is installed in your OS (default for macOS is no).</dd>
       <dt>Q.init</dt>
-      <dd>A numeric matrix which corresponds to the initial value of
-<code>Q</code> for the algorithm.</dd>
+      <dd>a matrix for initial values of ancestry coefficients for the algorithm. The
+default value is a random matrix.</dd>
       <dt>mask</dt>
-      <dd>If not <code>NULL</code> this the proportion of the data matrix which
-is masked to compute the cross validation criteria.</dd>
+      <dd>If not <code>NULL</code>, this numeric value is the proportion of masked data
+when computing the cross-validation criterion.</dd>
       <dt>algo.copy</dt>
-      <dd>if TRUE data will be copy 1 time to speed the algorithm.</dd>
+      <dd>boolean. If TRUE data is copied to speed up the algorithm.</dd>
       <dt>keep</dt>
-      <dd>If <code>&quot;best&quot;</code>, for each value of <code>K</code> only result with best <code>rmse</code> will be keep. If <code>&quot;all&quot;</code>, for each value of <code>K</code> all results will be keep
-and returned. This second option take more room in memory.</dd>
+      <dd>If <code>&quot;best&quot;</code>, only the result with the lowest <code>rmse</code> score will be kept
+for each value of <code>K</code>. If <code>&quot;all&quot;</code>, all results will be kept
+and returned for each value of <code>K</code>. The second option uses more space in memory.</dd>
       <dt>verbose</dt>
-      <dd>If <code>TRUE</code> more information are printed.</dd>
+      <dd>If <code>TRUE</code> more information is printed.</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
 
-      <p>An object of class tess3 which is a list of size <code>length(K)</code>.
-Each element of this list is a list with:
+      <p>An object of class tess3 which corresponds to a list of length <code>length(K)</code>.
+Each element of this list has the following attributes
 <dl class='dl-horizontal'>
-   <dt>K</dt><dd>The number of ancestral population.</dd>
-   <dt>tess3.run</dt><dd>If <code>keep = &quot;best&quot;</code>, the <code><a href='tess3Main.html'>tess3Main</a></code> result
-   with the best <code>rmse</code>. If <code>keep = &quot;all&quot;</code>, a list of <code><a href='tess3Main.html'>tess3Main</a></code> result
-   for each repetition.</dd>
-   <dt>rmse</dt><dd>The list of the root square mean error between <code>XProba</code> and
-               <code>tcrossprod(Q, G)</code> for each repetition.</dd>
-   <dt>crossentropy</dt><dd>The list of the cross entropy error between <code>XProba</code> and
-                       <code>tcrossprod(Q, G)</code> for each repetition.</dd>
-   <dt>crossvalid.rmse</dt><dd>If masked not <code>NULL</code>.
-      The list of the root square mean error between <code>XProba[masked]</code> and
-       <code>tcrossprod(Q, G)[masked]</code> for each repetition.</dd>
-   <dt>crossvalid.crossentropy</dt><dd>If masked not <code>NULL</code>. The list of
-       <code>tcrossprod(Q, G)[masked]</code> for each repetition.</dd>
+   <dt>K</dt><dd>the number of ancestral populations</dd>
+   <dt>tess3.run</dt><dd>if <code>keep = &quot;best&quot;</code>, the <code><a href='tess3Main.html'>tess3Main</a></code> result
+   with the lowest value of the <code>rmse</code> (loss) function. If <code>keep = &quot;all&quot;</code>,
+   a list of <code><a href='tess3Main.html'>tess3Main</a></code> results for each repetition</dd>
+   <dt>rmse</dt><dd>root mean squared error between the genotypic matrix <code>XProba</code> and the
+   fitted matrix for each program repetition</dd>
+   <dt>crossentropy</dt><dd>cross-entropy between the genotypic matrix <code>XProba</code> and the
+   fitted matrix for each program repetition</dd>
+   <dt>crossvalid.rmse</dt><dd>root square mean error between the masked values of genotypic matrix
+    <code>XProba[masked]</code> and their fitted values for each repetition. If mask is FALSE, then <code>NULL</code>.</dd>
+   <dt>crossvalid.crossentropy</dt><dd>cross-entropy between the masked values of genotypic matrix
+    <code>XProba[masked]</code> and their fitted values for each repetition. If mask is FALSE, then <code>NULL</code>.</dd>
 </dl></p>
       <p>Methods available for this class:
 <ul>
@@ -198,7 +202,9 @@ Each element of this list is a list with:
     <div class="References">
       <h2>References</h2>
 
-      <p><a href = 'https://hal.archives-ouvertes.fr/hal-01222555/'>https://hal.archives-ouvertes.fr/hal-01222555/</a> <a href = 'http://biorxiv.org/content/early/2016/10/12/080291'>http://biorxiv.org/content/early/2016/10/12/080291</a></p>
+      <p><a href = 'http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12471/full'>http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12471/full</a>
+Caye, Kevin et al. (2016) Fast Inference of Individual Admixture Coefficients Using Geographic Data. bioRxiv
+doi:10.1101/080291. <a href = 'http://biorxiv.org/content/early/2016/10/12/080291'>http://biorxiv.org/content/early/2016/10/12/080291</a></p>
     </div>
 
     <div class="See also">
@@ -216,7 +222,7 @@ Each element of this list is a list with:
 <span class='no'>genotype</span> <span class='kw'>&lt;-</span> <span class='no'>data.at</span>$<span class='no'>X</span>
 <span class='no'>coordinates</span> <span class='kw'>&lt;-</span> <span class='no'>data.at</span>$<span class='no'>coord</span>
 
-<span class='co'># Run of tess3 algorithm</span>
+<span class='co'># Running the tess3 function</span>
 <span class='no'>tess3.obj</span> <span class='kw'>&lt;-</span> <span class='fu'>tess3</span>(<span class='kw'>X</span> <span class='kw'>=</span> <span class='no'>genotype</span>, <span class='kw'>coord</span> <span class='kw'>=</span> <span class='no'>coordinates</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>,
                    <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"projected.ls"</span>,
                    <span class='kw'>ploidy</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; Computing spectral decomposition of graph laplacian matrix: done
@@ -236,27 +242,30 @@ Each element of this list is a list with:
 <span class='fu'>plot</span>(<span class='no'>tess3.obj</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
      <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Number of ancestral populations"</span>,
      <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Cross-validation score"</span>)</div><img src='tess3-4.png' alt='' width='540' height='400' /><div class='input'>
-<span class='co'># Retrieve tess3 Q matrix for K = 3 clusters</span>
+<span class='co'># Retrieve the Q-matrix for K = 3 clusters</span>
 <span class='no'>q.matrix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='qmatrix.html'>qmatrix</a></span>(<span class='no'>tess3.obj</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>3</span>)
+
 <span class='co'>## STRUCTURE-like barplot for the Q-matrix</span>
 <span class='fu'>barplot</span>(<span class='no'>q.matrix</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>space</span> <span class='kw'>=</span> <span class='fl'>0</span>,
        <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Individuals"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Ancestry proportions"</span>,
        <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Ancestry matrix"</span>) <span class='kw'>-&gt;</span> <span class='no'>bp</span></div><div class='output co'>#&gt; Use CreatePalette() to define color palettes.
-#&gt; </div><div class='input'><span class='fu'>axis</span>(<span class='fl'>1</span>, <span class='kw'>at</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fu'>nrow</span>(<span class='no'>q.matrix</span>), <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>bp</span>$<span class='no'>order</span>, <span class='kw'>las</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>cex.axis</span> <span class='kw'>=</span> <span class='fl'>.4</span>)</div><img src='tess3-8.png' alt='' width='540' height='400' /><div class='input'><span class='co'>## Spatial interpolation of ancestry coefficient</span>
+#&gt; </div><div class='input'><span class='fu'>axis</span>(<span class='fl'>1</span>, <span class='kw'>at</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fu'>nrow</span>(<span class='no'>q.matrix</span>), <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>bp</span>$<span class='no'>order</span>, <span class='kw'>las</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>cex.axis</span> <span class='kw'>=</span> <span class='fl'>.4</span>)</div><img src='tess3-8.png' alt='' width='540' height='400' /><div class='input'>
+<span class='co'>## Spatial interpolation of ancestry coefficient</span>
 <span class='no'>my.colors</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"tomato"</span>, <span class='st'>"orange"</span>, <span class='st'>"lightblue"</span>)
 <span class='no'>my.palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='CreatePalette.html'>CreatePalette</a></span>(<span class='no'>my.colors</span>, <span class='fl'>9</span>)
-<span class='fu'>plot</span>(<span class='no'>q.matrix</span>, <span class='no'>coordinates</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"map.max"</span>,
+<span class='fu'>plot</span>(<span class='no'>q.matrix</span>, <span class='no'>coordinates</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"map.max"</span>, <span class='kw'>interpol</span> <span class='kw'>=</span> <span class='fu'>kriging</span>(<span class='fl'>10</span>),
      <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Ancestry coefficients"</span>,
      <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Longitude"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Latitude"</span>,
      <span class='kw'>resolution</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>500</span>,<span class='fl'>500</span>), <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>.4</span>,
-     <span class='kw'>col.palette</span> <span class='kw'>=</span> <span class='no'>my.palette</span>)</div><div class='output'><strong class='text-info'>This function required to attach maps namespace.</strong></div><img src='tess3-11.png' alt='' width='540' height='400' /><div class='input'>
-<span class='co'># Retrieve tess3 results for K = 3</span>
+     <span class='kw'>col.palette</span> <span class='kw'>=</span> <span class='no'>my.palette</span>)</div><strong class='error'>Error: impossible de trouver la fonction &quot;kriging&quot;</strong><div class='input'>
+<span class='co'>## Genome scan p-values for K = 3</span>
 <span class='no'>p.values</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pvalue.html'>pvalue</a></span>(<span class='no'>tess3.obj</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>3</span>)
-<span class='fu'>hist</span>(<span class='no'>p.values</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"lightblue"</span>)</div><img src='tess3-13.png' alt='' width='540' height='400' /><div class='input'><span class='co'>## Manhatan plot</span>
+<span class='fu'>hist</span>(<span class='no'>p.values</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"lightblue"</span>)</div><img src='tess3-12.png' alt='' width='540' height='400' /><div class='input'>
+<span class='co'>## Manhatan plot</span>
 <span class='fu'>plot</span>(<span class='no'>p.values</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Manhattan plot"</span>,
     <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Locus id"</span>,
     <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"-log10(P-values)"</span>,
-    <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>.3</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey"</span>)</div><img src='tess3-15.png' alt='' width='540' height='400' /><div class='input'>
+    <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>.3</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey"</span>)</div><img src='tess3-14.png' alt='' width='540' height='400' /><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3">
