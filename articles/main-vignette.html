@@ -86,7 +86,7 @@ coordinates[<span class="dv">1</span>:<span class="dv">3</span>,]</code></pre></
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(coordinates, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> .<span class="dv">5</span>, 
      <span class="dt">xlab =</span> <span class="st">"Longitude (&deg;E)"</span>, <span class="dt">ylab =</span> <span class="st">"Latitude (&deg;N)"</span>)
 <span class="kw">map</span>(<span class="dt">add =</span> T, <span class="dt">interior =</span> F)</code></pre></div>
-<p><img src="/home/cayek/KrakenatorHomeDir/Projects/TESS3_encho_sen/vignettes/main-vignette_fig/unnamed-chunk-3-1.png" width="672"></p>
+<p><img src="main-vignette_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 </div>
 <div id="estimating-ancestry-coefficients" class="section level5">
 <h5>Estimating ancestry coefficients</h5>
@@ -98,7 +98,7 @@ coordinates[<span class="dv">1</span>:<span class="dv">3</span>,]</code></pre></
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(tess3.obj, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">col =</span> <span class="st">"blue"</span>,
      <span class="dt">xlab =</span> <span class="st">"Number of ancestral populations"</span>,
      <span class="dt">ylab =</span> <span class="st">"Cross-validation score"</span>)</code></pre></div>
-<p><img src="/home/cayek/KrakenatorHomeDir/Projects/TESS3_encho_sen/vignettes/main-vignette_fig/rmse.plot-1.png" width="672"></p>
+<p><img src="main-vignette_files/figure-html/rmse.plot-1.png" width="672"></p>
 <p>The interpretation of this plot is similar to the <em>cross-entropy</em> plot of <strong>LEA</strong> or the <em>cross-validation</em> plot of ADMIXTURE. The cross-validation criterion is based on the prediction of a fraction of masked genotypes via matrix completion, and comparison with masked values considered as the truth. Smaller values of the cross-validation criterion mean better runs. The best choice for the <span class="math inline">\(K\)</span> value is when the cross-validation curve exhibits a plateau or starts increasing.</p>
 <p><strong>Warning:</strong> Be cautious about over-interpreting the value of <span class="math inline">\(K\)</span> and the folkore around the choice of this value. Population structure is often hierarchical, and the estimation of <span class="math inline">\(K\)</span> strongly depends on sampling and genotyping efforts. The number of genetic groups detected by ancestry estimation programs does not necessarily correspond to the number of biologically meaningful populations in the sample (Francois and Durand 2010).</p>
 <p>Looking at the results for the <em>A. thaliana</em> data set, the cross-validation criterion does not exhibit a minimum value or a plateau. The result indicates that there are 3 major clusters in Europe, and that finer levels of population structure could be detected.</p>
@@ -114,7 +114,7 @@ q.matrix &lt;-<span class="st"> </span><span class="kw"><a href="../reference/qm
         <span class="dt">main =</span> <span class="st">"Ancestry matrix"</span>) -&gt;<span class="st"> </span>bp</code></pre></div>
 <pre><code>## Use CreatePalette() to define color palettes.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at =</span> <span class="dv">1</span>:<span class="kw">nrow</span>(q.matrix), <span class="dt">labels =</span> bp$order, <span class="dt">las =</span> <span class="dv">3</span>, <span class="dt">cex.axis =</span> .<span class="dv">4</span>) </code></pre></div>
-<p><img src="/home/cayek/KrakenatorHomeDir/Projects/TESS3_encho_sen/vignettes/main-vignette_fig/Q.plot-1.png" width="672"></p>
+<p><img src="main-vignette_files/figure-html/Q.plot-1.png" width="672"></p>
 <p>The <strong>barplot</strong> function is very similar to the default method of the <strong>graphics</strong> library of R. It contains a &lsquo;sort-by-Q&rsquo; option, and allows color palettes to be used. To change the colors, use the <strong>CreatePalette</strong> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my.colors &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"tomato"</span>, <span class="st">"orange"</span>, <span class="st">"lightblue"</span>, <span class="st">"wheat"</span>,<span class="st">"olivedrab"</span>)
 my.palette &lt;-<span class="st"> </span><span class="kw"><a href="../reference/CreatePalette.html">CreatePalette</a></span>(my.colors, <span class="dv">9</span>)
@@ -123,14 +123,14 @@ my.palette &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
         <span class="dt">xlab =</span> <span class="st">"Individuals"</span>, <span class="dt">ylab =</span> <span class="st">"Ancestry proportions"</span>, 
         <span class="dt">col.palette =</span> my.palette) -&gt;<span class="st"> </span>bp
 <span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at =</span> <span class="dv">1</span>:<span class="kw">nrow</span>(q.matrix), <span class="dt">labels =</span> bp$order, <span class="dt">las =</span> <span class="dv">3</span>, <span class="dt">cex.axis =</span> .<span class="dv">4</span>) </code></pre></div>
-<p><img src="/home/cayek/KrakenatorHomeDir/Projects/TESS3_encho_sen/vignettes/main-vignette_fig/unnamed-chunk-4-1.png" width="672"></p>
+<p><img src="main-vignette_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
 <p>The <strong>plot</strong> function interpolates the values of the <span class="math inline">\(Q\)</span>-matrix on a geographic map. The map can be infered from the sample coordinates, or it can be provided to the program in a raster format or a <code>sp::SpatialPolygonsDataFrame</code> object.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(q.matrix, coordinates, <span class="dt">method =</span> <span class="st">"map.max"</span>, <span class="dt">interpol =</span> <span class="kw"><a href="../reference/FieldsKrigModel.html">FieldsKrigModel</a></span>(<span class="dv">10</span>),  
      <span class="dt">main =</span> <span class="st">"Ancestry coefficients"</span>,
      <span class="dt">xlab =</span> <span class="st">"Longitude"</span>, <span class="dt">ylab =</span> <span class="st">"Latitude"</span>, 
      <span class="dt">resolution =</span> <span class="kw">c</span>(<span class="dv">500</span>,<span class="dv">500</span>), <span class="dt">cex =</span> .<span class="dv">4</span>, 
      <span class="dt">col.palette =</span> my.palette)</code></pre></div>
-<p><img src="/home/cayek/KrakenatorHomeDir/Projects/TESS3_encho_sen/vignettes/main-vignette_fig/map.plot-1.png" width="672"></p>
+<p><img src="main-vignette_files/figure-html/map.plot-1.png" width="672"></p>
 <p>The plot function uses a default world map provide by the function <code>rworldmap::getMap()</code>. For more acurate map, any raster file could be used. For example, a raster map of Europe can be downloaded and used as follows.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">asc.raster &lt;-<span class="st"> </span><span class="kw">tempfile</span>()
 <span class="kw">download.file</span>(<span class="st">"http://membres-timc.imag.fr/Olivier.Francois/RasterMaps/Europe.asc"</span>, asc.raster)
@@ -140,7 +140,7 @@ my.palette &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
      <span class="dt">main =</span> <span class="st">"Ancestry coefficients"</span>,
      <span class="dt">xlab =</span> <span class="st">"Longitude"</span>, <span class="dt">ylab =</span> <span class="st">"Latitude"</span>, 
      <span class="dt">col.palette =</span> my.palette)</code></pre></div>
-<p><img src="/home/cayek/KrakenatorHomeDir/Projects/TESS3_encho_sen/vignettes/main-vignette_fig/map.plot.raster-1.png" width="672"></p>
+<p><img src="main-vignette_files/figure-html/map.plot.raster-1.png" width="672"></p>
 <p>For <code>ggplot2</code> enthusiasts, the package provides a function which returns a <code>ggplot</code> layer.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 <span class="kw">library</span>(rworldmap)
@@ -157,7 +157,7 @@ pl +
 <span class="st">  </span><span class="kw">xlab</span>(<span class="st">"Longitute"</span>) +
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">"Latitude"</span>) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">theme_bw</span>()</code></pre></div>
-<p><img src="/home/cayek/KrakenatorHomeDir/Projects/TESS3_encho_sen/vignettes/main-vignette_fig/map.ggplot2-1.png" width="672"></p>
+<p><img src="main-vignette_files/figure-html/map.ggplot2-1.png" width="672"></p>
 </div>
 <div id="genome-scans-for-selection" class="section level5">
 <h5>Genome scans for selection</h5>
@@ -166,7 +166,7 @@ pl +
 p.values &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pvalue.html">pvalue</a></span>(tess3.obj, <span class="dt">K =</span> <span class="dv">5</span>)</code></pre></div>
 <p>Whether the tests are correctly calibrated can be checked by inspecting the histogram of <span class="math inline">\(p\)</span>-values. Ideally, the histogram should be flat and show a peak close to zero.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(p.values, <span class="dt">col =</span> <span class="st">"lightblue"</span>) </code></pre></div>
-<p><img src="/home/cayek/KrakenatorHomeDir/Projects/TESS3_encho_sen/vignettes/main-vignette_fig/G.plot1b-1.png" width="672"></p>
+<p><img src="main-vignette_files/figure-html/G.plot1b-1.png" width="672"></p>
 <p>When the histogram has the correct shape, lists of outlier loci can be derived from standard False Discovery Rate (FDR) control algorithms. This can be done by using a classic Benjamini-Hochberg correction as follows.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Benjamini-Hochberg algorithm</span>
 L =<span class="st"> </span><span class="kw">length</span>(p.values)
@@ -174,7 +174,7 @@ fdr.level =<span class="st"> </span><span class="fl">1e-4</span>
 w =<span class="st"> </span><span class="kw">which</span>(<span class="kw">sort</span>(p.values) &lt;<span class="st"> </span>fdr.level *<span class="st"> </span>(<span class="dv">1</span>:L)/L)
 candidates =<span class="st"> </span><span class="kw">order</span>(p.values)[w]
 <span class="kw">length</span>(candidates)</code></pre></div>
-<pre><code>## [1] 405</code></pre>
+<pre><code>## [1] 467</code></pre>
 <p>A list of candidate loci with an expected FDR level of <span class="math inline">\(0.0001\)</span> is recorded in the object <strong>candidates</strong>. A &lsquo;Manhattan&rsquo; plot highlighting the candidate loci in blue color is then generated as follows.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># manhattan plot </span>
 <span class="kw">plot</span>(p.values, <span class="dt">main =</span> <span class="st">"Manhattan plot"</span>, 
@@ -183,7 +183,7 @@ candidates =<span class="st"> </span><span class="kw">order</span>(p.values)[w]
      <span class="dt">cex =</span> .<span class="dv">3</span>, <span class="dt">col =</span> <span class="st">"grey"</span>)
 <span class="kw">points</span>(candidates, -<span class="kw">log10</span>(p.values)[candidates], 
        <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> .<span class="dv">2</span>, <span class="dt">col =</span> <span class="st">"blue"</span>)</code></pre></div>
-<p><img src="/home/cayek/KrakenatorHomeDir/Projects/TESS3_encho_sen/vignettes/main-vignette_fig/G.plot3-1.png" width="672"></p>
+<p><img src="main-vignette_files/figure-html/G.plot3-1.png" width="672"></p>
 <p>Note that the significance values are displayed on a log scale. The <strong>p.values</strong> object can also be analyzed with other packages such as the useful <strong>qvalue</strong> package (Bioconductor).</p>
 </div>
 </div>
@@ -202,21 +202,21 @@ d09tess3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/te
 <span class="kw">plot</span>(obj.d09, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">col =</span> <span class="st">"blue"</span>,
      <span class="dt">xlab =</span> <span class="st">"Number of ancestral populations"</span>,
      <span class="dt">ylab =</span> <span class="st">"Cross-Validation score"</span>)</code></pre></div>
-<p><img src="/home/cayek/KrakenatorHomeDir/Projects/TESS3_encho_sen/vignettes/main-vignette_fig/STRplots2-1.png" width="672"></p>
+<p><img src="main-vignette_files/figure-html/STRplots2-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Q.matrix &lt;-<span class="st"> </span><span class="kw"><a href="../reference/qmatrix.html">qmatrix</a></span>(obj.d09, <span class="dt">K =</span> <span class="dv">3</span>)</code></pre></div>
 <p>The ancestry coefficient matrix can be displayed as follows.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">barplot</span>(Q.matrix, <span class="dt">sort.by.Q =</span> <span class="ot">FALSE</span>, 
         <span class="dt">border =</span> <span class="ot">NA</span>, <span class="dt">space =</span> <span class="dv">0</span>,
         <span class="dt">col.palette =</span> my.palette,
         <span class="dt">xlab =</span> <span class="st">"Individuals"</span>, <span class="dt">ylab =</span> <span class="st">"Ancestry coefficients"</span>) -&gt;<span class="st"> </span>bp</code></pre></div>
-<p><img src="/home/cayek/KrakenatorHomeDir/Projects/TESS3_encho_sen/vignettes/main-vignette_fig/STRplots3-1.png" width="672"></p>
+<p><img src="main-vignette_files/figure-html/STRplots3-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Q.matrix, d09tess3$coord, <span class="dt">method =</span> <span class="st">"map.max"</span>, <span class="dt">cex =</span> .<span class="dv">5</span>,  
      <span class="dt">interpol =</span> <span class="kw"><a href="../reference/FieldsKrigModel.html">FieldsKrigModel</a></span>(<span class="dv">10</span>), 
      <span class="dt">main =</span> <span class="st">"Ancestry coefficients"</span>,
      <span class="dt">resolution =</span> <span class="kw">c</span>(<span class="dv">500</span>, <span class="dv">500</span>),
      <span class="dt">col.palette =</span> my.palette,
      <span class="dt">xlab =</span> <span class="st">"Longitude"</span>, <span class="dt">ylab =</span> <span class="st">"Latitude"</span>)</code></pre></div>
-<p><img src="/home/cayek/KrakenatorHomeDir/Projects/TESS3_encho_sen/vignettes/main-vignette_fig/STRplots3-2.png" width="672"></p>
+<p><img src="main-vignette_files/figure-html/STRplots3-2.png" width="672"></p>
 </div>
 <div id="package-reference" class="section level4">
 <h4>Package reference</h4>
