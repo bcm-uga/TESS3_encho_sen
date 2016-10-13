@@ -114,7 +114,7 @@
 #' ## Spatial interpolation of ancestry coefficient
 #' my.colors <- c("tomato", "orange", "lightblue")
 #' my.palette <- CreatePalette(my.colors, 9)
-#' plot(q.matrix, coordinates, method = "map.max", interpol = kriging(10),
+#' plot(q.matrix, coordinates, method = "map.max",
 #'      main = "Ancestry coefficients",
 #'      xlab = "Longitude", ylab = "Latitude",
 #'      resolution = c(500,500), cex = .4,
@@ -130,10 +130,7 @@
 #'     ylab = "-log10(P-values)",
 #'     cex = .3, col = "grey")
 #'
-#' @references
-#' \url{http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12471/full}
-#' Caye, Kevin et al. (2016) Fast Inference of Individual Admixture Coefficients Using Geographic Data. bioRxiv
-#' doi:10.1101/080291. \url{http://biorxiv.org/content/early/2016/10/12/080291}
+#' @references \url{http://biorxiv.org/content/early/2016/10/12/080291} \url{https://hal.archives-ouvertes.fr/hal-01222555/}
 #'
 #' @seealso \code{\link{tess3Main}}, \code{\link{plot.tess3Q}},
 #' \code{\link{barplot.tess3Q}}

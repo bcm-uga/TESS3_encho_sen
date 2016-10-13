@@ -3,9 +3,9 @@ title: "Analyzing population genomic data with tess3r"
 author: "Kevin Caye - Flora Jay - Olivier François" 
 date: "`r Sys.Date()`" 
 output: 
-  # rmarkdown::html_vignette
-  pdf_document:
-    latex_engine: xelatex
+  rmarkdown::html_vignette
+  #pdf_document:
+  #  latex_engine: xelatex
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
@@ -13,7 +13,7 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE} 
-knitr::opts_chunk$set(cache = TRUE, message = FALSE)
+knitr::opts_chunk$set(cache = TRUE, message = FALSE, cache.path = "main-vignette_cache/", fig.path = "main-vignette_fig/")
 ```
 
 
@@ -144,10 +144,10 @@ axis(1, at = 1:nrow(q.matrix), labels = bp$order, las = 3, cex.axis = .4)
 ```
 
 
-The **plot** function interpolates the values of the $Q$-matrix on a geographic map. The map can be infered from the sample coordinates, or it can be provided to the program in a raster format. 
+The **plot** function interpolates the values of the $Q$-matrix on a geographic map. The map can be infered from the sample coordinates, or it can be provided to the program in a raster format or a `sp::SpatialPolygonsDataFrame` object. 
  
 ```{r map.plot, dependson=c("run")} 
-plot(q.matrix, coordinates, method = "map.max", interpol = kriging(10),  
+plot(q.matrix, coordinates, method = "map.max", interpol = FieldsKrigModel(10),  
      main = "Ancestry coefficients",
      xlab = "Longitude", ylab = "Latitude", 
      resolution = c(500,500), cex = .4, 
@@ -155,18 +155,39 @@ plot(q.matrix, coordinates, method = "map.max", interpol = kriging(10),
 ```
 
 
-The plot function uses a default world map which is not very accurate. Small errors are visible on the coastline of Europe. Any raster file could be used to improve the aspect of this picture. For example, a raster map of Europe can be downloaded and used as follows.  
+The plot function uses a default world map provide by the function `rworldmap::getMap()`. For more acurate map, any raster file could be used. For example, a raster map of Europe can be downloaded and used as follows.  
 
-```{r}
+```{r map.plot.raster, dependson=c("run")}
 asc.raster <- tempfile()
 download.file("http://membres-timc.imag.fr/Olivier.Francois/RasterMaps/Europe.asc", asc.raster)
 plot(q.matrix, coordinates, method = "map.max", cex = .4,  
-     interpol = kriging(10), 
+     interpol = FieldsKrigModel(10), 
      raster.filename = asc.raster,
      main = "Ancestry coefficients",
      xlab = "Longitude", ylab = "Latitude", 
      col.palette = my.palette)
 ```
+
+For `ggplot2` enthusiasts, the package provides a function which returns a `ggplot` layer.
+
+```{r map.ggplot2, dependson=c("run"), results="hide", warning=FALSE}
+library(ggplot2)
+library(rworldmap)
+
+map.polygon <- getMap(resolution = "low")
+
+pl <- ggtess3Q(q.matrix, coordinates, map.polygon = map.polygon)
+pl +
+  geom_path(data = map.polygon, aes(x = long, y = lat, group = group)) +
+  xlim(-16, 42) + 
+  ylim(35, 65) + 
+  coord_equal() + 
+  geom_point(data = as.data.frame(coordinates), aes(x = V1, y = V2), size = 0.2) + 
+  xlab("Longitute") +
+  ylab("Latitude") + 
+  theme_bw()
+```
+
 
 ##### Genome scans for selection
 
@@ -245,7 +266,7 @@ barplot(Q.matrix, sort.by.Q = FALSE,
         col.palette = my.palette,
         xlab = "Individuals", ylab = "Ancestry coefficients") -> bp
 plot(Q.matrix, d09tess3$coord, method = "map.max", cex = .5,  
-     interpol = kriging(10), 
+     interpol = FieldsKrigModel(10), 
      main = "Ancestry coefficients",
      resolution = c(500, 500),
      col.palette = my.palette,

@@ -135,7 +135,7 @@ axis(1, at = 1:nrow(q.matrix), labels = bp$order, las = 3, cex.axis = .4)
 ## Spatial interpolation of ancestry coefficient
 my.colors <- c("tomato", "orange", "lightblue")
 my.palette <- CreatePalette(my.colors, 9)
-plot(q.matrix, coordinates, method = "map.max", interpol = kriging(10),
+plot(q.matrix, coordinates, method = "map.max",
      main = "Ancestry coefficients",
      xlab = "Longitude", ylab = "Latitude",
      resolution = c(500,500), cex = .4,
@@ -152,7 +152,7 @@ plot(p.values, main = "Manhattan plot",
 
 }
 \references{
-\url{http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12471/full}
+\url{https://hal.archives-ouvertes.fr/hal-01222555/} \url{http://biorxiv.org/content/early/2016/10/12/080291}
 }
 \seealso{
 \code{\link{tess3Main}}, \code{\link{plot.tess3Q}},

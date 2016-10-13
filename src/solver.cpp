@@ -18,6 +18,10 @@ void InitOpenMP(int n) {
         }
         omp_set_num_threads(n);
         Eigen::initParallel();
+#else
+  if (n > 1) {
+    Rcpp::warning("Rcpp is not installed. openMP.core.num is set to 1.");
+  }
 #endif
         return;
 }
@@ -95,7 +99,7 @@ void ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen
         // multithreaded OpenMP version of code
         Rcpp::Rcout << "Main loop with " << omp_get_max_threads() << " threads: " << std::endl;
 #else
-        Rcpp::Rcout << "Main loop :" << std::endl;
+        Rcpp::Rcout << "Main loop:" << std::endl;
 #endif
         // variables
         int it = 0;
@@ -187,7 +191,7 @@ void ComputeMCPASolutionNoCopyX(const Eigen::Map<Eigen::MatrixXd> X, int K, cons
         // multithreaded OpenMP version of code
         Rcpp::Rcout << "Main loop with " << omp_get_max_threads() << " threads: " << std::endl;
 #else
-        Rcpp::Rcout << "Main loop :" << std::endl;
+        Rcpp::Rcout << "Main loop:" << std::endl;
 #endif
         // variables
         int it = 0;

@@ -4,8 +4,7 @@
 \alias{PlotInterpotationMax}
 \title{Plot map with the maximum values of the interpolation surfaces.}
 \usage{
-PlotInterpotationMax(coord, list.grid.z, grid.x, grid.y, background,
-  col.palette, map, ...)
+PlotInterpotationMax(coord, list.grid.z, grid.x, grid.y, col.palette, map, ...)
 }
 \arguments{
 \item{coord}{Coordinate matrix.}
@@ -15,8 +14,6 @@ PlotInterpotationMax(coord, list.grid.z, grid.x, grid.y, background,
 \item{grid.x}{TODOC}
 
 \item{grid.y}{TODOC}
-
-\item{background}{Boolean marix.}
 
 \item{col.palette}{List of color palette.}
 

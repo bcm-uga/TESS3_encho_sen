@@ -5,12 +5,12 @@
 \title{Displays geographic maps for ancestry coefficients}
 \usage{
 \method{plot}{tess3Q}(x, coord, method = "map.max", resolution = c(300,
-  300), window = NULL, background = TRUE, raster.filename = NULL,
-  interpolation.function = kriging(10), col = NULL, col.palette = NULL,
-  map = TRUE, palette.length = 9, ...)
+  300), window = NULL, background = TRUE, map.polygon = NULL,
+  raster.filename = NULL, interpolation.model = FieldsKrigModel(10),
+  col.palette = CreatePalette(), ...)
 }
 \arguments{
-\item{x}{an object of class \code{tess3Q}. The ancestry coefficient matrix.}
+\item{x}{An object of class \code{tess3Q}. The ancestry coefficient matrix.}
 
 \item{coord}{The numeric matrix of size \eqn{n \times 2} where \eqn{n} is the
 number of individuals.}
@@ -28,20 +28,17 @@ contains the window mina nd max coordinates.}
 \item{background}{If TRUE the raster file is used as a stencil to render only
 raster pixel on earth.}
 
-\item{raster.filename}{The raster file name used to compute the background stencil.}
+\item{map.polygon}{The \code{sp::SpatialPolygonsDataFrame} object used to crop the interpolating surfaces.
+If \code{NULL}, the function \code{\link[rworldmap]{getMap}} is used.}
 
-\item{interpolation.function}{The interpolation function used to compute compute
-the interpolating surface. You can use functions \code{\link{kriging}},
-\code{\link{universalkriging}} or \code{\link{idw}}.}
+\item{raster.filename}{The raster file name used to compute the background stencil.
+This is an alternative method to crop the interpolating surfaces. The default method uses \code{map.polygon}.}
 
-\item{col}{set to NULL.}
+\item{interpolation.model}{The interpolation model used to compute compute
+the interpolating surface. You can use functions \code{\link{FieldsTpsModel}},
+\code{\link{FieldsKrigModel}}.}
 
-\item{col.palette}{a list of color palettes. If \code{NULL}, a default list with 8 color palettes is used.}
-
-\item{map}{use the function \code{\link[maps]{map}} to plot earth shape contour.}
-
-\item{palette.length}{an integer value for the number of colors in each
-element of the palette list.}
+\item{col.palette}{A list of color palettes. You can use the function \code{\link{CreatePalette}}.}
 
 \item{...}{\code{\link{plot.default}} other parameters.}
 }
@@ -67,7 +64,7 @@ Q.matrix <- qmatrix(obj, K = 5)
 # Plot the spatial interpolation of the ancestry matrix
 plot(Q.matrix, data.at$coord, method = "map.max",
      resolution = c(400,400),
-     interpol = kriging(10), cex = .4,
+     interpolation.model = FieldsKrigModel(10), cex = .4,
      xlab = "Longitude", ylab= "Latitude", main = "Ancestry coefficients")
 }
 \author{

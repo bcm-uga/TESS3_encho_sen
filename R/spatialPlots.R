@@ -14,6 +14,41 @@ ComputeWindow <- function(coord) {
 }
 
 
+SanitizeRaster <- function(raster) {
+  raster[raster >= 0.0] <- 1
+  raster[raster < 0.0] <- NA
+  return(raster)
+}
+
+
+MakeRasterGrid <- function(window, resolution) {
+  raster::raster(raster::extent(window), ncol = resolution[1], nrow = resolution[2], vals = 1)
+}
+
+
+InterpolRaster <- function(coord, Q, raster.grid, interpolation.model) {
+  interpol.stack <- raster::stack()
+  for (j in seq_along(Q[1,])) {
+    model <- interpolation.model(coord, Q[,j])
+    interpol.stack <- raster::stack(raster::interpolate(raster.grid, model), interpol.stack)
+  }
+  return(interpol.stack)
+}
+
+
+Crop <- function(interpol.stack, map.polygons, raster.filename) {
+  if (!is.null(map.polygons)) {
+    return(raster::mask(interpol.stack, map.polygons))
+  } else if (!is.null(raster.filename)) {
+    imported.raster <- raster::raster(raster.filename)
+    imported.raster <- raster::resample(imported.raster, interpol.stack)
+    imported.raster <- SanitizeRaster(imported.raster)
+    return(interpol.stack * imported.raster)
+  } else {
+    return(interpol.stack)
+  }
+}
+
 ###################################################
 ##################pie chart #######################
 ###################################################
@@ -62,12 +97,13 @@ PlotPiechartAncestryCoef <- function(Q, coord, window, background, col, radius =
 #' @param list.grid.z List of interpolation surface matrices.
 #' @param grid.x TODOC
 #' @param grid.y TODOC
-#' @param background Boolean marix.
 #' @param col.palette List of color palette.
 #' @param map If true map function of maps package is call to plot polygon from
 #' map database.
 #' @param ... TODOC
-PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background, col.palette, map,...) {
+PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, col.palette, map,...) {
+
+  ## UGLY function !!!!
 
   # rmk : bag data structure for list.grid.z ...
 
@@ -76,9 +112,11 @@ PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background,
     for (j in 1:length(grid.y)) {
       aux <- sapply(1:length(list.grid.z), function(k) list.grid.z[[k]][i, j])
       k.max <- which.max(aux)
-      for (k in 1:length(list.grid.z)) {
-        if (k != k.max) {
-          list.grid.z[[k]][i,j] <- NA
+      if (length(k.max) != 0) {
+        for (k in 1:length(list.grid.z)) {
+          if (k != k.max) {
+            list.grid.z[[k]][i,j] <- NA
+          }
         }
       }
     }
@@ -86,7 +124,7 @@ PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background,
 
   for (k in 1:length(list.grid.z)) {
     image(grid.x, grid.y,
-          list.grid.z[[k]] * background,
+          list.grid.z[[k]],
           col = col.palette[[k]],
           add = (k > 1),
           ...)
@@ -106,16 +144,17 @@ PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background,
 #' @param list.grid.z List of interpolation surface matrices.
 #' @param grid.x TODOC
 #' @param grid.y TODOC
-#' @param background Boolean marix.
 #' @param col.palette List of color palette.
 #' @param map If true map function of maps package is call to plot polygon from
 #' map database.
 #' @param ... TODOC
 #'
-PlotInterpotationAll <- function(coord, list.grid.z, grid.x, grid.y, background, col.palette, map,...) {
+PlotInterpotationAll <- function(coord, list.grid.z, grid.x, grid.y, col.palette, map,...) {
+
+
   for (k in 1:length(list.grid.z)) {
     image(grid.x, grid.y,
-          list.grid.z[[k]] * background,
+          list.grid.z[[k]],
           col = col.palette[[k]],
           ...)
     points(coord, pch = 19, ...)
@@ -128,86 +167,24 @@ PlotInterpotationAll <- function(coord, list.grid.z, grid.x, grid.y, background,
   }
 }
 
-SanitizeRaster <- function(raster) {
-  raster[raster >= 0.0] <- 1
-  raster[raster < 0.0] <- NA
-  return(raster)
-}
 
-ComputeGridAndBackground <- function(window, resolution, background, raster.filename) {
-  TestRequiredPkg("raster")
-  if (background) {
-    imported.raster <- raster::raster(raster.filename)
-    imported.raster <- SanitizeRaster(imported.raster)
-    imported.raster <- raster::resample(imported.raster,raster::raster(raster::extent(window), ncol = resolution[1], nrow = resolution[2]))
-  } else {
-    imported.raster <- raster::raster(raster::extent(window), ncol = resolution[1], nrow = resolution[2], vals = 1)
-  }
-  res <- list(grid.x = raster::xFromCol(imported.raster),
-              grid.y = rev(raster::yFromRow(imported.raster)),
-              background = raster::as.matrix(imported.raster))
-  res$background <- t(apply(t(res$background), 1, rev)) # transpose and rev col
-  return(res)
-}
 
-#' Return an interpolation function. Return a wrapper function of the function idw of
-#' the package gstat. See \code{\link[gstat]{idw}}
+###################################################
+##################model functions##################
+###################################################
+
+
+#' Return an interpolation function. Return a wrapper function of the function Tps of
+#' the package fields. See \code{\link[fields]{Tps}}.
 #'
+#' @param ... Parameters of \code{\link[fields]{Tps}}.
 #'
 #' @export
-#'
-#' @param idp numeric; specify the inverse distance weighting power.
-idw <- function(idp=1.0){
-  TestRequiredPkg("gstat")
-  TestRequiredPkg("sp")
+FieldsTpsModel <- function(...){
+  TestRequiredPkg("fields")
 
-  return(function(z, coord, grid.x, grid.y) {
-
-    # grid
-    grd <- expand.grid(X = grid.x, Y = grid.y)
-    sp::coordinates(grd) <- c("X", "Y")
-    sp::gridded(grd)     <- TRUE  # Create SpatialPixel object
-    sp::fullgrid(grd)    <- TRUE  # Create SpatialGrid object
-
-    res <- list()
-    for (k in 1:ncol(z)) {
-      # data to interpolate
-      dat <- data.frame(X = coord[,1], Y = coord[,2], Z = z[,k])
-      # Force data frame object into a SpatialPointsDataFrame object
-      sp::coordinates(dat) <- c("X","Y")
-      res[[k]] <- t(apply(matrix(gstat::idw(Z ~ 1, dat, newdata = grd, idp = idp)$var1.pred, length(grid.x), length(grid.y)), 1, rev))
-    }
-    return(res)
-  })
-}
-
-#' Return an interpolation function. Return a wrapper function of the function autoKrige of
-#' the package automap. See \code{\link[automap]{autoKrige}}
-#'
-#'
-#' @param formula Formula that defines the dependent variable as a linear model of independent variables.
-#'
-#' @export
-universalkriging <- function(formula = as.formula(Z ~ X + Y)){
-  TestRequiredPkg("automap")
-  TestRequiredPkg("sp")
-
-  return(function(z, coord, grid.x, grid.y) {
-    # grid
-    grd <- expand.grid(X = grid.x, Y = grid.y)
-    sp::coordinates(grd) <- c("X", "Y")
-    sp::gridded(grd)     <- TRUE  # Create SpatialPixel object
-    sp::fullgrid(grd)    <- TRUE  # Create SpatialGrid object
-
-    res <- list()
-    for (k in 1:ncol(z)) {
-      # data to interpolate
-      dat <- data.frame(X = coord[,1], Y = coord[,2], Z = z[,k])
-      # Force data frame object into a SpatialPointsDataFrame object
-      sp::coordinates(dat) <- c("X","Y")
-      res[[k]] <- t(apply(matrix(automap::autoKrige(formula, dat, grd)$krige_output$var1.pred, length(grid.x), length(grid.y)), 1, rev))
-    }
-    return(res)
+  return(function(coord, z) {
+    return(fields::Tps(coord, z, ...))
   })
 }
 
@@ -215,22 +192,13 @@ universalkriging <- function(formula = as.formula(Z ~ X + Y)){
 #' the package fields. See \code{\link[fields]{Krig}}.
 #'
 #' @param theta Numeric.
+#' @param ... Parameters of \code{\link[fields]{Krig}}.
 #'
 #' @export
-kriging <- function(theta = 10){
+FieldsKrigModel <- function(theta = 10, ...){
   TestRequiredPkg("fields")
 
-  return(function(z, coord, grid.x, grid.y) {
-    # grid
-    grd <- fields::make.surface.grid(list(grid.x, grid.y))
-
-    res <- list()
-    for (k in 1:ncol(z)) {
-      clust <- fields::Krig(coord, z[,k], theta = theta)
-      look <- predict(clust, grd) # evaluate on a grid of points
-      out <- fields::as.surface(grd, look)
-      res[[k]] = out[[8]]
-    }
-    return(res)
+  return(function(coord, z) {
+    return(fields::Krig(coord, z, theta = theta, ...))
   })
 }

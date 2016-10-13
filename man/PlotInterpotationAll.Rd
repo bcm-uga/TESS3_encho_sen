@@ -4,8 +4,7 @@
 \alias{PlotInterpotationAll}
 \title{Plot all the interpolation surfaces on several graphs.}
 \usage{
-PlotInterpotationAll(coord, list.grid.z, grid.x, grid.y, background,
-  col.palette, map, ...)
+PlotInterpotationAll(coord, list.grid.z, grid.x, grid.y, col.palette, map, ...)
 }
 \arguments{
 \item{coord}{Coordinate matrix.}
@@ -15,8 +14,6 @@ PlotInterpotationAll(coord, list.grid.z, grid.x, grid.y, background,
 \item{grid.x}{TODOC}
 
 \item{grid.y}{TODOC}
-
-\item{background}{Boolean marix.}
 
 \item{col.palette}{List of color palette.}
 
