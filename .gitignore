@@ -41,6 +41,7 @@ inst/doc
 
 # vignette stuf
 *_cache/
+*_fig/
 todolist.txt
 vignettes/.build.timestamp
 
