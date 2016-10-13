@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Home. tess3r</title>
+<title>ComputeTscoreAndPvalue. tess3r</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -21,8 +21,8 @@
 
 
 <!-- pkgdown -->
-<link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script>
+<link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
 <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -45,18 +45,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">tess3r</a>
+      <a class="navbar-brand" href="../index.html">tess3r</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">Home</a>
+  <a href="../index.html">Home</a>
 </li>
 <li>
-  <a href="articles/main-vignette.html">Overview</a>
+  <a href="../articles/main-vignette.html">Overview</a>
 </li>
 <li>
-  <a href="reference/index.html">Documentation</a>
+  <a href="../reference/index.html">Documentation</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -73,23 +73,29 @@
       
       </header>
 
-      <div class="row">
+      <div class="page-header">
+  <h1>Convert Fst into t-score and compute p value</h1>
+</div>
+
+<div class="row">
   <div class="col-md-9">
     
-<h1 id="tess3r">tess3r</h1>
-<p><a href="https://travis-ci.org/BioShock38/TESS3_encho_sen"><img src="https://travis-ci.org/BioShock38/TESS3_encho_sen.svg?branch=master" alt="Build Status"></a></p>
-<p>tess3r is the R package implementation the TESS3 method (see <a href="##%20References">References</a>).</p>
-<p>tess3r is a fast and efficient program for estimating spatial population structure based on geographically constrained non-negative matrix factorization and population genetics.</p>
-<h2 id="installation">Installation</h2>
-<p>Get the last version from github:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
-devtools::<span class="kw">install_github</span>(<span class="st">"BioShock38/TESS3_encho_sen"</span>)</code></pre></div>
-<h2 id="references">References</h2>
-<ul>
-<li><p>Kevin Caye, Timo Deist, Helena Martins, Olivier Michel, Olivier Francois. TESS3: fast inference of spatial population structure and genome scans for selection. Molecular Ecology Resources, Blackwell, 2015, <a href="http://dx.doi.org/10.1111/1755-0998.12471">&lt;10.1111/1755-0998.12471&gt;</a>. <a href="https://hal.archives-ouvertes.fr/hal-01222555"><hal-01222555></hal-01222555></a></p></li>
-<li><p>Kevin Caye, Flora Jay, Olivier Michel, Olivier Francois. Fast Inference of Individual Admixture Coefficients Using Geographic Data. bioRxiv, 2016, doi: <a href="http://dx.doi.org/10.1101/080291" class="uri">http://dx.doi.org/10.1101/080291</a></p></li>
-</ul>
+    <p>Convert Fst into t-score and compute p value</p>
+    
 
+    <pre><span class='fu'>ComputeTscoreAndPvalue</span>(<span class='no'>Fst</span>, <span class='no'>K</span>, <span class='no'>n</span>)</pre>
+    
+    <h2>Arguments</h2>
+    <dl class="dl-horizontal">
+      <dt>Fst</dt>
+      <dd>Matrix of Fst.</dd>
+      <dt>K</dt>
+      <dd>Number of ancestral populations.</dd>
+      <dt>n</dt>
+      <dd>Number of individuals.</dd>
+    </dl>
+          </div>
+  <div class="col-md-3">
   </div>
 </div>
 
