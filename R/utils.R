@@ -182,33 +182,6 @@ as.qmatrix <- function(Q){
   return(Q)
 }
 
-#' This function creates a list of color palettes for the plot and barplot
-#' functions
-#' @title Create a list of palettes
-#' @author Kevin Caye, Olivier François
-#' @param color.vector a vector of R colors.
-#' @param palette.length an integer number of colors in each palette.
-#' @return An object of class \code{list} containing a list of color palettes.
-#' @seealso \code{\link{plot.tess3Q}} \code{\link{barplot.tess3Q}}
-#' @examples
-#' ## an A. thaliana example
-#' data(data.at)
-#' obj <- tess3(data.at$X, coord = data.at$coord, K = 5, ploidy = 1,
-#'              openMP.core.num = 4)
-#' Qmatrix <- qmatrix(obj,K=5)
-#' my.colors <- c("tomato", "yellow", "blue", "wheat","olivedrab")
-#' my.palette <- CreatePalette(my.colors, 9)
-#' plot(obj$Q, data.at$coord, method = "mapping.max", col.palette = my.palette,
-#'      interpol = kriging(10), cex = .4, xlab = "Longitude", ylab= "Latitude",
-#'      main = "Ancestry coefficients")
-#' @export
-CreatePalette <- function(color.vector = c("tomato", "chartreuse", "gold", "blue", "violet", "wheat","olivedrab"), palette.length = 9){
-  ll = NULL
-   for (i in 1:length(color.vector)){
-     ll[[i]] = colorRampPalette(c("grey96", color.vector[i]))(palette.length)
-   }
- ll
-}
 
 #' Convert Fst into t-score and compute p value
 #'
@@ -225,7 +198,7 @@ ComputeTscoreAndPvalue <- function(Fst, K, n) {
   res$pvalue <- pf(res$Fscore / res$gif, df1 = K - 1, df2 = n - K,
                    lower.tail = FALSE)
   res$log.pvalue <- pf(res$Fscore / res$gif, df1 = K - 1, df2 = n - K,
-                   lower.tail = FALSE, log = TRUE)
+                   lower.tail = FALSE, log.p = TRUE)
   return(res)
 }
 

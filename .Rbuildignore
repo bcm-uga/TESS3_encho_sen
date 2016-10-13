@@ -17,3 +17,8 @@
 ^tess3r-Ex.R$
 ^tess3r-Ex.Rout.fail$
 ^tess3r-Ex.pdf$
+^TODO/$
+^Rakefile$
+^templates/$
+^docs/$
+^_pkgdown.yml$

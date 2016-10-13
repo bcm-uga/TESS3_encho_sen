@@ -3,7 +3,7 @@ title: tess3r
 template_path: templates/
 
 template:
-  bootswatch: lumen
+  bootswatch: cerulean
 
 reference:
   - title: Principal functions
@@ -11,6 +11,11 @@ reference:
     - tess3
     - barplot.tess3Q
     - plot.tess3Q
+    - ggtess3Q
+    - qmatrix
+    - pvalue
+    - CreatePalette
+
 
 navbar:
   title: tess3r
@@ -20,7 +25,7 @@ navbar:
     href: index.html
   - text: Overview
     href: articles/main-vignette.html
-  - text: Reference
+  - text: Documentation
     href: reference/index.html
   right:
   - icon: fa-github fa-lg

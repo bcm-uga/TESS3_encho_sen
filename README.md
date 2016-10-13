@@ -1,4 +1,4 @@
-# TESS3_encho_sen
+# tess3r
 [![Build Status](https://travis-ci.org/BioShock38/TESS3_encho_sen.svg?branch=master)](https://travis-ci.org/BioShock38/TESS3_encho_sen)
 
 tess3r is the R package implementation the TESS3 method (see [References](## References)).
