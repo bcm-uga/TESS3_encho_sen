@@ -86,7 +86,7 @@ namespace :pkg do
     end
 
     desc "Deploy the site on gh-pages"
-    task :deploy => [:build, :open] do
+    task :deploy => [:open] do
       puts "== Deploy to gh-pages".green
       colorizedsh "git clone .git gh-pages/"
       Dir.chdir("gh-pages/") do
