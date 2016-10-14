@@ -114,7 +114,7 @@
 #' ## Spatial interpolation of ancestry coefficient
 #' my.colors <- c("tomato", "orange", "lightblue")
 #' my.palette <- CreatePalette(my.colors, 9)
-#' plot(q.matrix, coordinates, method = "map.max", interpol = kriging(10),
+#' plot(q.matrix, coordinates, method = "map.max", interpol = FieldsKrigModel(10),
 #'      main = "Ancestry coefficients",
 #'      xlab = "Longitude", ylab = "Latitude",
 #'      resolution = c(500,500), cex = .4,
