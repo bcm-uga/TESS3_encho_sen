@@ -253,19 +253,19 @@ doi:10.1101/080291. <a href = 'http://biorxiv.org/content/early/2016/10/12/08029
 <span class='co'>## Spatial interpolation of ancestry coefficient</span>
 <span class='no'>my.colors</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"tomato"</span>, <span class='st'>"orange"</span>, <span class='st'>"lightblue"</span>)
 <span class='no'>my.palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='CreatePalette.html'>CreatePalette</a></span>(<span class='no'>my.colors</span>, <span class='fl'>9</span>)
-<span class='fu'>plot</span>(<span class='no'>q.matrix</span>, <span class='no'>coordinates</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"map.max"</span>, <span class='kw'>interpol</span> <span class='kw'>=</span> <span class='fu'>kriging</span>(<span class='fl'>10</span>),
+<span class='fu'>plot</span>(<span class='no'>q.matrix</span>, <span class='no'>coordinates</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"map.max"</span>, <span class='kw'>interpol</span> <span class='kw'>=</span> <span class='fu'><a href='FieldsKrigModel.html'>FieldsKrigModel</a></span>(<span class='fl'>10</span>),
      <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Ancestry coefficients"</span>,
      <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Longitude"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Latitude"</span>,
      <span class='kw'>resolution</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>500</span>,<span class='fl'>500</span>), <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>.4</span>,
-     <span class='kw'>col.palette</span> <span class='kw'>=</span> <span class='no'>my.palette</span>)</div><strong class='error'>Error: impossible de trouver la fonction &quot;kriging&quot;</strong><div class='input'>
+     <span class='kw'>col.palette</span> <span class='kw'>=</span> <span class='no'>my.palette</span>)</div><div class='output'><strong class='text-info'>This function required to attach maps namespace.</strong></div><img src='tess3-11.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'>## Genome scan p-values for K = 3</span>
 <span class='no'>p.values</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pvalue.html'>pvalue</a></span>(<span class='no'>tess3.obj</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>3</span>)
-<span class='fu'>hist</span>(<span class='no'>p.values</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"lightblue"</span>)</div><img src='tess3-12.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'>hist</span>(<span class='no'>p.values</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"lightblue"</span>)</div><img src='tess3-13.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'>## Manhatan plot</span>
 <span class='fu'>plot</span>(<span class='no'>p.values</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Manhattan plot"</span>,
     <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Locus id"</span>,
     <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"-log10(P-values)"</span>,
-    <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>.3</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey"</span>)</div><img src='tess3-14.png' alt='' width='540' height='400' /><div class='input'>
+    <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>.3</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey"</span>)</div><img src='tess3-15.png' alt='' width='540' height='400' /><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3">
