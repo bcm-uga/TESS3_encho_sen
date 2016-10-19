@@ -14,60 +14,142 @@ ComputeWindow <- function(coord) {
 }
 
 
-###################################################
-##################pie chart #######################
-###################################################
+SanitizeRaster <- function(raster,threshold=0.0) {
+  raster[ raster < threshold] <- NA
+  raster[ raster >= threshold] <- 1  # line order matters
+  return(raster)
+}
 
-#' Plot pie chart of ancestry coefficient.
-#'
-#' @param Q Ancestry coefficient matrix.
-#' @param coord Coordinate matrix.
-#' @param window Window of the graph.
-#' @param background if TRUE compute a background stencil.
-#' @param col colors
-#' @param radius radius of pies.
-#' @param ... TODOC
-#'
-PlotPiechartAncestryCoef <- function(Q, coord, window, background, col, radius = sqrt((window[2] - window[1]) ^ 2 + (window[4] - window[3]) ^ 2) * 0.01, ...) {
-  TestRequiredPkg("mapplots")
-
-  plot(coord[(coord[,1] >= window[1]) & (coord[,1] <= window[2]) & (coord[,2] >= window[3]) & (coord[,2] <= window[4]),],
-       type = "n", ...)
-
-  if (background) {
-    TestRequiredPkg("maps")
-    require("maps")
-    message("This function required to attach maps namespace.")
-    maps::map(add = TRUE, col = "grey90", fill = TRUE)
+SanitizeRasterCalc <- function(raster,threshold=0.0) {
+  fun <- function(x) {
+    x[x < threshold] <- NA
+    x[x >= threshold] <- 1  # line order matters
+    return(x)
   }
-
-  for (i in 1:nrow(Q)) {
-   mapplots::add.pie(z = Q[i,],
-                     x = coord[i,1],
-                     y = coord[i,2],
-                     radius = radius,
-                     col = col,
-                     labels = "")
-  }
+  raster <- raster::calc(raster, fun) #~4 times slower when not using calc
+  return(raster)
 }
 
 
 ###################################################
-##################interpolated maps ###############
+######### pie chart internal function #############
+###################################################
+
+#' Plot pie chart of ancestry coefficient.
+#' @title Plot pie chart of ancestry coefficient.
+#' @description  This function is used by \code{\link{piechart}}. It can be used
+#'   directly but it is advisable to use \code{\link{piechart}} instead.
+#' @param Q Ancestry coefficient matrix.
+#' @param coord Coordinate matrix.
+#' @param window Window for the plot corresponding to
+#'   c(min_xlim,max_xlim,min_ylim,max_ylim)
+#' @param map If \code{TRUE} plot the continental outlines.
+#' @param col Vector of ncol(Q) colors
+#' @param radius A single value defining the radius = percentage of the total window occupied by the largest pie
+#' @param radius.prop . Vector of nrow(Q) integers giving the number of sampled
+#'   individuals for each group. Each pie area will be scaled to this number.
+#' @param add.pie If TRUE pie chart are added to current plot, if FALSE a new
+#'   plot is created.
+#' @param label.distx For pie label location: distance to pie center on the
+#'   xaxis.
+#' @param label.disty For pie label location: distance to the pie top edge on
+#'   the yaxis.
+#' @param leg.bubble.par A list of arguments to pass to
+#'   \code{\link[mapplots]{legend.bubble}}. Argument names must
+#'   match. If \code{leg.bubble.par=NULL} no legend is shown.
+#' @param legend Boolean. If \code{legend=FALSE} no legend is shown.
+#' @param ... Additional parameters will be passed to \code{plot} and
+#'   \code{\link[mapplots]{add.pie}}.
+#'
+PlotPiechartAncestryCoef <- function(Q, coord, window, col, map=T,
+                                     radius = 0.01,
+                                     radius.prop = NULL,
+                                     add.pie = FALSE, names.pie = NULL,
+                                     label.distx = 0, label.disty = (window[4] - window[3])*0.02 ,
+                                     leg.bubble.par = list(x="topleft",y=NULL) , legend=T,
+                                     ...) {
+
+  if (is.null(radius)) {
+    radius <- sqrt((window[2] - window[1]) ^ 2 + (window[4] - window[3]) ^ 2) * 0.01
+  } else {
+    radius <- sqrt((window[2] - window[1]) ^ 2 + (window[4] - window[3]) ^ 2) * radius
+  }
+
+  TestRequiredPkg("mapplots")
+  if (!add.pie) {
+    #plot(coord[(coord[,1] >= window[1]) & (coord[,1] <= window[2]) & (coord[,2] >= window[3]) & (coord[,2] <= window[4]),(window[2] - window[1])],type = "n", ...)
+    plot(window[1:2],window[3:4], type = "n", ...)
+
+    if (map) {
+      TestRequiredPkg("maps")
+      require("maps")
+      message("This function required to attach maps namespace.")
+      maps::map(add = TRUE, col = "grey90", fill = TRUE)
+    }
+  }
+
+  if (is.null(radius.prop)) {
+    scaling <- rep(1, nrow(Q))
+  } else {
+    scaling <- sqrt(radius.prop)/sqrt(max(radius.prop,na.rm=T))
+  }
+  radius <- radius * scaling
+
+  isInWindow <- unlist(lapply(1:nrow(coord),
+         function(i) (coord[i,1] >= window[1] && coord[i,1] <= window[2] && coord[i,2] >= window[3] && coord[i,2] <= window[4]) ))
+
+  if (is.null(names.pie) || names.pie=="") names.pie=rep("",nrow(Q))
+  if (length(names.pie) != nrow(Q) ) stop("Argument names.pie should be NULL or \"\" or have the same length as rows in Q  (number of individuals or number of populations)")
+
+    for (i in which(isInWindow) ) {
+      mapplots::add.pie(z = Q[i,],
+                     x = coord[i,1],
+                     y = coord[i,2],
+                     radius = radius[i],
+                     col = col, labels=NA, ...)
+
+      text(coord[i,1]+label.distx,coord[i,2]+radius[i]+label.disty,labels=names.pie[i],...) #+radius[i]
+    }
+
+    if (!is.null(radius.prop) && !is.null(leg.bubble.par) && legend) {
+      leg.bubble.par$z = max(radius.prop[isInWindow])
+      leg.bubble.par$maxradius = max(radius[isInWindow])
+      do.call( mapplots::legend.bubble,leg.bubble.par)
+    }
+
+}
+
+
+###################################################
+########### internal interpolated maps ############
 ###################################################
 
 #' Plot map with the maximum values of the interpolation surfaces.
-#'
+#' @description  This function is used by \code{\link{plot.tess3Q}}. It can be
+#'   used directly but it is advisable to use \code{\link{plot.tess3Q}} instead.
 #' @param coord Coordinate matrix.
 #' @param list.grid.z List of interpolation surface matrices.
-#' @param grid.x TODOC
-#' @param grid.y TODOC
+#' @param grid.x x-coordinates of grid cell centers.
+#' @param grid.y y-coordinates of grid cell centers.
 #' @param background Boolean marix.
 #' @param col.palette List of color palette.
 #' @param map If true map function of maps package is call to plot polygon from
-#' map database.
-#' @param ... TODOC
-PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background, col.palette, map,...) {
+#'   map database.
+#' @param legend Boolean. Plot the color gradient legend?
+#' @param horizontal Boolean. Horizontal position for legend key?
+#' @param graphics.reset If \code{FALSE} the plotting parameters will not be
+#'   reset and one can add more information onto the image plot. Use false if
+#'   you want to display piecharts on top of the map.
+#' @param layout.nkeys Integer. Number of color keys by column (resp. row) in
+#'   legend when \code{horizontal = FALSE} (resp. \code{TRUE})
+#' @param legend.width Width of each column (rep row) for the vertical (resp
+#'   horizontal) legend (default is 1). The total size allocated to the whole
+#'   plot (map+legend) is set to 10.
+#' @param ... Extra arguments given to \code{\link[graphics]{image}},
+#'   \code{\link[graphics]{points}} and \code{\link{image.plot.legend}}.
+PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background, col.palette, map,
+                                 legend, horizontal = FALSE, graphics.reset = TRUE,
+                                 layout.nkeys = 3, legend.width = 1, ...) {
 
   # rmk : bag data structure for list.grid.z ...
 
@@ -84,13 +166,35 @@ PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background,
     }
   }
 
+  if (legend) {
+    layout.width <-10
+    old.par <- par(no.readonly = TRUE)
+    K <- length(list.grid.z)
+    layout.nrow <- layout.nkeys
+    layout.ncol <- ceiling(K/layout.nrow) + 1
+    if (!horizontal) {
+      layout(matrix(c(rep(1,layout.nrow),2:((layout.ncol-1)*layout.nrow+1)),ncol=layout.ncol),
+             width=c(layout.width - legend.width*(layout.ncol-1),rep(legend.width,layout.ncol-1)))
+    } else {
+      layout(t(matrix(c(rep(1,layout.nrow),2:((layout.ncol-1)*layout.nrow+1)),ncol=layout.ncol)),
+             height=c(layout.width - legend.width*(layout.ncol-1),rep(legend.width,layout.ncol-1)))
+    }
+  }
   for (k in 1:length(list.grid.z)) {
-    image(grid.x, grid.y,
+    plotting <- try(image(grid.x, grid.y,
           list.grid.z[[k]] * background,
           col = col.palette[[k]],
           add = (k > 1),
           ...)
+    )
+    if (class(plotting) == "try-error") {
+      par(old.par)
+      stop("Error: \n", plotting, "\nSetting graphics parameters back to previous.
+           If error persists try to enlarge the plot area, or reset graphic device by calling dev.off() until all X devices are shut down
+           [warning: this will delete all your current plots].")
+    }
   }
+  map.par <- par(no.readonly = TRUE)
   points(coord, pch = 19, ...)
   if (map) {
     TestRequiredPkg("maps")
@@ -98,26 +202,73 @@ PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background,
     message("This function required to attach maps namespace.")
     maps::map(add = TRUE, interior = FALSE)
   }
+
+  # Potting gradient legend keys
+  if (legend) {
+    for (k in 1:length(list.grid.z)) {
+      plotting <- try(image.plot.legend(grid.x, grid.y,
+                                        list.grid.z[[k]] * background,
+                                        col = col.palette[[k]],
+                                        add = F, horizontal = horizontal, main.par = old.par, ...)
+      )
+      if (class(plotting) == "try-error") {
+        par(old.par)
+        stop("Error, cannot display legend: \n", plotting, "\nSetting graphics parameters back to previous.
+           If error persists try to enlarge the plot area, or reset graphic device by calling dev.off() until all X devices are shut down
+           [warning: this will delete all your current plots].")
+      }
+    }
+    if (!graphics.reset) {
+      par(mfg=c(1,1))
+      par(plt=map.par$plt)
+      par(usr=map.par$usr)
+      set.par <- par(no.readonly = TRUE)
+    } else {
+      par(old.par)
+    }
+  }
 }
 
+
 #' Plot all the interpolation surfaces on several graphs.
-#'
+#' @description  This function is used by \code{\link{plot.tess3Q}}. It can be
+#'   used directly but it is advisable to use \code{\link{plot.tess3Q}} instead.
 #' @param coord Coordinate matrix.
 #' @param list.grid.z List of interpolation surface matrices.
-#' @param grid.x TODOC
-#' @param grid.y TODOC
+#' @param grid.x x-coordinates of grid cell centers.
+#' @param grid.y y-coordinates of grid cell centers.
 #' @param background Boolean marix.
 #' @param col.palette List of color palette.
 #' @param map If true map function of maps package is call to plot polygon from
-#' map database.
-#' @param ... TODOC
+#'   map database.
+#' @param legend Boolean. Plot the color gradient legend?
+#' @param horizontal Boolean. Horizontal position for legend key?
+#' @param graphics.reset If \code{FALSE} the plotting parameters will not be
+#'   reset and one can add more information onto the image plot. Use FALSE if
+#'   you want to display piecharts on top of the map.
+#' @param legend.width Width in characters of the legend strip.
+#' @param ... Extra arguments given to \code{\link[graphics]{image}},
+#'   \code{\link[fields]{image.plot}} and \code{\link[graphics]{points}}.
 #'
-PlotInterpotationAll <- function(coord, list.grid.z, grid.x, grid.y, background, col.palette, map,...) {
+PlotInterpotationAll <- function(coord, list.grid.z, grid.x, grid.y, background, col.palette, map, legend,
+                                 horizontal = FALSE, graphics.reset = TRUE, legend.width = 1, ...) {
+
+  if (legend) {
+    TestRequiredPkg("fields")
+    require("fields")
+  }
+  old.par <- par(no.readonly = TRUE)
   for (k in 1:length(list.grid.z)) {
-    image(grid.x, grid.y,
+      if (legend) {
+         fields::image.plot(grid.x, grid.y,
+             list.grid.z[[k]] * background,
+             col = col.palette[[k]], legend.width = legend.width,...)
+      } else {
+        image(grid.x, grid.y,
           list.grid.z[[k]] * background,
           col = col.palette[[k]],
           ...)
+      }
     points(coord, pch = 19, ...)
     if (map) {
       TestRequiredPkg("maps")
@@ -126,20 +277,32 @@ PlotInterpotationAll <- function(coord, list.grid.z, grid.x, grid.y, background,
       maps::map(add = TRUE, interior = FALSE)
     }
   }
+  if (graphics.reset) par(old.par)
+
 }
 
-SanitizeRaster <- function(raster) {
-  raster[raster >= 0.0] <- 1
-  raster[raster < 0.0] <- NA
-  return(raster)
-}
 
-ComputeGridAndBackground <- function(window, resolution, background, raster.filename) {
+#' Compute a grid for interpolation
+#' @description For internal usage, this function is called by \code{\link{plot.tess3Q}}.
+#' @param resolution An integer vector of the resolution of the grid used to
+#'   computed the interpolating surface.
+#' @param window Vector defining boundaries of the map eg
+#'   c(long_min,long_max,lat_min,lat_max)
+#' @param background if TRUE compute a background stencil.
+#' @param raster.filename Name of a raster file.
+#' @param threshold A \code{numeric}. If \code{background=TRUE}, interpolation will be performed only at cells having values above \code{threshold}
+#'
+#' @return a grid of the area on which ancestry coefficients will be interpolated
+#'
+#' @export
+#'
+ComputeGridAndBackground <- function(window, resolution, background, raster.filename,threshold=0.0) {
   TestRequiredPkg("raster")
   if (background) {
     imported.raster <- raster::raster(raster.filename)
-    imported.raster <- SanitizeRaster(imported.raster)
     imported.raster <- raster::resample(imported.raster,raster::raster(raster::extent(window), ncol = resolution[1], nrow = resolution[2]))
+    imported.raster <- SanitizeRasterCalc(imported.raster,threshold) #FJ: moving to third step because matrix is smaller after resampling
+
   } else {
     imported.raster <- raster::raster(raster::extent(window), ncol = resolution[1], nrow = resolution[2], vals = 1)
   }
