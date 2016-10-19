@@ -107,6 +107,8 @@
 #'        main = "Ancestry matrix") -> bp
 #' axis(1, at = 1:nrow(q.matrix), labels = bp$order, las = 3, cex.axis = .4)
 #' ## Spatial interpolation of ancestry coefficient
+#' my.colors <- c("tomato", "orange", "lightblue")
+#' my.palette <- CreatePalette(my.colors, 9)
 #' plot(q.matrix, coordinates, method = "map.max", interpol = kriging(10),
 #'      main = "Ancestry coefficients",
 #'      xlab = "Longitude", ylab = "Latitude",
@@ -116,11 +118,16 @@
 #' # Retrieve tess3 results for K = 3
 #' p.values <- pvalue(tess3.obj, K = 3)
 #' hist(p.values, col = "lightblue")
+#' ## Manhatan plot
+#' plot(p.values, main = "Manhattan plot",
+#'     xlab = "Locus id",
+#'     ylab = "-log10(P-values)",
+#'     cex = .3, col = "grey")
 #'
 #' @references \url{http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12471/full}
 #'
 #' @seealso \code{\link{tess3Main}}, \code{\link{plot.tess3Q}},
-#' \code{\link{barplot.tess3Q)}}
+#' \code{\link{barplot.tess3Q}}
 tess3 <- function(X,
                   XProba = NULL,
                   coord,

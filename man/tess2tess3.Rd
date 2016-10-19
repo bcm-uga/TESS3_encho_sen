@@ -8,7 +8,7 @@ tess2tess3(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1,
   extra.row = 0, extra.column = 0)
 }
 \arguments{
-\item{dataframe}{a data frame read from a STRUCTURE or a TESS file.}
+\item{dataframe}{a data frame read from a STRUCTURE or a TESS input file.}
 
 \item{TESS}{a boolean value set to \code{TRUE} if the TESS 2.3 format is used. If \code{TRUE}, the
 geographic coordinates (Longitude, Latitude) must be binded left to the genetic marker matrix.}
@@ -16,7 +16,7 @@ geographic coordinates (Longitude, Latitude) must be binded left to the genetic 
 \item{diploid}{a boolean value set to \code{TRUE} for diploids and \code{FALSE} for haploids.}
 
 \item{FORMAT}{an integer value equal to 1 for markers encoded using one row of data for each individual, and
-\code{FORMAT = 2} for markers encoded using two rows of data for each individual.}
+2 for markers encoded using two rows of data for each individual.}
 
 \item{extra.row}{an integer value indicating the number of extra rows in the header of the input file (marker ids).}
 

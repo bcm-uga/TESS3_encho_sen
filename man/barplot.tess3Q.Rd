@@ -16,9 +16,9 @@
 
 \item{palette.length}{an integer value for the number of colors in each element of the palette list.}
 
-\item{lab}{TODOC}
+\item{lab}{a list of individual labels.}
 
-\item{...}{TODOC}
+\item{...}{other parameters of the function \code{\link{barplot.default}}.}
 }
 \value{
 Generates a graphical output.
@@ -29,10 +29,18 @@ ancestry coefficient matrix. Includes a sort-by-Q option.
 }
 \examples{
 library(tess3r)
+
+# Retrieve a dataset
 data(data.at)
+
+# Run of TESS3
 obj <- tess3(data.at$X, coord = data.at$coord, K = 5,
                  ploidy = 1, method = "projected.ls", openMP.core.num = 4)
+
+# Get the ancestry matrix
 Q.matrix <- qmatrix(obj, K = 5)
+
+# Plot the barplot
 barplot(Q.matrix, border = NA, space = 0, xlab = "Individuals",
         ylab = "Ancestry proportions", main = "Ancestry matrix") -> bp
 axis(1, at = 1:nrow(Q.matrix), labels = bp$order, las = 3, cex.axis = .4)

@@ -41,7 +41,7 @@ Population genetic structure analysis includes three main steps:
  3. showing bar-plots of ancestry coefficients or displaying them on geographic maps.
  
 
-This vignette presents a brief tutorial on how to use the R package **tess3r** to perform all those analyses within a unique framework. The program stores ancestry coefficients in a $Q$-matrix, and uses raster (geographic) files to visualize results. The algorithm implements a new version of the program TESS (Chen et al. 2007), based on geographically constrained matrix factorization and quadratic programming techniques (Caye et al. 2016). The new algorithms are several order faster than the Monte-Carlo algorithms implemented in TESS, and can handle data sets including hundreds of individuals and hundreds of thousands of genotypes. The package can also be used to analyze the input and output files of the Bayesian program TESS 2.3. 
+This vignette presents a brief tutorial on how to use the R package **tess3r** to perform all those analyses within a unique framework. The program stores ancestry coefficients in a $Q$-matrix, and uses geographic coordinates to visualize results. The algorithm implements a new version of the program TESS (Chen et al. 2007), based on geographically constrained matrix factorization and quadratic programming techniques (Caye et al. 2016). The new algorithms are several order faster than the Monte-Carlo algorithms implemented in previous versions of TESS, and can handle data sets including hundreds of individuals and hundreds of thousands of genotypes. The package can also be used to analyze the input and output files of the Bayesian program TESS 2.3. 
 
 The main steps of **tess3r** are illustrated through the description of  two  examples. The first example concerns single nucleotide polymorphism (SNP) data for 170 European accessions of the plant species *A. thaliana* (Atwell et al. 2010). The second example concerns simulated allelic markers (short tandem repeats, STR) for two subspecies hybridizing in Central Europe (Durand et al. 2009). 
 
@@ -74,7 +74,7 @@ dim(genotype)
 genotype[1:3,1:10]
 ```
 
-The genotype file can be read from an external text file having any suffix. The matrix format also corresponds to the **.lfmm** format in the **LEA** package (Frichot and Francois, 2015), which contains functions to convert data files from the **.ped**, **.vcf** or **.geno** format in to genotypic matrices.
+The genotype file can be read from an external text file having any suffix. The matrix format also corresponds to the **.lfmm** format in the **LEA** package (Frichot and Francois, 2015), which contains functions to convert data files from the **.ped**, **.vcf** or **.geno** format into genotypic matrices.
 
 The **coordinate** file is a two-column file that contains longitude and latitude for each individual in the sample. Longitude (°E) and latitude (°N) must be encoded in the decimal format. Headers must be ignored when loading the data into the R program. 
 
@@ -287,6 +287,6 @@ of individual ancestry coefficients. Genetics 196, 973-983.
 
 * Martins H, Caye K, Luu K, Blum MG,  Francois O (2016). Identifying outlier loci in admixed and in continuous populations using ancestral population differentiation statistics. Molecular Ecology, (bioRxiv, 054585).
 
-* Pritchard Pritchard JK, Stephens M, Donnelly P (2000). Inference of population structure using multilocus genotype data. Genetics 155(2), 945-959.
+* Pritchard JK, Stephens M, Donnelly P (2000). Inference of population structure using multilocus genotype data. Genetics 155(2), 945-959.
 
 

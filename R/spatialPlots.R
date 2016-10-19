@@ -272,7 +272,7 @@ PlotInterpotationAll <- function(coord, list.grid.z, grid.x, grid.y, background,
     points(coord, pch = 19, ...)
     if (map) {
       TestRequiredPkg("maps")
-      require("maps")
+      requireNamespace("maps")
       message("This function required to attach maps namespace.")
       maps::map(add = TRUE, interior = FALSE)
     }
@@ -314,7 +314,7 @@ ComputeGridAndBackground <- function(window, resolution, background, raster.file
 }
 
 #' Return an interpolation function. Return a wrapper function of the function idw of
-#' the package gstat.
+#' the package gstat. See \code{\link[gstat]{idw}}
 #'
 #'
 #' @export
@@ -345,7 +345,7 @@ idw <- function(idp=1.0){
 }
 
 #' Return an interpolation function. Return a wrapper function of the function autoKrige of
-#' the package automap.
+#' the package automap. See \code{\link[automap]{autoKrige}}
 #'
 #'
 #' @param formula Formula that defines the dependent variable as a linear model of independent variables.
@@ -375,7 +375,7 @@ universalkriging <- function(formula = as.formula(Z ~ X + Y)){
 }
 
 #' Return an interpolation function. Return a wrapper function of the function Krig of
-#' the package fields
+#' the package fields. See \code{\link[fields]{Krig}}.
 #'
 #' @param theta Numeric.
 #'

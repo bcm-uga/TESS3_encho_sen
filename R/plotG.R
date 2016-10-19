@@ -1,9 +1,10 @@
 #' Manhattan plot for tess3 significance values.
 #'
 #' @param x tess3pvalue object.
-#' @param ... TODOC
+#' @param ... \code{\link{plot.default}} other parameters.
 #'
-#' @return TODOC
+#' @return none
+#' @seealso See \code{\link{tess3Main}} more explainations and examples.
 #' @export
 plot.tess3pvalue <- function(x, ...) {
   locus.index <- 1:length(x)

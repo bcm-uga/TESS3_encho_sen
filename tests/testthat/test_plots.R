@@ -54,7 +54,7 @@ test_that("test of Q plots", {
   interpolation.function <- kriging()
   list.grid.z <- interpolation.function(Q, coord, grid$grid.x, grid$grid.y)
   image(grid$grid.x, grid$grid.y, list.grid.z[[2]] * grid$background)
-  fields::image.plot(grid$grid.x, grid$grid.y, list.grid.z[[2]] * grid$background)
+
 
   plot(tess3.res$Q, data.at$coord, method = "map.max", main = "max", xlab = "x", ylab = "y",
        resolution = c(300,300),

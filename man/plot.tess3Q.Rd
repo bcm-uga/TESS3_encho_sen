@@ -10,31 +10,40 @@
   map = TRUE, palette.length = 9, ...)
 }
 \arguments{
-\item{x}{an object of class \code{tess3Q} containing a matrix of ancestry coefficients.}
+\item{x}{an object of class \code{tess3Q}. The ancestry coefficient matrix.}
 
-\item{coord}{TODOC}
+\item{coord}{The numeric matrix of size \eqn{n \times 2} where \eqn{n} is the
+number of individuals.}
 
-\item{method}{TODOC}
+\item{method}{\code{"map.max"} or \code{"map.all"}. If \code{"map.all"}, a
+interpolating surface of the ancestry coefficient is plotted for each ancestral
+population. If \code{"map.max"} only the maximum union of the interpolating surfaces is plotted.}
 
-\item{resolution}{TODOC}
+\item{resolution}{An integer vector of the resolution of the grid used to
+computed the interpolating surface}
 
-\item{window}{TODOC}
+\item{window}{The window size, such that \code{window = c(xmin, xmax, ymin, ymax)}
+contains the window mina nd max coordinates.}
 
-\item{background}{TODOC}
+\item{background}{If TRUE the raster file is used as a stencil to render only
+raster pixel on earth.}
 
-\item{raster.filename}{TODOC}
+\item{raster.filename}{The raster file name used to compute the background stencil.}
 
-\item{interpolation.function}{TODOC}
+\item{interpolation.function}{The interpolation function used to compute compute
+the interpolating surface. You can use functions \code{\link{kriging}},
+\code{\link{universalkriging}} or \code{\link{idw}}.}
 
-\item{col}{TODOC}
+\item{col}{set to NULL.}
 
 \item{col.palette}{a list of color palettes. If \code{NULL}, a default list with 8 color palettes is used.}
 
-\item{map}{TODOC}
+\item{map}{use the function \code{\link[maps]{map}} to plot earth shape contour.}
 
-\item{palette.length}{an integer value for the number of colors in each element of the palette list.}
+\item{palette.length}{an integer value for the number of colors in each
+element of the palette list.}
 
-\item{...}{TODOC}
+\item{...}{\code{\link{plot.default}} other parameters.}
 }
 \value{
 None
@@ -42,20 +51,20 @@ None
 \description{
 Displays geographic maps for ancestry coefficients.
 }
-\details{
-details on interpolation methods
-\itemize{
-\item \code{kriging()} \code{\link[fields]{Krig}}
-\item
-}
-}
 \examples{
 library(tess3r)
 
+# Retrieve a dataset
 data(data.at)
-obj <- tess3(data.at$X, coord = data.at$coord,
-                 K = 5, ploidy = 1, openMP.core.num = 4)
+
+# Run of TESS3
+obj <- tess3(data.at$X, coord = data.at$coord, K = 5,
+                 ploidy = 1, method = "projected.ls", openMP.core.num = 4)
+
+# Get the ancestry matrix
 Q.matrix <- qmatrix(obj, K = 5)
+
+# Plot the spatial interpolation of the ancestry matrix
 plot(Q.matrix, data.at$coord, method = "map.max",
      resolution = c(400,400),
      interpol = kriging(10), cex = .4,

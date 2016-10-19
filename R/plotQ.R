@@ -14,8 +14,8 @@
 #' @param height an object of class \code{tess3Q} (Q matrix) containing a matrix of ancestry coefficients computed from \code{tess3} or converted from other program formats.
 #' @param sort.by.Q a Boolean value indicating whether individuals should be sorted by their ancestry level or not.
 #' @param col.palette is a list of color palettes. If \code{NULL}, a default list with 8 color palettes is used.
-#' @param lab TODOC
-#' @param ... TODOC
+#' @param lab a list of individual labels.
+#' @param ... other parameters of the function \code{\link{barplot.default}}.
 #' @param palette.length An integer value in [3,9] for the number of colors in
 #'   each element of the palette list. Not used if a palette is provided with
 #'   \code{col.palette}.
@@ -23,10 +23,18 @@
 #' @seealso \code{\link{plot.tess3Q}} \code{\link{as.qmatrix}} \code{\link{CreatePalette}}
 #' @examples
 #' library(tess3r)
+#'
+#' # Retrieve a dataset
 #' data(data.at)
+#'
+#' # Run of TESS3
 #' obj <- tess3(data.at$X, coord = data.at$coord, K = 5,
 #'                  ploidy = 1, method = "projected.ls", openMP.core.num = 4)
+#'
+#' # Get the ancestry matrix
 #' Q.matrix <- qmatrix(obj, K = 5)
+#'
+#' # Plot the barplot
 #' barplot(Q.matrix, border = NA, space = 0, xlab = "Individuals",
 #'         ylab = "Ancestry proportions", main = "Ancestry matrix") -> bp
 #' axis(1, at = 1:nrow(Q.matrix), labels = bp$order, las = 3, cex.axis = .4)
@@ -119,37 +127,44 @@ barplot.tess3Q = function(height, sort.by.Q = TRUE, col.palette = NULL, palette.
 #' @seealso \code{\link[tess3r]{piechart.tess3Q}} to display piecharts on the
 #'   map.
 #'
-#' @return grid The newly built grid if it was not already provided as an input.
+#' @return invisible(grid) The newly built grid if it was not already provided as an input.
 #'   This grid can be used in a later call of \code{plot.tess3Q} unless you want
-#'   to change the resolution or the input raster file.
+#'   to change the resolution or the input raster file. Note that the grid is invisible unless stored in an object.
 #' @examples
 #' library(tess3r)
 #'
+#' # Retrieve a dataset
 #' data(data.at)
-#' obj <- tess3(data.at$X, coord = data.at$coord,
-#'                  K = 5, ploidy = 1, openMP.core.num = 4)
+#'
+#' # Run of TESS3
+#' obj <- tess3(data.at$X, coord = data.at$coord, K = 5,
+#'                  ploidy = 1, method = "projected.ls", openMP.core.num = 4)
+#'
+#' # Get the ancestry matrix
 #' Q.matrix <- qmatrix(obj, K = 5)
-#' grid250 = plot(Q.matrix, data.at$coord, method = "map.max",
-#'      resolution = c(250,250),
+#'
+#' # Plot the spatial interpolation of the ancestry matrix
+#' savedgrid <- plot(Q.matrix, data.at$coord, method = "map.max",
+#'      resolution = c(400,400),
 #'      interpol = kriging(10), cex = .4,
 #'      xlab = "Longitude", ylab= "Latitude", main = "Ancestry coefficients")
 #'
 #'  # Unless you want to change the resolution, the input raster file or the argument \code{background},
 #'  # you can re-use the saved grid for all your next plots, eg:
 #'  plot(Q.matrix, data.at$coord, method = "map.max",
-#'      grid = grid250,
+#'      grid = savedgrid,
 #'      interpol = idw(), cex = .4, col.main="red",
 #'      xlab = "Longitude", ylab= "Latitude", main = "My new title")
 #'
 #'  # Display legend
-#'  plot(Q.matrix, data.at$coord, method = "map.max",grid=gr250, legend=T)
+#'  plot(Q.matrix, data.at$coord, method = "map.max",grid=savedgrid, legend=T)
 #'
-#'  plot(tess3.res$Q, data.at$coord, method = "map.max",grid=gr100, legend=T,
+#'  plot(tess3.res$Q, data.at$coord, method = "map.max",grid=savedgrid, legend=T,
 #'        horizontal=T,legend.lab="ancestry coef",legend.cex=.75)
 #'
 #'  # Display piecharts on top of the map, use  graphics.reset=FALSE
 #'  # See ?piechart for more examples
-#'  plot(Q.matrix, data.at$coord, method = "map.max", grid=gr250, legend=T, graphics.reset=FALSE)
+#'  plot(Q.matrix, data.at$coord, method = "map.max", grid=savedgrid, legend=T, graphics.reset=FALSE)
 #'  plot(Q.matrix, data.at$coord, method = "piechart", add.pie=T, radius=.006)
 #' @export
 map.tess3Q <- function(x, coord, method = "map.max", resolution = c(300,300), window = NULL,
@@ -188,7 +203,7 @@ map.tess3Q <- function(x, coord, method = "map.max", resolution = c(300,300), wi
     raster.filename <- system.file("extdata/raster","earth.tif",package = "tess3r")
   }
 
-  if (!method %in% c("map.max","map.all"))  stop("Method ",method, "")
+  if (!method %in% c("map.max","map.all"))  stop("method=",method, "is not a valid option")
 
   if (is.null(grid)) {
     message("Computing grid and background...")

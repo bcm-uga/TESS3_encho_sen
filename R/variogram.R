@@ -10,9 +10,9 @@
 CalculateEmpiricalSemivariogram <- function(Dz, Dx, breaks = "FD", na.rm = TRUE) {
 
   message("Computing semi variance")
-  breaks <- hist(Dx, breaks = breaks, plot = FALSE)$breaks
-  cuts <- cut(Dx, breaks = length(breaks))
-  levs <- levels(cuts)
+  breaks <- graphics::hist(Dx, breaks = breaks, plot = FALSE)$breaks
+  cuts <- base::cut(Dx, breaks = length(breaks))
+  levs <- base::levels(cuts)
   vario.res <- 1:length(levs)
   vario.size <- 1:length(levs)
   h <- seq(0,max(Dx) - min(Dx), length.out = length(levs))
@@ -60,8 +60,8 @@ CalculateEmpiricalGenSemivariogram <- function(X, ploidy, coord, breaks = "FD", 
   X2XBin(X, ploidy, XBin)
   rm(X)
   message("Computing distance matrices")
-  dx <- dist(XBin, method = "manhattan") / ncol(XBin)
-  dgeo <- dist(coord)
+  dx <- stats::dist(XBin, method = "manhattan") / ncol(XBin)
+  dgeo <- stats::dist(coord)
 
   return(CalculateEmpiricalSemivariogram(dx, dgeo, breaks = breaks, na.rm = na.rm))
 }

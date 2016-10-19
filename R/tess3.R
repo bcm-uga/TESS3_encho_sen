@@ -433,7 +433,10 @@ plot.tess3Main <- function(x, ...) {
 #'
 #' @name tess3r
 #' @importFrom Rcpp evalCpp
-#' @importFrom graphics barplot
+#' @importFrom graphics barplot hist image par plot points segments
+#' @importFrom grDevices colorRampPalette rainbow topo.colors
+#' @importFrom stats as.formula dist median pchisq pf predict qchisq qf rnorm runif sd
+#' @importFrom utils capture.output
 #' @import RcppEigen
 #' @useDynLib tess3r
 NULL

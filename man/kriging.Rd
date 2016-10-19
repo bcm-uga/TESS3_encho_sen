@@ -3,7 +3,7 @@
 \name{kriging}
 \alias{kriging}
 \title{Return an interpolation function. Return a wrapper function of the function Krig of
-the package fields}
+the package fields. See \code{\link[fields]{Krig}}.}
 \usage{
 kriging(theta = 10)
 }
@@ -12,6 +12,6 @@ kriging(theta = 10)
 }
 \description{
 Return an interpolation function. Return a wrapper function of the function Krig of
-the package fields
+the package fields. See \code{\link[fields]{Krig}}.
 }
 
