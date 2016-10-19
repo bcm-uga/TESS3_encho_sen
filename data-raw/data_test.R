@@ -14,3 +14,9 @@ data.at = list()
 data.at$X = LEA::read.geno(at.geno)
 data.at$coord = as.matrix(read.table(at.coord))
 devtools::use_data(data.at)
+
+# Adding country name to give piechart.pop examples
+countries =  read.table("../mapdisplay/data.at.countries.en.txt",stringsAsFactors = F)[,1]
+data.at$countries=countries
+devtools::use_data(data.at, overwrite = T)
+
