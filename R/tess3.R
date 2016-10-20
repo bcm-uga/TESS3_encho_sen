@@ -425,6 +425,43 @@ plot.tess3Main <- function(x, ...) {
   message("Nothing to plot")
 }
 
+
+
+
+#' Converting class to \code{tess3Q}
+#' @description Attempts to turn its argument into an object of class tess3Q.
+#'   This class is used to describe ancestry coefficient matrices. The rows of
+#'   the argument thus must sum to 1.
+#' @param x  2D object of class matrix or data.frame. Columns corresponds to
+#'   clusters, rows to individuals.
+#'
+#' @return An object of class \code{tess3Q}
+#' @seealso \code{\link{is.tess3Q}}
+#' @export
+#'
+as.tess3Q <- function(x) {
+  if ("tess3Q" %in% class(x)) return(x)
+  if (!is.data.frame(x) && !is.matrix(x)) stop("Cannot object of class", class(x), "to tess3Q")
+  x <- apply(x, 1:2, as.numeric)
+  if (sum(is.na(x)) !=0 ) stop("Error: NAs in input or introduced while converting to numeric")
+  rowsum.not.one <- apply(x,1, function(v) !isTRUE(all.equal(sum(v),1)) ) # avoid '==' for floating points
+  if (sum(rowsum.not.one) !=0 ) stop("Error: rows of a tess3Q object must sum to 1")
+  class(x) <- "tess3Q"
+  return(x)
+}
+
+#' Tests if argument is a tess3Q object
+#'
+#' @param x An object.
+#'
+#' @return TRUE if object is of class \code{tess3Q}.
+#' @seealso \code{\link{as.tess3Q}}
+#' @export
+is.tess3Q <- function(x) {
+  inherits(x, "tess3Q")
+}
+
+
 #' tess3r : estimation of spatial population structure
 #'
 #' This R package implements the TESS3 method and tools useful to plot program outputs.
