@@ -44,11 +44,11 @@ barplot.tess3Q = function(height, sort.by.Q = TRUE, col.palette = NULL, palette.
   Q = height
   rm(height)
 
-  if (class(Q)[1] != "tess3Q") {warning("Object Q not of class tess3Q.")}
-  ## defines a default color palette (8 colors)
+  if (!inherits(Q,"tess3Q")) {warning("Object Q not of class tess3Q.")}
+  ## defines a default color palette ( colors)
   if (is.null(col.palette)) {
-    message("Use CreatePalette() to define new color palettes.\n")
-    if (ncol(Q) > 8)  stop("The default color palette expects less than 9 clusters.")
+    message("You can use CreatePalette() to define new color palettes.\n")
+    if (ncol(Q) > 8)  stop("The default color palette expects less than 8 clusters.")
     TestRequiredPkg("RColorBrewer")
     col.palette = list(
       c(RColorBrewer::brewer.pal(palette.length,"Reds")),
@@ -62,11 +62,18 @@ barplot.tess3Q = function(height, sort.by.Q = TRUE, col.palette = NULL, palette.
     )
   }
   ## colors
-  if (palette.length > 3){
-  colpal = sapply(col.palette, FUN = function(x) x[palette.length/2])}
-  else {
-  colpal = sapply(col.palette, FUN = function(x) x[palette.length])
-  }
+  if (length(col.palette) < ncol(Q))  stop("col.palette must of length at least ncol(Q)")
+  # Pick one color for each cluster (in the gradient range)
+  # Works if col.palette is a list of vectors (pick one color for each first ncol(Q) vectors of the list)
+  # Works if col.palette is a vector (pick the first ncol(Q) elements)
+  colpal <- unlist(lapply(col.palette[1:ncol(Q)], FUN=function(gradient) gradient[ ceiling(length(gradient)*2/3) ] ))
+
+
+  #if (palette.length > 3){
+  #colpal = sapply(col.palette, FUN = function(x) x[palette.length/2])}
+  #else {
+  #colpal = sapply(col.palette, FUN = function(x) x[palette.length])
+  #}
 
   if (sort.by.Q){
     gr = apply(Q, MARGIN = 1, which.max)
@@ -172,9 +179,12 @@ map.tess3Q <- function(x, coord, method = "map.max", resolution = c(300,300), wi
                         col.palette = NULL, map = TRUE, palette.length = 9, legend=FALSE, grid=NULL, ...) {
 
 
+  if (is.null(coord)) stop("Argument coord mandatory for map")
+  if (!inherits(x,"tess3Q")) {warning("Object x not of class tess3Q.")}
+
   ## col.palette
   if (is.null(col.palette)) {
-    message("Use CreatePalette() to define new color palettes.\n")
+    message("You can use CreatePalette() to define new color palettes.\n")
     if (ncol(x) > 8)  stop("The default color palette expects less than 9 clusters.")
     TestRequiredPkg("RColorBrewer")
     col.palette = list(
@@ -326,15 +336,16 @@ map.tess3Q <- function(x, coord, method = "map.max", resolution = c(300,300), wi
 #'
 #'
 #'@export
-piechart <- function(x, coord, method = "piechart", window = NULL,
-                        col = NULL, col.palette = NULL, map = TRUE, palette.length = 9, grid=NULL,
+piechart.tess3Q <- function(x, coord, method = "piechart", window = NULL,
+                        col.palette = NULL, map = TRUE, palette.length = 9, grid=NULL,
                         add.pie=FALSE, pop=NULL, names.pie=NULL, radius=0.01, scale= FALSE , ...) {
 
+  if (is.null(coord)) stop("Argument coord mandatory for piechart")
+  if (!inherits(x,"tess3Q")) {warning("Object x not of class tess3Q.")}
   # Colors
-  if (is.null(col)) {
-    if (is.null(col.palette)) {
-      message("Use CreatePalette() to define new color palettes.\n")
-      if (ncol(x) > 8)  stop("The default color palette expects less than 9 clusters.")
+  if (is.null(col.palette)) {
+    message("Use CreatePalette() to define new color palettes.\n")
+    if (ncol(x) > 8)  stop("The default color palette expects less than 9 clusters.")
     TestRequiredPkg("RColorBrewer")
     col.palette = list(
       c(RColorBrewer::brewer.pal(palette.length,"Reds")),
@@ -347,13 +358,12 @@ piechart <- function(x, coord, method = "piechart", window = NULL,
       c(RColorBrewer::brewer.pal(palette.length,"Oranges"))
     )
   }
-  if (length(col.palette) < ncol(x))  stop("col.palette must of length ncol(Q)")
+  if (length(col.palette) < ncol(x))  stop("col.palette must have a length larger than the number of clusters")
+  # Pick one color for each cluster (in the gradient range)
+  # Works if col.palette is a list of vectors (pick one color for each first ncol(Q) vectors of the list)
+  # Works if col.palette is a vector (pick the first ncol(Q) elements)
+  col <- unlist(lapply(col.palette[1:ncol(Q)], FUN=function(gradient) gradient[ ceiling(length(gradient)*2/3) ] ))
 
-    pick <- round(length(col.palette[[1]])*2/3) # avoiding to pick the darkest color of the gradient
-    col <- unlist(lapply(1:ncol(x), FUN=function(k) (col.palette[[k]])[pick] ))
-  }
-
-  if (length(col) < ncol(x))  stop("col must be of length ncol(Q)")
 
   ## compute of window if window is NULL
   if (is.null(window)) {
@@ -399,8 +409,8 @@ piechart <- function(x, coord, method = "piechart", window = NULL,
 #' @export
 plot.tess3Q <- function(Q, coord=NULL, method="map.max", ...){
   if (method %in% c("map.all","map.max")) return(map.tess3Q(Q, coord = coord, method = method,...))
-  if (method %in% c("piechart","piechart.pop")) return(piechart(Q, coord = coord, method = method,...))
-  if (method %in% c("barplot")) return(barplot.tess3Q(Q, method = method,...))
+  if (method %in% c("piechart","piechart.pop")) return(piechart.tess3Q(Q, coord = coord, method = method,...))
+  if (method %in% c("barplot")) return(barplot.tess3Q(Q, ...))
 
 }
 
