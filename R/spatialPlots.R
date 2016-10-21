@@ -37,8 +37,8 @@ SanitizeRasterCalc <- function(raster,threshold=0.0) {
 
 #' Plot pie chart of ancestry coefficient.
 #' @title Plot pie chart of ancestry coefficient.
-#' @description  This function is used by \code{\link{piechart}}. It can be used
-#'   directly but it is advisable to use \code{\link{piechart}} instead.
+#' @description  This function is used by \code{\link{piechartQ}}. It can be used
+#'   directly but it is advisable to use \code{\link{piechartQ}} instead.
 #' @param Q Ancestry coefficient matrix.
 #' @param coord Coordinate matrix.
 #' @param window Window for the plot corresponding to
@@ -54,9 +54,9 @@ SanitizeRasterCalc <- function(raster,threshold=0.0) {
 #'   xaxis.
 #' @param label.disty For pie label location: distance to the pie top edge on
 #'   the yaxis.
-#' @param leg.bubble.par A list of arguments to pass to
+#' @param leg.bubble.args A list of arguments to pass to
 #'   \code{\link[mapplots]{legend.bubble}}. Argument names must
-#'   match. If \code{leg.bubble.par=NULL} no legend is shown.
+#'   match. If \code{leg.bubble.args = NULL} no legend is shown.
 #' @param legend Boolean. If \code{legend=FALSE} no legend is shown.
 #' @param ... Additional parameters will be passed to \code{plot} and
 #'   \code{\link[mapplots]{add.pie}}.
@@ -66,7 +66,7 @@ PlotPiechartAncestryCoef <- function(Q, coord, window, col, map=T,
                                      radius.prop = NULL,
                                      add.pie = FALSE, names.pie = NULL,
                                      label.distx = 0, label.disty = (window[4] - window[3])*0.02 ,
-                                     leg.bubble.par = list(x="topleft",y=NULL) , legend=T,
+                                     leg.bubble.args = list(x="topleft",y=NULL) , legend=T,
                                      ...) {
 
   if (is.null(radius)) {
@@ -88,15 +88,16 @@ PlotPiechartAncestryCoef <- function(Q, coord, window, col, map=T,
     }
   }
 
+  isInWindow <- unlist(lapply(1:nrow(coord),
+                              function(i) (coord[i,1] >= window[1] && coord[i,1] <= window[2] && coord[i,2] >= window[3] && coord[i,2] <= window[4]) ))
+
   if (is.null(radius.prop)) {
     scaling <- rep(1, nrow(Q))
   } else {
-    scaling <- sqrt(radius.prop)/sqrt(max(radius.prop,na.rm=T))
+    scaling <- sqrt(radius.prop)/sqrt(max(radius.prop[isInWindow],na.rm=T))
   }
   radius <- radius * scaling
 
-  isInWindow <- unlist(lapply(1:nrow(coord),
-         function(i) (coord[i,1] >= window[1] && coord[i,1] <= window[2] && coord[i,2] >= window[3] && coord[i,2] <= window[4]) ))
 
   if (is.null(names.pie) || names.pie=="") names.pie=rep("",nrow(Q))
   if (length(names.pie) != nrow(Q) ) stop("Argument names.pie should be NULL or \"\" or have the same length as rows in Q  (number of individuals or number of populations)")
@@ -111,10 +112,10 @@ PlotPiechartAncestryCoef <- function(Q, coord, window, col, map=T,
       text(coord[i,1]+label.distx,coord[i,2]+radius[i]+label.disty,labels=names.pie[i],...) #+radius[i]
     }
 
-    if (!is.null(radius.prop) && !is.null(leg.bubble.par) && legend) {
-      leg.bubble.par$z = max(radius.prop[isInWindow])
-      leg.bubble.par$maxradius = max(radius[isInWindow])
-      do.call( mapplots::legend.bubble,leg.bubble.par)
+    if (!is.null(radius.prop) && !is.null(leg.bubble.args) && legend) {
+      leg.bubble.args$z = max(radius.prop[isInWindow])
+      leg.bubble.args$maxradius = max(radius[isInWindow])
+      do.call( mapplots::legend.bubble, leg.bubble.args)
     }
 
 }
@@ -145,11 +146,19 @@ PlotPiechartAncestryCoef <- function(Q, coord, window, col, map=T,
 #' @param legend.width Width of each column (rep row) for the vertical (resp
 #'   horizontal) legend (default is 1). The total size allocated to the whole
 #'   plot (map+legend) is set to 10.
-#' @param ... Extra arguments given to \code{\link[graphics]{image}},
-#'   \code{\link[graphics]{points}} and \code{\link{image.plot.legend}}.
+#' @param leg.extra.args List of extra arguments given to \code{\link{image.plot.legend}}
+#' @param ... Extra arguments given to \code{\link[graphics]{image}} and
+#'   \code{\link[graphics]{points}}.
+#'
+#'  @examples
+#'  ## DO NOT RUN
+#'  PlotInterpotationMax(coord, list.grid.z, grid.x, grid.y, background = T, col.palette, map = T,
+#'    legend = T, horizontal = FALSE, graphics.reset = TRUE, layout.nkeys = 2, legend.width = 1.2,
+#'    leg.extra.args = list(legend.lab="Ancestry Coef.",legend.cex=1.5))
+#'
 PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background, col.palette, map,
                                  legend, horizontal = FALSE, graphics.reset = TRUE,
-                                 layout.nkeys = 3, legend.width = 1, ...) {
+                                 layout.nkeys = 3, legend.width = 1, leg.extra.args = list(), ...) {
 
   # rmk : bag data structure for list.grid.z ...
 
@@ -206,10 +215,10 @@ PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background,
   # Potting gradient legend keys
   if (legend) {
     for (k in 1:length(list.grid.z)) {
-      plotting <- try(image.plot.legend(grid.x, grid.y,
-                                        list.grid.z[[k]] * background,
-                                        col = col.palette[[k]],
-                                        add = F, horizontal = horizontal, main.par = old.par, ...)
+      plotting <- try( do.call(image.plot.legend, c(list(x = grid.x, y = grid.y, z = list.grid.z[[k]] * background,
+                                                       col = col.palette[[k]], add = F,
+                                                       horizontal = horizontal, main.par = old.par),
+                                                    leg.extra.args))
       )
       if (class(plotting) == "try-error") {
         par(old.par)
@@ -247,11 +256,19 @@ PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background,
 #'   reset and one can add more information onto the image plot. Use FALSE if
 #'   you want to display piecharts on top of the map.
 #' @param legend.width Width in characters of the legend strip.
+#' @param leg.extra.args List of extra arguments given to \code{\link[fields]{image.plot}}
 #' @param ... Extra arguments given to \code{\link[graphics]{image}},
 #'   \code{\link[fields]{image.plot}} and \code{\link[graphics]{points}}.
 #'
+#'  @examples
+#'  ## DO NOT RUN
+#'  PlotInterpotationAll(coord, list.grid.z, grid.x, grid.y, background = T, col.palette, map = T,
+#'    legend = T, horizontal = FALSE, graphics.reset = TRUE, legend.width = 1,
+#'    leg.extra.args = list(legend.lab="Ancestry Coef.",legend.cex=1.5))
+
+#'
 PlotInterpotationAll <- function(coord, list.grid.z, grid.x, grid.y, background, col.palette, map, legend,
-                                 horizontal = FALSE, graphics.reset = TRUE, legend.width = 1, ...) {
+                                 horizontal = FALSE, graphics.reset = TRUE, legend.width = 1, leg.extra.args = list(), ...) {
 
   if (legend) {
     TestRequiredPkg("fields")
@@ -260,9 +277,9 @@ PlotInterpotationAll <- function(coord, list.grid.z, grid.x, grid.y, background,
   old.par <- par(no.readonly = TRUE)
   for (k in 1:length(list.grid.z)) {
       if (legend) {
-         fields::image.plot(grid.x, grid.y,
-             list.grid.z[[k]] * background,
-             col = col.palette[[k]], legend.width = legend.width,...)
+         do.call( fields::image.plot, c( list( x = grid.x, y = grid.y, z = list.grid.z[[k]] * background,
+                                               col = col.palette[[k]], legend.width = legend.width, horizontal = horizontal),
+                                         leg.extra.args, list(...)) )
       } else {
         image(grid.x, grid.y,
           list.grid.z[[k]] * background,

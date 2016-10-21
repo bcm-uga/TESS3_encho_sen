@@ -68,13 +68,6 @@ barplot.tess3Q = function(height, sort.by.Q = TRUE, col.palette = NULL, palette.
   # Works if col.palette is a vector (pick the first ncol(Q) elements)
   colpal <- unlist(lapply(col.palette[1:ncol(Q)], FUN=function(gradient) gradient[ ceiling(length(gradient)*2/3) ] ))
 
-
-  #if (palette.length > 3){
-  #colpal = sapply(col.palette, FUN = function(x) x[palette.length/2])}
-  #else {
-  #colpal = sapply(col.palette, FUN = function(x) x[palette.length])
-  #}
-
   if (sort.by.Q){
     gr = apply(Q, MARGIN = 1, which.max)
     gm = max(gr)
@@ -126,17 +119,29 @@ barplot.tess3Q = function(height, sort.by.Q = TRUE, col.palette = NULL, palette.
 #' @param palette.length An integer value in [3,9] for the number of colors in
 #'   each element of the palette list. Not used if a palette is provided with
 #'   \code{col.palette}.
-#' @param ... Extra arguments given to \code{PlotInterpotationMax}, \code{PlotInterpotationAll}, \code{\link[graphics]{image}} and \code{\link[graphics]{points}}.
+#' @param leg.extra.args List of extra arguments for fine tuning legend, given
+#'   to \code{\link[fields]{image.plot}} and \code{\link{image.plot.legend}}.
+#'   Eg. \code{leg.extra.args = list(legend.lab="Ancestry Coef.",legend.cex=1.5)
+#'   }
+#' @param ... Extra arguments given to \code{\link[graphics]{image}} and
+#'   \code{\link[graphics]{points}} (via \code{PlotInterpotationMax},
+#'   \code{PlotInterpotationAll}).
 
 #'
 #' @details Details on interpolation methods: \code{\link{kriging}},
 #'   \code{\link{idw}}, \code{\link[fields]{Krig}}, \code{\link[gstat]{krige}}
-#' @seealso \code{\link[tess3r]{piechart.tess3Q}} to display piecharts on the
+#' @seealso \code{\link[tess3r]{piechartQ}} to display piecharts on the
 #'   map.
+#'
+#' @note This is not a gneric function.
 #'
 #' @return invisible(grid) The newly built grid if it was not already provided as an input.
 #'   This grid can be used in a later call of \code{plot.tess3Q} unless you want
 #'   to change the resolution or the input raster file. Note that the grid is invisible unless stored in an object.
+#'
+#' @note \code{plot(Q, coord, method = "map.max", ...)}  equivalent to \code{mapQ(Q, coord, method = "map.max", ...)}
+#'  \code{plot(Q, coord, method = "map.all", ...)}  equivalent to \code{mapQ(Q, coord, method = "map.all", ...)}
+#'
 #' @examples
 #' library(tess3r)
 #'
@@ -174,9 +179,9 @@ barplot.tess3Q = function(height, sort.by.Q = TRUE, col.palette = NULL, palette.
 #'  plot(Q.matrix, data.at$coord, method = "map.max", grid=savedgrid, legend=T, graphics.reset=FALSE)
 #'  plot(Q.matrix, data.at$coord, method = "piechart", add.pie=T, radius=.006)
 #' @export
-map.tess3Q <- function(x, coord, method = "map.max", resolution = c(300,300), window = NULL,
+mapQ <- function(x, coord, method = "map.max", resolution = c(300,300), window = NULL,
                         background = TRUE, raster.filename = NULL, interpolation.function = kriging(10),
-                        col.palette = NULL, map = TRUE, palette.length = 9, legend=FALSE, grid=NULL, ...) {
+                        col.palette = NULL, map = TRUE, palette.length = 9, legend=FALSE, grid=NULL,  leg.extra.args = list(), ...) {
 
 
   if (is.null(coord)) stop("Argument coord mandatory for map")
@@ -228,12 +233,12 @@ map.tess3Q <- function(x, coord, method = "map.max", resolution = c(300,300), wi
     message("Interpolating maximum ancestry coefficients on a grid...")
     list.grid.z <- interpolation.function(x, coord, grid$grid.x, grid$grid.y)
     message("Plotting the results...")
-    PlotInterpotationMax(coord, list.grid.z, grid$grid.x, grid$grid.y, grid$background, col.palette, map, legend = legend, ...)
+    PlotInterpotationMax(coord, list.grid.z, grid$grid.x, grid$grid.y, grid$background, col.palette, map, legend = legend, leg.extra.args = leg.extra.args, ...)
   } else if (method == "map.all") {
     message("Interpolating all ancestry coefficients on a grid...")
     list.grid.z <- interpolation.function(x, coord, grid$grid.x, grid$grid.y)
     message("Plotting the results...")
-    PlotInterpotationAll(coord, list.grid.z, grid$grid.x, grid$grid.y, grid$background, col.palette, map, legend = legend, ...)
+    PlotInterpotationAll(coord, list.grid.z, grid$grid.x, grid$grid.y, grid$background, col.palette, map, legend = legend, leg.extra.args = leg.extra.args, ...)
   }
 
     if (is.grid.new) invisible(grid)
@@ -289,9 +294,9 @@ map.tess3Q <- function(x, coord, method = "map.max", resolution = c(300,300), wi
 #'@param ... Additional parameters will be passed to
 #'  \code{\link[graphics]{plot}} and \code{\link[mapplots]{add.pie}}.
 #'@return None
-#'@details \code{piechart(q, coord, method="piechart", ...)} # equivalent to:
-#'  \code{plot(q, coord, method="piechart", ...)}
-#'@seealso  \code{\link{map.tess3Q}} to plot piecharts on top of interpolation
+#'@details \code{piechartQ(q, coord, method = "piechart", ...)} # equivalent to:
+#'  \code{plot(q, coord, method = "piechart", ...)}
+#'@seealso  \code{\link{mapQ}} to plot piecharts on top of interpolation
 #'  maps \code{\link[mapplots]{legend.bubble}}
 #' @examples
 #' library(tess3r)
@@ -299,44 +304,44 @@ map.tess3Q <- function(x, coord, method = "map.max", resolution = c(300,300), wi
 #' obj <- tess3(data.at$X, coord = data.at$coord,
 #'                  K = 5, ploidy = 1, openMP.core.num = 4)
 #' Q.matrix <- qmatrix(obj, K = 5)
-#' piechart(Q.matrix, data.at$coord, method="piechart")
+#' piechartQ(Q.matrix, data.at$coord, method = "piechart")
 #'
 #' # Display piecharts for groups of individuals (here group=country)
 #' # And change the default location of the pie labels with label.distx/y
-#' piechart(Q.matrix,data.at$coord, method="piechart.pop",
+#' piechartQ(Q.matrix,data.at$coord, method = "piechart.pop",
 #'    pop = data.at$countries, scale=F,
-#'    window=c(2,20,45,55),
-#'    radius = .02, cex =.6,
-#'    label.distx=1.3,label.disty=-.4)
+#'    window = c(2,20,45,55),
+#'    radius = .02, cex = .6,
+#'    label.distx = 1.3,label.disty=-.4)
 #'
 #'  # Scale the pie to the group sampling size
-#'  piechart(Q.matrix,data.at$coord, method="piechart.pop",
-#'    col=topo.colors(ncol(Q.matrix), alpha = 0.6),
+#'  piechartQ(Q.matrix,data.at$coord, method = "piechart.pop",
+#'    col = topo.colors(ncol(Q.matrix), alpha = 0.6),
 #'    pop = substr(data.at$countries,1,2),
-#'    window=c(2,20,45,55),
-#'    scale=T, radius=.06, cex = 1.2)
-#'  text(3,53,"Sampling size",cex=.7)
+#'    window = c(2,20,45,55),
+#'    scale = T, radius=.06, cex = 1.2)
+#'  text(3,53,"Sampling size", cex = .7)
 #'
-#'  # Change legend using leg.bubble.par a list of arguments passed to legend.bubble{mapplots}
-#'  piechart(Q.matrix,data.at$coord, method="piechart.pop",
+#'  # Change legend using leg.bubble.args a list of arguments passed to legend.bubble{mapplots}
+#'  piechartQ(Q.matrix,data.at$coord, method = "piechart.pop",
 #'    pop = substr(data.at$countries,1,2),
-#'    window=c(2,20,45,55),
+#'    window = c(2,20,45,55),
 #'    scale=T, radius=.06, cex = 1.2,
-#'    leg.bubble.par=list(x="bottomright",bty="n",lwd=4))
+#'    leg.bubble.args = list(x = "bottomright", bty = "n", lwd = 4))
 #'
 #'
 #'  # Display piecharts on top of a interpolated ancestry coefficient map
 #'  plot(Q.matrix, data.at$coord, method = "map.max",
 #'      resolution = c(300,300),
 #'      interpol = kriging(), cex = .4,
-#'      xlab = "Longitude", ylab= "Latitude", main = "Ancestry coefficients")
-#'  piechart(Q.matrix, data.at$coord, method = "piechart.pop",
-#'      pop = substr(data.at$countries,1,2),
-#'      scale=F, add.pie = T,radius=.015, cex = 1.2)
+#'      xlab = "Longitude", ylab = "Latitude", main = "Ancestry coefficients")
+#'  piechartQ(Q.matrix, data.at$coord, method = "piechart.pop",
+#'      pop = substr(data.at$countries, 1, 2),
+#'      scale = F, add.pie = T, radius = .015, cex = 1.2)
 #'
 #'
 #'@export
-piechart.tess3Q <- function(x, coord, method = "piechart", window = NULL,
+piechartQ <- function(x, coord, method = "piechart", window = NULL,
                         col.palette = NULL, map = TRUE, palette.length = 9, grid=NULL,
                         add.pie=FALSE, pop=NULL, names.pie=NULL, radius=0.01, scale= FALSE , ...) {
 
@@ -402,14 +407,14 @@ piechart.tess3Q <- function(x, coord, method = "piechart", window = NULL,
 #'   map. See  \code{\link[tess3r]{map}}} \item{ \code{"piechart"} or
 #'   \code{"piechart.pop"}. Piecharts of ancestry coefficients for each
 #'   individual or each population are displayed at sampled locations on a map.
-#'   See  \code{\link[tess3r]{piechart}} } }
+#'   See  \code{\link[tess3r]{piechartQ}} } }
 #' @param ... Additionnal parameters. Check corresponding functions
 #'   \code{\link[tess3r]{barplot}}, \link[tess3r]{map} and
-#'   \code{\link[tess3r]{piechart}} about parameter requirements.
+#'   \code{\link[tess3r]{piechartQ}} about parameter requirements.
 #' @export
 plot.tess3Q <- function(Q, coord=NULL, method="map.max", ...){
-  if (method %in% c("map.all","map.max")) return(map.tess3Q(Q, coord = coord, method = method,...))
-  if (method %in% c("piechart","piechart.pop")) return(piechart.tess3Q(Q, coord = coord, method = method,...))
+  if (method %in% c("map.all","map.max")) return(mapQ(Q, coord = coord, method = method,...))
+  if (method %in% c("piechart","piechart.pop")) return(piechartQ(Q, coord = coord, method = method,...))
   if (method %in% c("barplot")) return(barplot.tess3Q(Q, ...))
 
 }

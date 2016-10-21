@@ -14,7 +14,7 @@ test_that("Minimal example", {
   plot(q.matrix, data.for.test$coord, background = FALSE) #map les coeffs par krig
   p.values = pvalue(obj, K = 3) #get les pvaleurs
   expect_equal(dim(p.values), c(data.for.test$L, 1))
-  piechart(q.matrix, data.for.test$coord) #map les coeffs par krig
+  piechartQ(q.matrix, data.for.test$coord) #map les coeffs par krig
 
 
   })

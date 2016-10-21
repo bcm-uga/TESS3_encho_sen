@@ -140,19 +140,19 @@ test_that("test of Q plots", {
 
   ## PIECHARTS external functions ##
   # by individual
-  piechart(tess3.res$Q, data.at$coord, method = "piechart", main = "piechart", xlab = "x", ylab = "y", map = FALSE)
+  piechartQ(tess3.res$Q, data.at$coord, method = "piechart", main = "piechart", xlab = "x", ylab = "y", map = FALSE)
 
   plot(tess3.res$Q, data.at$coord, method = "piechart", main = "piechart", xlab = "x", ylab = "y",map = TRUE)
 
-  piechart(tess3.res$Q, data.at$coord, method = "piechart", window = c(0,20,40,50), main = "piechart",
+  piechartQ(tess3.res$Q, data.at$coord, method = "piechart", window = c(0,20,40,50), main = "piechart",
            xlab = "x", ylab = "y", col = rainbow(ncol(tess3.res$Q)))
 
-  piechart(tess3.res$Q, data.at$coord, method = "piechart", window = c(0,20,40,50),
+  piechartQ(tess3.res$Q, data.at$coord, method = "piechart", window = c(0,20,40,50),
            main = "piechart", xlab = "x", ylab = "y", col = rainbow(ncol(tess3.res$Q)), radius = .02)
   plot(tess3.res$Q, data.at$coord, method = "piechart", window = c(0,20,40,50),
            main = "piechart", xlab = "x", ylab = "y", col = rainbow(ncol(tess3.res$Q)), radius = .02)
   # by pop
-  piechart(tess3.res$Q, data.at$coord, method = "piechart.pop",
+  piechartQ(tess3.res$Q, data.at$coord, method = "piechart.pop",
       pop=data.at$countries,cex=.6)
 
   plot(tess3.res$Q, data.at$coord, method = "piechart.pop",
@@ -199,6 +199,13 @@ test_that("test of Q plots", {
 
   plot(tess3.res$Q, data.at$coord, method = "map.all",grid=gr, legend=T,graphics.reset=TRUE)
   plot(tess3.res$Q, data.at$coord, method = "piechart",add.pie=F)
+
+  # Generqates a warning
+  plot(tess3.res$Q, data.at$coord, method = "map.all",grid=gr, legend=T,graphics.reset=TRUE,legend.width=.5,legend.lab="test")
+
+
+  plot(tess3.res$Q, data.at$coord, method = "map.all",grid=gr,
+       legend=T,graphics.reset=TRUE,legend.width=.5,leg.extra.args=list(legend.lab="test"))
 
 })
 
