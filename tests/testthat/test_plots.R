@@ -200,13 +200,26 @@ test_that("test of Q plots", {
   plot(tess3.res$Q, data.at$coord, method = "map.all",grid=gr, legend=T,graphics.reset=TRUE)
   plot(tess3.res$Q, data.at$coord, method = "piechart",add.pie=F)
 
-  # Generqates a warning
-  plot(tess3.res$Q, data.at$coord, method = "map.all",grid=gr, legend=T,graphics.reset=TRUE,legend.width=.5,legend.lab="test")
+  # Generate  warnings
+  plot(tess3.res$Q, data.at$coord, method = "map.all", resolution=c(50,50), legend=T,
+       graphics.reset=TRUE,legend.width=.5,leg.extra.args=list(legend.lab="test"))
+  mapQ(tess3.res$Q, data.at$coord, xlab = "x", ylab="y", resolution=c(50,50), method="map.all", legend=T,
+       leg.extra.args=list(legend.mar=c(4,4,4,4)), legend.width=1)
 
 
   plot(tess3.res$Q, data.at$coord, method = "map.all",grid=gr,
        legend=T,graphics.reset=TRUE,legend.width=.5,leg.extra.args=list(legend.lab="test"))
 
-})
+  mapQ(tess3.res$Q, data.at$coord, xlab = "x", ylab="y", resolution=c(50,50), method="map.max", legend=T,
+       leg.extra.args=list(legend.lab="ac",legend.cex=2,legend.line=3), legend.width=1, layout.nkeys=2)
+
+  mapQ(tess3.res$Q, data.at$coord, xlab = "x", ylab="y", resolution=c(50,50), method="map.all", legend=T,
+       leg.extra.args=list(legend.lab="ac",legend.cex=2,legend.line=3,legend.mar=c(2)), legend.width=3)
+
+  mapQ(tess3.res$Q, data.at$coord, xlab = "x", ylab="y", resolution=c(50,50), method="map.max", legend=T,
+       leg.extra.args=list(legend.lab="ac",legend.cex=2,legend.line=3,legend.mar=c(1,1,1,1)), legend.width = 1.3)
+
+
+  })
 
 
