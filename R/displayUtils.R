@@ -1,6 +1,8 @@
 #################################
 ##### Useful extra functions ####
 #################################
+
+
 #' Group by population
 #' @title Group by population
 #' @description Computes ancestry coefficients and sampled coordinates averaged
@@ -66,10 +68,15 @@ bypop = function(Q,coord=NULL,pop) {
 
 
 #' Internal function for plotting gradient legend keys
-#' @description Slightly adapted from \link[fields]{image.plot}. Plots only legend key, no image.
-#' To make it compatible with multiple key plotting using layout
+#' @description Slightly adapted from \link[fields]{image.plot}. Plots only
+#'   legend key, no image. To make it compatible with multiple key plotting
+#'   using layout
+#' @param legend.mar A numerical vector of the form \code{c(bottom, left, top,
+#'   right)} which gives the number of lines of margin to be specified on the
+#'   four sides of the legend. Warning: this differs from
+#'   \code{\link[fields]{image.plot}} which takes a single value.
 #'
-#' @details See \code{\link[fields]{image.plot}} for further description
+#' @details See \code{\link[fields]{image.plot}} for description of other parameters.
 #'
 image.plot.legend = function (..., add = FALSE, breaks = NULL, nlevel = 64, col = NULL,
                               horizontal = FALSE, legend.shrink = 0.9, legend.width = 1.2,

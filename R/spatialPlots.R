@@ -158,7 +158,7 @@ PlotPiechartAncestryCoef <- function(Q, coord, window, col, map=T,
 #'
 PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background, col.palette, map,
                                  legend, horizontal = FALSE, graphics.reset = TRUE,
-                                 layout.nkeys = 3, legend.width = 1, leg.extra.args = list(), ...) {
+                                 legend.width = 1, layout.nkeys = 3, leg.extra.args = list(), ...) {
 
   # rmk : bag data structure for list.grid.z ...
 
@@ -223,8 +223,8 @@ PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background,
       if (class(plotting) == "try-error") {
         par(old.par)
         stop("Error, cannot display legend: \n", plotting, "\nSetting graphics parameters back to previous.
-           If error persists try to enlarge the plot area, or reset graphic device by calling dev.off() until all X devices are shut down
-           [warning: this will delete all your current plots].")
+           If error persists try the following options: (1) enlarge the plot area, (2) reset graphic device by calling dev.off() until all X devices are shut down
+           [warning: this will delete all your current plots], (3) set legend.width to a larger value.")
       }
     }
     if (!graphics.reset) {
@@ -277,6 +277,10 @@ PlotInterpotationAll <- function(coord, list.grid.z, grid.x, grid.y, background,
   old.par <- par(no.readonly = TRUE)
   for (k in 1:length(list.grid.z)) {
       if (legend) {
+        if (!is.null(leg.extra.args$legend.mar) & length(leg.extra.args$legend.mar)) {
+          leg.extra.args$legend.mar=leg.extra.args$legend.mar[1]
+          warning("Using only first element of legend.mar when method = \"map.all\". ")
+        }
          do.call( fields::image.plot, c( list( x = grid.x, y = grid.y, z = list.grid.z[[k]] * background,
                                                col = col.palette[[k]], legend.width = legend.width, horizontal = horizontal),
                                          leg.extra.args, list(...)) )
