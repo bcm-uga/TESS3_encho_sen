@@ -62,12 +62,12 @@ SanitizeRasterCalc <- function(raster,threshold=0.0) {
 #' @param ... Additional parameters will be passed to \code{plot} and
 #'   \code{\link[mapplots]{add.pie}}.
 #'
-PlotPiechartAncestryCoef <- function(Q, coord, window, col, map=T,
+PlotPiechartAncestryCoef <- function(Q, coord, window, col, map=TRUE,
                                      radius = 0.01,
                                      radius.prop = NULL,
                                      add.pie = FALSE, names.pie = NULL,
                                      label.distx = 0, label.disty = (window[4] - window[3])*0.02 ,
-                                     leg.bubble.args = list(x="topleft",y=NULL) , legend=T,
+                                     leg.bubble.args = list(x="topleft",y=NULL) , legend=TRUE,
                                      ...) {
 
   if (is.null(radius)) {
@@ -95,7 +95,7 @@ PlotPiechartAncestryCoef <- function(Q, coord, window, col, map=T,
   if (is.null(radius.prop)) {
     scaling <- rep(1, nrow(Q))
   } else {
-    scaling <- sqrt(radius.prop)/sqrt(max(radius.prop[isInWindow],na.rm=T))
+    scaling <- sqrt(radius.prop)/sqrt(max(radius.prop[isInWindow], na.rm=TRUE))
   }
   radius <- radius * scaling
 
@@ -154,8 +154,8 @@ PlotPiechartAncestryCoef <- function(Q, coord, window, col, map=T,
 #'
 #'  @examples
 #'  ## DO NOT RUN
-#'  PlotInterpotationMax(coord, list.grid.z, grid.x, grid.y, background = T, col.palette, map = T,
-#'    legend = T, horizontal = FALSE, graphics.reset = TRUE,
+#'  PlotInterpotationMax(coord, list.grid.z, grid.x, grid.y, background = TRUE, col.palette, map = TRUE,
+#'    legend = TRUE, horizontal = FALSE, graphics.reset = TRUE,
 #'    legend.ncol = 2, legend.width = 1.2, legend.space=c(4,3),
 #'    leg.extra.args = list(legend.lab="Ancestry Coef.",legend.cex=1.5)
 #'
@@ -217,7 +217,7 @@ PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background,
       par(mar=rep(0,4))
       graphics::frame()
       plotting <- try( do.call(img.plot.legend, c(list(x = grid.x, y = grid.y, z = list.grid.z[[k]] * background,
-                                                       col = col.palette[[k]], add = F,
+                                                       col = col.palette[[k]], add = FALSE,
                                                        horizontal = horizontal),
                                                     leg.extra.args)))
       if (class(plotting) == "try-error") {
@@ -262,8 +262,8 @@ PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background,
 #'
 #'  @examples
 #'  ## DO NOT RUN
-#'  PlotInterpotationAll(coord, list.grid.z, grid.x, grid.y, background = T, col.palette, map = T,
-#'    legend = T, horizontal = FALSE, graphics.reset = TRUE, legend.width = 1,
+#'  PlotInterpotationAll(coord, list.grid.z, grid.x, grid.y, background = TRUE, col.palette, map = TRUE,
+#'    legend = TRUE, horizontal = FALSE, graphics.reset = TRUE, legend.width = 1,
 #'    leg.extra.args = list(legend.lab="Ancestry Coef.",legend.cex=1.5))
 
 #'

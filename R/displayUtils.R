@@ -74,10 +74,41 @@ bypop = function(Q,coord=NULL,pop) {
 #'   legend key, no image. To make it compatible with multiple key plotting
 #'   using layout. Extra parameters for tuning legend configuration (eg spacing
 #'   between keys)
+#'
 #' @param legend.mar A vector of size 4 used for the number of lines of extra
-#'   margins around color keys (see ?par mar for details)
+#'   margins around color keys (see ?par mar for details). Differs from image.plot argument.
+#' @param ... Arguments given to \code{\link[graphics]{image}}
+#' @param add  see \code{\link[fields]{image.plot}}. Should be kept to FALSE.
+#' @param breaks Break points in sorted order to indicate the intervals for
+#'   assigning the colors. Note that if there are nlevel colors there should be
+#'   (nlevel+1) breakpoints. If breaks is not specified (nlevel+1) equally
+#'   spaced breaks are created where the first and last bin have their midpoints
+#'   at the minimum and maximum values in z or at zlim.
+#' @param nlevel Number of color levels used in legend strip
+#' @param col Color table to use for image
+#' @param horizontal TURE or FALSE. Horizontal or vertical legend strip?
+#' @param legend.shrink Not used
+#' @param legend.width Not used
+#' @param legend.lab Label for the axis of the color legend. Default is no label
+#'   as this is usual evident from the plot title.
+#' @param legend.line Distance in units of character height (as in mtext) of the
+#'   legend label from the color bar. Make this larger if the label collides
+#'   with the color axis labels.
+#' @param lab.breaks Not used
+#' @param axis.args Additional arguments for the axis function used to create
+#'   the legend axis.
+#' @param legend.args Arguments for a complete specification of the legend
+#'   label. This is in the form of list and is just passed to the mtext
+#'   function.
+#' @param legend.cex Character expansion to change size of the legend label.
+#' @param midpoint See \code{\link[fields]{image.plot}}.
+#' @param border See \code{\link[fields]{image.plot}}.
+#' @param lwd Line width.
+#' @param verbose Extra printing
 #' @details See \code{\link[fields]{image.plot}} for description of other
-#'   parameters.
+#'   parameters. Some arguments were kept only to match
+#'   \link[fields]{image.plot} but are not used by this function (eg
+#'   legend.shrink and legend.width)
 #'
 img.plot.legend = function (..., add = FALSE, breaks = NULL, nlevel = 64, col = NULL,
                               horizontal = FALSE, legend.shrink = NA, legend.width = NA,
@@ -88,7 +119,7 @@ img.plot.legend = function (..., add = FALSE, breaks = NULL, nlevel = 64, col = 
 {
   #  old.par <- par(no.readonly = TRUE)
   if (is.null(col)) {
-    col <- tim.colors(nlevel)
+    col <- fields::tim.colors(nlevel)
   }
   else {
     nlevel <- length(col)
@@ -139,7 +170,7 @@ img.plot.legend = function (..., add = FALSE, breaks = NULL, nlevel = 64, col = 
                                                          1, 4), line = legend.line, cex = legend.cex)
   }
   if (!is.null(legend.args)) {
-    do.call(mtext, legend.args)
+    do.call(graphics::mtext, legend.args)
   }
 
 }
@@ -162,7 +193,7 @@ img.plot.legend = function (..., add = FALSE, breaks = NULL, nlevel = 64, col = 
 #' require(graphics)
 #' require(tess3r)
 #' im <- img.plot.legend.setup(K=5, legend.ncol=2,
-#'            legend.space=c(3,4), legend.width=3, horizontal=F)
+#'            legend.space=c(3,4), legend.width=3, horizontal=FALSE)
 #' # Layout on which the map and keys will be displayed
 #' layout.show(im$nn)
 #' # Reset graphic device for future plots

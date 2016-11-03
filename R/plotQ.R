@@ -199,24 +199,25 @@ barplot.tess3Q = function(height, sort.by.Q = TRUE, col.palette = NULL, palette.
 #'      xlab = "Longitude", ylab= "Latitude", main = "idw() interpolation")
 #'
 #'  # Display legend
-#'  plot(Q.matrix, data.at$coord, method = "map.max",grid=savedgrid, legend=T,
+#'  plot(Q.matrix, data.at$coord, method = "map.max",grid=savedgrid, legend=TRUE,
 #'      legend.ncol = 2, legend.space= c(5,3), legend.width = 2,
 #'      xlab = "Longitude", ylab= "Latitude", main = "Ancestry coefficients")
 #'
 #'  # Horizontal legend
-#'  plot(Q.matrix, data.at$coord, method = "map.max",grid=savedgrid, legend=T, horizontal=T,
+#'  plot(Q.matrix, data.at$coord, method = "map.max",grid=savedgrid, legend=TRUE, horizontal=TRUE,
 #'      xlab = "Longitude", ylab= "Latitude", main = "Ancestry coefficients")
 #'
 #'  # Display piecharts on top of the map, use  graphics.reset=FALSE
 #'  # See ?piechartQ for more examples
-#'  plot(Q.matrix, data.at$coord, method = "map.max", grid=savedgrid, legend=T, graphics.reset=FALSE)
-#'  plot(Q.matrix, data.at$coord, method = "piechart", add.pie=T, radius=.006)
+#'  plot(Q.matrix, data.at$coord, method = "map.max", grid=savedgrid,
+#'      legend=TRUE, graphics.reset=FALSE)
+#'  plot(Q.matrix, data.at$coord, method = "piechart", add.pie=TRUE, radius=.006)
 #'  # Reset graphic device for later plots:
 #'  dev.off()
 #'
 #'  # Tune legend (Number of keys per column, key size, names, font size, position)
 #'  plot(Q.matrix, data.at$coord, xlab = "x", ylab="y", grid=savedgrid,
-#'    method="map.max", legend=T, legend.width = 2.8,
+#'    method="map.max", legend=TRUE, legend.width = 2.8,
 #'    legend.ncol = 1, legend.space = c(8,3),
 #'    leg.extra.args = list(legend.lab = "Anc. coeff.", legend.cex = .8, legend.line = 3))
 #'
@@ -368,7 +369,7 @@ mapQ <- function(x, coord, method = "map.max", resolution = c(300,300), window =
 #' # Display piecharts for groups of individuals (here group=country)
 #' # And change the default location of the pie labels using label.distx/y arguments
 #' piechartQ(Q.matrix,data.at$coord, method = "piechart.pop",
-#'    pop = data.at$countries, scale=F,
+#'    pop = data.at$countries, scale=FALSE,
 #'    window = c(2,20,45,55),
 #'    radius = .02, cex = .6,
 #'    label.distx = 1.3,label.disty=-.4)
@@ -378,18 +379,18 @@ mapQ <- function(x, coord, method = "map.max", resolution = c(300,300), window =
 #'    col = topo.colors(ncol(Q.matrix), alpha = 0.6),
 #'    pop = data.at$countries,
 #'    window = c(2,20,45,55),
-#'    scale = T, radius=.06, cex = 1.2)
+#'    scale = TRUE, radius=.06, cex = 1.2)
 #'  text(3,52.2,"Sampling size", cex = .7)
 #'
 #'  # Change legend using leg.bubble.args a list of arguments passed to legend.bubble{mapplots}
 #'  # And change pie name: select only 2 first letters of each country name
 #'  # Warning codes are ambiguous (eg Po stads for Portugal and Poland)
 #'  # They are used for printing not for grouping
-#'  country.codes <- substr(unique(countries), 1, 2)
+#'  country.codes <- substr(unique(data.at$countries), 1, 2)
 #'  piechartQ(Q.matrix,data.at$coord, method = "piechart.pop",
 #'    pop = data.at$countries, names.pie = country.codes,
 #'    window = c(2,20,45,55),
-#'    scale=T, radius=.06, cex = 1.2,
+#'    scale=TRUE, radius=.06, cex = 1.2,
 #'    leg.bubble.args = list(x = "bottomright", bty = "n", lwd = 4))
 #'
 #'
@@ -400,7 +401,7 @@ mapQ <- function(x, coord, method = "map.max", resolution = c(300,300), window =
 #'      xlab = "Longitude", ylab = "Latitude", main = "Ancestry coefficients")
 #'  piechartQ(Q.matrix, data.at$coord, method = "piechart.pop",
 #'      pop = data.at$countries, names.pie = country.codes,
-#'      scale = F, add.pie = T, radius = .015, cex = 1.2)
+#'      scale = FALSE, add.pie = TRUE, radius = .015, cex = 1.2)
 #'
 #'
 #'@export
@@ -479,30 +480,23 @@ piechartQ <- function(x, coord, method = "piechart", window = NULL,
 #' @return Generates a graphical output.
 #' @seealso  \code{\link{mapQ}}, \code{\link{piechartQ}},  \code{\link[tess3r]{barplot.tess3Q}}
 #' @seealso \code{\link{as.qmatrix}} and \code{\link{CreatePalette}}
-#' @examples
-#' ## DO NOT RUN
-#' # If Q has class "tess3Q" :
-#' plot(Q, coord, method = "map.max", ...)
-#' # equivalent to:
-#' mapQ(Q, coord, method = "map.max", ...)
+#' @note
+#' If Q has class "tess3Q" :
 #'
-#' plot(Q, coord, method = "map.all", ...)
-#' # equivalent to:
-#' mapQ(Q, coord, method = "map.all", ...)
+#' \code{plot(Q, coord, method = "map.max", ...)}  equivalent to:
+#'   \code{mapQ(Q, coord, method = "map.max", ...)}
 #'
-#' plot(Q, coord, method = "piechart", ...)
-#' # equivalent to:
-#' piechartQ(Q, coord, method = "piechart", ...)
+#' \code{plot(Q, coord, method = "map.all", ...)}  equivalent to:
+#'   \code{ mapQ(Q, coord, method = "map.all", ...)}
 #'
-#' plot(Q, coord, method = "piechart.pop", pop = poplabels, ...)
-#' #' # equivalent to:
-#' piechartQ(Q, coord, method = "piechart.pop", pop = poplabels, ...)
+#' \code{plot(Q, coord, method = "piechart", ...)}  equivalent to:
+#'   \code{piechartQ(Q, coord, method = "piechart", ...)}
 #'
-#' plot(Q, method = "barplot", ...)
-#' #' # equivalent to:
-#' barplot(Q, ...)
+#' \code{plot(Q, coord, method = "piechart.pop", pop = poplabels, ...)}  equivalent to:
+#'   \code{piechartQ(Q, coord, method = "piechart.pop", pop = poplabels, ...)}
 #'
-#' ## END DO NOT RUN
+#' \code{plot(Q, method = "barplot", ...)}  equivalent to:
+#'   \code{ barplot(Q, ...)}
 #'
 #' @export
 plot.tess3Q <- function(x, coord=NULL, method="map.max", ...){
