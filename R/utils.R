@@ -201,6 +201,28 @@ as.qmatrix <- function(Q){
 #' plot(obj$Q, data.at$coord, method = "map.max", col.palette = my.palette,
 #'      interpol = kriging(10), cex = .4, xlab = "Longitude", ylab= "Latitude",
 #'      main = "Ancestry coefficients")
+#'
+#' # Note that the default palette is given by the following
+#' # You can permute lines to change the color ordering
+#' # or check display.brewer.all()
+#' require("RColorBrewer")
+#' palette.length <- 9
+#' my.palette = list(
+#'      c(brewer.pal(palette.length,"Reds")),
+#'      c(brewer.pal(palette.length,"Greens")),
+#'      c(brewer.pal(palette.length,"Blues")),
+#'      c(brewer.pal(palette.length,"YlOrBr")),
+#'      c(brewer.pal(palette.length,"RdPu")),
+#'      c(brewer.pal(palette.length,"Greys")),
+#'      c(brewer.pal(palette.length,"Purples")),
+#'      c(brewer.pal(palette.length,"Oranges")))
+#' obj <- tess3(data.at$X, coord = data.at$coord, K = 8, ploidy = 1,
+#'      openMP.core.num = 4)
+#' Qmatrix <- qmatrix(obj,K=8)
+#' plot(obj$Q, data.at$coord, method = "map.max", col.palette = my.palette,
+#'      interpol = kriging(10), cex = .4, xlab = "Longitude", ylab= "Latitude",
+#'      main = "Ancestry coefficients")
+#'
 #' @export
 CreatePalette <- function(color.vector = c("tomato", "chartreuse", "gold", "blue", "violet", "wheat","olivedrab"), palette.length = 9){
   ll = NULL
