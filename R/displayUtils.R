@@ -74,7 +74,7 @@ bypop = function(Q,coord=NULL,pop) {
 #'   legend key, no image. To make it compatible with multiple key plotting
 #'   using layout. Extra parameters for tuning legend configuration (eg spacing
 #'   between keys)
-#' @param legend.mar A vactor of size 4 used for the number of lines of extra
+#' @param legend.mar A vector of size 4 used for the number of lines of extra
 #'   margins around color keys (see ?par mar for details)
 #' @details See \code{\link[fields]{image.plot}} for description of other
 #'   parameters.
