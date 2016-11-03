@@ -443,9 +443,10 @@ as.tess3Q <- function(x) {
   if ("tess3Q" %in% class(x)) return(x)
   if (!is.data.frame(x) && !is.matrix(x)) stop("Cannot object of class", class(x), "to tess3Q")
   x <- apply(x, 1:2, as.numeric)
-  if (sum(is.na(x)) !=0 ) stop("Error: NAs in input or introduced while converting to numeric")
-  rowsum.not.one <- apply(x,1, function(v) !isTRUE(all.equal(sum(v),1)) ) # avoid '==' for floating points
-  if (sum(rowsum.not.one) !=0 ) stop("Error: rows of a tess3Q object must sum to 1")
+  if (sum(is.na(x)) !=0) stop("Error: NAs in input or introduced while converting to numeric")
+  if (min(x) < 0) stop("Error: Negative values not allowed")
+  rowsum.not.one <- apply(x,1, function(v) !isTRUE(all.equal(sum(v),1)) ) # avoid '==' for floating values
+  if (sum(rowsum.not.one) !=0) stop("Error: rows of a tess3Q object must sum to 1")
   class(x) <- "tess3Q"
   return(x)
 }
