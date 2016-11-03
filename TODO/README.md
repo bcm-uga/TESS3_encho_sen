@@ -8,6 +8,7 @@
 - Documentation : TODOC comments and others...
 - Release sur CRAN : http://r-pkgs.had.co.nz/release.html + Release sur github
 - plot with ggplot and add to vignette
+- error : envoyer vers issus de github
 
 ## Vignette
 - css
