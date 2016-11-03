@@ -193,31 +193,43 @@ test_that("test of Q plots", {
   plot(tess3.res$Q, data.at$coord, method = "piechart",add.pie=T)
   dev.off()
 
-  plot(tess3.res$Q, data.at$coord, method = "map.all",grid=gr, legend=T,graphics.reset=FALSE)
+  plot(tess3.res$Q, data.at$coord, method = "map.all",grid=gr, legend=T,graphics.reset=FALSE, ylab="y",xlab="x")
   plot(tess3.res$Q, data.at$coord, method = "piechart",add.pie=T)
   dev.off()
 
-  plot(tess3.res$Q, data.at$coord, method = "map.all",grid=gr, legend=T,graphics.reset=TRUE)
+  plot(tess3.res$Q, data.at$coord, method = "map.all",grid=gr, legend=T,graphics.reset=TRUE, ylab="y",xlab="x")
+
   plot(tess3.res$Q, data.at$coord, method = "piechart",add.pie=F)
 
-  # Generate  warnings
-  plot(tess3.res$Q, data.at$coord, method = "map.all", resolution=c(50,50), legend=T,
+  plot(tess3.res$Q, data.at$coord, method = "map.all", resolution=c(50,50), legend=T, ylab="y",xlab="x",
        graphics.reset=TRUE,legend.width=.5,leg.extra.args=list(legend.lab="test"))
-  mapQ(tess3.res$Q, data.at$coord, xlab = "x", ylab="y", resolution=c(50,50), method="map.all", legend=T,
-       leg.extra.args=list(legend.mar=c(4,4,4,4)), legend.width=1)
+  plot(tess3.res$Q, data.at$coord, xlab = "x", ylab="y", resolution=c(50,50), method="map.all", legend=T,
+       leg.extra.args=list(legend.mar=c(4)), legend.width=1)
 
 
-  plot(tess3.res$Q, data.at$coord, method = "map.all",grid=gr,
+  plot(tess3.res$Q, data.at$coord, ylab="y",xlab="x", method = "map.all",grid=gr,
        legend=T,graphics.reset=TRUE,legend.width=.5,leg.extra.args=list(legend.lab="test"))
 
-  mapQ(tess3.res$Q, data.at$coord, xlab = "x", ylab="y", resolution=c(50,50), method="map.max", legend=T,
-       leg.extra.args=list(legend.lab="ac",legend.cex=2,legend.line=3), legend.width=1, layout.nkeys=2)
+  plot(tess3.res$Q, data.at$coord, xlab = "x", ylab="y", resolution=c(50,50), method="map.max", legend=T,
+       leg.extra.args=list(legend.lab="ac",legend.cex=2,legend.line=3), legend.width=1, legend.ncol=3)
 
-  mapQ(tess3.res$Q, data.at$coord, xlab = "x", ylab="y", resolution=c(50,50), method="map.all", legend=T,
+  plot(tess3.res$Q, data.at$coord, xlab = "x", ylab="y", resolution=c(50,50), method="map.all", legend=T,
        leg.extra.args=list(legend.lab="ac",legend.cex=2,legend.line=3,legend.mar=c(2)), legend.width=3)
 
-  mapQ(tess3.res$Q, data.at$coord, xlab = "x", ylab="y", resolution=c(50,50), method="map.max", legend=T,
-       leg.extra.args=list(legend.lab="ac",legend.cex=2,legend.line=3,legend.mar=c(1,1,1,1)), legend.width = 1.3)
+
+  plot(tess3.res$Q, data.at$coord, xlab = "x", ylab="y", resolution=c(50,50), method="map.max", legend=T,
+       leg.extra.args=list(legend.lab="ac",legend.cex=2,legend.line=3,legend.mar=c(0.1,0.1,0.1,0.1)), legend.width = 1.3)
+
+
+
+  tess3.res = tess3r::tess3(X = data.at$X,
+                            coord = data.at$coord, K = 5, ploidy = 1, lambda = 1.0)
+  plot(tess3.res$Q, data.at$coord, background = FALSE, legend=T,legend.ncol=1)
+  plot(tess3.res$Q, data.at$coord, background = FALSE, legend=T,legend.ncol=2)
+  plot(tess3.res$Q, data.at$coord, background = FALSE, legend=T,legend.ncol=3)
+  #plot(tess3.res$Q, data.at$coord, background = FALSE, legend=T,legend.ncol=5)
+  plot(tess3.res$Q, data.at$coord, background = FALSE, legend=T,legend.ncol=1,horizontal=T)
+  plot(tess3.res$Q, data.at$coord, background = FALSE, legend=T,legend.ncol=3,horizontal=T)
 
 
   })
