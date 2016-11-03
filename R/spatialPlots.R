@@ -50,6 +50,7 @@ SanitizeRasterCalc <- function(raster,threshold=0.0) {
 #'   individuals for each group. Each pie area will be scaled to this number.
 #' @param add.pie If TRUE pie chart are added to current plot, if FALSE a new
 #'   plot is created.
+#'@param names.pie Labels for pie charts (one per pie).
 #' @param label.distx For pie label location: distance to pie center on the
 #'   xaxis.
 #' @param label.disty For pie label location: distance to the pie top edge on
@@ -109,7 +110,7 @@ PlotPiechartAncestryCoef <- function(Q, coord, window, col, map=T,
                      radius = radius[i],
                      col = col, labels=NA, ...)
 
-      text(coord[i,1]+label.distx,coord[i,2]+radius[i]+label.disty,labels=names.pie[i],...) #+radius[i]
+      graphics::text(coord[i,1]+label.distx,coord[i,2]+radius[i]+label.disty,labels=names.pie[i],...) #+radius[i]
     }
 
     if (!is.null(radius.prop) && !is.null(leg.bubble.args) && legend) {
@@ -141,24 +142,27 @@ PlotPiechartAncestryCoef <- function(Q, coord, window, col, map=T,
 #' @param graphics.reset If \code{FALSE} the plotting parameters will not be
 #'   reset and one can add more information onto the image plot. Use false if
 #'   you want to display piecharts on top of the map.
-#' @param layout.nkeys Integer. Number of color keys by column (resp. row) in
-#'   legend when \code{horizontal = FALSE} (resp. \code{TRUE})
-#' @param legend.width Width of each column (rep row) for the vertical (resp
-#'   horizontal) legend (default is 1). The total size allocated to the whole
-#'   plot (map+legend) is set to 10.
-#' @param leg.extra.args List of extra arguments given to \code{\link{image.plot.legend}}
+#' @param legend.ncol Number of columns (resp. rows)  in legend when \code{horizontal = FALSE} (resp. \code{TRUE}).
+#' @param legend.width Width (number of lines) of each column (resp. row) for the vertical (resp.
+#'   horizontal) legend.
+#' @param legend.space vector of size two  (x-s, y-axis) for the space size (number of lines) between keys.
+#' @param leg.extra.args List of extra arguments given to
+#'   \code{\link{img.plot.legend}}. Eg list(legend.space = 2, legend.lab =
+#'   "coef")
 #' @param ... Extra arguments given to \code{\link[graphics]{image}} and
 #'   \code{\link[graphics]{points}}.
 #'
 #'  @examples
 #'  ## DO NOT RUN
 #'  PlotInterpotationMax(coord, list.grid.z, grid.x, grid.y, background = T, col.palette, map = T,
-#'    legend = T, horizontal = FALSE, graphics.reset = TRUE, layout.nkeys = 2, legend.width = 1.2,
-#'    leg.extra.args = list(legend.lab="Ancestry Coef.",legend.cex=1.5))
+#'    legend = T, horizontal = FALSE, graphics.reset = TRUE,
+#'    legend.ncol = 2, legend.width = 1.2, legend.space=c(4,3),
+#'    leg.extra.args = list(legend.lab="Ancestry Coef.",legend.cex=1.5)
 #'
 PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background, col.palette, map,
                                  legend, horizontal = FALSE, graphics.reset = TRUE,
-                                 legend.width = 1, layout.nkeys = 3, leg.extra.args = list(), ...) {
+                                 legend.width = 3, legend.ncol = ceiling(length(list.grid.z)/3),
+                                 legend.space=c(3,4), leg.extra.args = list(), ...) {
 
   # rmk : bag data structure for list.grid.z ...
 
@@ -175,19 +179,15 @@ PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background,
     }
   }
 
+
+  old.par <- par(no.readonly = TRUE)
   if (legend) {
-    layout.width <-10
-    old.par <- par(no.readonly = TRUE)
-    K <- length(list.grid.z)
-    layout.nrow <- layout.nkeys
-    layout.ncol <- ceiling(K/layout.nrow) + 1
-    if (!horizontal) {
-      layout(matrix(c(rep(1,layout.nrow),2:((layout.ncol-1)*layout.nrow+1)),ncol=layout.ncol),
-             width=c(layout.width - legend.width*(layout.ncol-1),rep(legend.width,layout.ncol-1)))
-    } else {
-      layout(t(matrix(c(rep(1,layout.nrow),2:((layout.ncol-1)*layout.nrow+1)),ncol=layout.ncol)),
-             height=c(layout.width - legend.width*(layout.ncol-1),rep(legend.width,layout.ncol-1)))
-    }
+    message(paste("For better display rendering try the following options:",
+                  "(1) reset graphic device by calling dev.off() until all X devices are shut ",
+                  "(2) enlarge the plot area,",
+                  "(3) change legend.width, legend.space and legend.ncol values.",sep="\n"))
+
+    imsetup <- img.plot.legend.setup(K = length(list.grid.z), legend.ncol, legend.space, legend.width, horizontal)
   }
   for (k in 1:length(list.grid.z)) {
     plotting <- try(image(grid.x, grid.y,
@@ -198,9 +198,8 @@ PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background,
     )
     if (class(plotting) == "try-error") {
       par(old.par)
-      stop("Error: \n", plotting, "\nSetting graphics parameters back to previous.
-           If error persists try to enlarge the plot area, or reset graphic device by calling dev.off() until all X devices are shut down
-           [warning: this will delete all your current plots].")
+      stop("Error, cannot display map: \n", plotting, "\nSetting graphics parameters back to previous.",
+                 "\nIf error persists try above recommendations and decrease legend.width.")
     }
   }
   map.par <- par(no.readonly = TRUE)
@@ -215,23 +214,24 @@ PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background,
   # Potting gradient legend keys
   if (legend) {
     for (k in 1:length(list.grid.z)) {
-      plotting <- try( do.call(image.plot.legend, c(list(x = grid.x, y = grid.y, z = list.grid.z[[k]] * background,
+      par(mar=rep(0,4))
+      graphics::frame()
+      plotting <- try( do.call(img.plot.legend, c(list(x = grid.x, y = grid.y, z = list.grid.z[[k]] * background,
                                                        col = col.palette[[k]], add = F,
-                                                       horizontal = horizontal, main.par = old.par),
-                                                    leg.extra.args))
-      )
+                                                       horizontal = horizontal),
+                                                    leg.extra.args)))
       if (class(plotting) == "try-error") {
         par(old.par)
-        stop("Error, cannot display legend: \n", plotting, "\nSetting graphics parameters back to previous.
-           If error persists try the following options: (1) enlarge the plot area, (2) reset graphic device by calling dev.off() until all X devices are shut down
-           [warning: this will delete all your current plots], (3) set legend.width to a larger value.")
+        stop("Error, cannot display legend: \n", plotting, "\nSetting graphics parameters back to previous.",
+             "\nIf error persists try above recommendations and increase legend.width.")
       }
+      if (k %% imsetup$column.nkey == 0) {graphics::frame(); graphics::frame()} #extra empty frame at the end of the column + one empty column.  (or row)
+
     }
     if (!graphics.reset) {
       par(mfg=c(1,1))
       par(plt=map.par$plt)
       par(usr=map.par$usr)
-      set.par <- par(no.readonly = TRUE)
     } else {
       par(old.par)
     }
@@ -250,7 +250,7 @@ PlotInterpotationMax <- function(coord, list.grid.z, grid.x, grid.y, background,
 #' @param col.palette List of color palette.
 #' @param map If true map function of maps package is call to plot polygon from
 #'   map database.
-#' @param legend Boolean. Plot the color gradient legend?
+#' @param legend Boolean. Plot the color graddevtools::install_github("rstudio/rmarkdown")ient legend?
 #' @param horizontal Boolean. Horizontal position for legend key?
 #' @param graphics.reset If \code{FALSE} the plotting parameters will not be
 #'   reset and one can add more information onto the image plot. Use FALSE if
@@ -277,7 +277,7 @@ PlotInterpotationAll <- function(coord, list.grid.z, grid.x, grid.y, background,
   old.par <- par(no.readonly = TRUE)
   for (k in 1:length(list.grid.z)) {
       if (legend) {
-        if (!is.null(leg.extra.args$legend.mar) & length(leg.extra.args$legend.mar)) {
+        if (!is.null(leg.extra.args$legend.mar) & length(leg.extra.args$legend.mar)>1) {
           leg.extra.args$legend.mar=leg.extra.args$legend.mar[1]
           warning("Using only first element of legend.mar when method = \"map.all\". ")
         }
