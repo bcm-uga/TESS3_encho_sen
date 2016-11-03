@@ -32,7 +32,9 @@
 #' # or
 #' pop = rep(1:3,each=50)
 #' # or (only if individuals are ordered by population)
-#' pop = unlist(lapply(1:data.for.test$K,FUN= function(i) rep(paste("pop",i,sep=""),data.for.test$n.by.pop[i])))
+#' pop = unlist(lapply(1:data.for.test$K,
+#'                    FUN= function(i) rep(paste("pop",i,sep=""),
+#'                    data.for.test$n.by.pop[i])))
 #'
 #' info.bypop = bypop(data.for.test$Q, data.for.test$coord, pop)
 #' barplot(info.bypop$Q)
@@ -70,22 +72,21 @@ bypop = function(Q,coord=NULL,pop) {
 #' Internal function for plotting gradient legend keys
 #' @description Slightly adapted from \link[fields]{image.plot}. Plots only
 #'   legend key, no image. To make it compatible with multiple key plotting
-#'   using layout
-#' @param legend.mar A numerical vector of the form \code{c(bottom, left, top,
-#'   right)} which gives the number of lines of margin to be specified on the
-#'   four sides of the legend. Warning: this differs from
-#'   \code{\link[fields]{image.plot}} which takes a single value.
+#'   using layout. Extra parameters for tuning legend configuration (eg spacing
+#'   between keys)
+#' @param legend.mar A vactor of size 4 used for the number of lines of extra
+#'   margins around color keys (see ?par mar for details)
+#' @details See \code{\link[fields]{image.plot}} for description of other
+#'   parameters.
 #'
-#' @details See \code{\link[fields]{image.plot}} for description of other parameters.
-#'
-image.plot.legend = function (..., add = FALSE, breaks = NULL, nlevel = 64, col = NULL,
-                              horizontal = FALSE, legend.shrink = 0.9, legend.width = 1.2,
-                              legend.mar = NULL, legend.lab = NULL,
-                              legend.line = 2, lab.breaks = NULL,
+img.plot.legend = function (..., add = FALSE, breaks = NULL, nlevel = 64, col = NULL,
+                              horizontal = FALSE, legend.shrink = NA, legend.width = NA,
+                              legend.mar = rep(0,4),
+                              legend.lab = NULL, legend.line = 2, lab.breaks = NULL,
                               axis.args = NULL, legend.args = NULL, legend.cex = 1, midpoint = FALSE,
-                              border = NA, lwd = 1, verbose = FALSE, main.par=NULL)
+                              border = NA, lwd = 1, verbose = FALSE)
 {
-  old.par <- par(no.readonly = TRUE)
+  #  old.par <- par(no.readonly = TRUE)
   if (is.null(col)) {
     col <- tim.colors(nlevel)
   }
@@ -111,21 +112,8 @@ image.plot.legend = function (..., add = FALSE, breaks = NULL, nlevel = 64, col 
     print(iz)
     print(col)
   }
-  if (is.null(legend.mar)) {
-    if (is.null(main.par)) {
-        legend.mar <- old.par$mar
-      } else {
-        legend.mar <- main.par$mar
-      }
-    if (horizontal) {
-      legend.mar[3] <-  0
-      legend.mar[1] <- 5.1
-    } else  {
-      legend.mar[2] <-  0
-      legend.mar[4] <- 4.1
-    }
-  }
-  par(mar=legend.mar)
+
+  if (!is.null(legend.mar))  par(mar = legend.mar)
   if (!horizontal) {
     image(ix, iy, iz, xaxt = "n", yaxt = "n", xlab = "",
           ylab = "", col = col, breaks = breaks, add = add)
@@ -145,7 +133,7 @@ image.plot.legend = function (..., add = FALSE, breaks = NULL, nlevel = 64, col 
                    axis.args)
   }
   do.call("axis", axis.args)
-  box()
+  graphics::box()
   if (!is.null(legend.lab)) {
     legend.args <- list(text = legend.lab, side = ifelse(horizontal,
                                                          1, 4), line = legend.line, cex = legend.cex)
@@ -154,6 +142,73 @@ image.plot.legend = function (..., add = FALSE, breaks = NULL, nlevel = 64, col 
     do.call(mtext, legend.args)
   }
 
-  #par(old.par)
 }
 
+
+#' Setup correct layout for multiple key legend
+#' @description Internal function called by \link{PlotInterpotationMax}
+#' @param K Number of clusters (ie number of color keys)
+#' @param legend.ncol Number of columns (resp. rows)  in legend when
+#'   \code{horizontal = FALSE} (resp. \code{TRUE}).
+#' @param legend.space vector of size two  (x-s, y-axis) for the space size
+#'   (number of lines) between color keys.
+#' @param legend.width Width (number of lines) of each column (resp. row) for
+#'   the vertical (resp. horizontal) legend.
+#' @param horizontal Boolean. Horizontal position for legend key?
+#' @return the number of figures in the layout (invisibly)
+#' @seealso \code{\link[graphics]{layout}}
+#' @export
+#' @examples
+#' require(graphics)
+#' require(tess3r)
+#' im <- img.plot.legend.setup(K=5, legend.ncol=2,
+#'            legend.space=c(3,4), legend.width=3, horizontal=F)
+#' # Layout on which the map and keys will be displayed
+#' layout.show(im$nn)
+#' # Reset graphic device for future plots
+#' dev.off()
+#'
+img.plot.legend.setup = function(K, legend.ncol, legend.space, legend.width, horizontal) {
+  op <- par()
+  column.nkey <- ceiling(K/legend.ncol) #umber of color keys per layout column
+  layout.ncol <- legend.ncol*2+2 # adding 1 column for main plot and space columns
+  layout.nrow <- column.nkey*2 + 1 # counting empty columns used for spacing + right margin
+
+  if (horizontal) {
+    nlines <- op$cra[1]/op$cin[1]
+    key.size <- (nlines - op$mar[4] - op$mar[2] - (column.nkey-1)*legend.space[2])/column.nkey
+  } else {
+    nlines <- op$cra[2]/op$cin[2]
+    key.size <- (nlines - op$mar[3] - op$mar[1] - (column.nkey-1)*legend.space[1])/column.nkey
+  }
+  if (key.size <0) stop("Error: Figure too large, decrease legend.space or increase legend.ncol")
+  #
+  #     if (!horizontal) {
+  #       layout(matrix(c(rep(1,layout.nrow),2:((layout.ncol-1)*layout.nrow+1)),ncol=layout.ncol),
+  #              width=c(layout.width - legend.width*(layout.ncol-1),rep(legend.width,layout.ncol-1)))
+  #     } else {
+  #       layout(t(matrix(c(rep(1,layout.nrow),2:((layout.ncol-1)*layout.nrow+1)),ncol=layout.ncol)),
+  #              height=c(layout.width - legend.width*(layout.ncol-1),rep(legend.width,layout.ncol-1)))
+  #     }
+
+  refvec = c(1:layout.nrow,rep(layout.nrow+1,layout.nrow))+1
+  layout.indexes = c(sapply(1:legend.ncol, FUN=function(col) refvec+(layout.nrow+1)*(col-1)))
+  layout.indexes = c(layout.indexes, rep(max(layout.indexes)+1,layout.nrow))
+
+  if (!horizontal) {
+    nn <- graphics::layout(matrix(c(rep(1,layout.nrow),layout.indexes),ncol=layout.ncol),
+                 width = c(nlines - legend.width*(layout.ncol-1),
+                           rep(c(legend.width,legend.space[1]),legend.ncol), op$mar[4]),
+                 height = c(op$mar[3],rep(c(legend.space[2],key.size),column.nkey)[-1],op$mar[1])
+    )
+  } else {
+    nn <- graphics::layout(t(matrix(c(rep(1,layout.nrow),layout.indexes),ncol=layout.ncol)),
+                 height = c(nlines - legend.width*(layout.ncol-1),
+                            rep(c(legend.width,legend.space[2]),legend.ncol), op$mar[1]),
+                 width = c(op$mar[2],rep(c(legend.space[1],key.size),column.nkey)[-1],op$mar[4])
+    )
+  }
+
+  res <- list(nn = nn, column.nkey = column.nkey)
+  return(res)
+}
