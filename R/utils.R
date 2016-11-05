@@ -1,20 +1,20 @@
 
-#' This function converts data sets imported from the STRUCTURE and the TESS 2.3 input file formats to the tess3 formats.
-#' @title Import input files from STRUCTURE and TESS 2.3
+#' This function converts data imported from the STRUCTURE format or from the TESS 2.3 format to the tess3 matrix format.
+#' @title Import input files from the STRUCTURE and TESS formats
 #' @author Kevin Caye, Flora Jay, Olivier François
-#' @param dataframe a data frame read from a STRUCTURE or a TESS input file.
-#' @param TESS a boolean value set to \code{TRUE} if the TESS 2.3 format is used. If \code{TRUE}, the
-#' geographic coordinates (Longitude, Latitude) must be binded left to the genetic marker matrix.
+#' @param dataframe a data frame read from a STRUCTURE or a TESS input file. Missing data must be encoded by "-9" or by any negative value.
+#' @param TESS a boolean value set to \code{TRUE} if the TESS format is used, \code{FALSE} if the STRUCTURE format is used. If \code{TRUE}, the
+#' geographic coordinates (Longitude, Latitude) must be binded left to the matrix of genetic markers.
 #' @param diploid a boolean value set to \code{TRUE} for diploids and \code{FALSE} for haploids.
 #' @param FORMAT an integer value equal to 1 for markers encoded using one row of data for each individual, and
 #' 2 for markers encoded using two rows of data for each individual.
 #' @param extra.row an integer value indicating the number of extra rows in the header of the input file (marker ids).
-#' @param extra.column an integer value indicating the number of extra columns in the input file. Extra columns come before the geographic coordinates
-#' in TESS 2.3 input files, and include individual ids, pop ids, phenotypes, etc. Geographic coordinates must be considered as extra columns if the flag \code{TESS}
-#' is set to \code{TESS = FALSE}. Missing data are encoded as "-9" or any negative values
-#' @return An object of class \code{list} containing a genotype matrix and individual geographic coordinates.
-#' @return X a matrix of genotypes with values 0,1,2 or NA.
-#' @return coord a matrix of geographic coordinates.
+#' @param extra.column an integer value indicating the number of extra columns in the input file. Extra columns can include individual ids, pop ids,
+#' phenotypes, and they come before the geographic coordinates in TESS input files. Geographic coordinates must be considered as extra columns if the
+#' flag \code{TESS} is set to \code{TESS = FALSE}.
+#' @return An object of class \code{list} containing a genotype matrix (X) and individual geographic coordinates (coord).
+#' @return X a numeric matrix of genotypes with values 0,1,2 or NA.
+#' @return coord a numeric matrix of geographic coordinates.
 #' @seealso \code{\link{tess3}}
 #' @examples
 #' library(tess3r)
