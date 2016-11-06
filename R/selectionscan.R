@@ -1,9 +1,9 @@
-#' Compute allele frquencies matrix from the genotype frequencie matrix.
+#' Compute allele frequency matrix from genotype frequency matrix.
 #'
-#' @param G Genotype frequencie matrix.
-#' @param ploidy The number of chromosome.
+#' @param G genotype frequency matrix.
+#' @param ploidy the number of chromosomes.
 #'
-#' @return TODOC
+#' @return a matrix of allele frequencies for each locus.
 #' @export
 GtoFreq <- function(G, ploidy) {
   G.array <- array(G, c(ploidy + 1, nrow(G) / (ploidy + 1), ncol(G)))

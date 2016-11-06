@@ -1,4 +1,4 @@
-#' Estimation of ancestry proportions and genome scans for selection
+#' Estimate ancestry coefficients and run genome scans for selection
 #'
 #' \code{tess3} is the main function of the \code{tess3r} package. It runs
 #' a graph-based nonnegative matrix factorization algorithm that includes
@@ -19,7 +19,7 @@
 #' and to the penalty function.
 #' @param W a matrix which corresponds to the graph weightings.
 #' If NULL, W is computed as
-#' \code{W[i,j] = exp( - (coord[i] - coord[j])^2 / sigma^2)},
+#' \code{W[i,j] = exp(-(coord[i] - coord[j])^2 / sigma^2)},
 #' where \code{coord[i]} represents
 #' the geographic coordinates for individual i, and where
 #' \code{sigma} is equal to 5 percent of the average geographic distance between individuals.
@@ -271,13 +271,13 @@ summary.tess3 <- function(object, ...) {
   }
 }
 
-#' Plot RMSE(X, Q * t(G)) for all K number of ancestral population with error bars.
+#' Plot cross-validation errors for all values of number of ancestral populations
 #'
-#' @param x A tess3 object.
-#' @param crossvalid If TRUE error is computed on masked data.
-#' @param crossentropy If TRUE the cross entropy error metric is used. If FALSE
-#' the RMSE is used.
-#' @param ... TODOC
+#' @param x a tess3 object.
+#' @param crossvalid if TRUE, errors are evaluated on masked data.
+#' @param crossentropy If TRUE, the cross-entropy error is used. If FALSE,
+#' the root mean square error is used.
+#' @param ... other graphic parameters.
 #'
 #' @export
 #'
@@ -317,7 +317,7 @@ plot.tess3 <- function(x, crossvalid = FALSE, crossentropy = FALSE, ...) {
       }
     }
 
-    plot(K, med, ...)
+    plot(K, med, xlab = "Number of populations", ylab = "Cross Validation Error", ...)
     epsilon = 0.02
     segments(K, min , K, max)
     segments(K - epsilon, min , K + epsilon, min)
@@ -327,9 +327,9 @@ plot.tess3 <- function(x, crossvalid = FALSE, crossentropy = FALSE, ...) {
 
 #' Test if x is a tess3project object
 #'
-#' @param x An object.
+#' @param x an object.
 #'
-#' @return TRUE if x is an tess3 object.
+#' @return TRUE if x is a tess3 object.
 #' @export
 is.tess3 <- function(x) {
   inherits(x, "tess3")

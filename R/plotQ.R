@@ -63,12 +63,12 @@ RasterStackToMatrix <- function(interpol.stack) {
 #' @author Kevin Caye, Olivier François
 #' @param color.vector a vector of R colors.
 #' @param palette.length an integer number of colors in each palette.
-#' @return An object of class \code{list} containing a list of color palettes.
+#' @return an object of class \code{list} containing a list of color palettes.
 #' @seealso \code{\link{plot.tess3Q}} \code{\link{barplot.tess3Q}}
 #' @examples
 #' library(tess3r)
 #'
-#' ## an A. thaliana example
+#' ## Load A. thaliana example
 #' data(data.at)
 #' obj <- tess3(data.at$X, coord = data.at$coord, K = 5, ploidy = 1,
 #'              openMP.core.num = 4)
@@ -90,8 +90,8 @@ CreatePalette <- function(color.vector = c("tomato", "chartreuse", "gold", "blue
 ###################################################
 #######################Methods#####################
 ###################################################
-#' Displays a barplot representation of the
-#' ancestry coefficient matrix. Includes a sort-by-Q option.
+#' This function displays a barplot representation of the
+#' ancestry coefficient matrix. It includes a sort-by-Q option.
 #' @title Barplot representation of a Q-matrix
 #' @author Kevin Caye, Olivier François
 #'
@@ -102,7 +102,8 @@ CreatePalette <- function(color.vector = c("tomato", "chartreuse", "gold", "blue
 #' @param ... other parameters of the function \code{\link{barplot.default}}.
 #' @param palette.length an integer value for the number of colors in each element of the palette list.
 #'
-#' @return Generates a graphical output.
+#' @return A permutation of individual labels used in the sort.by.Q option (order). Displays the
+#' Q matrix.
 #' @seealso \code{\link{plot.tess3Q}} \code{\link{as.qmatrix}} \code{\link{CreatePalette}}
 #' @examples
 #' library(tess3r)
@@ -117,7 +118,7 @@ CreatePalette <- function(color.vector = c("tomato", "chartreuse", "gold", "blue
 #' # Get the ancestry matrix
 #' Q.matrix <- qmatrix(obj, K = 5)
 #'
-#' # Plot the barplot
+#' # Display a barplot for the Q matrix
 #' barplot(Q.matrix, border = NA, space = 0, xlab = "Individuals",
 #'         ylab = "Ancestry proportions", main = "Ancestry matrix") -> bp
 #' axis(1, at = 1:nrow(Q.matrix), labels = bp$order, las = 3, cex.axis = .4)
@@ -167,34 +168,32 @@ barplot.tess3Q = function(height, sort.by.Q = TRUE, col.palette = NULL, palette.
     Qm = t(Q)
     class(Qm) = "matrix"
     graphics::barplot(Qm, col = colpal, ...)
-  }
+    return(list(order = 1:nrow(Q)))
+      }
 }
 
 
-#' Displays geographic maps for ancestry coefficients.
-#' @title Displays geographic maps for ancestry coefficients
+#' This function displays interpolated values of ancestry coefficients on geographic maps.
+#' @title Display geographic maps of ancestry coefficients
 #' @author Kevin Caye, Flora Jay, Olivier François
 #'
-#' @param coord The numeric matrix of size \eqn{n \times 2} where \eqn{n} is the
-#' number of individuals.
-#' @param resolution An integer vector of the resolution of the grid used to
-#' computed the interpolating surface
-#' @param window The window size, such that \code{window = c(xmin, xmax, ymin, ymax)}
-#' contains the window mina nd max coordinates.
-#' @param background If TRUE the raster file is used as a stencil to render only
-#' raster pixel on earth.
-#' @param map.polygon The \code{sp::SpatialPolygonsDataFrame} object used to crop the interpolating surfaces.
+#' @param coord a numeric matrix of dimension \eqn{n} times 2 where \eqn{n} is the
+#' number of individuals. The matrix must contain (Longitude, Latitude) coordinates for all individuals.
+#' @param resolution an integer vector \code{resolution = c(rx,ry)} for the resolution of the grid used to
+#' computed the interpolating surface. \code{rx} and \code{ry} are resolution numbers for the x-axis and y-axis respectively.
+#' @param window an integer vector for the plotting window, such that \code{window = c(xmin, xmax, ymin, ymax)}
+#' contains the window's min and max coordinates.
+#' @param background if \code{TRUE} a raster file is used as a stencil to render only raster pixel on earth.
+#' @param map.polygon an object of class \code{sp::SpatialPolygonsDataFrame} used to crop the interpolating surface.
 #' If \code{NULL}, the function \code{\link[rworldmap]{getMap}} is used.
-#' @param raster.filename The raster file name used to compute the background stencil.
+#' @param raster.filename a raster file name used to compute the background stencil.
 #' This is an alternative method to crop the interpolating surfaces. The default method uses \code{map.polygon}.
-#' @param col.palette A list of color palettes. You can use the function \code{\link{CreatePalette}}.
-#' @param interpolation.model The interpolation model used to compute compute
-#' the interpolating surface. You can use functions \code{\link{FieldsTpsModel}},
-#' \code{\link{FieldsKrigModel}}.
-#' @param x An object of class \code{tess3Q}. The ancestry coefficient matrix.
-#' @param method \code{"map.max"} or \code{"map.all"}. If \code{"map.all"}, a
-#' interpolating surface of the ancestry coefficient is plotted for each ancestral
-#' population. If \code{"map.max"} only the maximum union of the interpolating surfaces is plotted.
+#' @param col.palette a list of color palettes. Color palettes can be defined by using the function \code{\link{CreatePalette}}.
+#' @param interpolation.model an interpolation model used to compute the interpolating surface. Interpolation models can use the
+#' functions \code{\link{FieldsTpsModel}} or \code{\link{FieldsKrigModel}}.
+#' @param x an object of class \code{tess3Q} containing an ancestry coefficient matrix computed from \code{\link{tess3}}.
+#' @param method a character string \code{"map.max"} or \code{"map.all"}. If \code{"map.all"}, interpolating surfaces are displayed
+#' for the ancestry coefficients of all populations. If \code{"map.max"} the union of interpolating surfaces is displayed.
 #' @param ... \code{\link{plot.default}} other parameters.
 #'
 #' @return None
@@ -259,27 +258,28 @@ plot.tess3Q <- function(x, coord,
 }
 
 
-#' Displays geographic maps for ancestry coefficients.
-#' @title Displays geographic maps for ancestry coefficients
+#' This function displays geographic maps of ancestry coefficients using the ggplot syntax.
+#' @title Display geographic maps of ancestry coefficients using the ggplot grammar
 #' @author Kevin Caye, Flora Jay, Olivier François
 #'
-#' @param Q An object of class \code{tess3Q}. The ancestry coefficient matrix.
-#' @param coord The numeric matrix of size \eqn{n \times 2} where \eqn{n} is the
-#' number of individuals.
-#' @param resolution An integer vector of the resolution of the grid used to
-#' computed the interpolating surface
-#' @param window The window size, such that \code{window = c(xmin, xmax, ymin, ymax)}
-#' contains the window mina nd max coordinates.
-#' @param background If TRUE the raster file is used as a stencil to render only
-#' raster pixel on earth.
-#' @param map.polygon The \code{sp::SpatialPolygonsDataFrame} object used to crop the interpolating surfaces.
+#' @param Q an object of class \code{tess3Q} corresponding to an ancestry coefficient matrix obtained \code{tess3}.
+#' @param coord a numeric matrix of dimension \eqn{n} times 2 where \eqn{n} is the
+#' number of individuals. The matrix must contain (Longitude, Latitude) coordinates for all individuals.
+#' @param resolution an integer vector \code{resolution = c(rx,ry)} for the resolution of the grid used to
+#' computed the interpolating surface. \code{rx} and \code{ry} are resolution numbers for the x-axis and y-axis respectively.
+#' @param window an integer vector for the plotting window, such that \code{window = c(xmin, xmax, ymin, ymax)}
+#' contains the window's min and max coordinates.
+#' @param background if \code{TRUE} a raster file is used as a stencil to render only raster pixel on earth.
+#' @param map.polygon an object of class \code{sp::SpatialPolygonsDataFrame} used to crop the interpolating surface.
 #' If \code{NULL}, the function \code{\link[rworldmap]{getMap}} is used.
-#' @param raster.filename The raster file name used to compute the background stencil.
-#' This is an alternative method to crop the interpolating surfaces. The default method uses \code{map.polygon}.
-#' @param col.palette A list of color palettes. You can use the function \code{\link{CreatePalette}}.
-#' @param interpolation.model The interpolation model used to compute compute
-#' the interpolating surface. You can use functions \code{\link{FieldsTpsModel}},
-#' \code{\link{FieldsKrigModel}}.
+#' @param raster.filename a raster file name used to compute the background stencil.
+#' This is an alternative method to crop interpolating surfaces. The default method uses \code{map.polygon}.
+#' @param col.palette a list of color palettes. Color palettes can be defined by using the function \code{\link{CreatePalette}}.
+#' @param interpolation.model an interpolation model used to compute the interpolating surface. Interpolation models can use the
+#' functions \code{\link{FieldsTpsModel}} or \code{\link{FieldsKrigModel}}.
+#' @param x an object of class \code{tess3Q} containing an ancestry coefficient matrix computed from \code{\link{tess3}}.
+#' @param method a character string \code{"map.max"} or \code{"map.all"}. If \code{"map.all"}, interpolating surfaces are displayed
+#' for the ancestry coefficients of all populations. If \code{"map.max"} the union of interpolating surfaces is displayed.
 #'
 #' @return None
 #' @export
@@ -287,7 +287,7 @@ plot.tess3Q <- function(x, coord,
 #' @examples
 #' library(tess3r)
 #'
-#' # Retrieve a dataset
+#' # Load Arabidopsis data
 #' data(data.at)
 #'
 #' # Run of TESS3
@@ -297,7 +297,7 @@ plot.tess3Q <- function(x, coord,
 #' # Get the ancestry matrix
 #' Q.matrix <- qmatrix(obj, K = 5)
 #'
-#' # Plot the spatial interpolation of the ancestry matrix
+#' # Show a spatial interpolation of the ancestry matrix
 #' ggtess3Q(Q.matrix, data.at$coord)
 ggtess3Q <- function(Q, coord, resolution = c(300,300), window = NULL,
                      background = TRUE, map.polygon = NULL,

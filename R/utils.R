@@ -159,8 +159,8 @@ tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1
 
 
 ###################################################
-#' This function tests Q matrix objects, and converts \code{matrix} objects into valid Q matrices
-#' @title Converts Q matrix
+#' This function tests Q matrix objects, and converts \code{matrix} objects into valid Q matrices.
+#' @title Converts into Q matrix
 #' @author Kevin Caye, Olivier François
 #' @param Q an object of class \code{matrix} containing a matrix of ancestry coefficients.
 #' @return An object of class \code{tess3Q}.
@@ -174,7 +174,7 @@ tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1
 #'         ylab = "Ancestry proportions", main = "Ancestry matrix")
 #' @export
 as.qmatrix <- function(Q){
-  if (class(Q) != "matrix") stop("Input matrix is not an ancestry matrix.")
+  if (class(Q) != "matrix") Q <- as.matrix(Q)
   if (min(Q) < 0) stop("Q contains negative elements.")
   sumofq <- apply(Q, MARGIN = 1, sum)
   if ( sum(sumofq) != nrow(Q)) stop("Input matrix is not an ancestry matrix.")
