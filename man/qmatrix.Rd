@@ -2,24 +2,42 @@
 % Please edit documentation in R/getter.R
 \name{qmatrix}
 \alias{qmatrix}
-\title{Get Q matrix estimate.}
+\title{Get Q matrix estimate}
 \usage{
 qmatrix(tess3, K, rep = "best")
 }
 \arguments{
-\item{tess3}{A tess3 object.}
+\item{tess3}{a tess3 object.}
 
-\item{K}{Number of ancestral populations.}
+\item{K}{number of ancestral populations.}
 
-\item{rep}{Repetition index.}
+\item{rep}{an integer indicating which run to display (default = lowest error run).}
 }
 \value{
-The \code{Q} ancestry coefficient matrix.
+a \code{Q} matrix of ancestry coefficients from a specified run.
 }
 \description{
-Get the \code{Q} ancestry coefficient matrix returned by the TESS3 algorithm.
+Get the \code{Q} ancestry coefficient matrix computed by the tess3 function.
+}
+\examples{
+library(tess3r)
+
+# load Arabidopsis data
+data(data.at)
+
+# Running tess3
+obj <- tess3(data.at$X, coord = data.at$coord, K = 5,
+                 ploidy = 1, method = "projected.ls", openMP.core.num = 4)
+
+# Get the ancestry matrix
+Q.matrix <- qmatrix(obj, K = 5)
+
+# Plot the barplot
+barplot(Q.matrix, border = NA, space = 0, xlab = "Individuals",
+        ylab = "Ancestry proportions", main = "Ancestry matrix") -> bp
+axis(1, at = 1:nrow(Q.matrix), labels = bp$order, las = 3, cex.axis = .4)
 }
 \seealso{
-\code{\link{tess3}}
+\code{\link{tess3}} \code{\link{barplot.tess3Q}} \code{\link{plot.tess3Q}} \code{\link{CreatePalette}}
 }
 

@@ -2,22 +2,22 @@
 % Please edit documentation in R/getter.R
 \name{pvalue}
 \alias{pvalue}
-\title{Get pvalue vector.}
+\title{Get p-values from a genome scan for selection}
 \usage{
 pvalue(tess3, K, rep = "best")
 }
 \arguments{
-\item{tess3}{A tess3 object.}
+\item{tess3}{an object of class \code{tess3}.}
 
-\item{K}{Number of ancestral populations.}
+\item{K}{a number of ancestral populations.}
 
-\item{rep}{Repetition index.}
+\item{rep}{an integer correponding to a run number (default is 'best' run).}
 }
 \value{
-The \code{pvalue} ancestry coefficient matrix.
+Corrected pvalues for all loci to be used in a scan for adaptive alleles.
 }
 \description{
-Get the \code{pvalue} vector returned by the TESS3 algorithm.
+Get the \code{pvalue} vector returned by the tess3 algorithm.
 }
 \seealso{
 \code{\link{tess3}}

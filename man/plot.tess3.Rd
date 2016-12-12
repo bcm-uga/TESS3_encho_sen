@@ -2,21 +2,21 @@
 % Please edit documentation in R/tess3project.R
 \name{plot.tess3}
 \alias{plot.tess3}
-\title{Plot RMSE(X, Q * t(G)) for all K number of ancestral population with error bars.}
+\title{Plot cross-validation errors for all values of number of ancestral populations}
 \usage{
 \method{plot}{tess3}(x, crossvalid = FALSE, crossentropy = FALSE, ...)
 }
 \arguments{
-\item{x}{A tess3 object.}
+\item{x}{a tess3 object.}
 
-\item{crossvalid}{If TRUE error is computed on masked data.}
+\item{crossvalid}{if TRUE, errors are evaluated on masked data.}
 
-\item{crossentropy}{If TRUE the cross entropy error metric is used. If FALSE
-the RMSE is used.}
+\item{crossentropy}{If TRUE, the cross-entropy error is used. If FALSE,
+the root mean square error is used.}
 
-\item{...}{TODOC}
+\item{...}{other graphic parameters.}
 }
 \description{
-Plot RMSE(X, Q * t(G)) for all K number of ancestral population with error bars.
+Plot cross-validation errors for all values of number of ancestral populations
 }
 

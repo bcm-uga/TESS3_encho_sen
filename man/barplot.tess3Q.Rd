@@ -21,11 +21,12 @@
 \item{...}{other parameters of the function \code{\link{barplot.default}}.}
 }
 \value{
-Generates a graphical output.
+A permutation of individual labels used in the sort.by.Q option (order). Displays the
+Q matrix.
 }
 \description{
-Displays a barplot representation of the
-ancestry coefficient matrix. Includes a sort-by-Q option.
+This function displays a barplot representation of the
+ancestry coefficient matrix. It includes a sort-by-Q option.
 }
 \examples{
 library(tess3r)
@@ -40,7 +41,7 @@ obj <- tess3(data.at$X, coord = data.at$coord, K = 5,
 # Get the ancestry matrix
 Q.matrix <- qmatrix(obj, K = 5)
 
-# Plot the barplot
+# Display a barplot for the Q matrix
 barplot(Q.matrix, border = NA, space = 0, xlab = "Individuals",
         ylab = "Ancestry proportions", main = "Ancestry matrix") -> bp
 axis(1, at = 1:nrow(Q.matrix), labels = bp$order, las = 3, cex.axis = .4)

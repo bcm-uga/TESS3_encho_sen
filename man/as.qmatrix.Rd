@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{as.qmatrix}
 \alias{as.qmatrix}
-\title{Converts Q matrix}
+\title{Converts into Q matrix}
 \usage{
 as.qmatrix(Q)
 }
@@ -13,7 +13,7 @@ as.qmatrix(Q)
 An object of class \code{tess3Q}.
 }
 \description{
-This function tests Q matrix objects, and converts \code{matrix} objects into valid Q matrices
+This function tests Q matrix objects, and converts \code{matrix} objects into valid Q matrices.
 }
 \examples{
 library(tess3r)

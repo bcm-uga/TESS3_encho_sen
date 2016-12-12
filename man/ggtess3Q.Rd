@@ -2,49 +2,52 @@
 % Please edit documentation in R/plotQ.R
 \name{ggtess3Q}
 \alias{ggtess3Q}
-\title{Displays geographic maps for ancestry coefficients}
+\title{Display geographic maps of ancestry coefficients using the ggplot grammar}
 \usage{
 ggtess3Q(Q, coord, resolution = c(300, 300), window = NULL,
   background = TRUE, map.polygon = NULL, raster.filename = NULL,
   interpolation.model = FieldsKrigModel(10), col.palette = CreatePalette())
 }
 \arguments{
-\item{Q}{An object of class \code{tess3Q}. The ancestry coefficient matrix.}
+\item{Q}{an object of class \code{tess3Q} corresponding to an ancestry coefficient matrix obtained \code{tess3}.}
 
-\item{coord}{The numeric matrix of size \eqn{n \times 2} where \eqn{n} is the
-number of individuals.}
+\item{coord}{a numeric matrix of dimension \eqn{n} times 2 where \eqn{n} is the
+number of individuals. The matrix must contain (Longitude, Latitude) coordinates for all individuals.}
 
-\item{resolution}{An integer vector of the resolution of the grid used to
-computed the interpolating surface}
+\item{resolution}{an integer vector \code{resolution = c(rx,ry)} for the resolution of the grid used to
+computed the interpolating surface. \code{rx} and \code{ry} are resolution numbers for the x-axis and y-axis respectively.}
 
-\item{window}{The window size, such that \code{window = c(xmin, xmax, ymin, ymax)}
-contains the window mina nd max coordinates.}
+\item{window}{an integer vector for the plotting window, such that \code{window = c(xmin, xmax, ymin, ymax)}
+contains the window's min and max coordinates.}
 
-\item{background}{If TRUE the raster file is used as a stencil to render only
-raster pixel on earth.}
+\item{background}{if \code{TRUE} a raster file is used as a stencil to render only raster pixel on earth.}
 
-\item{map.polygon}{The \code{sp::SpatialPolygonsDataFrame} object used to crop the interpolating surfaces.
+\item{map.polygon}{an object of class \code{sp::SpatialPolygonsDataFrame} used to crop the interpolating surface.
 If \code{NULL}, the function \code{\link[rworldmap]{getMap}} is used.}
 
-\item{raster.filename}{The raster file name used to compute the background stencil.
-This is an alternative method to crop the interpolating surfaces. The default method uses \code{map.polygon}.}
+\item{raster.filename}{a raster file name used to compute the background stencil.
+This is an alternative method to crop interpolating surfaces. The default method uses \code{map.polygon}.}
 
-\item{interpolation.model}{The interpolation model used to compute compute
-the interpolating surface. You can use functions \code{\link{FieldsTpsModel}},
-\code{\link{FieldsKrigModel}}.}
+\item{interpolation.model}{an interpolation model used to compute the interpolating surface. Interpolation models can use the
+functions \code{\link{FieldsTpsModel}} or \code{\link{FieldsKrigModel}}.}
 
-\item{col.palette}{A list of color palettes. You can use the function \code{\link{CreatePalette}}.}
+\item{col.palette}{a list of color palettes. Color palettes can be defined by using the function \code{\link{CreatePalette}}.}
+
+\item{x}{an object of class \code{tess3Q} containing an ancestry coefficient matrix computed from \code{\link{tess3}}.}
+
+\item{method}{a character string \code{"map.max"} or \code{"map.all"}. If \code{"map.all"}, interpolating surfaces are displayed
+for the ancestry coefficients of all populations. If \code{"map.max"} the union of interpolating surfaces is displayed.}
 }
 \value{
 None
 }
 \description{
-Displays geographic maps for ancestry coefficients.
+This function displays geographic maps of ancestry coefficients using the ggplot syntax.
 }
 \examples{
 library(tess3r)
 
-# Retrieve a dataset
+# Load Arabidopsis data
 data(data.at)
 
 # Run of TESS3
@@ -54,7 +57,7 @@ obj <- tess3(data.at$X, coord = data.at$coord, K = 5,
 # Get the ancestry matrix
 Q.matrix <- qmatrix(obj, K = 5)
 
-# Plot the spatial interpolation of the ancestry matrix
+# Show a spatial interpolation of the ancestry matrix
 ggtess3Q(Q.matrix, data.at$coord)
 }
 \author{

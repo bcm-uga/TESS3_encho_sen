@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotQ.R
 \name{plot.tess3Q}
 \alias{plot.tess3Q}
-\title{Displays geographic maps for ancestry coefficients}
+\title{Display geographic maps of ancestry coefficients}
 \usage{
 \method{plot}{tess3Q}(x, coord, method = "map.max", resolution = c(300,
   300), window = NULL, background = TRUE, map.polygon = NULL,
@@ -10,35 +10,32 @@
   col.palette = CreatePalette(), ...)
 }
 \arguments{
-\item{x}{An object of class \code{tess3Q}. The ancestry coefficient matrix.}
+\item{x}{an object of class \code{tess3Q} containing an ancestry coefficient matrix computed from \code{\link{tess3}}.}
 
-\item{coord}{The numeric matrix of size \eqn{n \times 2} where \eqn{n} is the
-number of individuals.}
+\item{coord}{a numeric matrix of dimension \eqn{n} times 2 where \eqn{n} is the
+number of individuals. The matrix must contain (Longitude, Latitude) coordinates for all individuals.}
 
-\item{method}{\code{"map.max"} or \code{"map.all"}. If \code{"map.all"}, a
-interpolating surface of the ancestry coefficient is plotted for each ancestral
-population. If \code{"map.max"} only the maximum union of the interpolating surfaces is plotted.}
+\item{method}{a character string \code{"map.max"} or \code{"map.all"}. If \code{"map.all"}, interpolating surfaces are displayed
+for the ancestry coefficients of all populations. If \code{"map.max"} the union of interpolating surfaces is displayed.}
 
-\item{resolution}{An integer vector of the resolution of the grid used to
-computed the interpolating surface}
+\item{resolution}{an integer vector \code{resolution = c(rx,ry)} for the resolution of the grid used to
+computed the interpolating surface. \code{rx} and \code{ry} are resolution numbers for the x-axis and y-axis respectively.}
 
-\item{window}{The window size, such that \code{window = c(xmin, xmax, ymin, ymax)}
-contains the window mina nd max coordinates.}
+\item{window}{an integer vector for the plotting window, such that \code{window = c(xmin, xmax, ymin, ymax)}
+contains the window's min and max coordinates.}
 
-\item{background}{If TRUE the raster file is used as a stencil to render only
-raster pixel on earth.}
+\item{background}{if \code{TRUE} a raster file is used as a stencil to render only raster pixel on earth.}
 
-\item{map.polygon}{The \code{sp::SpatialPolygonsDataFrame} object used to crop the interpolating surfaces.
+\item{map.polygon}{an object of class \code{sp::SpatialPolygonsDataFrame} used to crop the interpolating surface.
 If \code{NULL}, the function \code{\link[rworldmap]{getMap}} is used.}
 
-\item{raster.filename}{The raster file name used to compute the background stencil.
+\item{raster.filename}{a raster file name used to compute the background stencil.
 This is an alternative method to crop the interpolating surfaces. The default method uses \code{map.polygon}.}
 
-\item{interpolation.model}{The interpolation model used to compute compute
-the interpolating surface. You can use functions \code{\link{FieldsTpsModel}},
-\code{\link{FieldsKrigModel}}.}
+\item{interpolation.model}{an interpolation model used to compute the interpolating surface. Interpolation models can use the
+functions \code{\link{FieldsTpsModel}} or \code{\link{FieldsKrigModel}}.}
 
-\item{col.palette}{A list of color palettes. You can use the function \code{\link{CreatePalette}}.}
+\item{col.palette}{a list of color palettes. Color palettes can be defined by using the function \code{\link{CreatePalette}}.}
 
 \item{...}{\code{\link{plot.default}} other parameters.}
 }
@@ -46,7 +43,7 @@ the interpolating surface. You can use functions \code{\link{FieldsTpsModel}},
 None
 }
 \description{
-Displays geographic maps for ancestry coefficients.
+This function displays interpolated values of ancestry coefficients on geographic maps.
 }
 \examples{
 library(tess3r)

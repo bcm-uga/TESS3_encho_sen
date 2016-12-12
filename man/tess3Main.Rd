@@ -2,7 +2,7 @@
 % Please edit documentation in R/tess3.R
 \name{tess3Main}
 \alias{tess3Main}
-\title{Estimates spatial population structure}
+\title{Estimate ancestry coefficients and run genome scans for selection}
 \usage{
 tess3Main(X, XProba = NULL, coord, K, ploidy, lambda = 1, W = NULL,
   method = "projected.ls", max.iteration = 200, tolerance = 1e-05,
@@ -10,87 +10,83 @@ tess3Main(X, XProba = NULL, coord, K, ploidy, lambda = 1, W = NULL,
   algo.copy = TRUE, verbose = FALSE)
 }
 \arguments{
-\item{X}{A numeric matrix which corresponds to the genotype matrix. This matrix
-must be of size \eqn{n \times L} where \eqn{n} is the number of individual and
-\eqn{L} is the number of loci. Values of this matrix are integer corresponding
+\item{X}{a numeric matrix which corresponds to the genotype matrix. This matrix
+must be of size \eqn{n \times L} where \eqn{n} is the number of individuals and
+\eqn{L} is the number of loci. Values of this matrix are integers corresponding
 to the number of variant alleles observed at a locus. If \code{NULL}, \code{XProba}
 is used.}
 
-\item{XProba}{A numeric matrix which correspond to the probability for the genotype.
+\item{XProba}{a numeric matrix which corresponds to genotype likelihoods (probabilities).
 This matrix must be of size \eqn{n \times (ploidy + 1)L} where
-\eqn{n} is the number of individual, \eqn{L} is the number of loci. Values of
-this matrix are numeric between 0 and 1 corresponding
-to the genome probability. It is the matrix used in graph based non negative
-factorization matrix. If \code{NULL}, it is computed from the genotype matrix \code{X}.
-See reference for more details.}
+\eqn{n} is the number of individuals and \eqn{L} is the number of loci. Entries of
+this matrix are numeric values between 0 and 1 corresponding
+to genotype probability. If \code{NULL}, this matrix is computed from the genotype matrix \code{X}.
+See reference for details.}
 
-\item{coord}{The numeric matrix of size \eqn{n \times 2} where \eqn{n} is the
-number of individuals.}
+\item{coord}{a numeric matrix of size \eqn{n \times 2} where \eqn{n} is the
+number of individuals. It contains the geographic coordinates (Longitude, Latitude) of
+all sampled individuals.}
 
-\item{K}{An integer which corresponds to
+\item{K}{an integer corresponding to
 the number of ancestral populations.}
 
-\item{ploidy}{An integer which corresponds to
-the number of set of chromosomes.}
+\item{ploidy}{an integer which corresponds to the ploidy of the number of copy of chromosomes.}
 
-\item{lambda}{A numeric which corresponds to the
+\item{lambda}{a nonnegative numeric which corresponds to the
 spatial regularization parameter.}
 
-\item{W}{A numeric matrix which corresponds to the graph weiht matrix.
-If NULL, W it is computed as
-\code{W[i,j] = exp( - (coord[i] - coord[j])^2 / sigma^2)}.
-Where \code{coord[i]} is
-the geographic coordinate for the individual i and
+\item{W}{a numeric matrix which corresponds to the graph weight matrix.
+If \code{NULL}, W is computed as
+\code{W[i,j] = exp(-(coord[i] - coord[j])^2 / sigma^2)},
+where \code{coord[i]} is the set of geographic coordinates for individual i and
 \code{sigma} equals 5 percent of the average geographic distance between individuals.}
 
 \item{method}{\code{"projected.ls"} or \code{"qp"}. If \code{"projected.ls"},
-an aleternated projected least squares algorithm is used. If \code{"qp"},
-an alternated quadratic programing algorithm is used. See references for more
-details}
+an alternating projected least squares algorithm is used. If \code{"qp"},
+an alternating quadratic programing algorithm is used. See references for details.}
 
-\item{max.iteration}{The max number of
-iteration of the optimization algorithm.}
+\item{max.iteration}{the maximum number of
+iterations in the optimization algorithm.}
 
-\item{tolerance}{A numeric which corresponds to the tolerance of the
-stopping criteria of the optimization algorithm.}
+\item{tolerance}{a numeric value which corresponds to the tolerance paramter in the
+stopping criterion of the optimization algorithm.}
 
-\item{openMP.core.num}{If openMP is available on your computer, it is the
-number of core used by the algorithm.}
+\item{openMP.core.num}{number of core used by the algorithm. It requires that openMP is
+installed.}
 
-\item{Q.init}{A numeric matrix which corresponds to the initial value of
+\item{Q.init}{a numeric matrix which corresponds to the initial value of
 \code{Q} for the algorithm.}
 
-\item{mask}{If not \code{NULL} this the proportion of the data matrix which
-is masked to compute the cross validation criteria.}
+\item{mask}{if not \code{NULL}, this numeric value is the proportion of genotypic matrix entries
+which are masked when computing the cross validation criterion.}
 
-\item{copy}{if TRUE data will be copy 1 time.}
+\item{copy}{if TRUE data will be copied once.}
 
-\item{algo.copy}{if TRUE data will be copy 1 time to speed the algorithm.}
+\item{algo.copy}{if TRUE, data will be copied in order to speed the algorithm.}
 
-\item{verbose}{If \code{TRUE} more information are printed.}
+\item{verbose}{If \code{TRUE} run information is printed.}
 }
 \value{
-An object of class tess3Main which is a list with components:
+An object of class tess3Main which is a list with the following attributes:
 \describe{
-   \item{L}{The number of loci.}
-   \item{n}{The number of individuals.}
-   \item{ploidy}{The number of set of chromosomes.}
-   \item{K}{The number of ancestral population.}
-   \item{G}{The ancestral genotype frequency matrix.}
-   \item{Q}{The ancestry coefficient matrix.}
-   \item{Fst}{The Fst statistic computed for each locus.}
-   \item{Fscore}{The Fscore computed from Fst.}
-   \item{pvalue}{The pvalues computed from Fscore.}
+   \item{L}{the number of loci}
+   \item{n}{the number of individuals}
+   \item{ploidy}{the number of copies of chromosomes.}
+   \item{K}{the number of ancestral populations.}
+   \item{G}{the ancestral genotype frequency matrix.}
+   \item{Q}{the ancestry coefficient matrix.}
+   \item{Fst}{Fst statistic computed at each locus.}
+   \item{Fscore}{Fscores computed from the Fst statistics.}
+   \item{pvalue}{pvalues computed from the Fscores.}
    \item{log.pvalue}{The \eqn{log(pvalue)}.}
-   \item{rmse}{The root square mean error between \code{XProba} and
+   \item{rmse}{root square mean error between \code{XProba} and
    \code{tcrossprod(Q, G)}.}
-   \item{crossentropy}{The cross entropy error between \code{XProba} and
+   \item{crossentropy}{cross-entropy error between \code{XProba} and
    \code{tcrossprod(Q, G)}.}
-  \item{crossvalid.rmse}{If masked not \code{NULL}.
-  The root square mean error between \code{XProba[masked]} and
-  \code{tcrossprod(Q, G)[masked]}.}
-   \item{crossvalid.crossentropy}{If masked not \code{NULL}.
-   The cross entropy error between \code{XProba[masked]} and
+  \item{crossvalid.rmse}{if masked is not \code{NULL}, root square mean error
+  between \code{XProba[masked]} and \code{tcrossprod(Q, G)[masked]}.}
+   \item{crossvalid.crossentropy}{if masked not \code{NULL},
+   the cross-entropy error between \code{XProba[masked]} and
    \code{tcrossprod(Q, G)[masked]}.}
 }
 }

@@ -2,19 +2,19 @@
 % Please edit documentation in R/selectionscan.R
 \name{GtoFreq}
 \alias{GtoFreq}
-\title{Compute allele frquencies matrix from the genotype frequencie matrix.}
+\title{Compute allele frequency matrix from genotype frequency matrix.}
 \usage{
 GtoFreq(G, ploidy)
 }
 \arguments{
-\item{G}{Genotype frequencie matrix.}
+\item{G}{genotype frequency matrix.}
 
-\item{ploidy}{The number of chromosome.}
+\item{ploidy}{the number of chromosomes.}
 }
 \value{
-TODOC
+a matrix of allele frequencies for each locus.
 }
 \description{
-Compute allele frquencies matrix from the genotype frequencie matrix.
+Compute allele frequency matrix from genotype frequency matrix.
 }
 

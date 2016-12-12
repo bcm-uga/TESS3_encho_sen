@@ -7,10 +7,10 @@
 is.tess3(x)
 }
 \arguments{
-\item{x}{An object.}
+\item{x}{an object.}
 }
 \value{
-TRUE if x is an tess3 object.
+TRUE if x is a tess3 object.
 }
 \description{
 Test if x is a tess3project object

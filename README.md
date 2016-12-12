@@ -1,13 +1,16 @@
 # tess3r
 [![Build Status](https://travis-ci.org/BioShock38/TESS3_encho_sen.svg?branch=master)](https://travis-ci.org/BioShock38/TESS3_encho_sen)
 
-tess3r is the R package implementation the TESS3 method (see [References](## References)).
+tess3r is an R package for estimating and visualizing spatial population
+structure based on geographically constrained non-negative matrix
+factorization and population genetics. tess3r has fast and efficient
+algorithms for estimating ancestry coefficients and for running genome
+scans for selection (see [Overview](https://bioshock38.github.io/TESS3_encho_sen/articles/main-vignette.html)).
 
-tess3r is a fast and efficient program for estimating spatial population structure based on geographically constrained non-negative matrix factorization and population genetics.
 
 ## Installation
 
-Get the last version from github:
+Install the latest version from github (requires [devtools](https://github.com/hadley/devtools)):
 ```R
 # install.packages("devtools")
 devtools::install_github("BioShock38/TESS3_encho_sen")

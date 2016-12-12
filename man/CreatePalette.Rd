@@ -13,7 +13,7 @@ CreatePalette(color.vector = c("tomato", "chartreuse", "gold", "blue",
 \item{palette.length}{an integer number of colors in each palette.}
 }
 \value{
-An object of class \code{list} containing a list of color palettes.
+an object of class \code{list} containing a list of color palettes.
 }
 \description{
 This function creates a list of color palettes for the plot and barplot
@@ -22,7 +22,7 @@ functions
 \examples{
 library(tess3r)
 
-## an A. thaliana example
+## Load A. thaliana example
 data(data.at)
 obj <- tess3(data.at$X, coord = data.at$coord, K = 5, ploidy = 1,
              openMP.core.num = 4)

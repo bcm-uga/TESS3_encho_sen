@@ -2,7 +2,7 @@
 % Please edit documentation in R/tess3project.R
 \name{tess3}
 \alias{tess3}
-\title{Estimation of ancestry proportions and genome scans for selection}
+\title{Estimate ancestry coefficients and run genome scans for selection}
 \usage{
 tess3(X, XProba = NULL, coord, K, ploidy, lambda = 1, rep = 1, W = NULL,
   method = "projected.ls", max.iteration = 200, tolerance = 1e-05,
@@ -41,7 +41,7 @@ and to the penalty function.}
 
 \item{W}{a matrix which corresponds to the graph weightings.
 If NULL, W is computed as
-\code{W[i,j] = exp( - (coord[i] - coord[j])^2 / sigma^2)},
+\code{W[i,j] = exp(-(coord[i] - coord[j])^2 / sigma^2)},
 where \code{coord[i]} represents
 the geographic coordinates for individual i, and where
 \code{sigma} is equal to 5 percent of the average geographic distance between individuals.}

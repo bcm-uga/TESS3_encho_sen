@@ -83,6 +83,7 @@ test_that("tess3project plot rmse", {
 })
 
 test_that("tess3project plot crossvalid.rmse", {
+  options(tess3r.debug = "TRUE")
 
   data("data.for.test", package = "tess3r")
   tess3project.res <- tess3(X = data.for.test$X,

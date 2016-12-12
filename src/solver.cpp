@@ -72,7 +72,7 @@ void ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen
         const int n = X.rows();
 
         // Compute Lapl diagonalization
-        Rcpp::Rcout << "Computing spectral decomposition of graph laplacian matrix";
+        Rcpp::Rcout << "== Computing spectral decomposition of graph laplacian matrix";
         SelfAdjointEigenSolver<MatrixXd> es(Lapl);
         VectorXd vps = es.eigenvalues();
         MatrixXd R = es.eigenvectors().transpose();
@@ -97,9 +97,9 @@ void ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen
         // algo
 #ifdef _OPENMP
         // multithreaded OpenMP version of code
-        Rcpp::Rcout << "Main loop with " << omp_get_max_threads() << " threads: " << std::endl;
+        Rcpp::Rcout << "==Main loop with " << omp_get_max_threads() << " threads: ";
 #else
-        Rcpp::Rcout << "Main loop:" << std::endl;
+        Rcpp::Rcout << "Main loop: ";
 #endif
         // variables
         int it = 0;
@@ -146,7 +146,7 @@ void ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen
                 it++;
               }
         }
-        Rcpp::Rcout << ": done" << std::endl;
+        Rcpp::Rcout << "done" << std::endl;
 }
 
 //******************************************************************************

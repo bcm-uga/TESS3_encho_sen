@@ -162,7 +162,8 @@ tess3 <- function(X,
 
   copy = TRUE
   if (copy & !is.null(X)) {
-    X <- matrix(as.double(X), nrow(X), ncol(X))
+    X <- as.matrix(X) # to handle type conversion
+    X <- matrix(as.double(X), nrow(X), ncol(X)) # to ensure we have a matrix of double
     CheckX(X, ploidy)
   } else if (!copy & is.null(XProba)) {
     stop("To force the function not doing copy of the data, you must set XProba")

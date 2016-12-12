@@ -128,7 +128,8 @@ tess3Main <- function(X,
   ################################################
   # copy X
   if (copy & !is.null(X)) {
-    X <- matrix(as.double(X), nrow(X), ncol(X))
+    X <- as.matrix(X) # to handle type conversion
+    X <- matrix(as.double(X), nrow(X), ncol(X)) # to ensure we have a matrix of double
     CheckX(X, ploidy)
   } else if (!copy & is.null(XProba)) {
     stop("To force the function not doing copy of the data, you must set XProba")
@@ -247,7 +248,7 @@ tess3Main <- function(X,
   ################################################
   # mask if asked
   if (mask != 0.0) {
-    message("Mask ", mask, "% of genotypes for cross validation")
+    DebugMessage(paste("Mask ", mask, "% of genotypes for cross validation"))
     missing.index.X <- sample(1:(length(XProba)), length(XProba) * mask)
     masked.X.value <- XProba[missing.index.X]
     XProba[missing.index.X] <- NA
@@ -259,7 +260,7 @@ tess3Main <- function(X,
   ################################################
   # check if there is missing data and compute the binary representation
   if (any(is.na(XProba))) {
-    message("Missing value detected in genotype")
+    DebugMessage("Missing value detected in genotype")
     # Naive imputation by mean
     geno.freq <- apply(XProba, 2, function(x) mean(x,na.rm = TRUE))
     geno.freq <- matrix(geno.freq,1)[rep(1, res$n),]

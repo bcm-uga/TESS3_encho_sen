@@ -393,6 +393,7 @@ test_that("TESS3 main Fst", {
 
 
 test_that("TESS3 cross validation", {
+  options(tess3r.debug = "TRUE")
   set.seed(354354)
   n <- 100
   K <- 3

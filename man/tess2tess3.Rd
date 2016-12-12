@@ -2,16 +2,16 @@
 % Please edit documentation in R/utils.R
 \name{tess2tess3}
 \alias{tess2tess3}
-\title{Import input files from STRUCTURE and TESS 2.3}
+\title{Import input files from the STRUCTURE and TESS formats}
 \usage{
 tess2tess3(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1,
   extra.row = 0, extra.column = 0)
 }
 \arguments{
-\item{dataframe}{a data frame read from a STRUCTURE or a TESS input file.}
+\item{dataframe}{a data frame read from a STRUCTURE or a TESS input file. Missing data must be encoded by "-9" or by any negative value.}
 
-\item{TESS}{a boolean value set to \code{TRUE} if the TESS 2.3 format is used. If \code{TRUE}, the
-geographic coordinates (Longitude, Latitude) must be binded left to the genetic marker matrix.}
+\item{TESS}{a boolean value set to \code{TRUE} if the TESS format is used, \code{FALSE} if the STRUCTURE format is used. If \code{TRUE}, the
+geographic coordinates (Longitude, Latitude) must be binded left to the matrix of genetic markers.}
 
 \item{diploid}{a boolean value set to \code{TRUE} for diploids and \code{FALSE} for haploids.}
 
@@ -20,19 +20,19 @@ geographic coordinates (Longitude, Latitude) must be binded left to the genetic 
 
 \item{extra.row}{an integer value indicating the number of extra rows in the header of the input file (marker ids).}
 
-\item{extra.column}{an integer value indicating the number of extra columns in the input file. Extra columns come before the geographic coordinates
-in TESS 2.3 input files, and include individual ids, pop ids, phenotypes, etc. Geographic coordinates must be considered as extra columns if the flag \code{TESS}
-is set to \code{TESS = FALSE}. Missing data are encoded as "-9" or any negative values}
+\item{extra.column}{an integer value indicating the number of extra columns in the input file. Extra columns can include individual ids, pop ids,
+phenotypes, and they come before the geographic coordinates in TESS input files. Geographic coordinates must be considered as extra columns if the
+flag \code{TESS} is set to \code{TESS = FALSE}.}
 }
 \value{
-An object of class \code{list} containing a genotype matrix and individual geographic coordinates.
+An object of class \code{list} containing a genotype matrix (X) and individual geographic coordinates (coord).
 
-X a matrix of genotypes with values 0,1,2 or NA.
+X a numeric matrix of genotypes with values 0,1,2 or NA.
 
-coord a matrix of geographic coordinates.
+coord a numeric matrix of geographic coordinates.
 }
 \description{
-This function converts data sets imported from the STRUCTURE and the TESS 2.3 input file formats to the tess3 formats.
+This function converts data imported from the STRUCTURE format or from the TESS 2.3 format to the tess3 matrix format.
 }
 \examples{
 library(tess3r)

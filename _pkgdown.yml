@@ -6,7 +6,7 @@ template:
   bootswatch: cerulean
 
 reference:
-  - title: Principal functions
+  - title: Main functions
     contents:
     - tess3
     - barplot.tess3Q
