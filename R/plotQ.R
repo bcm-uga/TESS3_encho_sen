@@ -277,10 +277,6 @@ plot.tess3Q <- function(x, coord,
 #' @param col.palette a list of color palettes. Color palettes can be defined by using the function \code{\link{CreatePalette}}.
 #' @param interpolation.model an interpolation model used to compute the interpolating surface. Interpolation models can use the
 #' functions \code{\link{FieldsTpsModel}} or \code{\link{FieldsKrigModel}}.
-#' @param x an object of class \code{tess3Q} containing an ancestry coefficient matrix computed from \code{\link{tess3}}.
-#' @param method a character string \code{"map.max"} or \code{"map.all"}. If \code{"map.all"}, interpolating surfaces are displayed
-#' for the ancestry coefficients of all populations. If \code{"map.max"} the union of interpolating surfaces is displayed.
-#'
 #' @return None
 #' @export
 #'

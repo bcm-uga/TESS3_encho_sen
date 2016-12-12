@@ -59,7 +59,6 @@ tests/testthat/core.*
 
 # check stuf
 tess3r-Ex.*
->>>>>>> a90c16c3d65916b89c762950ada5197c8a9544b2
 
 #Bak
 *.bak
@@ -67,3 +66,4 @@ tess3r-Ex.*
 # website
 docs/
 
+.Rprofile
