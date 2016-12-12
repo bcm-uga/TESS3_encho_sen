@@ -74,19 +74,24 @@
       </header>
 
       <div class="page-header">
-  <h1>Impute missing value with the Q ancestry coeficient matrix and G ancestral
-</h1>
+  <h1>Impute missing values</h1>
 </div>
 
 <div class="row">
   <div class="col-md-9">
     
-    <p>Impute missing value with the Q ancestry coeficient matrix and G ancestral
+    <p><code>ImputeRandom</code> imputes missing values with the Q ancestry coeficient matrix and G ancestral
 frequencies estimates. Missing values are sampled with the estimated genotype
+frequencies (P = Q G^T).</p>
+
+    <p><code>ImputeRound</code> imputes missing values with the Q ancestry coeficient matrix and G ancestral
+frequencies estimates. Missing values are computed as a round of estimated genotype
 frequencies (P = Q G^T).</p>
     
 
-    <pre><span class='fu'>ImputeRandom</span>(<span class='no'>tess3.res</span>, <span class='no'>masked.X</span>)</pre>
+    <pre><span class='fu'>ImputeRandom</span>(<span class='no'>tess3.res</span>, <span class='no'>masked.X</span>)
+
+<span class='fu'>ImputeRound</span>(<span class='no'>tess3.res</span>, <span class='no'>masked.X</span>)</pre>
     
     <h2>Arguments</h2>
     <dl class="dl-horizontal">
@@ -99,9 +104,48 @@ frequencies (P = Q G^T).</p>
     <div class="Value">
       <h2>Value</h2>
 
-      <p>TODOC</p>
+      <p>the imputed genotype matrix.</p>
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>tess3r</span>)
+
+<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fl'>100</span>
+<span class='no'>K</span> <span class='kw'>&lt;-</span> <span class='fl'>3</span>
+<span class='no'>ploidy</span> <span class='kw'>&lt;-</span> <span class='fl'>2</span>
+<span class='no'>L</span> <span class='kw'>&lt;-</span> <span class='fl'>3001</span>
+<span class='no'>data.list</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SampleGenoFromGenerativeModelTESS3.html'>SampleGenoFromGenerativeModelTESS3</a></span>(<span class='kw'>G</span> <span class='kw'>=</span> <span class='fu'><a href='SampleUnifDirichletG.html'>SampleUnifDirichletG</a></span>(<span class='no'>L</span>, <span class='no'>ploidy</span>, <span class='no'>K</span>),
+                                                <span class='kw'>Q</span> <span class='kw'>=</span> <span class='fu'><a href='SampleUnifQ.html'>SampleUnifQ</a></span>(<span class='no'>n</span>, <span class='no'>K</span>),
+                                                <span class='kw'>coord</span> <span class='kw'>=</span> <span class='fu'><a href='SampleNormalClusterCoord.html'>SampleNormalClusterCoord</a></span>(<span class='kw'>n.by.pop</span> <span class='kw'>=</span> <span class='no'>n</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>1</span>),
+                                                <span class='kw'>ploidy</span> <span class='kw'>=</span> <span class='no'>ploidy</span>)
+<span class='co'># mask data</span>
+<span class='fu'>set.seed</span>(<span class='fl'>0</span>)
+<span class='no'>masked.prop</span> <span class='kw'>&lt;-</span> <span class='fl'>0.1</span>
+<span class='no'>masked.X</span> <span class='kw'>&lt;-</span> <span class='no'>data.list</span>$<span class='no'>X</span>
+<span class='no'>masked.X</span>[<span class='fu'>sample</span>(<span class='fl'>1</span>:(<span class='fu'>ncol</span>(<span class='no'>masked.X</span>)*<span class='fu'>nrow</span>(<span class='no'>masked.X</span>)), (<span class='fu'>ncol</span>(<span class='no'>masked.X</span>)*<span class='fu'>nrow</span>(<span class='no'>masked.X</span>)) * <span class='no'>masked.prop</span>)] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
+
+
+<span class='co'># run tess3</span>
+<span class='no'>tess3.obj</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tess3.html'>tess3</a></span>(<span class='kw'>X</span> <span class='kw'>=</span> <span class='no'>masked.X</span>,
+                   <span class='kw'>coord</span> <span class='kw'>=</span> <span class='no'>data.list</span>$<span class='no'>coord</span>,
+                   <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+                   <span class='kw'>ploidy</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+                   <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='fl'>1.0</span>,
+                   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"projected.ls"</span>,
+                   <span class='kw'>rep</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; == Computing spectral decomposition of graph laplacian matrix: done
+#&gt; ==Main loop with 1 threads: done
+#&gt; == Computing spectral decomposition of graph laplacian matrix: done
+#&gt; ==Main loop with 1 threads: done
+#&gt; </div><div class='input'>
+<span class='no'>imputed.X.random</span> <span class='kw'>&lt;-</span> <span class='fu'>ImputeRandom</span>(<span class='fu'><a href='Gettess3res.html'>Gettess3res</a></span>(<span class='no'>tess3.obj</span>,<span class='fl'>3</span>), <span class='no'>masked.X</span>)
+<span class='fu'>mean</span>(<span class='no'>data.list</span>$<span class='no'>X</span>[<span class='fu'>is.na</span>(<span class='no'>masked.X</span>)] <span class='kw'>!=</span> <span class='no'>imputed.X.random</span>[<span class='fu'>is.na</span>(<span class='no'>masked.X</span>)]) <span class='co'># pourcentage of error</span></div><div class='output co'>#&gt; [1] 0.4898034
+#&gt; </div><div class='input'>
+<span class='no'>imputed.X.round</span> <span class='kw'>&lt;-</span> <span class='fu'>ImputeRound</span>(<span class='kw'>tess3.res</span> <span class='kw'>=</span> <span class='fu'><a href='Gettess3res.html'>Gettess3res</a></span>(<span class='no'>tess3.obj</span>,<span class='fl'>3</span>), <span class='no'>masked.X</span>)
+<span class='fu'>mean</span>(<span class='no'>data.list</span>$<span class='no'>X</span>[<span class='fu'>is.na</span>(<span class='no'>masked.X</span>)] <span class='kw'>!=</span> <span class='no'>imputed.X.round</span>[<span class='fu'>is.na</span>(<span class='no'>masked.X</span>)]) <span class='co'># pourcentage of error</span></div><div class='output co'>#&gt; [1] 0.5771743
+#&gt; </div><div class='input'>
+
+</div></pre>
+  </div>
   <div class="col-md-3">
   </div>
 </div>
