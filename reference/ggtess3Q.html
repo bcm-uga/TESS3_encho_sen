@@ -74,13 +74,13 @@
       </header>
 
       <div class="page-header">
-  <h1>Displays geographic maps for ancestry coefficients</h1>
+  <h1>Display geographic maps of ancestry coefficients using the ggplot grammar</h1>
 </div>
 
 <div class="row">
   <div class="col-md-9">
     
-    <p>Displays geographic maps for ancestry coefficients.</p>
+    <p>This function displays geographic maps of ancestry coefficients using the ggplot syntax.</p>
     
 
     <pre><span class='fu'>ggtess3Q</span>(<span class='no'>Q</span>, <span class='no'>coord</span>, <span class='kw'>resolution</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>300</span>, <span class='fl'>300</span>), <span class='kw'>window</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -90,31 +90,29 @@
     <h2>Arguments</h2>
     <dl class="dl-horizontal">
       <dt>Q</dt>
-      <dd>An object of class <code>tess3Q</code>. The ancestry coefficient matrix.</dd>
+      <dd>an object of class <code>tess3Q</code> corresponding to an ancestry coefficient matrix obtained <code>tess3</code>.</dd>
       <dt>coord</dt>
-      <dd>The numeric matrix of size \(n \times 2\) where \(n\) is the
-number of individuals.</dd>
+      <dd>a numeric matrix of dimension \(n\) times 2 where \(n\) is the
+number of individuals. The matrix must contain (Longitude, Latitude) coordinates for all individuals.</dd>
       <dt>resolution</dt>
-      <dd>An integer vector of the resolution of the grid used to
-computed the interpolating surface</dd>
+      <dd>an integer vector <code>resolution = c(rx,ry)</code> for the resolution of the grid used to
+computed the interpolating surface. <code>rx</code> and <code>ry</code> are resolution numbers for the x-axis and y-axis respectively.</dd>
       <dt>window</dt>
-      <dd>The window size, such that <code>window = c(xmin, xmax, ymin, ymax)</code>
-contains the window mina nd max coordinates.</dd>
+      <dd>an integer vector for the plotting window, such that <code>window = c(xmin, xmax, ymin, ymax)</code>
+contains the window&#39;s min and max coordinates.</dd>
       <dt>background</dt>
-      <dd>If TRUE the raster file is used as a stencil to render only
-raster pixel on earth.</dd>
+      <dd>if <code>TRUE</code> a raster file is used as a stencil to render only raster pixel on earth.</dd>
       <dt>map.polygon</dt>
-      <dd>The <code>sp::SpatialPolygonsDataFrame</code> object used to crop the interpolating surfaces.
+      <dd>an object of class <code>sp::SpatialPolygonsDataFrame</code> used to crop the interpolating surface.
 If <code>NULL</code>, the function <code><a href='http://www.rdocumentation.org/packages/getMap/topics/rworldmap'>getMap</a></code> is used.</dd>
       <dt>raster.filename</dt>
-      <dd>The raster file name used to compute the background stencil.
-This is an alternative method to crop the interpolating surfaces. The default method uses <code>map.polygon</code>.</dd>
+      <dd>a raster file name used to compute the background stencil.
+This is an alternative method to crop interpolating surfaces. The default method uses <code>map.polygon</code>.</dd>
       <dt>interpolation.model</dt>
-      <dd>The interpolation model used to compute compute
-the interpolating surface. You can use functions <code><a href='FieldsTpsModel.html'>FieldsTpsModel</a></code>,
-<code><a href='FieldsKrigModel.html'>FieldsKrigModel</a></code>.</dd>
+      <dd>an interpolation model used to compute the interpolating surface. Interpolation models can use the
+functions <code><a href='FieldsTpsModel.html'>FieldsTpsModel</a></code> or <code><a href='FieldsKrigModel.html'>FieldsKrigModel</a></code>.</dd>
       <dt>col.palette</dt>
-      <dd>A list of color palettes. You can use the function <code><a href='CreatePalette.html'>CreatePalette</a></code>.</dd>
+      <dd>a list of color palettes. Color palettes can be defined by using the function <code><a href='CreatePalette.html'>CreatePalette</a></code>.</dd>
     </dl>
     
     <div class="Value">
@@ -126,19 +124,18 @@ the interpolating surface. You can use functions <code><a href='FieldsTpsModel.h
     <h2 id="examples">Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>tess3r</span>)
 
-<span class='co'># Retrieve a dataset</span>
+<span class='co'># Load Arabidopsis data</span>
 <span class='fu'>data</span>(<span class='no'>data.at</span>)
 
 <span class='co'># Run of TESS3</span>
 <span class='no'>obj</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tess3.html'>tess3</a></span>(<span class='no'>data.at</span>$<span class='no'>X</span>, <span class='kw'>coord</span> <span class='kw'>=</span> <span class='no'>data.at</span>$<span class='no'>coord</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-                 <span class='kw'>ploidy</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"projected.ls"</span>, <span class='kw'>openMP.core.num</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; Computing spectral decomposition of graph laplacian matrix: done
-#&gt; Main loop with 4 threads: 
-#&gt; : done
+                 <span class='kw'>ploidy</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"projected.ls"</span>, <span class='kw'>openMP.core.num</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; == Computing spectral decomposition of graph laplacian matrix: done
+#&gt; ==Main loop with 4 threads: done
 #&gt; </div><div class='input'>
 <span class='co'># Get the ancestry matrix</span>
 <span class='no'>Q.matrix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='qmatrix.html'>qmatrix</a></span>(<span class='no'>obj</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>5</span>)
 
-<span class='co'># Plot the spatial interpolation of the ancestry matrix</span>
+<span class='co'># Show a spatial interpolation of the ancestry matrix</span>
 <span class='fu'>ggtess3Q</span>(<span class='no'>Q.matrix</span>, <span class='no'>data.at</span>$<span class='no'>coord</span>)</div><img src='ggtess3Q-4.png' alt='' width='540' height='400' /></pre>
   </div>
   <div class="col-md-3">

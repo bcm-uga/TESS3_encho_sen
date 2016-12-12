@@ -74,13 +74,13 @@
       </header>
 
       <div class="page-header">
-  <h1>Get Q matrix estimate.</h1>
+  <h1>Get Q matrix estimate</h1>
 </div>
 
 <div class="row">
   <div class="col-md-9">
     
-    <p>Get the <code>Q</code> ancestry coefficient matrix returned by the TESS3 algorithm.</p>
+    <p>Get the <code>Q</code> ancestry coefficient matrix computed by the tess3 function.</p>
     
 
     <pre><span class='fu'>qmatrix</span>(<span class='no'>tess3</span>, <span class='no'>K</span>, <span class='kw'>rep</span> <span class='kw'>=</span> <span class='st'>"best"</span>)</pre>
@@ -88,25 +88,44 @@
     <h2>Arguments</h2>
     <dl class="dl-horizontal">
       <dt>tess3</dt>
-      <dd>A tess3 object.</dd>
+      <dd>a tess3 object.</dd>
       <dt>K</dt>
-      <dd>Number of ancestral populations.</dd>
+      <dd>number of ancestral populations.</dd>
       <dt>rep</dt>
-      <dd>Repetition index.</dd>
+      <dd>an integer indicating which run to display (default = lowest error run).</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
 
-      <p>The <code>Q</code> ancestry coefficient matrix.</p>
+      <p>a <code>Q</code> matrix of ancestry coefficients from a specified run.</p>
     </div>
 
     <div class="See also">
       <h2>See also</h2>
 
-      <p><code><a href='tess3.html'>tess3</a></code></p>
+      <p><code><a href='tess3.html'>tess3</a></code> <code><a href='barplot.tess3Q.html'>barplot.tess3Q</a></code> <code><a href='plot.tess3Q.html'>plot.tess3Q</a></code> <code><a href='CreatePalette.html'>CreatePalette</a></code></p>
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>tess3r</span>)
+
+<span class='co'># load Arabidopsis data</span>
+<span class='fu'>data</span>(<span class='no'>data.at</span>)
+
+<span class='co'># Running tess3</span>
+<span class='no'>obj</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tess3.html'>tess3</a></span>(<span class='no'>data.at</span>$<span class='no'>X</span>, <span class='kw'>coord</span> <span class='kw'>=</span> <span class='no'>data.at</span>$<span class='no'>coord</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+                 <span class='kw'>ploidy</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"projected.ls"</span>, <span class='kw'>openMP.core.num</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; == Computing spectral decomposition of graph laplacian matrix: done
+#&gt; ==Main loop with 4 threads: done
+#&gt; </div><div class='input'>
+<span class='co'># Get the ancestry matrix</span>
+<span class='no'>Q.matrix</span> <span class='kw'>&lt;-</span> <span class='fu'>qmatrix</span>(<span class='no'>obj</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>5</span>)
+
+<span class='co'># Plot the barplot</span>
+<span class='fu'>barplot</span>(<span class='no'>Q.matrix</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>space</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Individuals"</span>,
+        <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Ancestry proportions"</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Ancestry matrix"</span>) <span class='kw'>-&gt;</span> <span class='no'>bp</span></div><div class='output co'>#&gt; Use CreatePalette() to define color palettes.
+#&gt; </div><div class='input'><span class='fu'>axis</span>(<span class='fl'>1</span>, <span class='kw'>at</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fu'>nrow</span>(<span class='no'>Q.matrix</span>), <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>bp</span>$<span class='no'>order</span>, <span class='kw'>las</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>cex.axis</span> <span class='kw'>=</span> <span class='fl'>.4</span>)</div><img src='qmatrix-6.png' alt='' width='540' height='400' /></pre>
+  </div>
   <div class="col-md-3">
   </div>
 </div>

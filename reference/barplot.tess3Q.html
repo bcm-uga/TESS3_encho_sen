@@ -80,8 +80,8 @@
 <div class="row">
   <div class="col-md-9">
     
-    <p>Displays a barplot representation of the
-ancestry coefficient matrix. Includes a sort-by-Q option.</p>
+    <p>This function displays a barplot representation of the
+ancestry coefficient matrix. It includes a sort-by-Q option.</p>
     
 
     <pre><span class='co'># S3 method for tess3Q</span>
@@ -107,7 +107,8 @@ ancestry coefficient matrix. Includes a sort-by-Q option.</p>
     <div class="Value">
       <h2>Value</h2>
 
-      <p>Generates a graphical output.</p>
+      <p>A permutation of individual labels used in the sort.by.Q option (order). Displays the
+Q matrix.</p>
     </div>
 
     <div class="See also">
@@ -124,14 +125,13 @@ ancestry coefficient matrix. Includes a sort-by-Q option.</p>
 
 <span class='co'># Run of TESS3</span>
 <span class='no'>obj</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tess3.html'>tess3</a></span>(<span class='no'>data.at</span>$<span class='no'>X</span>, <span class='kw'>coord</span> <span class='kw'>=</span> <span class='no'>data.at</span>$<span class='no'>coord</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-                 <span class='kw'>ploidy</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"projected.ls"</span>, <span class='kw'>openMP.core.num</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; Computing spectral decomposition of graph laplacian matrix: done
-#&gt; Main loop with 4 threads: 
-#&gt; : done
+                 <span class='kw'>ploidy</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"projected.ls"</span>, <span class='kw'>openMP.core.num</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; == Computing spectral decomposition of graph laplacian matrix: done
+#&gt; ==Main loop with 4 threads: done
 #&gt; </div><div class='input'>
 <span class='co'># Get the ancestry matrix</span>
 <span class='no'>Q.matrix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='qmatrix.html'>qmatrix</a></span>(<span class='no'>obj</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>5</span>)
 
-<span class='co'># Plot the barplot</span>
+<span class='co'># Display a barplot for the Q matrix</span>
 <span class='fu'>barplot</span>(<span class='no'>Q.matrix</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>space</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Individuals"</span>,
         <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Ancestry proportions"</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Ancestry matrix"</span>) <span class='kw'>-&gt;</span> <span class='no'>bp</span></div><div class='output co'>#&gt; Use CreatePalette() to define color palettes.
 #&gt; </div><div class='input'><span class='fu'>axis</span>(<span class='fl'>1</span>, <span class='kw'>at</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fu'>nrow</span>(<span class='no'>Q.matrix</span>), <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>bp</span>$<span class='no'>order</span>, <span class='kw'>las</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>cex.axis</span> <span class='kw'>=</span> <span class='fl'>.4</span>)</div><img src='barplot.tess3Q-6.png' alt='' width='540' height='400' /></pre>

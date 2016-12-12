@@ -98,7 +98,7 @@ functions</p>
     <div class="Value">
       <h2>Value</h2>
 
-      <p>An object of class <code>list</code> containing a list of color palettes.</p>
+      <p>an object of class <code>list</code> containing a list of color palettes.</p>
     </div>
 
     <div class="See also">
@@ -110,12 +110,11 @@ functions</p>
     <h2 id="examples">Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>tess3r</span>)
 
-<span class='co'>## an A. thaliana example</span>
+<span class='co'>## Load A. thaliana example</span>
 <span class='fu'>data</span>(<span class='no'>data.at</span>)
 <span class='no'>obj</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tess3.html'>tess3</a></span>(<span class='no'>data.at</span>$<span class='no'>X</span>, <span class='kw'>coord</span> <span class='kw'>=</span> <span class='no'>data.at</span>$<span class='no'>coord</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>ploidy</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-             <span class='kw'>openMP.core.num</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; Computing spectral decomposition of graph laplacian matrix: done
-#&gt; Main loop with 4 threads: 
-#&gt; : done
+             <span class='kw'>openMP.core.num</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; == Computing spectral decomposition of graph laplacian matrix: done
+#&gt; ==Main loop with 4 threads: done
 #&gt; </div><div class='input'><span class='no'>Qmatrix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='qmatrix.html'>qmatrix</a></span>(<span class='no'>obj</span>,<span class='kw'>K</span><span class='kw'>=</span><span class='fl'>5</span>)
 <span class='no'>my.colors</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"tomato"</span>, <span class='st'>"yellow"</span>, <span class='st'>"blue"</span>, <span class='st'>"wheat"</span>,<span class='st'>"olivedrab"</span>)
 <span class='no'>my.palette</span> <span class='kw'>&lt;-</span> <span class='fu'>CreatePalette</span>(<span class='no'>my.colors</span>, <span class='fl'>9</span>)

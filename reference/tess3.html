@@ -74,7 +74,7 @@
       </header>
 
       <div class="page-header">
-  <h1>Estimation of ancestry proportions and genome scans for selection</h1>
+  <h1>Estimate ancestry coefficients and run genome scans for selection</h1>
 </div>
 
 <div class="row">
@@ -130,7 +130,7 @@ and to the penalty function.</dd>
       <dt>W</dt>
       <dd>a matrix which corresponds to the graph weightings.
 If NULL, W is computed as
-<code>W[i,j] = exp( - (coord[i] - coord[j])^2 / sigma^2)</code>,
+<code>W[i,j] = exp(-(coord[i] - coord[j])^2 / sigma^2)</code>,
 where <code>coord[i]</code> represents
 the geographic coordinates for individual i, and where
 <code>sigma</code> is equal to 5 percent of the average geographic distance between individuals.</dd>
@@ -225,18 +225,14 @@ doi:10.1101/080291. <a href = 'http://biorxiv.org/content/early/2016/10/12/08029
 <span class='co'># Running the tess3 function</span>
 <span class='no'>tess3.obj</span> <span class='kw'>&lt;-</span> <span class='fu'>tess3</span>(<span class='kw'>X</span> <span class='kw'>=</span> <span class='no'>genotype</span>, <span class='kw'>coord</span> <span class='kw'>=</span> <span class='no'>coordinates</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>,
                    <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"projected.ls"</span>,
-                   <span class='kw'>ploidy</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; Computing spectral decomposition of graph laplacian matrix: done
-#&gt; Main loop with 1 threads: 
-#&gt; : done
-#&gt; Computing spectral decomposition of graph laplacian matrix: done
-#&gt; Main loop with 1 threads: 
-#&gt; : done
-#&gt; Computing spectral decomposition of graph laplacian matrix: done
-#&gt; Main loop with 1 threads: 
-#&gt; : done
-#&gt; Computing spectral decomposition of graph laplacian matrix: done
-#&gt; Main loop with 1 threads: 
-#&gt; : done
+                   <span class='kw'>ploidy</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; == Computing spectral decomposition of graph laplacian matrix: done
+#&gt; ==Main loop with 1 threads: done
+#&gt; == Computing spectral decomposition of graph laplacian matrix: done
+#&gt; ==Main loop with 1 threads: done
+#&gt; == Computing spectral decomposition of graph laplacian matrix: done
+#&gt; ==Main loop with 1 threads: done
+#&gt; == Computing spectral decomposition of graph laplacian matrix: done
+#&gt; ==Main loop with 1 threads: done
 #&gt; </div><div class='input'>
 <span class='co'># Plot error</span>
 <span class='fu'>plot</span>(<span class='no'>tess3.obj</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,

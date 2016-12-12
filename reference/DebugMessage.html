@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference. tess3r</title>
+<title>DebugMessage. tess3r</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -74,36 +74,24 @@
       </header>
 
       <div class="page-header">
-  <h1>Function reference <small>version&nbsp;1.1.0</small></h1>
+  <h1>Print a message if getOption(&quot;tess3r.debug&quot;) is not null</h1>
 </div>
 
 <div class="row">
   <div class="col-md-9">
-    <div class="section ">
-      <h2>Main functions</h2>
-      <p class="section-desc"></p>
+    
+    <p>Print a message if getOption(&quot;tess3r.debug&quot;) is not null</p>
+    
 
-      <dl class="dl-horizontal">
-        <dt><a href="barplot.tess3Q.html">barplot.tess3Q</a></dt>
-        <dd>Barplot representation of a Q-matrix</dd>
-        <dt><a href="CreatePalette.html">CreatePalette</a></dt>
-        <dd>Create a list of palettes</dd>
-        <dt><a href="ggtess3Q.html">ggtess3Q</a></dt>
-        <dd>Display geographic maps of ancestry coefficients using the ggplot grammar</dd>
-        <dt><a href="plot.tess3.html">plot.tess3</a></dt>
-        <dd>Plot cross-validation errors for all values of number of ancestral populations</dd>
-        <dt><a href="plot.tess3Q.html">plot.tess3Q</a></dt>
-        <dd>Display geographic maps of ancestry coefficients</dd>
-        <dt><a href="pvalue.html">pvalue</a></dt>
-        <dd>Get p-values from a genome scan for selection</dd>
-        <dt><a href="qmatrix.html">qmatrix</a></dt>
-        <dd>Get Q matrix estimate</dd>
-        <dt><a href="tess2tess3.html">tess2tess3</a></dt>
-        <dd>Import input files from the STRUCTURE and TESS formats</dd>
-        <dt><a href="tess3.html">tess3</a></dt>
-        <dd>Estimate ancestry coefficients and run genome scans for selection</dd>
-      </dl>
-    </div>
+    <pre><span class='fu'>DebugMessage</span>(<span class='no'>msg</span>)</pre>
+    
+    <h2>Arguments</h2>
+    <dl class="dl-horizontal">
+      <dt>msg</dt>
+      <dd>The message</dd>
+    </dl>
+          </div>
+  <div class="col-md-3">
   </div>
 </div>
 

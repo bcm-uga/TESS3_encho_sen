@@ -40,7 +40,7 @@
       <h1>Analyzing population genomic data with tess3r</h1>
                         <h4 class="author">Kevin Caye - Flora Jay - Olivier Fran&ccedil;ois</h4>
             
-            <h4 class="date">2016-10-14</h4>
+            <h4 class="date">2016-12-12</h4>
           </div>
 
     
@@ -128,7 +128,7 @@ my.palette &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(q.matrix, coordinates, <span class="dt">method =</span> <span class="st">"map.max"</span>, <span class="dt">interpol =</span> <span class="kw"><a href="../reference/FieldsKrigModel.html">FieldsKrigModel</a></span>(<span class="dv">10</span>),  
      <span class="dt">main =</span> <span class="st">"Ancestry coefficients"</span>,
      <span class="dt">xlab =</span> <span class="st">"Longitude"</span>, <span class="dt">ylab =</span> <span class="st">"Latitude"</span>, 
-     <span class="dt">resolution =</span> <span class="kw">c</span>(<span class="dv">500</span>,<span class="dv">500</span>), <span class="dt">cex =</span> .<span class="dv">4</span>, 
+     <span class="dt">resolution =</span> <span class="kw">c</span>(<span class="dv">300</span>,<span class="dv">300</span>), <span class="dt">cex =</span> .<span class="dv">4</span>, 
      <span class="dt">col.palette =</span> my.palette)</code></pre></div>
 <p><img src="main-vignette_files/figure-html/map.plot-1.png" width="672"></p>
 <p>The plot function uses a default world map provide by the function <code>rworldmap::getMap()</code>. For more acurate map, any raster file could be used. For example, a raster map of Europe can be downloaded and used as follows.</p>
@@ -174,7 +174,7 @@ fdr.level =<span class="st"> </span><span class="fl">1e-4</span>
 w =<span class="st"> </span><span class="kw">which</span>(<span class="kw">sort</span>(p.values) &lt;<span class="st"> </span>fdr.level *<span class="st"> </span>(<span class="dv">1</span>:L)/L)
 candidates =<span class="st"> </span><span class="kw">order</span>(p.values)[w]
 <span class="kw">length</span>(candidates)</code></pre></div>
-<pre><code>## [1] 467</code></pre>
+<pre><code>## [1] 605</code></pre>
 <p>A list of candidate loci with an expected FDR level of <span class="math inline">\(0.0001\)</span> is recorded in the object <strong>candidates</strong>. A &lsquo;Manhattan&rsquo; plot highlighting the candidate loci in blue color is then generated as follows.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># manhattan plot </span>
 <span class="kw">plot</span>(p.values, <span class="dt">main =</span> <span class="st">"Manhattan plot"</span>, 
@@ -213,7 +213,7 @@ d09tess3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/te
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Q.matrix, d09tess3$coord, <span class="dt">method =</span> <span class="st">"map.max"</span>, <span class="dt">cex =</span> .<span class="dv">5</span>,  
      <span class="dt">interpol =</span> <span class="kw"><a href="../reference/FieldsKrigModel.html">FieldsKrigModel</a></span>(<span class="dv">10</span>), 
      <span class="dt">main =</span> <span class="st">"Ancestry coefficients"</span>,
-     <span class="dt">resolution =</span> <span class="kw">c</span>(<span class="dv">500</span>, <span class="dv">500</span>),
+     <span class="dt">resolution =</span> <span class="kw">c</span>(<span class="dv">300</span>, <span class="dv">300</span>),
      <span class="dt">col.palette =</span> my.palette,
      <span class="dt">xlab =</span> <span class="st">"Longitude"</span>, <span class="dt">ylab =</span> <span class="st">"Latitude"</span>)</code></pre></div>
 <p><img src="main-vignette_files/figure-html/STRplots3-2.png" width="672"></p>

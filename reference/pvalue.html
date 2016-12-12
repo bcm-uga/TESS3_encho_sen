@@ -74,13 +74,13 @@
       </header>
 
       <div class="page-header">
-  <h1>Get pvalue vector.</h1>
+  <h1>Get p-values from a genome scan for selection</h1>
 </div>
 
 <div class="row">
   <div class="col-md-9">
     
-    <p>Get the <code>pvalue</code> vector returned by the TESS3 algorithm.</p>
+    <p>Get the <code>pvalue</code> vector returned by the tess3 algorithm.</p>
     
 
     <pre><span class='fu'>pvalue</span>(<span class='no'>tess3</span>, <span class='no'>K</span>, <span class='kw'>rep</span> <span class='kw'>=</span> <span class='st'>"best"</span>)</pre>
@@ -88,17 +88,17 @@
     <h2>Arguments</h2>
     <dl class="dl-horizontal">
       <dt>tess3</dt>
-      <dd>A tess3 object.</dd>
+      <dd>an object of class <code>tess3</code>.</dd>
       <dt>K</dt>
-      <dd>Number of ancestral populations.</dd>
+      <dd>a number of ancestral populations.</dd>
       <dt>rep</dt>
-      <dd>Repetition index.</dd>
+      <dd>an integer correponding to a run number (default is &#39;best&#39; run).</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
 
-      <p>The <code>pvalue</code> ancestry coefficient matrix.</p>
+      <p>Corrected pvalues for all loci to be used in a scan for adaptive alleles.</p>
     </div>
 
     <div class="See also">

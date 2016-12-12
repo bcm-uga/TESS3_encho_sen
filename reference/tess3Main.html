@@ -74,7 +74,7 @@
       </header>
 
       <div class="page-header">
-  <h1>Estimates spatial population structure</h1>
+  <h1>Estimate ancestry coefficients and run genome scans for selection</h1>
 </div>
 
 <div class="row">
@@ -93,90 +93,86 @@ compute a Fst statistic for each locus. See references for more details.</p>
     <h2>Arguments</h2>
     <dl class="dl-horizontal">
       <dt>X</dt>
-      <dd>A numeric matrix which corresponds to the genotype matrix. This matrix
-must be of size \(n \times L\) where \(n\) is the number of individual and
-\(L\) is the number of loci. Values of this matrix are integer corresponding
+      <dd>a numeric matrix which corresponds to the genotype matrix. This matrix
+must be of size \(n \times L\) where \(n\) is the number of individuals and
+\(L\) is the number of loci. Values of this matrix are integers corresponding
 to the number of variant alleles observed at a locus. If <code>NULL</code>, <code>XProba</code>
 is used.</dd>
       <dt>XProba</dt>
-      <dd>A numeric matrix which correspond to the probability for the genotype.
+      <dd>a numeric matrix which corresponds to genotype likelihoods (probabilities).
 This matrix must be of size \(n \times (ploidy + 1)L\) where
-\(n\) is the number of individual, \(L\) is the number of loci. Values of
-this matrix are numeric between 0 and 1 corresponding
-to the genome probability. It is the matrix used in graph based non negative
-factorization matrix. If <code>NULL</code>, it is computed from the genotype matrix <code>X</code>.
-See reference for more details.</dd>
+\(n\) is the number of individuals and \(L\) is the number of loci. Entries of
+this matrix are numeric values between 0 and 1 corresponding
+to genotype probability. If <code>NULL</code>, this matrix is computed from the genotype matrix <code>X</code>.
+See reference for details.</dd>
       <dt>coord</dt>
-      <dd>The numeric matrix of size \(n \times 2\) where \(n\) is the
-number of individuals.</dd>
+      <dd>a numeric matrix of size \(n \times 2\) where \(n\) is the
+number of individuals. It contains the geographic coordinates (Longitude, Latitude) of
+all sampled individuals.</dd>
       <dt>K</dt>
-      <dd>An integer which corresponds to
+      <dd>an integer corresponding to
 the number of ancestral populations.</dd>
       <dt>ploidy</dt>
-      <dd>An integer which corresponds to
-the number of set of chromosomes.</dd>
+      <dd>an integer which corresponds to the ploidy of the number of copy of chromosomes.</dd>
       <dt>lambda</dt>
-      <dd>A numeric which corresponds to the
+      <dd>a nonnegative numeric which corresponds to the
 spatial regularization parameter.</dd>
       <dt>W</dt>
-      <dd>A numeric matrix which corresponds to the graph weiht matrix.
-If NULL, W it is computed as
-<code>W[i,j] = exp( - (coord[i] - coord[j])^2 / sigma^2)</code>.
-Where <code>coord[i]</code> is
-the geographic coordinate for the individual i and
+      <dd>a numeric matrix which corresponds to the graph weight matrix.
+If <code>NULL</code>, W is computed as
+<code>W[i,j] = exp(-(coord[i] - coord[j])^2 / sigma^2)</code>,
+where <code>coord[i]</code> is the set of geographic coordinates for individual i and
 <code>sigma</code> equals 5 percent of the average geographic distance between individuals.</dd>
       <dt>method</dt>
       <dd><code>&quot;projected.ls&quot;</code> or <code>&quot;qp&quot;</code>. If <code>&quot;projected.ls&quot;</code>,
-an aleternated projected least squares algorithm is used. If <code>&quot;qp&quot;</code>,
-an alternated quadratic programing algorithm is used. See references for more
-details</dd>
+an alternating projected least squares algorithm is used. If <code>&quot;qp&quot;</code>,
+an alternating quadratic programing algorithm is used. See references for details.</dd>
       <dt>max.iteration</dt>
-      <dd>The max number of
-iteration of the optimization algorithm.</dd>
+      <dd>the maximum number of
+iterations in the optimization algorithm.</dd>
       <dt>tolerance</dt>
-      <dd>A numeric which corresponds to the tolerance of the
-stopping criteria of the optimization algorithm.</dd>
+      <dd>a numeric value which corresponds to the tolerance paramter in the
+stopping criterion of the optimization algorithm.</dd>
       <dt>openMP.core.num</dt>
-      <dd>If openMP is available on your computer, it is the
-number of core used by the algorithm.</dd>
+      <dd>number of core used by the algorithm. It requires that openMP is
+installed.</dd>
       <dt>Q.init</dt>
-      <dd>A numeric matrix which corresponds to the initial value of
+      <dd>a numeric matrix which corresponds to the initial value of
 <code>Q</code> for the algorithm.</dd>
       <dt>mask</dt>
-      <dd>If not <code>NULL</code> this the proportion of the data matrix which
-is masked to compute the cross validation criteria.</dd>
+      <dd>if not <code>NULL</code>, this numeric value is the proportion of genotypic matrix entries
+which are masked when computing the cross validation criterion.</dd>
       <dt>copy</dt>
-      <dd>if TRUE data will be copy 1 time.</dd>
+      <dd>if TRUE data will be copied once.</dd>
       <dt>algo.copy</dt>
-      <dd>if TRUE data will be copy 1 time to speed the algorithm.</dd>
+      <dd>if TRUE, data will be copied in order to speed the algorithm.</dd>
       <dt>verbose</dt>
-      <dd>If <code>TRUE</code> more information are printed.</dd>
+      <dd>If <code>TRUE</code> run information is printed.</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
 
-      <p>An object of class tess3Main which is a list with components:
+      <p>An object of class tess3Main which is a list with the following attributes:
 <dl class='dl-horizontal'>
-   <dt>L</dt><dd>The number of loci.</dd>
-   <dt>n</dt><dd>The number of individuals.</dd>
-   <dt>ploidy</dt><dd>The number of set of chromosomes.</dd>
-   <dt>K</dt><dd>The number of ancestral population.</dd>
-   <dt>G</dt><dd>The ancestral genotype frequency matrix.</dd>
-   <dt>Q</dt><dd>The ancestry coefficient matrix.</dd>
-   <dt>Fst</dt><dd>The Fst statistic computed for each locus.</dd>
-   <dt>Fscore</dt><dd>The Fscore computed from Fst.</dd>
-   <dt>pvalue</dt><dd>The pvalues computed from Fscore.</dd>
+   <dt>L</dt><dd>the number of loci</dd>
+   <dt>n</dt><dd>the number of individuals</dd>
+   <dt>ploidy</dt><dd>the number of copies of chromosomes.</dd>
+   <dt>K</dt><dd>the number of ancestral populations.</dd>
+   <dt>G</dt><dd>the ancestral genotype frequency matrix.</dd>
+   <dt>Q</dt><dd>the ancestry coefficient matrix.</dd>
+   <dt>Fst</dt><dd>Fst statistic computed at each locus.</dd>
+   <dt>Fscore</dt><dd>Fscores computed from the Fst statistics.</dd>
+   <dt>pvalue</dt><dd>pvalues computed from the Fscores.</dd>
    <dt>log.pvalue</dt><dd>The \(log(pvalue)\).</dd>
-   <dt>rmse</dt><dd>The root square mean error between <code>XProba</code> and
+   <dt>rmse</dt><dd>root square mean error between <code>XProba</code> and
    <code>tcrossprod(Q, G)</code>.</dd>
-   <dt>crossentropy</dt><dd>The cross entropy error between <code>XProba</code> and
+   <dt>crossentropy</dt><dd>cross-entropy error between <code>XProba</code> and
    <code>tcrossprod(Q, G)</code>.</dd>
-  <dt>crossvalid.rmse</dt><dd>If masked not <code>NULL</code>.
-  The root square mean error between <code>XProba[masked]</code> and
-  <code>tcrossprod(Q, G)[masked]</code>.</dd>
-   <dt>crossvalid.crossentropy</dt><dd>If masked not <code>NULL</code>.
-   The cross entropy error between <code>XProba[masked]</code> and
+  <dt>crossvalid.rmse</dt><dd>if masked is not <code>NULL</code>, root square mean error
+  between <code>XProba[masked]</code> and <code>tcrossprod(Q, G)[masked]</code>.</dd>
+   <dt>crossvalid.crossentropy</dt><dd>if masked not <code>NULL</code>,
+   the cross-entropy error between <code>XProba[masked]</code> and
    <code>tcrossprod(Q, G)[masked]</code>.</dd>
 </dl></p>
     </div>
@@ -206,9 +202,8 @@ is masked to compute the cross validation criteria.</dd>
                       <span class='kw'>coord</span> <span class='kw'>=</span> <span class='no'>coordinates</span>,
                       <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>3</span>,
                       <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"projected.ls"</span>,
-                      <span class='kw'>ploidy</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; Computing spectral decomposition of graph laplacian matrix: done
-#&gt; Main loop with 1 threads: 
-#&gt; : done
+                      <span class='kw'>ploidy</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; == Computing spectral decomposition of graph laplacian matrix: done
+#&gt; ==Main loop with 1 threads: done
 #&gt; </div><div class='input'>
 <span class='co'># Run of tess3 main algorithm with cross validation errors computation.</span>
 <span class='no'>tess3.obj</span> <span class='kw'>&lt;-</span> <span class='fu'>tess3Main</span>(<span class='kw'>X</span> <span class='kw'>=</span> <span class='no'>genotype</span>,
@@ -216,9 +211,8 @@ is masked to compute the cross validation criteria.</dd>
                       <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>3</span>,
                       <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"projected.ls"</span>,
                       <span class='kw'>ploidy</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-                      <span class='kw'>mask</span> <span class='kw'>=</span> <span class='fl'>0.05</span>)</div><div class='output'><strong class='text-info'>Mask 0.05% of genotypes for cross validation</strong></div><div class='output'><strong class='text-info'>Missing value detected in genotype</strong></div><div class='output co'>#&gt; Computing spectral decomposition of graph laplacian matrix: done
-#&gt; Main loop with 1 threads: 
-#&gt; : done
+                      <span class='kw'>mask</span> <span class='kw'>=</span> <span class='fl'>0.05</span>)</div><div class='output co'>#&gt; == Computing spectral decomposition of graph laplacian matrix: done
+#&gt; ==Main loop with 1 threads: done
 #&gt; </div><div class='input'>
 
 </div></pre>

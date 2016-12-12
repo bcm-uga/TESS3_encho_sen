@@ -74,13 +74,13 @@
       </header>
 
       <div class="page-header">
-  <h1>Plot RMSE(X, Q * t(G)) for all K number of ancestral population with error bars.</h1>
+  <h1>Plot cross-validation errors for all values of number of ancestral populations</h1>
 </div>
 
 <div class="row">
   <div class="col-md-9">
     
-    <p>Plot RMSE(X, Q * t(G)) for all K number of ancestral population with error bars.</p>
+    <p>Plot cross-validation errors for all values of number of ancestral populations</p>
     
 
     <pre><span class='co'># S3 method for tess3</span>
@@ -89,14 +89,14 @@
     <h2>Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>A tess3 object.</dd>
+      <dd>a tess3 object.</dd>
       <dt>crossvalid</dt>
-      <dd>If TRUE error is computed on masked data.</dd>
+      <dd>if TRUE, errors are evaluated on masked data.</dd>
       <dt>crossentropy</dt>
-      <dd>If TRUE the cross entropy error metric is used. If FALSE
-the RMSE is used.</dd>
+      <dd>If TRUE, the cross-entropy error is used. If FALSE,
+the root mean square error is used.</dd>
       <dt>...</dt>
-      <dd>TODOC</dd>
+      <dd>other graphic parameters.</dd>
     </dl>
           </div>
   <div class="col-md-3">
