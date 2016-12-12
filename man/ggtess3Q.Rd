@@ -32,11 +32,6 @@ This is an alternative method to crop interpolating surfaces. The default method
 functions \code{\link{FieldsTpsModel}} or \code{\link{FieldsKrigModel}}.}
 
 \item{col.palette}{a list of color palettes. Color palettes can be defined by using the function \code{\link{CreatePalette}}.}
-
-\item{x}{an object of class \code{tess3Q} containing an ancestry coefficient matrix computed from \code{\link{tess3}}.}
-
-\item{method}{a character string \code{"map.max"} or \code{"map.all"}. If \code{"map.all"}, interpolating surfaces are displayed
-for the ancestry coefficients of all populations. If \code{"map.max"} the union of interpolating surfaces is displayed.}
 }
 \value{
 None

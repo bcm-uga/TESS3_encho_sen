@@ -318,7 +318,7 @@ plot.tess3 <- function(x, crossvalid = FALSE, crossentropy = FALSE, ...) {
       }
     }
 
-    plot(K, med, xlab = "Number of populations", ylab = "Cross Validation Error", ...)
+    plot(K, med, ...)
     epsilon = 0.02
     segments(K, min , K, max)
     segments(K - epsilon, min , K + epsilon, min)

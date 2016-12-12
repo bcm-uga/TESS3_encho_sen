@@ -150,7 +150,7 @@ The **plot** function interpolates the values of the $Q$-matrix on a geographic 
 plot(q.matrix, coordinates, method = "map.max", interpol = FieldsKrigModel(10),  
      main = "Ancestry coefficients",
      xlab = "Longitude", ylab = "Latitude", 
-     resolution = c(500,500), cex = .4, 
+     resolution = c(300,300), cex = .4, 
      col.palette = my.palette)
 ```
 
@@ -268,7 +268,7 @@ barplot(Q.matrix, sort.by.Q = FALSE,
 plot(Q.matrix, d09tess3$coord, method = "map.max", cex = .5,  
      interpol = FieldsKrigModel(10), 
      main = "Ancestry coefficients",
-     resolution = c(500, 500),
+     resolution = c(300, 300),
      col.palette = my.palette,
      xlab = "Longitude", ylab = "Latitude")
 ```
