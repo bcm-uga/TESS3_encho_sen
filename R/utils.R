@@ -119,7 +119,7 @@ tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1
       allele = sort(unique(dat.2[,j]))
       for (i in allele[allele >= 0]) dat.binary=cbind(dat.binary, dat.2[,j]==i)
       LL = dim(dat.binary)[2]
-      ind = which(dat[,j] < 0)
+      ind = which(dat.2[,j] < 0)
       if (length(ind) != 0){dat.binary[ind, (LL - length(allele) + 2):LL] = -9}
     }}
 
