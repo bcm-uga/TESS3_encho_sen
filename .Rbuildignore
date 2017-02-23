@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 ^\.travis\.yml$
 ^data-raw$
+^data-test$
 ^Rmarkdown$
 ^\.dockerignore$
 ^Dockerfile$

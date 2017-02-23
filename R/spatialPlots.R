@@ -30,7 +30,7 @@ InterpolRaster <- function(coord, Q, raster.grid, interpolation.model) {
   interpol.stack <- raster::stack()
   for (j in seq_along(Q[1,])) {
     model <- interpolation.model(coord, Q[,j])
-    interpol.stack <- raster::stack(raster::interpolate(raster.grid, model), interpol.stack)
+    interpol.stack <- raster::stack(interpol.stack, raster::interpolate(raster.grid, model))
   }
   return(interpol.stack)
 }
