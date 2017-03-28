@@ -17,6 +17,7 @@ reference:
     - CreatePalette
     - tess2tess3
     - plot.tess3
+    - ImputeRandom
 
 
 navbar:
