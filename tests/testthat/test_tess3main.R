@@ -450,3 +450,61 @@ test_that("TESS3 cross validation", {
   expect_lte(tess3.res$crossvalid.crossentropy, 0.9144449)
 
 })
+
+test_that("TESS3 main, algo.copy and XBin as int matrix", {
+  set.seed(698)
+  n <- 100
+  K <- 3
+  ploidy <- 2
+  L <- 3000
+  data.list <- SampleGenoFromGenerativeModelTESS3(G = SampleUnifDirichletG(L, ploidy, K),
+                                                  Q = SampleUnifQ(n, K),
+                                                  coord = SampleNormalClusterCoord(n.by.pop = n, K = 1),
+                                                  ploidy = ploidy)
+
+
+
+  data.list$XBin <- matrix(0.0, n, L * (ploidy + 1))
+  X2XBin(data.list$X, data.list$ploidy, data.list$XBin)
+  data.list$XBin <- matrix(as.raw(data.list$XBin), nrow(data.list$XBin), ncol(data.list$XBin))
+  set.seed(687)
+  tess3.res.nocopy <- tess3Main(X = NULL,
+                                XProba = data.list$XBin,
+                                coord = data.list$coord,
+                                K,
+                                ploidy,
+                                lambda = 1.0,
+                                W = NULL,
+                                method = "projected.ls",
+                                max.iteration = 200,
+                                tolerance = 1e-5,
+                                openMP.core.num = 4,
+                                Q.init = NULL,
+                                mask = 0.0,
+                                algo.copy = FALSE)
+
+
+  set.seed(687)
+  tess3.res.copy.X <- tess3Main(X = data.list$X,
+                                XProba = NULL,
+                                coord = data.list$coord,
+                                K,
+                                ploidy,
+                                lambda = 1.0,
+                                W = NULL,
+                                method = "projected.ls",
+                                max.iteration = 200,
+                                tolerance = 1e-5,
+                                openMP.core.num = 4,
+                                Q.init = NULL,
+                                mask = 0.0,
+                                algo.copy = TRUE)
+
+
+  expect_lt(ComputeRmseWithBestPermutation(tess3.res.copy.X$Q, tess3.res.nocopy$Q), 1e-15)
+  expect_lt(ComputeRmseWithBestPermutation(tess3.res.copy.X$G, tess3.res.nocopy$G), 1e-15)
+
+
+})
+
+

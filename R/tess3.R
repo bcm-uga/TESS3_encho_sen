@@ -235,7 +235,7 @@ tess3Main <- function(X,
     X2XBin(X, ploidy, XProba)
     rm(X)
   }
-  CheckXBin(XProba, ploidy)
+  #CheckXBin(XProba, ploidy)
   CheckCoord(coord)
   CheckXBinCoord(XProba, coord)
   CheckW(W)
@@ -348,12 +348,14 @@ tess3Main <- function(X,
 
   ################################################
   # Compute rmse
-  QtG <- tcrossprod(res$Q, res$G)
-  res$rmse <- ComputeRmse(XProba, QtG)
-  res$crossentropy <- ploidy * ComputeAveragedCrossEntropy(XProba, QtG) #because this function compute mean also by allele
-  if (mask > 0.0) {
-    res$crossvalid.rmse <- ComputeRmse(masked.X.value, QtG[missing.index.X])
-    res$crossvalid.crossentropy <- ploidy * ComputeAveragedCrossEntropy(masked.X.value, QtG[missing.index.X])
+  if (typeof(XProba) == "double") {
+    QtG <- tcrossprod(res$Q, res$G)
+    res$rmse <- ComputeRmse(XProba, QtG)
+    res$crossentropy <- ploidy * ComputeAveragedCrossEntropy(XProba, QtG) #because this function compute mean also by allele
+    if (mask > 0.0) {
+      res$crossvalid.rmse <- ComputeRmse(masked.X.value, QtG[missing.index.X])
+      res$crossvalid.crossentropy <- ploidy * ComputeAveragedCrossEntropy(masked.X.value, QtG[missing.index.X])
+    }
   }
   ################################################
   class(res) <- c(class(res), "tess3Main")

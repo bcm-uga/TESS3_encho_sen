@@ -175,11 +175,11 @@ BEGIN_RCPP
 END_RCPP
 }
 // ComputeMCPASolutionNoCopyX
-void ComputeMCPASolutionNoCopyX(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance, Eigen::Map<Eigen::MatrixXd> Q, Eigen::Map<Eigen::MatrixXd> G, bool verbose);
+void ComputeMCPASolutionNoCopyX(SEXP X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance, Eigen::Map<Eigen::MatrixXd> Q, Eigen::Map<Eigen::MatrixXd> G, bool verbose);
 RcppExport SEXP tess3r_ComputeMCPASolutionNoCopyX(SEXP XSEXP, SEXP KSEXP, SEXP LaplSEXP, SEXP lambdaPrimSEXP, SEXP DSEXP, SEXP maxIterationSEXP, SEXP toleranceSEXP, SEXP QSEXP, SEXP GSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type X(XSEXP);
     Rcpp::traits::input_parameter< int >::type K(KSEXP);
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type Lapl(LaplSEXP);
     Rcpp::traits::input_parameter< double >::type lambdaPrim(lambdaPrimSEXP);

@@ -107,10 +107,10 @@ void ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen
         LDLT<MatrixXd> lltG;
         while (!converg && it < maxIteration)
         #pragma omp parallel
-        {
+          {
                 // update G
                 #pragma omp master
-                {
+            {
                   lltG = (Q.transpose() * Q).ldlt();
                 }
 
@@ -156,12 +156,128 @@ void ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen
 //******************************* No   copy  ***********************************
 
 
+template <typename T>
+void ComputeMCPASolutionNoCopyX_mainLoop(T *Xptr,
+                                         int K,
+                                         int n,
+                                         int L,
+                                         const Eigen::VectorXd & vps ,
+                                         const Eigen::MatrixXd & R,
+                                         double lambda,
+                                         int D,
+                                         int maxIteration,
+                                         double tolerance,
+                                         Eigen::Map<Eigen::MatrixXd> & Q,
+                                         Eigen::Map<Eigen::MatrixXd> & G,
+                                         bool verbose) {
+  
+  const Eigen::Map<Eigen::Matrix<T, Dynamic, Dynamic> > X(Xptr, n, L * D);
+
+  // constant
+  MatrixXd Ik = MatrixXd::Identity(K,K);
+  double normX = 0.0;
+  for (int i = 0; i < X.rows(); i++) {
+    for(int j = 0; j < X.cols(); j++) {
+      normX += X(i, j) * X(i, j);
+    }
+  }
+  normX = sqrt(normX);
+
+  // auxiliary variables
+  MatrixXd RQ = Q;
+  double err = -10.0;
+  double errAux = 0.0;
+  VectorXd aux(X.rows());
+
+  // algo
+#ifdef _OPENMP
+  // multithreaded OpenMP version of code
+  Rcpp::Rcout << "Main loop with " << omp_get_max_threads() << " threads: " << std::endl;
+#else
+  Rcpp::Rcout << "Main loop:" << std::endl;
+#endif
+  // variables
+  int it = 0;
+  bool converg = FALSE;
+  LDLT<MatrixXd> lltG;
+#ifdef _OPENMP
+  MatrixXd RXi(omp_get_max_threads(), X.cols());
+#else
+  MatrixXd RXi(1, X.cols());
+#endif
+  
+  while (!converg && it < maxIteration)
+    #pragma omp parallel
+    {
+      // update G
+      #pragma omp master
+      {
+        lltG = (Q.transpose() * Q).ldlt();
+      }
+
+      #pragma omp barrier
+      #pragma omp for
+      for (int j = 0; j < G.rows(); j++) {
+        G.row(j) = (lltG.solve(Q.transpose() * X.col(j).template cast<double>())).transpose();
+      }
+      #pragma omp master
+      {
+        ProjectG(G, D);
+
+        // update Q
+        RQ = R * Q;
+      }
+      #pragma omp barrier
+      #pragma omp for
+      for (int i = 0; i < n; i++) {
+#ifdef _OPENMP
+
+        // compute RXi
+        for (int j = 0; j < X.cols(); j++) {
+          RXi(omp_get_thread_num(), j) = R.row(i) * X.col(j).template cast<double>();
+        }
+        RQ.row(i) = ((G.transpose() * G + lambda * vps(i) * Ik).ldlt().solve(G.transpose() * RXi.row(omp_get_thread_num()).transpose())).transpose();
+
+#else
+        // Compute RXi
+        for (int j = 0; i < X.cols(); j++) {
+          RXi(0, j) = R.row(i) * X.col(j);
+        }
+        RQ.row(i) = ((G.transpose() * G + lambda * vps(i) * Ik).ldlt().solve(G.transpose() * RXi.row(0).transpose())).transpose();
+
+#endif
+      }
+      #pragma omp master
+      {
+        Q = R.transpose() * RQ;
+        ProjectQ(Q);
+
+        // compute X - Q * G t
+        for (int i = 0; i < X.rows(); i++) {
+          aux(i) = (X.row(i).template cast<double>() - Q.row(i) * G.transpose()).squaredNorm();
+        }
+
+        // compute normalized residual error
+        errAux = sqrt(aux.sum()) / normX;
+        // Rcpp::Rcout << "iteration" << it << "& error : " << err << std::endl; // debug
+        if (verbose) Rcpp::Rcout << "---iteration: " << it <<"/" << maxIteration << std::endl;
+        // Test the convergence
+        converg = (std::abs(errAux - err) < tolerance);
+        err = errAux;
+        it++;
+      }
+    }
+  Rcpp::Rcout << ": done" << std::endl;
+}
+
+
+
 // solve min || X - Q G^T|| + lambda * tr(Q^T Lapl Q)
 // [[Rcpp::export]]
-void ComputeMCPASolutionNoCopyX(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance, Eigen::Map<Eigen::MatrixXd> Q, Eigen::Map<Eigen::MatrixXd> G, bool verbose) {
+void ComputeMCPASolutionNoCopyX(SEXP X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance, Eigen::Map<Eigen::MatrixXd> Q, Eigen::Map<Eigen::MatrixXd> G, bool verbose) {
         // Some const
-        const int L = X.cols() / D;
-        const int n = X.rows();
+        const int L = G.rows() / D;
+        const int n = Q.rows();
 
         // Compute Lapl diagonalization
         Rcpp::Rcout << "Computing spectral decomposition of graph laplacian matrix";
@@ -178,80 +294,63 @@ void ComputeMCPASolutionNoCopyX(const Eigen::Map<Eigen::MatrixXd> X, int K, cons
           lambda = lambdaPrim * (D * L * n) / (K * n * vpMax);
         }
 
-        // constant
-        MatrixXd Ik = MatrixXd::Identity(K,K);
 
-        // auxiliary variables
-        MatrixXd RQ = Q;
-        double err = -10.0;
-        double errAux = 0.0;
+        switch(TYPEOF(X)) {
+        case REALSXP:
+          Rcpp::Rcout << "REAL" << std::endl;
+          ComputeMCPASolutionNoCopyX_mainLoop<double>(REAL(X),
+                                              K,
+                                              n,
+                                              L,
+                                              vps ,
+                                              R,
+                                              lambda,
+                                              D,
+                                              maxIteration,
+                                              tolerance,
+                                              Q,
+                                              G,
+                                              verbose);
 
-        // algo
-#ifdef _OPENMP
-        // multithreaded OpenMP version of code
-        Rcpp::Rcout << "Main loop with " << omp_get_max_threads() << " threads: " << std::endl;
-#else
-        Rcpp::Rcout << "Main loop:" << std::endl;
-#endif
-        // variables
-        int it = 0;
-        bool converg = FALSE;
-        LDLT<MatrixXd> lltG;
-#ifdef _OPENMP
-        MatrixXd RXi(omp_get_max_threads(), X.cols());
-#else
-        MatrixXd RXi(1, X.cols());
-#endif
-        while (!converg && it < maxIteration)
-        #pragma omp parallel
-        {
-                // update G
-                #pragma omp master
-                {
-                  lltG = (Q.transpose() * Q).ldlt();
-                }
+          break;
+        case RAWSXP:
+          Rcpp::Rcout << "RAW" << std::endl;
+          ComputeMCPASolutionNoCopyX_mainLoop<unsigned char>(RAW(X),
+                                                             K,
+                                                             n,
+                                                             L,
+                                                             vps ,
+                                                             R,
+                                                             lambda,
+                                                             D,
+                                                             maxIteration,
+                                                             tolerance,
+                                                             Q,
+                                                             G,
+                                                             verbose);
 
-                #pragma omp barrier
-                #pragma omp for
-                for (int j = 0; j < G.rows(); j++) {
-                  G.row(j) = (lltG.solve(Q.transpose() * X.col(j))).transpose();
-                }
-                #pragma omp master
-                {
-                  ProjectG(G, D);
 
-                // update Q
-                  RQ = R * Q;
-                }
-                #pragma omp barrier
-                #pragma omp for
-                for (int i = 0; i < n; i++) {
-#ifdef _OPENMP
-                        RXi.row(omp_get_thread_num()) = R.row(i) * X;
-                  RQ.row(i) = ((G.transpose() * G + lambda * vps(i) * Ik).ldlt().solve(G.transpose() * RXi.row(omp_get_thread_num()).transpose())).transpose();
-
-#else
-                  RXi.row(0) = R.row(i) * X;
-                  RQ.row(i) = ((G.transpose() * G + lambda * vps(i) * Ik).ldlt().solve(G.transpose() * RXi.row(0).transpose())).transpose();
-
-#endif
-                  }
-                #pragma omp master
-                {
-                Q = R.transpose() * RQ;
-                ProjectQ(Q);
-
-                // compute normalized residual error
-                errAux = (X - Q * G.transpose()).norm() / X.norm();
-                // Rcpp::Rcout << "iteration" << it << "& error : " << err << std::endl; // debug
-                if (verbose) Rcpp::Rcout << "---iteration: " << it <<"/" << maxIteration << std::endl;
-                // Test the convergence
-                converg = (std::abs(errAux - err) < tolerance);
-                err = errAux;
-                it++;
-              }
+          break;
+        case INTSXP:
+           Rcpp::Rcout << "INT" << std::endl;
+          ComputeMCPASolutionNoCopyX_mainLoop<int>(INTEGER(X),
+                                                   K,
+                                                   n,
+                                                   L,
+                                                   vps ,
+                                                   R,
+                                                   lambda,
+                                                   D,
+                                                   maxIteration,
+                                                   tolerance,
+                                                   Q,
+                                                   G,
+                                                   verbose);
+        default:
+          Rcpp::Rcout << "default" << std::endl;
         }
-        Rcpp::Rcout << ": done" << std::endl;
+        return;
+
 }
 
 
