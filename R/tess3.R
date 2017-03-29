@@ -111,11 +111,13 @@ tess3Main <- function(X,
                       mask = 0.0,
                       copy = TRUE,
                       algo.copy = TRUE,
-                      verbose = FALSE)
+                      verbose = FALSE,
+                      only.ancestry = FALSE)
 {
   # mem <- c()
   # mem <- c(mem, pryr::mem_used())
   res = list()
+  class(res) <- c(class(res), "tess3Main")
 
   ################################################
   # Init openMP
@@ -324,6 +326,10 @@ tess3Main <- function(X,
   class(res$Q) <- c("tess3Q", class(res$Q))
   class(res$G) <- c("tess3G", class(res$G))
 
+  if (only.ancestry) {
+    return(res)
+  }
+
   ################################################
 
   # mem <- c(mem,pryr::mem_used())
@@ -358,7 +364,7 @@ tess3Main <- function(X,
     }
   }
   ################################################
-  class(res) <- c(class(res), "tess3Main")
+
 
   # mem <- c(mem,pryr::mem_used())
 
