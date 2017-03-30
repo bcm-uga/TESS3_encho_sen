@@ -307,6 +307,10 @@ tess3Main <- function(X,
                                  Q = res$Q,
                                  G = res$G,
                                  verbose = verbose)
+      message("ComputeMCPASolutionNoCopyX : OK")
+      if (only.ancestry) {
+        return(res)
+      }
     } else {
       ComputeMCPASolution(X = XProba,
                           K = K,
