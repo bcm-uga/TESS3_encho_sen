@@ -23,3 +23,4 @@ devtools::install_github("BioShock38/TESS3_encho_sen")
 - Kevin Caye, Flora Jay, Olivier Michel, Olivier Francois. Fast Inference of Individual Admixture Coefficients Using Geographic Data. bioRxiv, 2016, doi: [http://dx.doi.org/10.1101/080291](http://dx.doi.org/10.1101/080291)
 
 - Helena Martins, Kevin Caye, Keurcien Luu, Michael GB Blum, Olivier Francois. Identifying outlier loci in admixed and in continuous populations using ancestral population differentiation statistics. bioRxiv, 2016, doi: [http://dx.doi.org/10.1101/054585](http://dx.doi.org/10.1101/054585)
+
