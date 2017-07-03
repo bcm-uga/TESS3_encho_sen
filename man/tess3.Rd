@@ -167,4 +167,3 @@ doi:10.1101/080291. \url{http://biorxiv.org/content/early/2016/10/12/080291}
 \code{\link{tess3Main}}, \code{\link{plot.tess3Q}},
 \code{\link{barplot.tess3Q}}
 }
-

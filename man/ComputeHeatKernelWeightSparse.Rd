@@ -14,4 +14,3 @@ ComputeHeatKernelWeightSparse(coord, sigma)
 \description{
 Compute graph sparse matrix with the heat kernel function.
 }
-

@@ -23,3 +23,5 @@
 ^templates/$
 ^docs/$
 ^_pkgdown.yml$
+^_pkgdown\.yml$
+^docs$

@@ -22,4 +22,3 @@ Get the \code{\link{tess3Main}} object returned by the TESS3 algorithm.
 \seealso{
 \code{\link{tess3}}
 }
-

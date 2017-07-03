@@ -18,4 +18,3 @@ rmse.tess3Main(tess3.obj, X, ploidy, mask = NULL)
 \description{
 Title
 }
-

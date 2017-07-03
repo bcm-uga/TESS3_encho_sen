@@ -61,4 +61,3 @@ mean(data.list$X[is.na(masked.X)] != imputed.X.round[is.na(masked.X)]) # pourcen
 
 
 }
-

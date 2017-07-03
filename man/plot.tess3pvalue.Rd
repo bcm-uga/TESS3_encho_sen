@@ -20,4 +20,3 @@ Manhattan plot for tess3 significance values.
 \seealso{
 See \code{\link{tess3Main}} more explainations and examples.
 }
-

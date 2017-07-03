@@ -14,4 +14,3 @@ XBin2X(XBin, ploidy)
 \description{
 Convert the binary genotype matrix into genotype matrix.
 }
-

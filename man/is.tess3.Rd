@@ -15,4 +15,3 @@ TRUE if x is a tess3 object.
 \description{
 Test if x is a tess3project object
 }
-

@@ -19,4 +19,3 @@ the root mean square error is used.}
 \description{
 Plot cross-validation errors for all values of number of ancestral populations
 }
-

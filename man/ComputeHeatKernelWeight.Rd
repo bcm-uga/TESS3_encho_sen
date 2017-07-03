@@ -14,4 +14,3 @@ ComputeHeatKernelWeight(coord, sigma)
 \description{
 Compute graph matrix with the heat kernel function.
 }
-

@@ -126,4 +126,3 @@ tess3.obj <- tess3Main(X = genotype,
 \seealso{
 \code{\link{tess3}}
 }
-

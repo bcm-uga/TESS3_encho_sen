@@ -20,4 +20,3 @@ SampleGenoFromGenerativeModelTESS3(Q, G, coord, ploidy, openMP_core_num = 1L)
 \description{
 Sample genotype from the TESS3 generative model.
 }
-

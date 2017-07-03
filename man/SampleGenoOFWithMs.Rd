@@ -58,4 +58,3 @@ along a longitudinal gradient.
 #                              min.maf = 0.05,
 #                              plot.debug = TRUE)
 }
-

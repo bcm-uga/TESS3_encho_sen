@@ -23,10 +23,9 @@ Qmatrix <- as.qmatrix(Qmatrix)
 barplot(Qmatrix, space = 0, xlab = "individuals",
         ylab = "Ancestry proportions", main = "Ancestry matrix")
 }
-\author{
-Kevin Caye, Olivier François
-}
 \seealso{
 \code{\link{plot.tess3Q}} \code{\link{barplot.tess3Q}}
 }
-
+\author{
+Kevin Caye, Olivier François
+}

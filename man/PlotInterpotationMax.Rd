@@ -25,4 +25,3 @@ map database.}
 \description{
 Plot map with the maximum values of the interpolation surfaces.
 }
-

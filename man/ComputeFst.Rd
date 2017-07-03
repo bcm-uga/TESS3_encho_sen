@@ -16,4 +16,3 @@ ComputeFst(Q, G, D)
 \description{
 Compute Fst statistic
 }
-

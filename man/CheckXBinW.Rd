@@ -14,4 +14,3 @@ CheckXBinW(XBin, W)
 \description{
 Raise error if XBin and W are not consistent.
 }
-

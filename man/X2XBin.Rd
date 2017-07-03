@@ -16,4 +16,3 @@ X2XBin(X, ploidy, XBin)
 \description{
 Binary coding of the genotype data matrix.
 }
-

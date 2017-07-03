@@ -46,10 +46,9 @@ barplot(Q.matrix, border = NA, space = 0, xlab = "Individuals",
         ylab = "Ancestry proportions", main = "Ancestry matrix") -> bp
 axis(1, at = 1:nrow(Q.matrix), labels = bp$order, las = 3, cex.axis = .4)
 }
-\author{
-Kevin Caye, Olivier François
-}
 \seealso{
 \code{\link{plot.tess3Q}} \code{\link{as.qmatrix}} \code{\link{CreatePalette}}
 }
-
+\author{
+Kevin Caye, Olivier François
+}

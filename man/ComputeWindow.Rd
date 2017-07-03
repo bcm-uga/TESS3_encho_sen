@@ -12,4 +12,3 @@ ComputeWindow(coord)
 \description{
 Compute the graph window.
 }
-

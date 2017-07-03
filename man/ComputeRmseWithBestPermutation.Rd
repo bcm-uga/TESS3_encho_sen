@@ -16,4 +16,3 @@ ComputeRmseWithBestPermutation(Q1, Q2)
 Compute the root mean square error between matrix by permuting
 matrix column such that we have the best rmse.
 }
-

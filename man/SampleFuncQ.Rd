@@ -18,4 +18,3 @@ TODOC
 \description{
 Sample ancestral coefficient matrix such as Q = f(coord).
 }
-

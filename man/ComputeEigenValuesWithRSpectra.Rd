@@ -14,4 +14,3 @@ ComputeEigenValuesWithRSpectra(Lapl, k)
 \description{
 Compute eigen values with RSpectra.
 }
-

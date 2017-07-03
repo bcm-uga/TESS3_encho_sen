@@ -22,4 +22,3 @@ Get the \code{pvalue} vector returned by the tess3 algorithm.
 \seealso{
 \code{\link{tess3}}
 }
-

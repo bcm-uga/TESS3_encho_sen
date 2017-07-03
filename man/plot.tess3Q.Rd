@@ -67,4 +67,3 @@ plot(Q.matrix, data.at$coord, method = "map.max",
 \author{
 Kevin Caye, Flora Jay, Olivier François
 }
-

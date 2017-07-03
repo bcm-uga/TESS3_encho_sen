@@ -14,4 +14,3 @@ ComputeEigenValuesWithIgraphArpack(Lapl, k)
 \description{
 Compute eigen values with IgraphArpack.
 }
-

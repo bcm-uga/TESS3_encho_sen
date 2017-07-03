@@ -41,5 +41,5 @@ Imports:
     RcppEigen (>= 0.3.2.8.1),
 		graphics
 LinkingTo: Rcpp, RcppEigen
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 VignetteBuilder: knitr

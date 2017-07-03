@@ -14,4 +14,3 @@ CheckXBin(XBin, ploidy)
 \description{
 Raise error if XBin is not well formated.
 }
-

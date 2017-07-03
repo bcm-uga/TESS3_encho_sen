@@ -14,4 +14,3 @@ ComputeRmse(Q1, Q2)
 \description{
 Compute root squared mean error
 }
-

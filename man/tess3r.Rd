@@ -8,4 +8,3 @@
 \description{
 This R package implements the TESS3 method and tools useful to plot program outputs.
 }
-

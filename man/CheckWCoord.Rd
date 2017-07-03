@@ -14,4 +14,3 @@ CheckWCoord(W, coord)
 \description{
 Raise error if W and coord are not consistent.
 }
-

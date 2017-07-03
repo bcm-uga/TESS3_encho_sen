@@ -12,4 +12,3 @@ DebugMessage(msg)
 \description{
 Print a message if getOption("tess3r.debug") is not null
 }
-

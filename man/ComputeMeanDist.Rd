@@ -12,4 +12,3 @@ ComputeMeanDist(coord)
 \description{
 Compute the average distance between points.
 }
-

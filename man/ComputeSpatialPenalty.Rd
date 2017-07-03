@@ -17,4 +17,3 @@ TODOC
 \description{
 Compute the value spatial penalty used in TESS3 objectif function.
 }
-

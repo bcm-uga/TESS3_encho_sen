@@ -12,4 +12,3 @@ CheckCoord(coord)
 \description{
 Raise error if coord is not well formated.
 }
-

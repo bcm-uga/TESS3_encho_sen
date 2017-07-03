@@ -14,4 +14,3 @@ CheckX(X, ploidy)
 \description{
 Raise error if X is not well formated.
 }
-

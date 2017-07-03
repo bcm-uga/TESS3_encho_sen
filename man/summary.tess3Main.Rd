@@ -17,4 +17,3 @@ TODOCC
 \description{
 Summary of tess3 object.
 }
-

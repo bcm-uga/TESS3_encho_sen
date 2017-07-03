@@ -17,4 +17,3 @@ TODOC
 \description{
 Sample ancestral coefficient matrix such as alpha ~ unif(0,1) and Q ~ Dirichlet(alpha).
 }
-

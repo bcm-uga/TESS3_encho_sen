@@ -16,4 +16,3 @@ ComputeChi2AndPvalue(Fst, K, n)
 \description{
 Convert Fst into chi2 and compute p value
 }
-

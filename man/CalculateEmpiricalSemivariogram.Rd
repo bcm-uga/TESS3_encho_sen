@@ -21,4 +21,3 @@ Semi-variance.
 \description{
 Calculate empirical semi-variance.
 }
-

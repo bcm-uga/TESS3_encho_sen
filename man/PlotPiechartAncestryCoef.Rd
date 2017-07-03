@@ -26,4 +26,3 @@ PlotPiechartAncestryCoef(Q, coord, window, background, col,
 \description{
 Plot pie chart of ancestry coefficient.
 }
-

@@ -12,4 +12,3 @@ TestRequiredPkg(pkg)
 \description{
 Test if a package is installed.
 }
-

@@ -14,4 +14,3 @@ CheckXW(X, W)
 \description{
 Raise error if X and W are not consistent.
 }
-

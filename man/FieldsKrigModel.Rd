@@ -16,4 +16,3 @@ FieldsKrigModel(theta = 10, ...)
 Return an interpolation function. Return a wrapper function of the function Krig of
 the package fields. See \code{\link[fields]{Krig}}.
 }
-

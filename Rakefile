@@ -84,21 +84,6 @@ namespace :pkg do
       puts "== Remove docs/ dir".green
       sh 'rm -rf docs/'
     end
-
-    desc "Deploy the site on gh-pages"
-    task :deploy => [:open] do
-      puts "== Deploy to gh-pages".green
-      colorizedsh "git clone .git gh-pages/"
-      Dir.chdir("gh-pages/") do
-        colorizedsh "git checkout gh-pages"
-        colorizedsh 'rsync -ar ../docs/ .'
-        colorizedsh "git add *"
-        colorizedsh 'git commit -m "automatic deployment"'
-        colorizedsh "git push origin gh-pages"
-      end
-      colorizedsh "rm -rf gh-pages/"
-    end
-
   end
 
 end

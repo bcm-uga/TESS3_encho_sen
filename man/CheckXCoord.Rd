@@ -14,4 +14,3 @@ CheckXCoord(X, coord)
 \description{
 Raise error if X and coord are not consistent.
 }
-

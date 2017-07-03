@@ -14,4 +14,3 @@ ComputeExponetialWeight(coord, sigma)
 \description{
 Compute graph matrix with an exponiential function.
 }
-

@@ -14,4 +14,3 @@ FieldsTpsModel(...)
 Return an interpolation function. Return a wrapper function of the function Tps of
 the package fields. See \code{\link[fields]{Tps}}.
 }
-

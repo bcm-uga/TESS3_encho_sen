@@ -44,10 +44,9 @@ Qmatrix <- Gettess3res(obj, K = 3)$Q
 barplot(Qmatrix, sort.by.Q = FALSE, border = NA,
         space = 0, xlab = "Individuals", ylab = "Ancestry coefficients")
 }
-\author{
-Kevin Caye, Flora Jay, Olivier François
-}
 \seealso{
 \code{\link{tess3}}
 }
-
+\author{
+Kevin Caye, Flora Jay, Olivier François
+}

@@ -40,4 +40,3 @@ axis(1, at = 1:nrow(Q.matrix), labels = bp$order, las = 3, cex.axis = .4)
 \seealso{
 \code{\link{tess3}} \code{\link{barplot.tess3Q}} \code{\link{plot.tess3Q}} \code{\link{CreatePalette}}
 }
-

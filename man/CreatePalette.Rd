@@ -33,10 +33,9 @@ plot(obj$Q, data.at$coord, method = "mapping.max", col.palette = my.palette,
      cex = .4, xlab = "Longitude", ylab= "Latitude",
      main = "Ancestry coefficients")
 }
-\author{
-Kevin Caye, Olivier François
-}
 \seealso{
 \code{\link{plot.tess3Q}} \code{\link{barplot.tess3Q}}
 }
-
+\author{
+Kevin Caye, Olivier François
+}

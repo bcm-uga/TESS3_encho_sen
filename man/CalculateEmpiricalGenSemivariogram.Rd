@@ -36,4 +36,3 @@ em.vario <- CalculateEmpiricalGenSemivariogram(X = data.for.test$X,
 ggplot2::ggplot(em.vario, ggplot2::aes(x = h, y = semi.variance, size = size)) +
                ggplot2::geom_point()
 }
-

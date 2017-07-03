@@ -58,4 +58,3 @@ ggtess3Q(Q.matrix, data.at$coord)
 \author{
 Kevin Caye, Flora Jay, Olivier François
 }
-

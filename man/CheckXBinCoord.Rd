@@ -14,4 +14,3 @@ CheckXBinCoord(XBin, coord)
 \description{
 Raise error if XBin and coord are not consistent.
 }
-

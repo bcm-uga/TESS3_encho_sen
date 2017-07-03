@@ -25,4 +25,3 @@ map database.}
 \description{
 Plot all the interpolation surfaces on several graphs.
 }
-

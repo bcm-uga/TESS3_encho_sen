@@ -14,4 +14,3 @@ ComputeAveragedCrossEntropy(P, Q)
 \description{
 Compute average cross entropy
 }
-

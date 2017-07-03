@@ -17,4 +17,3 @@ a matrix of allele frequencies for each locus.
 \description{
 Compute allele frequency matrix from genotype frequency matrix.
 }
-

@@ -16,4 +16,3 @@ ComputeTscoreAndPvalue(Fst, K, n)
 \description{
 Convert Fst into t-score and compute p value
 }
-

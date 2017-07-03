@@ -12,4 +12,3 @@ CheckW(W)
 \description{
 Raise error if W is not well formated.
 }
-

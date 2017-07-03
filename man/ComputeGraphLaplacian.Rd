@@ -12,4 +12,3 @@ ComputeGraphLaplacian(W)
 \description{
 Compute laplacian of a graph.
 }
-
