@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // ComputeRmse
 double ComputeRmse(SEXP Q1, SEXP Q2);
-RcppExport SEXP tess3r_ComputeRmse(SEXP Q1SEXP, SEXP Q2SEXP) {
+RcppExport SEXP _tess3r_ComputeRmse(SEXP Q1SEXP, SEXP Q2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -20,7 +20,7 @@ END_RCPP
 }
 // ComputeAveragedCrossEntropy
 double ComputeAveragedCrossEntropy(SEXP P, SEXP Q);
-RcppExport SEXP tess3r_ComputeAveragedCrossEntropy(SEXP PSEXP, SEXP QSEXP) {
+RcppExport SEXP _tess3r_ComputeAveragedCrossEntropy(SEXP PSEXP, SEXP QSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -32,7 +32,7 @@ END_RCPP
 }
 // X2XBin
 void X2XBin(const Rcpp::NumericMatrix& X, int ploidy, Eigen::Map<Eigen::MatrixXd>& XBin);
-RcppExport SEXP tess3r_X2XBin(SEXP XSEXP, SEXP ploidySEXP, SEXP XBinSEXP) {
+RcppExport SEXP _tess3r_X2XBin(SEXP XSEXP, SEXP ploidySEXP, SEXP XBinSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type X(XSEXP);
@@ -44,7 +44,7 @@ END_RCPP
 }
 // XBin2X
 Eigen::MatrixXd XBin2X(const Eigen::Map<Eigen::MatrixXd> XBin, int ploidy);
-RcppExport SEXP tess3r_XBin2X(SEXP XBinSEXP, SEXP ploidySEXP) {
+RcppExport SEXP _tess3r_XBin2X(SEXP XBinSEXP, SEXP ploidySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -56,7 +56,7 @@ END_RCPP
 }
 // ComputeHeatKernelWeightSparse
 Eigen::SparseMatrix<double> ComputeHeatKernelWeightSparse(const Eigen::Map<Eigen::MatrixXd> coord, double sigma);
-RcppExport SEXP tess3r_ComputeHeatKernelWeightSparse(SEXP coordSEXP, SEXP sigmaSEXP) {
+RcppExport SEXP _tess3r_ComputeHeatKernelWeightSparse(SEXP coordSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -68,7 +68,7 @@ END_RCPP
 }
 // ComputeHeatKernelWeight
 Eigen::MatrixXd ComputeHeatKernelWeight(const Eigen::Map<Eigen::MatrixXd> coord, double sigma);
-RcppExport SEXP tess3r_ComputeHeatKernelWeight(SEXP coordSEXP, SEXP sigmaSEXP) {
+RcppExport SEXP _tess3r_ComputeHeatKernelWeight(SEXP coordSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -80,7 +80,7 @@ END_RCPP
 }
 // ComputeExponetialWeight
 Eigen::MatrixXd ComputeExponetialWeight(const Eigen::Map<Eigen::MatrixXd> coord, double sigma);
-RcppExport SEXP tess3r_ComputeExponetialWeight(SEXP coordSEXP, SEXP sigmaSEXP) {
+RcppExport SEXP _tess3r_ComputeExponetialWeight(SEXP coordSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -92,7 +92,7 @@ END_RCPP
 }
 // SampleGenoFromGenerativeModelTESS3
 Rcpp::List SampleGenoFromGenerativeModelTESS3(const Rcpp::NumericMatrix& Q, const Rcpp::NumericMatrix& G, const Rcpp::NumericMatrix& coord, int ploidy, int openMP_core_num);
-RcppExport SEXP tess3r_SampleGenoFromGenerativeModelTESS3(SEXP QSEXP, SEXP GSEXP, SEXP coordSEXP, SEXP ploidySEXP, SEXP openMP_core_numSEXP) {
+RcppExport SEXP _tess3r_SampleGenoFromGenerativeModelTESS3(SEXP QSEXP, SEXP GSEXP, SEXP coordSEXP, SEXP ploidySEXP, SEXP openMP_core_numSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -107,7 +107,7 @@ END_RCPP
 }
 // ComputeZHelper
 Eigen::MatrixXi ComputeZHelper(const Eigen::Map<Eigen::MatrixXd> Q, int n, int L);
-RcppExport SEXP tess3r_ComputeZHelper(SEXP QSEXP, SEXP nSEXP, SEXP LSEXP) {
+RcppExport SEXP _tess3r_ComputeZHelper(SEXP QSEXP, SEXP nSEXP, SEXP LSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -120,7 +120,7 @@ END_RCPP
 }
 // ComputeAdmixtedGeno
 Eigen::MatrixXi ComputeAdmixtedGeno(const Rcpp::NumericVector& geno, const Eigen::Map<Eigen::MatrixXi> Z, int n, int L);
-RcppExport SEXP tess3r_ComputeAdmixtedGeno(SEXP genoSEXP, SEXP ZSEXP, SEXP nSEXP, SEXP LSEXP) {
+RcppExport SEXP _tess3r_ComputeAdmixtedGeno(SEXP genoSEXP, SEXP ZSEXP, SEXP nSEXP, SEXP LSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -134,7 +134,7 @@ END_RCPP
 }
 // ComputeFst
 Eigen::MatrixXd ComputeFst(const Eigen::Map<Eigen::MatrixXd> Q, const Eigen::Map<Eigen::MatrixXd> G, int D);
-RcppExport SEXP tess3r_ComputeFst(SEXP QSEXP, SEXP GSEXP, SEXP DSEXP) {
+RcppExport SEXP _tess3r_ComputeFst(SEXP QSEXP, SEXP GSEXP, SEXP DSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -147,7 +147,7 @@ END_RCPP
 }
 // InitOpenMP
 void InitOpenMP(int n);
-RcppExport SEXP tess3r_InitOpenMP(SEXP nSEXP) {
+RcppExport SEXP _tess3r_InitOpenMP(SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type n(nSEXP);
@@ -157,7 +157,7 @@ END_RCPP
 }
 // ComputeMCPASolution
 void ComputeMCPASolution(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance, Eigen::Map<Eigen::MatrixXd> Q, Eigen::Map<Eigen::MatrixXd> G, bool verbose);
-RcppExport SEXP tess3r_ComputeMCPASolution(SEXP XSEXP, SEXP KSEXP, SEXP LaplSEXP, SEXP lambdaPrimSEXP, SEXP DSEXP, SEXP maxIterationSEXP, SEXP toleranceSEXP, SEXP QSEXP, SEXP GSEXP, SEXP verboseSEXP) {
+RcppExport SEXP _tess3r_ComputeMCPASolution(SEXP XSEXP, SEXP KSEXP, SEXP LaplSEXP, SEXP lambdaPrimSEXP, SEXP DSEXP, SEXP maxIterationSEXP, SEXP toleranceSEXP, SEXP QSEXP, SEXP GSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
@@ -176,7 +176,7 @@ END_RCPP
 }
 // ComputeMCPASolutionNoCopyX
 void ComputeMCPASolutionNoCopyX(const Eigen::Map<Eigen::MatrixXd> X, int K, const Eigen::Map<Eigen::MatrixXd> Lapl, double lambdaPrim, int D, int maxIteration, double tolerance, Eigen::Map<Eigen::MatrixXd> Q, Eigen::Map<Eigen::MatrixXd> G, bool verbose);
-RcppExport SEXP tess3r_ComputeMCPASolutionNoCopyX(SEXP XSEXP, SEXP KSEXP, SEXP LaplSEXP, SEXP lambdaPrimSEXP, SEXP DSEXP, SEXP maxIterationSEXP, SEXP toleranceSEXP, SEXP QSEXP, SEXP GSEXP, SEXP verboseSEXP) {
+RcppExport SEXP _tess3r_ComputeMCPASolutionNoCopyX(SEXP XSEXP, SEXP KSEXP, SEXP LaplSEXP, SEXP lambdaPrimSEXP, SEXP DSEXP, SEXP maxIterationSEXP, SEXP toleranceSEXP, SEXP QSEXP, SEXP GSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
@@ -192,4 +192,27 @@ BEGIN_RCPP
     ComputeMCPASolutionNoCopyX(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G, verbose);
     return R_NilValue;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_tess3r_ComputeRmse", (DL_FUNC) &_tess3r_ComputeRmse, 2},
+    {"_tess3r_ComputeAveragedCrossEntropy", (DL_FUNC) &_tess3r_ComputeAveragedCrossEntropy, 2},
+    {"_tess3r_X2XBin", (DL_FUNC) &_tess3r_X2XBin, 3},
+    {"_tess3r_XBin2X", (DL_FUNC) &_tess3r_XBin2X, 2},
+    {"_tess3r_ComputeHeatKernelWeightSparse", (DL_FUNC) &_tess3r_ComputeHeatKernelWeightSparse, 2},
+    {"_tess3r_ComputeHeatKernelWeight", (DL_FUNC) &_tess3r_ComputeHeatKernelWeight, 2},
+    {"_tess3r_ComputeExponetialWeight", (DL_FUNC) &_tess3r_ComputeExponetialWeight, 2},
+    {"_tess3r_SampleGenoFromGenerativeModelTESS3", (DL_FUNC) &_tess3r_SampleGenoFromGenerativeModelTESS3, 5},
+    {"_tess3r_ComputeZHelper", (DL_FUNC) &_tess3r_ComputeZHelper, 3},
+    {"_tess3r_ComputeAdmixtedGeno", (DL_FUNC) &_tess3r_ComputeAdmixtedGeno, 4},
+    {"_tess3r_ComputeFst", (DL_FUNC) &_tess3r_ComputeFst, 3},
+    {"_tess3r_InitOpenMP", (DL_FUNC) &_tess3r_InitOpenMP, 1},
+    {"_tess3r_ComputeMCPASolution", (DL_FUNC) &_tess3r_ComputeMCPASolution, 10},
+    {"_tess3r_ComputeMCPASolutionNoCopyX", (DL_FUNC) &_tess3r_ComputeMCPASolutionNoCopyX, 10},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_tess3r(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }

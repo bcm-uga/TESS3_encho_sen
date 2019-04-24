@@ -6,7 +6,7 @@
 #' @param Q2 Numeric.
 #' @export
 ComputeRmse <- function(Q1, Q2) {
-    .Call('tess3r_ComputeRmse', PACKAGE = 'tess3r', Q1, Q2)
+    .Call('_tess3r_ComputeRmse', PACKAGE = 'tess3r', Q1, Q2)
 }
 
 #' Compute average cross entropy
@@ -14,7 +14,7 @@ ComputeRmse <- function(Q1, Q2) {
 #' @param Q Numeric.
 #' @export
 ComputeAveragedCrossEntropy <- function(P, Q) {
-    .Call('tess3r_ComputeAveragedCrossEntropy', PACKAGE = 'tess3r', P, Q)
+    .Call('_tess3r_ComputeAveragedCrossEntropy', PACKAGE = 'tess3r', P, Q)
 }
 
 #' Binary coding of the genotype data matrix.
@@ -23,7 +23,7 @@ ComputeAveragedCrossEntropy <- function(P, Q) {
 #' @param XBin Binary genotype matrix to fill.
 #' @export
 X2XBin <- function(X, ploidy, XBin) {
-    invisible(.Call('tess3r_X2XBin', PACKAGE = 'tess3r', X, ploidy, XBin))
+    invisible(.Call('_tess3r_X2XBin', PACKAGE = 'tess3r', X, ploidy, XBin))
 }
 
 #' Convert the binary genotype matrix into genotype matrix.
@@ -31,14 +31,14 @@ X2XBin <- function(X, ploidy, XBin) {
 #' @param XBin Binary genotype matrix.
 #' @export
 XBin2X <- function(XBin, ploidy) {
-    .Call('tess3r_XBin2X', PACKAGE = 'tess3r', XBin, ploidy)
+    .Call('_tess3r_XBin2X', PACKAGE = 'tess3r', XBin, ploidy)
 }
 
 #' Compute graph sparse matrix with the heat kernel function.
 #' @param coord Coordinate matrix.
 #' @param sigma sigma numeric parameter.
 ComputeHeatKernelWeightSparse <- function(coord, sigma) {
-    .Call('tess3r_ComputeHeatKernelWeightSparse', PACKAGE = 'tess3r', coord, sigma)
+    .Call('_tess3r_ComputeHeatKernelWeightSparse', PACKAGE = 'tess3r', coord, sigma)
 }
 
 #' Compute graph matrix with the heat kernel function.
@@ -46,7 +46,7 @@ ComputeHeatKernelWeightSparse <- function(coord, sigma) {
 #' @param sigma sigma numeric parameter.
 #' @export
 ComputeHeatKernelWeight <- function(coord, sigma) {
-    .Call('tess3r_ComputeHeatKernelWeight', PACKAGE = 'tess3r', coord, sigma)
+    .Call('_tess3r_ComputeHeatKernelWeight', PACKAGE = 'tess3r', coord, sigma)
 }
 
 #' Compute graph matrix with an exponiential function.
@@ -54,7 +54,7 @@ ComputeHeatKernelWeight <- function(coord, sigma) {
 #' @param sigma sigma numeric parameter.
 #' @export
 ComputeExponetialWeight <- function(coord, sigma) {
-    .Call('tess3r_ComputeExponetialWeight', PACKAGE = 'tess3r', coord, sigma)
+    .Call('_tess3r_ComputeExponetialWeight', PACKAGE = 'tess3r', coord, sigma)
 }
 
 #' Sample genotype from the TESS3 generative model.
@@ -65,15 +65,15 @@ ComputeExponetialWeight <- function(coord, sigma) {
 #' @param openMP_core_num If openMP this is the number of CPU used.
 #' @export
 SampleGenoFromGenerativeModelTESS3 <- function(Q, G, coord, ploidy, openMP_core_num = 1L) {
-    .Call('tess3r_SampleGenoFromGenerativeModelTESS3', PACKAGE = 'tess3r', Q, G, coord, ploidy, openMP_core_num)
+    .Call('_tess3r_SampleGenoFromGenerativeModelTESS3', PACKAGE = 'tess3r', Q, G, coord, ploidy, openMP_core_num)
 }
 
 ComputeZHelper <- function(Q, n, L) {
-    .Call('tess3r_ComputeZHelper', PACKAGE = 'tess3r', Q, n, L)
+    .Call('_tess3r_ComputeZHelper', PACKAGE = 'tess3r', Q, n, L)
 }
 
 ComputeAdmixtedGeno <- function(geno, Z, n, L) {
-    .Call('tess3r_ComputeAdmixtedGeno', PACKAGE = 'tess3r', geno, Z, n, L)
+    .Call('_tess3r_ComputeAdmixtedGeno', PACKAGE = 'tess3r', geno, Z, n, L)
 }
 
 #' Compute Fst statistic
@@ -82,18 +82,18 @@ ComputeAdmixtedGeno <- function(geno, Z, n, L) {
 #' @param D Number of chromosome + 1.
 #' @export
 ComputeFst <- function(Q, G, D) {
-    .Call('tess3r_ComputeFst', PACKAGE = 'tess3r', Q, G, D)
+    .Call('_tess3r_ComputeFst', PACKAGE = 'tess3r', Q, G, D)
 }
 
 InitOpenMP <- function(n) {
-    invisible(.Call('tess3r_InitOpenMP', PACKAGE = 'tess3r', n))
+    invisible(.Call('_tess3r_InitOpenMP', PACKAGE = 'tess3r', n))
 }
 
 ComputeMCPASolution <- function(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G, verbose) {
-    invisible(.Call('tess3r_ComputeMCPASolution', PACKAGE = 'tess3r', X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G, verbose))
+    invisible(.Call('_tess3r_ComputeMCPASolution', PACKAGE = 'tess3r', X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G, verbose))
 }
 
 ComputeMCPASolutionNoCopyX <- function(X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G, verbose) {
-    invisible(.Call('tess3r_ComputeMCPASolutionNoCopyX', PACKAGE = 'tess3r', X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G, verbose))
+    invisible(.Call('_tess3r_ComputeMCPASolutionNoCopyX', PACKAGE = 'tess3r', X, K, Lapl, lambdaPrim, D, maxIteration, tolerance, Q, G, verbose))
 }
 
