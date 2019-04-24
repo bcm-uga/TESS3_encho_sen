@@ -8,7 +8,8 @@ CheckPlotParam <- function(x, coord,
                            background, map.polygon,
                            raster.filename,
                            interpolation.model,
-                           col.palette) {
+                           col.palette,
+                           add.map) {
   ## Params checks
   if (length(col.palette) < ncol(x) & (method == "map.max" | method == "map.all")) {
     stop("col.palette must of length ncol(Q)")
@@ -222,7 +223,9 @@ plot.tess3Q <- function(x, coord,
                         background = TRUE, map.polygon = NULL,
                         raster.filename = NULL,
                         interpolation.model = FieldsKrigModel(10),
-                        col.palette = CreatePalette(), ...) {
+                        col.palette = CreatePalette(),
+                        add.map = TRUE,
+                        ...) {
 
   CheckPlotParam(x, coord,
                  method,
@@ -230,7 +233,8 @@ plot.tess3Q <- function(x, coord,
                  background, map.polygon,
                  raster.filename,
                  interpolation.model,
-                 col.palette)
+                 col.palette,
+                 add.map)
 
 
   if (method == "piechart") {
@@ -246,13 +250,13 @@ plot.tess3Q <- function(x, coord,
       PlotInterpotationMax(coord, list.grid.z,
                            grid.x = raster::xFromCol(interpol.stack),
                            grid.y = rev(raster::yFromRow(interpol.stack)),
-                           col.palette, map = TRUE, ...)
+                           col.palette, map = add.map,...)
     } else if (method == "map.all") {
 
       PlotInterpotationAll(coord, list.grid.z,
                            grid.x = raster::xFromCol(interpol.stack),
                            grid.y = rev(raster::yFromRow(interpol.stack)),
-                           col.palette, map = TRUE, ...)
+                           col.palette, map = add.map, ...)
     }
   }
 }
