@@ -131,10 +131,13 @@
 #'     cex = .3, col = "grey")
 #'
 #' @references
+#' Caye, K., Deist, T. M., Martins, H., Michel, O., & François, O. (2016). TESS3: fast inference of spatial
+#' population structure and genome scans for selection. Molecular Ecology Resources, 16(2), 540-548.
 #' \url{http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12471/full}
 #' Caye, Kevin et al. (2016) Fast Inference of Individual Admixture Coefficients Using Geographic Data. bioRxiv
 #' doi:10.1101/080291. \url{http://biorxiv.org/content/early/2016/10/12/080291}
-#'
+#' Caye, K., Jay, F., Michel, O., François, O. (2018). Fast inference of individual admixture coefficients
+#' using geographic data. The Annals of Applied Statistics, 12(1), 586-608.
 #' @seealso \code{\link{tess3Main}}, \code{\link{plot.tess3Q}},
 #' \code{\link{barplot.tess3Q}}
 tess3 <- function(X,
@@ -155,9 +158,14 @@ tess3 <- function(X,
                   keep = "best",
                   verbose = FALSE)
 {
-  # test param :
+  # test param:
   if (rep < 1) {
-    stop("rep must greater than 1")
+    stop("Error: rep must greater than one.")
+  }
+
+  # test coord:
+  if (anyNA(coord)){
+    stop("Error: missing geographic coordinates.")
   }
 
   copy = TRUE
@@ -166,7 +174,7 @@ tess3 <- function(X,
     X <- matrix(as.double(X), nrow(X), ncol(X)) # to ensure we have a matrix of double
     CheckX(X, ploidy)
   } else if (!copy & is.null(XProba)) {
-    stop("To force the function not doing copy of the data, you must set XProba")
+    stop("Error: set XProba to avoid duplicating the data in R memory.")
   }
 
   # Compute XBin
@@ -177,7 +185,7 @@ tess3 <- function(X,
   }
 
 
-  # if user want only 1 run of tess3 we return a list of result
+  # if user wants only 1 run of tess3 we return a list of result
   if (length(K) == 1 & rep == 1) {
     res <- tess3Main(X = NULL,
                      XProba = XProba,

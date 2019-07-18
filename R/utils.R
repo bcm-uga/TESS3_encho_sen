@@ -22,9 +22,10 @@
 #' d09tess3 <- tess2tess3(durand09, FORMAT = 2, extra.column = 1)
 #' obj <- tess3(X = d09tess3$X, coord = d09tess3$coord,
 #'              K = 1:3, ploidy = 2, openMP.core.num = 4)
-#' Qmatrix <- Gettess3res(obj, K = 3)$Q
+#' Qmatrix <- qmatrix(obj, K = 3)
 #' barplot(Qmatrix, sort.by.Q = FALSE, border = NA,
-#'         space = 0, xlab = "Individuals", ylab = "Ancestry coefficients")
+#'         space = 0, xlab = "Individuals", ylab = "Ancestry coefficients") -> bp
+#' axis(1, at = 1:nrow(Qmatrix), labels = bp$order, las = 3, cex.axis = .2)
 #' @export
 tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1, extra.row = 0, extra.column = 0){
 
@@ -154,7 +155,9 @@ tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1
       genotype[i, (genotype[i,] < 0)] = NA
     }}
 
-  return(list(X = as.matrix(genotype), coord = as.matrix(coord)))
+  coord = matrix(as.double(as.matrix(coord)), nrow = 2)
+  if (anyNA(coord)) cat("Warning: missing geographic coordinate values.","\n")
+  return(list(X = as.matrix(genotype), coord = coord))
 }
 
 
