@@ -155,7 +155,7 @@ tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1
       genotype[i, (genotype[i,] < 0)] = NA
     }}
 
-  coord = matrix(as.double(as.matrix(coord)), nrow = 2)
+  coord = matrix(as.double(as.matrix(coord)), ncol = 2)
   if (anyNA(coord)) cat("Warning: missing geographic coordinate values.","\n")
   return(list(X = as.matrix(genotype), coord = coord))
 }
