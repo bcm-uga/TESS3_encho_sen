@@ -177,7 +177,7 @@ tess2tess3 <- function(dataframe = NULL, TESS = TRUE, diploid = TRUE, FORMAT = 1
 #'         ylab = "Ancestry proportions", main = "Ancestry matrix")
 #' @export
 as.qmatrix <- function(Q){
-  if (class(Q) != "matrix") Q <- as.matrix(Q)
+  if (!("matrix" %in% class(Q))) Q <- as.matrix(Q)
   if (min(Q) < 0) stop("Q contains negative elements.")
   sumofq <- apply(Q, MARGIN = 1, sum)
   sumofq <- round(sum(sumofq))

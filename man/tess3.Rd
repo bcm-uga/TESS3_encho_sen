@@ -159,9 +159,13 @@ plot(p.values, main = "Manhattan plot",
 
 }
 \references{
+Caye, K., Deist, T. M., Martins, H., Michel, O., & François, O. (2016). TESS3: fast inference of spatial
+population structure and genome scans for selection. Molecular Ecology Resources, 16(2), 540-548.
 \url{http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12471/full}
 Caye, Kevin et al. (2016) Fast Inference of Individual Admixture Coefficients Using Geographic Data. bioRxiv
 doi:10.1101/080291. \url{http://biorxiv.org/content/early/2016/10/12/080291}
+Caye, K., Jay, F., Michel, O., François, O. (2018). Fast inference of individual admixture coefficients
+using geographic data. The Annals of Applied Statistics, 12(1), 586-608.
 }
 \seealso{
 \code{\link{tess3Main}}, \code{\link{plot.tess3Q}},

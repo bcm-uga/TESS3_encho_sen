@@ -7,7 +7,7 @@
 \method{plot}{tess3Q}(x, coord, method = "map.max", resolution = c(300,
   300), window = NULL, background = TRUE, map.polygon = NULL,
   raster.filename = NULL, interpolation.model = FieldsKrigModel(10),
-  col.palette = CreatePalette(), ...)
+  col.palette = CreatePalette(), add.map = TRUE, ...)
 }
 \arguments{
 \item{x}{an object of class \code{tess3Q} containing an ancestry coefficient matrix computed from \code{\link{tess3}}.}
