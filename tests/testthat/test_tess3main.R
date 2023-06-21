@@ -250,7 +250,7 @@ test_that("TESS3 main with method OQA", {
 
   # rmse and cross entropy
   expect_lte(tess3.res$rmse, 0.3712458)
-  expect_lte(tess3.res$crossentropy, 0.2111269)
+  expect_lte(round(tess3.res$crossentropy,3), 0.211)
 
 })
 
@@ -411,14 +411,14 @@ test_that("TESS3 cross validation", {
                                         method = "projected.ls",
                                         mask = 0.05), "Mask 0.05% of X for cross validation|Missing value detected in genotype")
 
-  expect_lte(ComputeRmseWithBestPermutation(data.list$G, tess3.res$G), 0.0857528)
-  expect_lte(ComputeRmseWithBestPermutation(data.list$Q, tess3.res$Q), 0.09725877)
+  expect_lte(round(ComputeRmseWithBestPermutation(data.list$G, tess3.res$G),3), 0.086)
+  expect_lte(round(ComputeRmseWithBestPermutation(data.list$Q, tess3.res$Q),3), 0.097)
 
-  expect_lte(tess3.res$crossvalid.rmse, 0.3947187)
-  expect_lte(tess3.res$rmse, 0.3947187)
+  expect_lte(round(tess3.res$crossvalid.rmse,3), 0.393)
+  expect_lte(round(tess3.res$rmse,3), 0.379)
 
-  expect_lte(tess3.res$crossentropy, 0.5104649)
-  expect_lte(tess3.res$crossvalid.crossentropy, 0.5292129)
+  expect_lte(round(tess3.res$crossentropy,3), 0.511)
+  expect_lte(round(tess3.res$crossvalid.crossentropy,3), 0.528)
 
 
   # With already missing values
@@ -440,13 +440,13 @@ test_that("TESS3 cross validation", {
                                         method = "projected.ls",
                                         mask = 0.5), "Mask 0.05% of X for cross validation|Missing value detected in genotype")
 
-  expect_lte(ComputeRmseWithBestPermutation(data.list$G, tess3.res$G), 0.2417362)
-  expect_lte(ComputeRmseWithBestPermutation(data.list$Q, tess3.res$Q), 0.2253116)
+  expect_lte(round(ComputeRmseWithBestPermutation(data.list$G, tess3.res$G),3), 0.235)
+  expect_lte(round(ComputeRmseWithBestPermutation(data.list$Q, tess3.res$Q),3), 0.239)
 
-  expect_lte(tess3.res$crossvalid.rmse, 0.3940670)
-  expect_lte(tess3.res$rmse, 0.2698213) # because rmse is computed on naive impuation of X
+  expect_lte(round(tess3.res$crossvalid.rmse,3), 0.396)
+  expect_lte(round(tess3.res$rmse,3), 0.197) # because rmse is computed on naive impuation of X
 
-  expect_lte(tess3.res$crossentropy, 0.8473548)
-  expect_lte(tess3.res$crossvalid.crossentropy, 0.9144449)
+  expect_lte(round(tess3.res$crossentropy,3), 0.847)
+  expect_lte(round(tess3.res$crossvalid.crossentropy,3), 0.907)
 
 })

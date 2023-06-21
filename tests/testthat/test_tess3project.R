@@ -50,7 +50,7 @@ test_that("tess3project constructor", {
                                    lambda = 1.0,
                                    method = "projected.ls",
                                    rep = -1,
-                                   keep = "best"), "rep must greater than 1")
+                                   keep = "best"), "rep must greater than one")
 })
 
 
